@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Eval
+namespace Net.TheVpc.Upa.Impl.Eval
 {
 
 
@@ -19,16 +19,16 @@ namespace Net.Vpc.Upa.Impl.Eval
      *
      * @author taha.bensalah@gmail.com
      */
-    internal class NullQLTypeEvaluator : Net.Vpc.Upa.QLTypeEvaluator {
+    internal class NullQLTypeEvaluator : Net.TheVpc.Upa.QLTypeEvaluator {
 
-        public static readonly Net.Vpc.Upa.QLTypeEvaluator instance = new Net.Vpc.Upa.Impl.Eval.NullQLTypeEvaluator();
+        public static readonly Net.TheVpc.Upa.QLTypeEvaluator instance = new Net.TheVpc.Upa.Impl.Eval.NullQLTypeEvaluator();
 
         public NullQLTypeEvaluator() {
         }
 
 
-        public virtual Net.Vpc.Upa.Expressions.Expression EvalObject(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.QLEvaluator evaluator, object context) {
-            return Net.Vpc.Upa.Expressions.Literal.NULL;
+        public virtual Net.TheVpc.Upa.Expressions.Expression EvalObject(Net.TheVpc.Upa.Expressions.Expression e, Net.TheVpc.Upa.QLEvaluator evaluator, object context) {
+            return Net.TheVpc.Upa.Expressions.Literal.NULL;
         }
     }
 }

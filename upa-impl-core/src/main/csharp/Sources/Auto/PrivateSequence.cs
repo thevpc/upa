@@ -11,32 +11,32 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    [Net.Vpc.Upa.Config.Entity(Name = Net.Vpc.Upa.Impl.PrivateSequence.ENTITY_NAME, Modifiers = new[] {Net.Vpc.Upa.EntityModifier.SYSTEM})]
-    [Net.Vpc.Upa.Config.Ignore]
+    [Net.TheVpc.Upa.Config.Entity(Name = Net.TheVpc.Upa.Impl.PrivateSequence.ENTITY_NAME, Modifiers = new[] {Net.TheVpc.Upa.EntityModifier.SYSTEM})]
+    [Net.TheVpc.Upa.Config.Ignore]
     public class PrivateSequence {
 
         public const string ENTITY_NAME = "PrivateSequence";
 
-        [Net.Vpc.Upa.Config.Id]
-        [Net.Vpc.Upa.Config.Field(Max = "4000")]
+        [Net.TheVpc.Upa.Config.Id]
+        [Net.TheVpc.Upa.Config.Field(Max = "4000")]
         private string name;
 
-        [Net.Vpc.Upa.Config.Id]
-        [Net.Vpc.Upa.Config.Field(Max = "4000")]
+        [Net.TheVpc.Upa.Config.Id]
+        [Net.TheVpc.Upa.Config.Field(Max = "4000")]
         private string group;
 
         private bool locked;
 
-        private Net.Vpc.Upa.Types.DateTime lockDate;
+        private Net.TheVpc.Upa.Types.DateTime lockDate;
 
-        [Net.Vpc.Upa.Config.Field(Max = "128")]
+        [Net.TheVpc.Upa.Config.Field(Max = "128")]
         private string lockUserId;
 
         private int @value;
@@ -59,11 +59,11 @@ namespace Net.Vpc.Upa.Impl
             this.locked = locked;
         }
 
-        public virtual Net.Vpc.Upa.Types.DateTime GetLockDate() {
+        public virtual Net.TheVpc.Upa.Types.DateTime GetLockDate() {
             return lockDate;
         }
 
-        public virtual void SetLockDate(Net.Vpc.Upa.Types.DateTime lockDate) {
+        public virtual void SetLockDate(Net.TheVpc.Upa.Types.DateTime lockDate) {
             this.lockDate = lockDate;
         }
 

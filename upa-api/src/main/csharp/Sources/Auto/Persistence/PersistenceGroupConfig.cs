@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
 
@@ -27,9 +27,9 @@ namespace Net.Vpc.Upa.Persistence
 
         private bool? autoScan;
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.PersistenceUnitConfig> persistenceUnits = new System.Collections.Generic.List<Net.Vpc.Upa.Persistence.PersistenceUnitConfig>(2);
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Persistence.PersistenceUnitConfig> persistenceUnits = new System.Collections.Generic.List<Net.TheVpc.Upa.Persistence.PersistenceUnitConfig>(2);
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Config.ScanFilter> filters = new System.Collections.Generic.List<Net.Vpc.Upa.Config.ScanFilter>(2);
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Config.ScanFilter> filters = new System.Collections.Generic.List<Net.TheVpc.Upa.Config.ScanFilter>(2);
 
         private System.Collections.Generic.IDictionary<string , object> properties = new System.Collections.Generic.Dictionary<string , object>();
 
@@ -52,11 +52,11 @@ namespace Net.Vpc.Upa.Persistence
             this.autoScan = autoScan;
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Config.ScanFilter> GetFilters() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Config.ScanFilter> GetFilters() {
             return filters;
         }
 
-        public virtual void SetFilters(System.Collections.Generic.IList<Net.Vpc.Upa.Config.ScanFilter> filters) {
+        public virtual void SetFilters(System.Collections.Generic.IList<Net.TheVpc.Upa.Config.ScanFilter> filters) {
             this.filters = filters;
         }
 
@@ -76,30 +76,30 @@ namespace Net.Vpc.Upa.Persistence
             this.properties = properties;
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.PersistenceUnitConfig> GetPersistenceUnits() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Persistence.PersistenceUnitConfig> GetPersistenceUnits() {
             return persistenceUnits;
         }
 
-        public virtual void SetPersistenceUnits(System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.PersistenceUnitConfig> persistenceUnits) {
+        public virtual void SetPersistenceUnits(System.Collections.Generic.IList<Net.TheVpc.Upa.Persistence.PersistenceUnitConfig> persistenceUnits) {
             this.persistenceUnits = persistenceUnits;
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Config.ScanFilter> GetContextAnnotationStrategyFilters() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Config.ScanFilter> GetContextAnnotationStrategyFilters() {
             return filters;
         }
 
-        public virtual void SetContextAnnotationStrategyFilters(System.Collections.Generic.IList<Net.Vpc.Upa.Config.ScanFilter> filters) {
-            this.filters = filters == null ? new System.Collections.Generic.List<Net.Vpc.Upa.Config.ScanFilter>() : new System.Collections.Generic.List<Net.Vpc.Upa.Config.ScanFilter>(filters);
+        public virtual void SetContextAnnotationStrategyFilters(System.Collections.Generic.IList<Net.TheVpc.Upa.Config.ScanFilter> filters) {
+            this.filters = filters == null ? new System.Collections.Generic.List<Net.TheVpc.Upa.Config.ScanFilter>() : new System.Collections.Generic.List<Net.TheVpc.Upa.Config.ScanFilter>(filters);
         }
 
-        public virtual Net.Vpc.Upa.Persistence.PersistenceUnitConfig GetPersistenceUnit(string name, bool create, int configOrder) {
-            foreach (Net.Vpc.Upa.Persistence.PersistenceUnitConfig persistenceGroup in persistenceUnits) {
-                if (Net.Vpc.Upa.Persistence.UPAContextConfig.Trim(persistenceGroup.GetName()).Equals(Net.Vpc.Upa.Persistence.UPAContextConfig.Trim(name))) {
+        public virtual Net.TheVpc.Upa.Persistence.PersistenceUnitConfig GetPersistenceUnit(string name, bool create, int configOrder) {
+            foreach (Net.TheVpc.Upa.Persistence.PersistenceUnitConfig persistenceGroup in persistenceUnits) {
+                if (Net.TheVpc.Upa.Persistence.UPAContextConfig.Trim(persistenceGroup.GetName()).Equals(Net.TheVpc.Upa.Persistence.UPAContextConfig.Trim(name))) {
                     return persistenceGroup;
                 }
             }
             if (create) {
-                Net.Vpc.Upa.Persistence.PersistenceUnitConfig p = new Net.Vpc.Upa.Persistence.PersistenceUnitConfig();
+                Net.TheVpc.Upa.Persistence.PersistenceUnitConfig p = new Net.TheVpc.Upa.Persistence.PersistenceUnitConfig();
                 p.SetConfigOrder(configOrder);
                 persistenceUnits.Add(p);
                 return p;

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     /**
@@ -19,10 +19,10 @@ namespace Net.Vpc.Upa
      */
     public interface UPAObjectListener {
 
-         void ItemRemoved(Net.Vpc.Upa.UPAObject @object, int position, Net.Vpc.Upa.EventPhase eventPhase);
+         void ItemRemoved(Net.TheVpc.Upa.UPAObject @object, int position, Net.TheVpc.Upa.EventPhase eventPhase);
 
-         void ItemMoved(Net.Vpc.Upa.UPAObject @object, int position, int toPosition, Net.Vpc.Upa.EventPhase eventPhase);
+         void ItemMoved(Net.TheVpc.Upa.UPAObject @object, int position, int toPosition, Net.TheVpc.Upa.EventPhase eventPhase);
 
-         void ItemAdded(Net.Vpc.Upa.UPAObject @object, int position, Net.Vpc.Upa.UPAObject parent, Net.Vpc.Upa.EventPhase eventPhase);
+         void ItemAdded(Net.TheVpc.Upa.UPAObject @object, int position, Net.TheVpc.Upa.UPAObject parent, Net.TheVpc.Upa.EventPhase eventPhase);
     }
 }

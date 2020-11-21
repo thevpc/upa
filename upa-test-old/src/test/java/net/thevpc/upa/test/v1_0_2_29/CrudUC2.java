@@ -1,0 +1,209 @@
+package net.thevpc.upa.test.v1_0_2_29;
+
+import java.sql.Timestamp;
+import java.util.Date;
+
+import net.thevpc.upa.config.Id;
+import net.thevpc.upa.test.v1_0_2_29.model.SharedClientType;
+import net.thevpc.upa.test.v1_0_2_29.util.PUUtils;
+import net.thevpc.upa.types.DateTime;
+import net.thevpc.upa.types.Month;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/16/12 10:02 PM
+ */
+public class CrudUC2 {
+    private static final java.util.logging.Logger log = java.util.logging.Logger.getLogger(CrudUC2.class.getName());
+
+    private static Business bo;
+    @BeforeClass
+    public static void setup() {
+        PersistenceUnit pu = PUUtils.createTestPersistenceUnit(CrudUC2.class);
+        pu.addEntity(Client.class);
+        pu.start();
+        bo = UPA.makeSessionAware(new Business());
+    }
+
+
+    @Test
+    public void crud() {
+        bo.crud();
+    }
+
+    public static class Business {
+
+        public void crud() {
+            PersistenceUnit pu = UPA.getPersistenceUnit();
+
+            Entity entity = pu.getEntity(Client.class);
+            Client c = entity.createObject();
+            c.setFirstName("Ahmed");
+            c.setLastName("Gharbi");
+
+            pu.persist(c);
+
+            c.setFirstName("Ahmed Marouane");
+
+            pu.update(c);
+        }
+    }
+
+    @net.thevpc.upa.config.Entity(path = "Test Modules/Model")
+    public static class Client {
+
+        @Id
+        @net.thevpc.upa.config.Sequence
+        private Integer id;
+        //error if int should correct
+//        private int id;
+        private String firstName;
+        private String lastName;
+        private java.util.Date birthDate;
+        private Timestamp timestampValue;
+        private DateTime dateTimeValue;
+        private Date dateOnlyValue;
+        private Month monthValue;
+        private Integer integerValue;
+        private Long longValue;
+        private SharedClientType clientType;
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
+
+        public java.util.Date getBirthDate() {
+            return birthDate;
+        }
+
+        public void setBirthDate(java.util.Date dateValue) {
+            this.birthDate = dateValue;
+        }
+
+        public Timestamp getTimestampValue() {
+            return timestampValue;
+        }
+
+        public void setTimestampValue(Timestamp timestampValue) {
+            this.timestampValue = timestampValue;
+        }
+
+        public DateTime getDateTimeValue() {
+            return dateTimeValue;
+        }
+
+        public void setDateTimeValue(DateTime dateTimeValue) {
+            this.dateTimeValue = dateTimeValue;
+        }
+
+        public Date getDateOnlyValue() {
+            return dateOnlyValue;
+        }
+
+        public void setDateOnlyValue(Date dateOnlyValue) {
+            this.dateOnlyValue = dateOnlyValue;
+        }
+
+        public Month getMonthValue() {
+            return monthValue;
+        }
+
+        public void setMonthValue(Month monthValue) {
+            this.monthValue = monthValue;
+        }
+
+        public Integer getIntegerValue() {
+            return integerValue;
+        }
+
+        public void setIntegerValue(Integer integerValue) {
+            this.integerValue = integerValue;
+        }
+
+        public Long getLongValue() {
+            return longValue;
+        }
+
+        public void setLongValue(Long longValue) {
+            this.longValue = longValue;
+        }
+
+        public SharedClientType getClientType() {
+            return clientType;
+        }
+
+        public void setClientType(SharedClientType clientType) {
+            this.clientType = clientType;
+        }
+
+        @Override
+        public String toString() {
+            return "Client{"
+                    + "id=" + id
+                    + ", firstName='" + firstName + '\''
+                    + ", lastName='" + lastName + '\''
+                    + '}';
+        }
+
+        public String getFirstName() {
+            return firstName;
+        }
+
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
+        }
+
+        public String getLastName() {
+            return lastName;
+        }
+
+        public void setLastName(String lastName) {
+            this.lastName = lastName;
+        }
+
+        /**
+         * This function is provided only for test purposes the compare expected
+         * and found values {@inheritDoc}
+         */
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+
+            Client client = (Client) o;
+
+            if (id != null ? !id.equals(client.id) : client.id != null) {
+                return false;
+            }
+            if (firstName != null ? !firstName.equals(client.firstName) : client.firstName != null) {
+                return false;
+            }
+            if (lastName != null ? !lastName.equals(client.lastName) : client.lastName != null) {
+                return false;
+            }
+
+            return true;
+        }
+
+        /**
+         * This function is provided only for test purposes the compare expected
+         * and found values {@inheritDoc}
+         */
+        @Override
+        public int hashCode() {
+            int result = id;
+            result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+            return result;
+        }
+    }
+}

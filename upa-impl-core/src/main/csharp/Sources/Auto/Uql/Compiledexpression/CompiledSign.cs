@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledexpression
 {
 
 
@@ -22,27 +22,27 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
      * Time: 12:21:56
      * To change this template use Options | File Templates.
      */
-    public class CompiledSign : Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledFunction {
+    public class CompiledSign : Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledFunction {
 
 
 
-        public CompiledSign(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression @value)  : base("Sign"){
+        public CompiledSign(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression @value)  : base("Sign"){
 
             ProtectedAddArgument(@value);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetExpression() {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetExpression() {
             return GetArgument(0);
         }
 
 
-        public override Net.Vpc.Upa.Types.DataTypeTransform GetTypeTransform() {
-            return Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.INT;
+        public override Net.TheVpc.Upa.Types.DataTypeTransform GetTypeTransform() {
+            return Net.TheVpc.Upa.Impl.Transform.IdentityDataTypeTransform.INT;
         }
 
 
-        public override Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSign o = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSign(GetExpression().Copy());
+        public override Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSign o = new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSign(GetExpression().Copy());
             o.SetDescription(GetDescription());
             o.GetClientParameters().SetAll(GetClientParameters());
             return o;

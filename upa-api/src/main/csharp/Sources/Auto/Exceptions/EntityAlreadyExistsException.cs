@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
     /**
      * Created by IntelliJ IDEA. User: vpc Date: 25 juin 2006 Time: 15:03:00 To
      * change this template use File | Settings | File Templates.
      */
-    public class EntityAlreadyExistsException : Net.Vpc.Upa.Exceptions.EntityException {
+    public class EntityAlreadyExistsException : Net.TheVpc.Upa.Exceptions.EntityException {
 
         /**
              * @param entityName       name of the cashing Entity

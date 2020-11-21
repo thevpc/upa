@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config.Decorations
+namespace Net.TheVpc.Upa.Impl.Config.Decorations
 {
 
 
@@ -19,18 +19,18 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
      *
      * @author taha.bensalah@gmail.com
      */
-    public class DecorationPrimitiveValue : Net.Vpc.Upa.Impl.Config.Decorations.AbstractDecorationValue {
+    public class DecorationPrimitiveValue : Net.TheVpc.Upa.Impl.Config.Decorations.AbstractDecorationValue {
 
         private object @value;
 
-        private Net.Vpc.Upa.Config.ConfigInfo configInfo;
+        private Net.TheVpc.Upa.Config.ConfigInfo configInfo;
 
-        public DecorationPrimitiveValue(object @value, Net.Vpc.Upa.Config.ConfigInfo configInfo) {
+        public DecorationPrimitiveValue(object @value, Net.TheVpc.Upa.Config.ConfigInfo configInfo) {
             this.@value = @value;
             this.configInfo = configInfo;
         }
 
-        public override Net.Vpc.Upa.Config.ConfigInfo GetConfig() {
+        public override Net.TheVpc.Upa.Config.ConfigInfo GetConfig() {
             return configInfo;
         }
 
@@ -40,17 +40,17 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
 
         public virtual void Merge() {
             System.Collections.Generic.IList<object> ok = new System.Collections.Generic.List<object>();
-            Net.Vpc.Upa.Config.DecorationValue[] alternatives = GetAlternatives();
-            foreach (Net.Vpc.Upa.Config.DecorationValue alternative in alternatives) {
-                Net.Vpc.Upa.Impl.Config.Decorations.DecorationPrimitiveValue d = (Net.Vpc.Upa.Impl.Config.Decorations.DecorationPrimitiveValue) alternative;
+            Net.TheVpc.Upa.Config.DecorationValue[] alternatives = GetAlternatives();
+            foreach (Net.TheVpc.Upa.Config.DecorationValue alternative in alternatives) {
+                Net.TheVpc.Upa.Impl.Config.Decorations.DecorationPrimitiveValue d = (Net.TheVpc.Upa.Impl.Config.Decorations.DecorationPrimitiveValue) alternative;
                 switch(d.GetConfig().GetConfigAction()) {
-                    case Net.Vpc.Upa.Config.ConfigAction.DELETE:
+                    case Net.TheVpc.Upa.Config.ConfigAction.DELETE:
                         {
                             ok.Clear();
                             break;
                         }
-                    case Net.Vpc.Upa.Config.ConfigAction.MERGE:
-                    case Net.Vpc.Upa.Config.ConfigAction.REPLACE:
+                    case Net.TheVpc.Upa.Config.ConfigAction.MERGE:
+                    case Net.TheVpc.Upa.Config.ConfigAction.REPLACE:
                         {
                             ok.Clear();
                             ok.Add(d.GetValue());
@@ -58,19 +58,19 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
                         }
                 }
             }
-            Net.Vpc.Upa.Config.DecorationValue last = alternatives[alternatives.Length - 1];
+            Net.TheVpc.Upa.Config.DecorationValue last = alternatives[alternatives.Length - 1];
             if ((ok.Count==0)) {
                 @value = null;
-                configInfo = new Net.Vpc.Upa.Config.ConfigInfo(last.GetConfig().GetOrder(), Net.Vpc.Upa.Config.ConfigAction.DELETE, last.GetConfig().GetPersistenceGroup(), last.GetConfig().GetPersistenceUnit());
+                configInfo = new Net.TheVpc.Upa.Config.ConfigInfo(last.GetConfig().GetOrder(), Net.TheVpc.Upa.Config.ConfigAction.DELETE, last.GetConfig().GetPersistenceGroup(), last.GetConfig().GetPersistenceUnit());
             } else {
                 @value = ok[(ok).Count - 1];
-                configInfo = new Net.Vpc.Upa.Config.ConfigInfo(last.GetConfig().GetOrder(), Net.Vpc.Upa.Config.ConfigAction.MERGE, last.GetConfig().GetPersistenceGroup(), last.GetConfig().GetPersistenceUnit());
+                configInfo = new Net.TheVpc.Upa.Config.ConfigInfo(last.GetConfig().GetOrder(), Net.TheVpc.Upa.Config.ConfigAction.MERGE, last.GetConfig().GetPersistenceGroup(), last.GetConfig().GetPersistenceUnit());
             }
         }
 
 
         public override string ToString() {
-            if (!GetConfig().Equals(Net.Vpc.Upa.Config.ConfigInfo.DEFAULT)) {
+            if (!GetConfig().Equals(Net.TheVpc.Upa.Config.ConfigInfo.DEFAULT)) {
                 System.Text.StringBuilder b = new System.Text.StringBuilder("Value");
                 b.Append("[");
                 b.Append(GetConfig());

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -22,7 +22,7 @@ namespace Net.Vpc.Upa
 
         private bool contextProviderCreated = false;
 
-        private readonly Net.Vpc.Upa.Properties properties = new Net.Vpc.Upa.BootstrapProperties();
+        private readonly Net.TheVpc.Upa.Properties properties = new Net.TheVpc.Upa.BootstrapProperties();
 
         internal UPABootstrap() {
             foreach (System.Collections.Generic.KeyValuePair<object , object> ee in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<K,V>>(Java.Lang.System.GetProperties())) {
@@ -38,18 +38,18 @@ namespace Net.Vpc.Upa
             contextProviderCreated = true;
         }
 
-        public virtual Net.Vpc.Upa.ObjectFactory GetFactory() {
+        public virtual Net.TheVpc.Upa.ObjectFactory GetFactory() {
             try {
-                return Net.Vpc.Upa.BootstrapObjectFactoryLazyHolder.INSTANCE;
+                return Net.TheVpc.Upa.BootstrapObjectFactoryLazyHolder.INSTANCE;
             } catch (System.Exception e) {
-                if (e is Net.Vpc.Upa.Exceptions.UPAException) {
-                    throw (Net.Vpc.Upa.Exceptions.UPAException) e;
+                if (e is Net.TheVpc.Upa.Exceptions.UPAException) {
+                    throw (Net.TheVpc.Upa.Exceptions.UPAException) e;
                 }
-                throw new Net.Vpc.Upa.Exceptions.BootstrapException("LoadBootstrapFactoryException", e);
+                throw new Net.TheVpc.Upa.Exceptions.BootstrapException("LoadBootstrapFactoryException", e);
             }
         }
 
-        public virtual Net.Vpc.Upa.Properties GetProperties() {
+        public virtual Net.TheVpc.Upa.Properties GetProperties() {
             return properties;
         }
     }

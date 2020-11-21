@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
 
@@ -20,7 +20,7 @@ namespace Net.Vpc.Upa.Types
      * Date: 5 sept. 2003
      * Time: 13:02:55
      */
-    public class Month : Net.Vpc.Upa.Types.Temporal {
+    public class Month : Net.TheVpc.Upa.Types.Temporal {
 
 
 
@@ -32,7 +32,7 @@ namespace Net.Vpc.Upa.Types
 
         }
 
-        public Month(Net.Vpc.Upa.Types.Temporal date)  : this(date.GetTime()){
+        public Month(Net.TheVpc.Upa.Types.Temporal date)  : this(date.GetTime()){
 
         }
 
@@ -41,14 +41,14 @@ namespace Net.Vpc.Upa.Types
         }
 
         public static long ValidateTime(int year, int month) {
-            Net.Vpc.Upa.Types.Calendar calendar = Net.Vpc.Upa.Types.Calendar.GetInstance();
-            calendar.Set(Net.Vpc.Upa.Types.Calendar.YEAR, year);
-            calendar.Set(Net.Vpc.Upa.Types.Calendar.MONTH, month - 1);
-            calendar.Set(Net.Vpc.Upa.Types.Calendar.DAY_OF_MONTH, 1);
-            calendar.Set(Net.Vpc.Upa.Types.Calendar.HOUR_OF_DAY, 0);
-            calendar.Set(Net.Vpc.Upa.Types.Calendar.MINUTE, 0);
-            calendar.Set(Net.Vpc.Upa.Types.Calendar.SECOND, 0);
-            calendar.Set(Net.Vpc.Upa.Types.Calendar.MILLISECOND, 0);
+            Net.TheVpc.Upa.Types.Calendar calendar = Net.TheVpc.Upa.Types.Calendar.GetInstance();
+            calendar.Set(Net.TheVpc.Upa.Types.Calendar.YEAR, year);
+            calendar.Set(Net.TheVpc.Upa.Types.Calendar.MONTH, month - 1);
+            calendar.Set(Net.TheVpc.Upa.Types.Calendar.DAY_OF_MONTH, 1);
+            calendar.Set(Net.TheVpc.Upa.Types.Calendar.HOUR_OF_DAY, 0);
+            calendar.Set(Net.TheVpc.Upa.Types.Calendar.MINUTE, 0);
+            calendar.Set(Net.TheVpc.Upa.Types.Calendar.SECOND, 0);
+            calendar.Set(Net.TheVpc.Upa.Types.Calendar.MILLISECOND, 0);
             //        if (!startPeriod) {
             //            calendar.add(Calendar.MONTH, 1);
             //            calendar.add(Calendar.MILLISECOND, -1);
@@ -57,13 +57,13 @@ namespace Net.Vpc.Upa.Types
         }
 
         private static long ValidateTime(long time) {
-            Net.Vpc.Upa.Types.Calendar calendar = Net.Vpc.Upa.Types.Calendar.GetInstance();
+            Net.TheVpc.Upa.Types.Calendar calendar = Net.TheVpc.Upa.Types.Calendar.GetInstance();
             calendar.SetTimeInMillis(time);
-            calendar.Set(Net.Vpc.Upa.Types.Calendar.DAY_OF_MONTH, 1);
-            calendar.Set(Net.Vpc.Upa.Types.Calendar.HOUR_OF_DAY, 0);
-            calendar.Set(Net.Vpc.Upa.Types.Calendar.MINUTE, 0);
-            calendar.Set(Net.Vpc.Upa.Types.Calendar.SECOND, 0);
-            calendar.Set(Net.Vpc.Upa.Types.Calendar.MILLISECOND, 0);
+            calendar.Set(Net.TheVpc.Upa.Types.Calendar.DAY_OF_MONTH, 1);
+            calendar.Set(Net.TheVpc.Upa.Types.Calendar.HOUR_OF_DAY, 0);
+            calendar.Set(Net.TheVpc.Upa.Types.Calendar.MINUTE, 0);
+            calendar.Set(Net.TheVpc.Upa.Types.Calendar.SECOND, 0);
+            calendar.Set(Net.TheVpc.Upa.Types.Calendar.MILLISECOND, 0);
             //        if (!startPeriod) {
             //            calendar.add(Calendar.MONTH, +1);
             //            calendar.add(Calendar.MILLISECOND, -1);
@@ -71,20 +71,20 @@ namespace Net.Vpc.Upa.Types
             return calendar.GetTime().GetTime();
         }
 
-        public virtual Net.Vpc.Upa.Types.Month GetRelativeMonthYear(int relative) {
-            Net.Vpc.Upa.Types.Calendar calendar = Net.Vpc.Upa.Types.Calendar.GetInstance();
+        public virtual Net.TheVpc.Upa.Types.Month GetRelativeMonthYear(int relative) {
+            Net.TheVpc.Upa.Types.Calendar calendar = Net.TheVpc.Upa.Types.Calendar.GetInstance();
             calendar.SetTimeInMillis(GetTime());
-            calendar.Add(Net.Vpc.Upa.Types.Calendar.MARCH, relative);
-            return new Net.Vpc.Upa.Types.Month(calendar.GetTime());
+            calendar.Add(Net.TheVpc.Upa.Types.Calendar.MARCH, relative);
+            return new Net.TheVpc.Upa.Types.Month(calendar.GetTime());
         }
 
 
         public override string ToString() {
-            Net.Vpc.Upa.Types.Calendar calendar = Net.Vpc.Upa.Types.Calendar.GetInstance();
+            Net.TheVpc.Upa.Types.Calendar calendar = Net.TheVpc.Upa.Types.Calendar.GetInstance();
             calendar.SetTimeInMillis(GetTime());
-            int year = calendar.Get(Net.Vpc.Upa.Types.Calendar.YEAR);
+            int year = calendar.Get(Net.TheVpc.Upa.Types.Calendar.YEAR);
             //+ 1900;
-            int month = calendar.Get(Net.Vpc.Upa.Types.Calendar.MONTH) + 1;
+            int month = calendar.Get(Net.TheVpc.Upa.Types.Calendar.MONTH) + 1;
             char[] buf = "2000-00".ToCharArray();
             buf[0] = (char) ('0' + (year / 1000));
             buf[1] = (char) ('0' + ((year / 100) % 10));

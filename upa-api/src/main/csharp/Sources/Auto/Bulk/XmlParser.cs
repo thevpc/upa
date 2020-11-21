@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Bulk
+namespace Net.TheVpc.Upa.Bulk
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public abstract class XmlParser : Net.Vpc.Upa.Bulk.AbstractDataParser {
+    public abstract class XmlParser : Net.TheVpc.Upa.Bulk.AbstractDataParser {
 
         private bool containsHeader;
 
@@ -26,9 +26,9 @@ namespace Net.Vpc.Upa.Bulk
 
         private int skipRows = 0;
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Bulk.XmlColumn> columns = new System.Collections.Generic.List<Net.Vpc.Upa.Bulk.XmlColumn>();
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Bulk.XmlColumn> columns = new System.Collections.Generic.List<Net.TheVpc.Upa.Bulk.XmlColumn>();
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Bulk.XmlColumn> GetColumns() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Bulk.XmlColumn> GetColumns() {
             return columns;
         }
 

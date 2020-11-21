@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Bulk
+namespace Net.TheVpc.Upa.Bulk
 {
 
 
@@ -20,8 +20,8 @@ namespace Net.Vpc.Upa.Bulk
      */
     public interface ImportEntityMapper {
 
-         System.Collections.Generic.IDictionary<string , object> ValueToMap(Net.Vpc.Upa.Entity entity, object @value);
+         System.Collections.Generic.IDictionary<string , object> ValueToMap(Net.TheVpc.Upa.Entity entity, object @value);
 
-         bool Accept(Net.Vpc.Upa.Entity entity);
+         bool Accept(Net.TheVpc.Upa.Entity entity);
     }
 }

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
     /**
@@ -25,6 +25,6 @@ namespace Net.Vpc.Upa.Expressions
              * @param expression visited expression
              * @return transformation result
              */
-         Net.Vpc.Upa.Expressions.ExpressionTransformerResult Transform(Net.Vpc.Upa.Expressions.Expression expression);
+         Net.TheVpc.Upa.Expressions.ExpressionTransformerResult Transform(Net.TheVpc.Upa.Expressions.Expression expression);
     }
 }

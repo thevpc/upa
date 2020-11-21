@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Security
+namespace Net.TheVpc.Upa.Impl.Security
 {
 
 
@@ -19,11 +19,11 @@ namespace Net.Vpc.Upa.Impl.Security
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 8/26/12 11:42 PM
      */
-    public class DefaultSecurityManager : Net.Vpc.Upa.UPASecurityManager {
+    public class DefaultSecurityManager : Net.TheVpc.Upa.UPASecurityManager {
 
 
-        public virtual bool IsAllowedPersist(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
+        public virtual bool IsAllowedPersist(Net.TheVpc.Upa.Entity entity) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
             if (s != null) {
                 return s.IsAllowedPersist(entity);
             }
@@ -31,8 +31,8 @@ namespace Net.Vpc.Upa.Impl.Security
         }
 
 
-        public virtual bool IsAllowedPersist(Net.Vpc.Upa.Entity entity, object @object) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
+        public virtual bool IsAllowedPersist(Net.TheVpc.Upa.Entity entity, object @object) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
             if (s != null) {
                 return s.IsAllowedPersist(entity, @object);
             }
@@ -40,8 +40,8 @@ namespace Net.Vpc.Upa.Impl.Security
         }
 
 
-        public virtual bool IsAllowedUpdate(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
+        public virtual bool IsAllowedUpdate(Net.TheVpc.Upa.Entity entity) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
             if (s != null) {
                 return s.IsAllowedUpdate(entity);
             }
@@ -49,8 +49,8 @@ namespace Net.Vpc.Upa.Impl.Security
         }
 
 
-        public virtual bool IsAllowedUpdate(Net.Vpc.Upa.Entity entity, object id, object @value) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
+        public virtual bool IsAllowedUpdate(Net.TheVpc.Upa.Entity entity, object id, object @value) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
             if (s != null) {
                 return s.IsAllowedUpdate(entity, id, @value);
             }
@@ -58,8 +58,8 @@ namespace Net.Vpc.Upa.Impl.Security
         }
 
 
-        public virtual bool IsAllowedRemove(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
+        public virtual bool IsAllowedRemove(Net.TheVpc.Upa.Entity entity) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
             if (s != null) {
                 return s.IsAllowedRemove(entity);
             }
@@ -67,8 +67,8 @@ namespace Net.Vpc.Upa.Impl.Security
         }
 
 
-        public virtual bool IsAllowedRemove(Net.Vpc.Upa.Entity entity, object id) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
+        public virtual bool IsAllowedRemove(Net.TheVpc.Upa.Entity entity, object id) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
             if (s != null) {
                 return s.IsAllowedRemove(entity, id, null);
             }
@@ -76,16 +76,16 @@ namespace Net.Vpc.Upa.Impl.Security
         }
 
 
-        public virtual bool IsAllowedClone(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
+        public virtual bool IsAllowedClone(Net.TheVpc.Upa.Entity entity) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
             if (s != null) {
                 return s.IsAllowedClone(entity);
             }
             return IsAllowedKey(entity, "Clone");
         }
 
-        public virtual bool IsAllowedClone(Net.Vpc.Upa.Entity entity, object instance, object newId) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
+        public virtual bool IsAllowedClone(Net.TheVpc.Upa.Entity entity, object instance, object newId) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
             if (s != null) {
                 return s.IsAllowedClone(entity, instance, newId);
             }
@@ -93,8 +93,8 @@ namespace Net.Vpc.Upa.Impl.Security
         }
 
 
-        public virtual bool IsAllowedRename(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
+        public virtual bool IsAllowedRename(Net.TheVpc.Upa.Entity entity) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
             if (s != null) {
                 return s.IsAllowedRename(entity);
             }
@@ -102,8 +102,8 @@ namespace Net.Vpc.Upa.Impl.Security
         }
 
 
-        public virtual bool IsAllowedRename(Net.Vpc.Upa.Entity entity, object instance, object newId) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
+        public virtual bool IsAllowedRename(Net.TheVpc.Upa.Entity entity, object instance, object newId) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
             if (s != null) {
                 return s.IsAllowedRename(entity, instance, newId);
             }
@@ -111,8 +111,8 @@ namespace Net.Vpc.Upa.Impl.Security
         }
 
 
-        public virtual bool IsAllowedLoad(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
+        public virtual bool IsAllowedLoad(Net.TheVpc.Upa.Entity entity) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
             if (s != null) {
                 return s.IsAllowedLoad(entity);
             }
@@ -120,8 +120,8 @@ namespace Net.Vpc.Upa.Impl.Security
         }
 
 
-        public virtual bool IsAllowedLoad(Net.Vpc.Upa.Entity entity, object id, object @object) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
+        public virtual bool IsAllowedLoad(Net.TheVpc.Upa.Entity entity, object id, object @object) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
             if (s != null) {
                 return s.IsAllowedLoad(entity, id, @object);
             }
@@ -129,8 +129,8 @@ namespace Net.Vpc.Upa.Impl.Security
         }
 
 
-        public virtual bool IsAllowedNavigate(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
+        public virtual bool IsAllowedNavigate(Net.TheVpc.Upa.Entity entity) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
             if (s != null) {
                 return s.IsAllowedNavigate(entity);
             }
@@ -138,8 +138,8 @@ namespace Net.Vpc.Upa.Impl.Security
         }
 
 
-        public virtual bool IsAllowedNavigate(Net.Vpc.Upa.Entity entity, string navigationMode) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
+        public virtual bool IsAllowedNavigate(Net.TheVpc.Upa.Entity entity, string navigationMode) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
             if (s != null) {
                 return s.IsAllowedNavigate(entity, navigationMode);
             }
@@ -147,8 +147,8 @@ namespace Net.Vpc.Upa.Impl.Security
         }
 
 
-        public virtual bool IsAllowedNavigate(Net.Vpc.Upa.Entity entity, object id, object @object) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
+        public virtual bool IsAllowedNavigate(Net.TheVpc.Upa.Entity entity, object id, object @object) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
             if (s != null) {
                 return s.IsAllowedNavigate(entity, id, @object);
             }
@@ -156,8 +156,8 @@ namespace Net.Vpc.Upa.Impl.Security
         }
 
 
-        public virtual bool IsAllowedRead(Net.Vpc.Upa.Field field) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.EntitySecurityManager s = field.GetEntity().GetEntitySecurityManager();
+        public virtual bool IsAllowedRead(Net.TheVpc.Upa.Field field) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.EntitySecurityManager s = field.GetEntity().GetEntitySecurityManager();
             if (s != null) {
                 return s.IsAllowedRead(field);
             }
@@ -165,8 +165,8 @@ namespace Net.Vpc.Upa.Impl.Security
         }
 
 
-        public virtual bool IsAllowedRead(Net.Vpc.Upa.Field field, object id, object @object) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.EntitySecurityManager s = field.GetEntity().GetEntitySecurityManager();
+        public virtual bool IsAllowedRead(Net.TheVpc.Upa.Field field, object id, object @object) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.EntitySecurityManager s = field.GetEntity().GetEntitySecurityManager();
             if (s != null) {
                 return s.IsAllowedRead(field, id, @object);
             }
@@ -174,8 +174,8 @@ namespace Net.Vpc.Upa.Impl.Security
         }
 
 
-        public virtual bool IsAllowedWrite(Net.Vpc.Upa.Field field) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.EntitySecurityManager s = field.GetEntity().GetEntitySecurityManager();
+        public virtual bool IsAllowedWrite(Net.TheVpc.Upa.Field field) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.EntitySecurityManager s = field.GetEntity().GetEntitySecurityManager();
             if (s != null) {
                 return s.IsAllowedWrite(field);
             }
@@ -191,8 +191,8 @@ namespace Net.Vpc.Upa.Impl.Security
              * @throws UPAException
              */
 
-        public virtual bool IsAllowedWrite(Net.Vpc.Upa.Field field, object id, object @object) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.EntitySecurityManager s = field.GetEntity().GetEntitySecurityManager();
+        public virtual bool IsAllowedWrite(Net.TheVpc.Upa.Field field, object id, object @object) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.EntitySecurityManager s = field.GetEntity().GetEntitySecurityManager();
             if (s != null) {
                 return s.IsAllowedWrite(field, id, @object);
             }
@@ -206,8 +206,8 @@ namespace Net.Vpc.Upa.Impl.Security
              * @throws UPAException
              */
 
-        public virtual Net.Vpc.Upa.Expressions.Expression GetEntityFilter(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
+        public virtual Net.TheVpc.Upa.Expressions.Expression GetEntityFilter(Net.TheVpc.Upa.Entity entity) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.EntitySecurityManager s = entity.GetEntitySecurityManager();
             if (s != null) {
                 return s.GetEntityFilter(entity);
             }
@@ -222,7 +222,7 @@ namespace Net.Vpc.Upa.Impl.Security
              * @throws UPAException
              */
 
-        public virtual bool IsAllowedKey(Net.Vpc.Upa.Entity e, string key) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual bool IsAllowedKey(Net.TheVpc.Upa.Entity e, string key) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             if (key == null) {
                 return true;
             }
@@ -236,15 +236,15 @@ namespace Net.Vpc.Upa.Impl.Security
              * @throws UPAException
              */
 
-        public virtual bool IsAllowedKey(string key) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.PersistenceGroupSecurityManager s = Net.Vpc.Upa.UPA.GetPersistenceGroup().GetPersistenceGroupSecurityManager();
+        public virtual bool IsAllowedKey(string key) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.PersistenceGroupSecurityManager s = Net.TheVpc.Upa.UPA.GetPersistenceGroup().GetPersistenceGroupSecurityManager();
             return s == null ? true : s.IsAllowedKey(key);
         }
 
 
-        public virtual Net.Vpc.Upa.UserPrincipal GetUserPrincipal() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.PersistenceGroupSecurityManager s = Net.Vpc.Upa.UPA.GetPersistenceGroup().GetPersistenceGroupSecurityManager();
-            return s == null ? ((Net.Vpc.Upa.UserPrincipal)(new Net.Vpc.Upa.DefaultUserPrincipal("anonymous", null))) : s.GetUserPrincipal();
+        public virtual Net.TheVpc.Upa.UserPrincipal GetUserPrincipal() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.PersistenceGroupSecurityManager s = Net.TheVpc.Upa.UPA.GetPersistenceGroup().GetPersistenceGroupSecurityManager();
+            return s == null ? ((Net.TheVpc.Upa.UserPrincipal)(new Net.TheVpc.Upa.DefaultUserPrincipal("anonymous", null))) : s.GetUserPrincipal();
         }
 
         /**
@@ -255,19 +255,19 @@ namespace Net.Vpc.Upa.Impl.Security
              * @throws UPAException
              */
 
-        public virtual Net.Vpc.Upa.UserPrincipal Login(string login, string credentials) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.PersistenceGroupSecurityManager s = Net.Vpc.Upa.UPA.GetPersistenceGroup().GetPersistenceGroupSecurityManager();
+        public virtual Net.TheVpc.Upa.UserPrincipal Login(string login, string credentials) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.PersistenceGroupSecurityManager s = Net.TheVpc.Upa.UPA.GetPersistenceGroup().GetPersistenceGroupSecurityManager();
             if (s == null) {
-                throw new Net.Vpc.Upa.Exceptions.UPAException("MissingPersistenceGroupSecurityManager");
+                throw new Net.TheVpc.Upa.Exceptions.UPAException("MissingPersistenceGroupSecurityManager");
             }
             return s.Login(login, credentials);
         }
 
 
-        public virtual Net.Vpc.Upa.UserPrincipal LoginPrivileged(string login) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.PersistenceGroupSecurityManager s = Net.Vpc.Upa.UPA.GetPersistenceGroup().GetPersistenceGroupSecurityManager();
+        public virtual Net.TheVpc.Upa.UserPrincipal LoginPrivileged(string login) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.PersistenceGroupSecurityManager s = Net.TheVpc.Upa.UPA.GetPersistenceGroup().GetPersistenceGroupSecurityManager();
             if (s == null) {
-                throw new Net.Vpc.Upa.Exceptions.UPAException("MissingPersistenceGroupSecurityManager");
+                throw new Net.TheVpc.Upa.Exceptions.UPAException("MissingPersistenceGroupSecurityManager");
             }
             return s.LoginPrivileged(login);
         }

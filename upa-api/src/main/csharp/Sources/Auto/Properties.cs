@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -59,13 +59,13 @@ namespace Net.Vpc.Upa
 
          float GetSingleFloat();
 
-         Net.Vpc.Upa.Types.Temporal GetDate(string key);
+         Net.TheVpc.Upa.Types.Temporal GetDate(string key);
 
-         Net.Vpc.Upa.Types.Temporal GetDate(string key, Net.Vpc.Upa.Types.Temporal @value);
+         Net.TheVpc.Upa.Types.Temporal GetDate(string key, Net.TheVpc.Upa.Types.Temporal @value);
 
-         void SetDate(string key, Net.Vpc.Upa.Types.Temporal @value);
+         void SetDate(string key, Net.TheVpc.Upa.Types.Temporal @value);
 
-         Net.Vpc.Upa.Types.Temporal GetSingleDate();
+         Net.TheVpc.Upa.Types.Temporal GetSingleDate();
 
          string GetString(string key);
 
@@ -115,18 +115,18 @@ namespace Net.Vpc.Upa
 
          void SetAll(System.Collections.Generic.IDictionary<string , object> other, params string [] keys);
 
-         void SetAll(Net.Vpc.Upa.Properties other, params string [] keys);
+         void SetAll(Net.TheVpc.Upa.Properties other, params string [] keys);
 
          bool IsSet(string key);
 
          void Remove(string key);
 
-         void AddPropertyChangeListener(string key, Net.Vpc.Upa.PropertyChangeListener listener);
+         void AddPropertyChangeListener(string key, Net.TheVpc.Upa.PropertyChangeListener listener);
 
-         void RemovePropertyChangeListener(string key, Net.Vpc.Upa.PropertyChangeListener listener);
+         void RemovePropertyChangeListener(string key, Net.TheVpc.Upa.PropertyChangeListener listener);
 
-         void AddPropertyChangeListener(Net.Vpc.Upa.PropertyChangeListener listener);
+         void AddPropertyChangeListener(Net.TheVpc.Upa.PropertyChangeListener listener);
 
-         void RemovePropertyChangeListener(Net.Vpc.Upa.PropertyChangeListener listener);
+         void RemovePropertyChangeListener(Net.TheVpc.Upa.PropertyChangeListener listener);
     }
 }

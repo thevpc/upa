@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
-    public class UpdateDocumentKeyNotFoundException : Net.Vpc.Upa.Exceptions.EntityException {
+    public class UpdateDocumentKeyNotFoundException : Net.TheVpc.Upa.Exceptions.EntityException {
 
-        public UpdateDocumentKeyNotFoundException(Net.Vpc.Upa.Entity entity, object expressionNoFound)  : base(entity, "update.KeyNotFound", new object[] { expressionNoFound }){
+        public UpdateDocumentKeyNotFoundException(Net.TheVpc.Upa.Entity entity, object expressionNoFound)  : base(entity, "update.KeyNotFound", new object[] { expressionNoFound }){
 
         }
     }

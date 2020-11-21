@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -20,13 +20,13 @@ namespace Net.Vpc.Upa
      */
     public interface ExpressionManager {
 
-         Net.Vpc.Upa.Persistence.ResultMetaData CreateMetaData(Net.Vpc.Upa.Expressions.Expression baseExpression, Net.Vpc.Upa.Filters.FieldFilter fieldFilter);
+         Net.TheVpc.Upa.Persistence.ResultMetaData CreateMetaData(Net.TheVpc.Upa.Expressions.Expression baseExpression, Net.TheVpc.Upa.Filters.FieldFilter fieldFilter);
 
-         Net.Vpc.Upa.Expressions.FunctionExpression CreateFunctionExpression(string name, Net.Vpc.Upa.Expressions.Expression[] args);
+         Net.TheVpc.Upa.Expressions.FunctionExpression CreateFunctionExpression(string name, Net.TheVpc.Upa.Expressions.Expression[] args);
 
-         Net.Vpc.Upa.QLEvaluator CreateEvaluator();
+         Net.TheVpc.Upa.QLEvaluator CreateEvaluator();
 
-         Net.Vpc.Upa.Expressions.Expression ParseExpression(string expression);
+         Net.TheVpc.Upa.Expressions.Expression ParseExpression(string expression);
 
         /**
              * simplifies expression by evaluating all map vars in the expression.
@@ -37,31 +37,31 @@ namespace Net.Vpc.Upa
              * @param vars map of available vars
              * @return simplified expression
              */
-         Net.Vpc.Upa.Expressions.Expression SimplifyExpression(Net.Vpc.Upa.Expressions.Expression expression, System.Collections.Generic.IDictionary<string , object> vars);
+         Net.TheVpc.Upa.Expressions.Expression SimplifyExpression(Net.TheVpc.Upa.Expressions.Expression expression, System.Collections.Generic.IDictionary<string , object> vars);
 
-         Net.Vpc.Upa.Expressions.Expression SimplifyExpression(string expression, System.Collections.Generic.IDictionary<string , object> vars);
+         Net.TheVpc.Upa.Expressions.Expression SimplifyExpression(string expression, System.Collections.Generic.IDictionary<string , object> vars);
 
         /**
              * parse all UserExpressions withing this expression
              * @param expression any expression
              * @return expression where all UserExpressions are parsed
              */
-         Net.Vpc.Upa.Expressions.Expression ParseExpression(Net.Vpc.Upa.Expressions.Expression expression);
+         Net.TheVpc.Upa.Expressions.Expression ParseExpression(Net.TheVpc.Upa.Expressions.Expression expression);
 
-         Net.Vpc.Upa.Expressions.CompiledExpression CompileExpression(Net.Vpc.Upa.Expressions.Expression expression, Net.Vpc.Upa.Persistence.ExpressionCompilerConfig config);
+         Net.TheVpc.Upa.Expressions.CompiledExpression CompileExpression(Net.TheVpc.Upa.Expressions.Expression expression, Net.TheVpc.Upa.Persistence.ExpressionCompilerConfig config);
 
-         Net.Vpc.Upa.Expressions.CompiledExpression CompileExpression(Net.Vpc.Upa.Expressions.CompiledExpression expression, Net.Vpc.Upa.Persistence.ExpressionCompilerConfig config);
+         Net.TheVpc.Upa.Expressions.CompiledExpression CompileExpression(Net.TheVpc.Upa.Expressions.CompiledExpression expression, Net.TheVpc.Upa.Persistence.ExpressionCompilerConfig config);
 
-         Net.Vpc.Upa.FunctionDefinition AddFunction(string name, Net.Vpc.Upa.Types.DataType type, Net.Vpc.Upa.Function function);
+         Net.TheVpc.Upa.FunctionDefinition AddFunction(string name, Net.TheVpc.Upa.Types.DataType type, Net.TheVpc.Upa.Function function);
 
          void RemoveFunction(string name);
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.FunctionDefinition> GetFunctions();
+         System.Collections.Generic.IList<Net.TheVpc.Upa.FunctionDefinition> GetFunctions();
 
          System.Collections.Generic.ISet<string> GetFunctionNames();
 
          bool ContainsFunction(string name);
 
-         Net.Vpc.Upa.FunctionDefinition GetFunction(string name);
+         Net.TheVpc.Upa.FunctionDefinition GetFunction(string name);
     }
 }

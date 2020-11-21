@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
@@ -19,16 +19,16 @@ namespace Net.Vpc.Upa.Impl
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 12/31/12 1:19 PM
      */
-    public class IdToKeyConverter<K> : Net.Vpc.Upa.Impl.Util.Converter<K , Net.Vpc.Upa.Key> {
+    public class IdToKeyConverter<K> : Net.TheVpc.Upa.Impl.Util.Converter<K , Net.TheVpc.Upa.Key> {
 
-        private Net.Vpc.Upa.Entity entity;
+        private Net.TheVpc.Upa.Entity entity;
 
-        public IdToKeyConverter(Net.Vpc.Upa.Entity entity) {
+        public IdToKeyConverter(Net.TheVpc.Upa.Entity entity) {
             this.entity = entity;
         }
 
 
-        public virtual Net.Vpc.Upa.Key Convert(K id) {
+        public virtual Net.TheVpc.Upa.Key Convert(K id) {
             return entity.GetBuilder().IdToKey(id);
         }
     }

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -21,44 +21,44 @@ namespace Net.Vpc.Upa
      */
     public interface EntitySecurityManager {
 
-         bool IsAllowedPersist(Net.Vpc.Upa.Entity entity);
+         bool IsAllowedPersist(Net.TheVpc.Upa.Entity entity);
 
-         bool IsAllowedPersist(Net.Vpc.Upa.Entity entity, object instance);
+         bool IsAllowedPersist(Net.TheVpc.Upa.Entity entity, object instance);
 
-         bool IsAllowedUpdate(Net.Vpc.Upa.Entity entity);
+         bool IsAllowedUpdate(Net.TheVpc.Upa.Entity entity);
 
-         bool IsAllowedUpdate(Net.Vpc.Upa.Entity entity, object id, object @value);
+         bool IsAllowedUpdate(Net.TheVpc.Upa.Entity entity, object id, object @value);
 
-         bool IsAllowedRemove(Net.Vpc.Upa.Entity entity);
+         bool IsAllowedRemove(Net.TheVpc.Upa.Entity entity);
 
-         bool IsAllowedRemove(Net.Vpc.Upa.Entity entity, object id, object @value);
+         bool IsAllowedRemove(Net.TheVpc.Upa.Entity entity, object id, object @value);
 
-         bool IsAllowedClone(Net.Vpc.Upa.Entity entity);
+         bool IsAllowedClone(Net.TheVpc.Upa.Entity entity);
 
-         bool IsAllowedClone(Net.Vpc.Upa.Entity entity, object instance, object newId);
+         bool IsAllowedClone(Net.TheVpc.Upa.Entity entity, object instance, object newId);
 
-         bool IsAllowedRename(Net.Vpc.Upa.Entity entity);
+         bool IsAllowedRename(Net.TheVpc.Upa.Entity entity);
 
-         bool IsAllowedRename(Net.Vpc.Upa.Entity entity, object instance, object newId);
+         bool IsAllowedRename(Net.TheVpc.Upa.Entity entity, object instance, object newId);
 
-         bool IsAllowedLoad(Net.Vpc.Upa.Entity entity);
+         bool IsAllowedLoad(Net.TheVpc.Upa.Entity entity);
 
-         bool IsAllowedLoad(Net.Vpc.Upa.Entity entity, object id, object @value);
+         bool IsAllowedLoad(Net.TheVpc.Upa.Entity entity, object id, object @value);
 
-         bool IsAllowedNavigate(Net.Vpc.Upa.Entity entity);
+         bool IsAllowedNavigate(Net.TheVpc.Upa.Entity entity);
 
-         bool IsAllowedNavigate(Net.Vpc.Upa.Entity entity, string navigationMode);
+         bool IsAllowedNavigate(Net.TheVpc.Upa.Entity entity, string navigationMode);
 
-         bool IsAllowedNavigate(Net.Vpc.Upa.Entity entity, object id, object @value);
+         bool IsAllowedNavigate(Net.TheVpc.Upa.Entity entity, object id, object @value);
 
-         bool IsAllowedRead(Net.Vpc.Upa.Field field);
+         bool IsAllowedRead(Net.TheVpc.Upa.Field field);
 
-         bool IsAllowedRead(Net.Vpc.Upa.Field field, object id, object @object);
+         bool IsAllowedRead(Net.TheVpc.Upa.Field field, object id, object @object);
 
-         bool IsAllowedWrite(Net.Vpc.Upa.Field field);
+         bool IsAllowedWrite(Net.TheVpc.Upa.Field field);
 
-         bool IsAllowedWrite(Net.Vpc.Upa.Field field, object id, object @value);
+         bool IsAllowedWrite(Net.TheVpc.Upa.Field field, object id, object @value);
 
-         Net.Vpc.Upa.Expressions.Expression GetEntityFilter(Net.Vpc.Upa.Entity entity);
+         Net.TheVpc.Upa.Expressions.Expression GetEntityFilter(Net.TheVpc.Upa.Entity entity);
     }
 }

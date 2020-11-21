@@ -11,20 +11,20 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
-    public sealed class Not : Net.Vpc.Upa.Expressions.UnaryOperatorExpression {
+    public sealed class Not : Net.TheVpc.Upa.Expressions.UnaryOperatorExpression {
 
 
 
-        public Not(Net.Vpc.Upa.Expressions.Expression expression)  : base(Net.Vpc.Upa.Expressions.UnaryOperator.NOT, "!", expression){
+        public Not(Net.TheVpc.Upa.Expressions.Expression expression)  : base(Net.TheVpc.Upa.Expressions.UnaryOperator.NOT, "!", expression){
 
         }
 
 
-        public override Net.Vpc.Upa.Expressions.Expression Copy() {
-            Net.Vpc.Upa.Expressions.Not o = new Net.Vpc.Upa.Expressions.Not(GetExpression().Copy());
+        public override Net.TheVpc.Upa.Expressions.Expression Copy() {
+            Net.TheVpc.Upa.Expressions.Not o = new Net.TheVpc.Upa.Expressions.Not(GetExpression().Copy());
             return o;
         }
 

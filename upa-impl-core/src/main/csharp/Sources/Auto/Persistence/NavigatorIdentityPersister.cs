@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -19,16 +19,16 @@ namespace Net.Vpc.Upa.Impl.Persistence
      *
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class NavigatorIdentityPersister : Net.Vpc.Upa.Persistence.FieldPersister {
+    public class NavigatorIdentityPersister : Net.TheVpc.Upa.Persistence.FieldPersister {
 
-        public virtual void BeforePersist(Net.Vpc.Upa.Record record, Net.Vpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void BeforePersist(Net.TheVpc.Upa.Record record, Net.TheVpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             //K key = entity.getBuilder().recordToId(record);
-            Net.Vpc.Upa.Entity entity = context.GetEntity();
+            Net.TheVpc.Upa.Entity entity = context.GetEntity();
             object key = entity.NextId<K>();
             entity.GetBuilder().SetRecordId(record, key);
         }
 
-        public virtual void AfterPersist(Net.Vpc.Upa.Record record, Net.Vpc.Upa.Persistence.EntityExecutionContext context) {
+        public virtual void AfterPersist(Net.TheVpc.Upa.Record record, Net.TheVpc.Upa.Persistence.EntityExecutionContext context) {
         }
 
 

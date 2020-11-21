@@ -11,24 +11,24 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Event
+namespace Net.TheVpc.Upa.Impl.Event
 {
 
 
-    public class RelationshipTargetFormulaUpdaterInterceptorSupport : Net.Vpc.Upa.Impl.Event.FormulaUpdaterInterceptorSupport {
+    public class RelationshipTargetFormulaUpdaterInterceptorSupport : Net.TheVpc.Upa.Impl.Event.FormulaUpdaterInterceptorSupport {
 
-        private Net.Vpc.Upa.Callbacks.UpdateRelationshipTargetFormulaInterceptor entityTargetFormulaUpdaterInterceptor;
+        private Net.TheVpc.Upa.Callbacks.UpdateRelationshipTargetFormulaInterceptor entityTargetFormulaUpdaterInterceptor;
 
-        private Net.Vpc.Upa.Relationship relation;
+        private Net.TheVpc.Upa.Relationship relation;
 
-        private Net.Vpc.Upa.Filters.FieldFilter relationFilter;
+        private Net.TheVpc.Upa.Filters.FieldFilter relationFilter;
 
-        public RelationshipTargetFormulaUpdaterInterceptorSupport(Net.Vpc.Upa.Callbacks.UpdateRelationshipTargetFormulaInterceptor entityTargetFormulaUpdaterInterceptor)  : base(new Net.Vpc.Upa.Impl.Event.RelationshipTargetFormulaUpdaterInterceptorSupportBaseInterceptor(entityTargetFormulaUpdaterInterceptor)){
+        public RelationshipTargetFormulaUpdaterInterceptorSupport(Net.TheVpc.Upa.Callbacks.UpdateRelationshipTargetFormulaInterceptor entityTargetFormulaUpdaterInterceptor)  : base(new Net.TheVpc.Upa.Impl.Event.RelationshipTargetFormulaUpdaterInterceptorSupportBaseInterceptor(entityTargetFormulaUpdaterInterceptor)){
 
             this.entityTargetFormulaUpdaterInterceptor = entityTargetFormulaUpdaterInterceptor;
         }
 
-        public virtual Net.Vpc.Upa.Relationship GetRelationship(Net.Vpc.Upa.Callbacks.EntityTriggerContext context) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual Net.TheVpc.Upa.Relationship GetRelationship(Net.TheVpc.Upa.Callbacks.EntityTriggerContext context) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             if (relation == null) {
                 context.GetEntity().GetPersistenceUnit().GetRelationship(entityTargetFormulaUpdaterInterceptor.GetRelationshipName());
             }
@@ -36,16 +36,16 @@ namespace Net.Vpc.Upa.Impl.Event
         }
 
 
-        public override bool AcceptUpdateTableHelper(Net.Vpc.Upa.Callbacks.UpdateEvent @event) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Filters.FieldFilter conditionFields = entityTargetFormulaUpdaterInterceptor.GetConditionFields();
+        public override bool AcceptUpdateTableHelper(Net.TheVpc.Upa.Callbacks.UpdateEvent @event) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Filters.FieldFilter conditionFields = entityTargetFormulaUpdaterInterceptor.GetConditionFields();
             if (conditionFields == null) {
                 return true;
             }
             if (relationFilter == null) {
-                relationFilter = Net.Vpc.Upa.Filters.Fields.Regular().And(Net.Vpc.Upa.Filters.Fields.ByList(relation.GetSourceRole().GetFields()));
+                relationFilter = Net.TheVpc.Upa.Filters.Fields.Regular().And(Net.TheVpc.Upa.Filters.Fields.ByList(relation.GetSourceRole().GetFields()));
             }
-            Net.Vpc.Upa.Filters.FieldFilter actualFilter = Net.Vpc.Upa.Filters.Fields.As(conditionFields).Or(relationFilter);
-            Net.Vpc.Upa.Entity entityManager = @event.GetEntity();
+            Net.TheVpc.Upa.Filters.FieldFilter actualFilter = Net.TheVpc.Upa.Filters.Fields.As(conditionFields).Or(relationFilter);
+            Net.TheVpc.Upa.Entity entityManager = @event.GetEntity();
             foreach (string updatedField in @event.GetUpdatesRecord().KeySet()) {
                 if (actualFilter.Accept(entityManager.GetField(updatedField))) {
                     return true;
@@ -55,11 +55,11 @@ namespace Net.Vpc.Upa.Impl.Event
         }
 
 
-        public override bool AcceptUpdateTableOlderValuesHelper(Net.Vpc.Upa.Callbacks.UpdateEvent @event) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public override bool AcceptUpdateTableOlderValuesHelper(Net.TheVpc.Upa.Callbacks.UpdateEvent @event) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             if (relationFilter == null) {
-                relationFilter = Net.Vpc.Upa.Filters.Fields.Regular().And(Net.Vpc.Upa.Filters.Fields.ByList(relation.GetSourceRole().GetFields()));
+                relationFilter = Net.TheVpc.Upa.Filters.Fields.Regular().And(Net.TheVpc.Upa.Filters.Fields.ByList(relation.GetSourceRole().GetFields()));
             }
-            Net.Vpc.Upa.Entity entityManager = @event.GetEntity();
+            Net.TheVpc.Upa.Entity entityManager = @event.GetEntity();
             foreach (string updatedField in @event.GetUpdatesRecord().KeySet()) {
                 if (relationFilter.Accept(entityManager.GetField(updatedField))) {
                     return true;
@@ -69,7 +69,7 @@ namespace Net.Vpc.Upa.Impl.Event
         }
 
 
-        public override Net.Vpc.Upa.Expressions.Expression TranslateExpression(Net.Vpc.Upa.Expressions.Expression e) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public override Net.TheVpc.Upa.Expressions.Expression TranslateExpression(Net.TheVpc.Upa.Expressions.Expression e) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return relation.GetTargetCondition(e, relation.GetSourceRole().GetEntity().GetName(), relation.GetTargetRole().GetEntity().GetName());
         }
 

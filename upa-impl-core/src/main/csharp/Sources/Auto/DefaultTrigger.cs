@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
@@ -19,38 +19,38 @@ namespace Net.Vpc.Upa.Impl
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 9/9/12 4:33 PM
      */
-    public class DefaultTrigger : Net.Vpc.Upa.Impl.AbstractUPAObject, Net.Vpc.Upa.Callbacks.Trigger {
+    public class DefaultTrigger : Net.TheVpc.Upa.Impl.AbstractUPAObject, Net.TheVpc.Upa.Callbacks.Trigger {
 
-        private Net.Vpc.Upa.Entity entity;
+        private Net.TheVpc.Upa.Entity entity;
 
-        private Net.Vpc.Upa.Callbacks.EntityInterceptor interceptor;
+        private Net.TheVpc.Upa.Callbacks.EntityInterceptor interceptor;
 
-        private Net.Vpc.Upa.Callbacks.EntityListener listener;
+        private Net.TheVpc.Upa.Callbacks.EntityListener listener;
 
         public DefaultTrigger() {
         }
 
-        public virtual Net.Vpc.Upa.Entity GetEntity() {
+        public virtual Net.TheVpc.Upa.Entity GetEntity() {
             return entity;
         }
 
-        public virtual void SetEntity(Net.Vpc.Upa.Entity entity) {
+        public virtual void SetEntity(Net.TheVpc.Upa.Entity entity) {
             this.entity = entity;
         }
 
-        public virtual Net.Vpc.Upa.Callbacks.EntityInterceptor GetInterceptor() {
+        public virtual Net.TheVpc.Upa.Callbacks.EntityInterceptor GetInterceptor() {
             return interceptor;
         }
 
-        public virtual void SetInterceptor(Net.Vpc.Upa.Callbacks.EntityInterceptor interceptor) {
+        public virtual void SetInterceptor(Net.TheVpc.Upa.Callbacks.EntityInterceptor interceptor) {
             this.interceptor = interceptor;
         }
 
-        public virtual Net.Vpc.Upa.Callbacks.EntityListener GetListener() {
+        public virtual Net.TheVpc.Upa.Callbacks.EntityListener GetListener() {
             return listener;
         }
 
-        public virtual void SetListener(Net.Vpc.Upa.Callbacks.EntityListener listener) {
+        public virtual void SetListener(Net.TheVpc.Upa.Callbacks.EntityListener listener) {
             this.listener = listener;
         }
 
@@ -59,7 +59,7 @@ namespace Net.Vpc.Upa.Impl
             return GetEntity().GetAbsoluteName() + "." + GetName();
         }
 
-        public override void Close() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public override void Close() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
         }
     }
 }

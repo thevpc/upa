@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Callbacks
+namespace Net.TheVpc.Upa.Callbacks
 {
 
 
@@ -21,142 +21,142 @@ namespace Net.Vpc.Upa.Callbacks
      */
     public class DefinitionListenerAdapter {
 
-        public virtual void OnPreCreateEntity(Net.Vpc.Upa.Callbacks.EntityEvent @event) {
+        public virtual void OnPreCreateEntity(Net.TheVpc.Upa.Callbacks.EntityEvent @event) {
         }
 
-        public virtual void OnCreateEntity(Net.Vpc.Upa.Callbacks.EntityEvent @event) {
+        public virtual void OnCreateEntity(Net.TheVpc.Upa.Callbacks.EntityEvent @event) {
         }
 
-        public virtual void OnPreDropEntity(Net.Vpc.Upa.Callbacks.EntityEvent @event) {
+        public virtual void OnPreDropEntity(Net.TheVpc.Upa.Callbacks.EntityEvent @event) {
         }
 
-        public virtual void OnDropEntity(Net.Vpc.Upa.Callbacks.EntityEvent @event) {
+        public virtual void OnDropEntity(Net.TheVpc.Upa.Callbacks.EntityEvent @event) {
         }
 
-        public virtual void OnPreMoveEntity(Net.Vpc.Upa.Callbacks.EntityEvent @event) {
+        public virtual void OnPreMoveEntity(Net.TheVpc.Upa.Callbacks.EntityEvent @event) {
         }
 
-        public virtual void OnMoveEntity(Net.Vpc.Upa.Callbacks.EntityEvent @event) {
+        public virtual void OnMoveEntity(Net.TheVpc.Upa.Callbacks.EntityEvent @event) {
         }
 
-        public virtual void OnPreCreateTrigger(Net.Vpc.Upa.Callbacks.TriggerEvent @event) {
+        public virtual void OnPreCreateTrigger(Net.TheVpc.Upa.Callbacks.TriggerEvent @event) {
         }
 
-        public virtual void OnCreateTrigger(Net.Vpc.Upa.Callbacks.TriggerEvent @event) {
+        public virtual void OnCreateTrigger(Net.TheVpc.Upa.Callbacks.TriggerEvent @event) {
         }
 
-        public virtual void OnPreDropTrigger(Net.Vpc.Upa.Callbacks.TriggerEvent @event) {
+        public virtual void OnPreDropTrigger(Net.TheVpc.Upa.Callbacks.TriggerEvent @event) {
         }
 
-        public virtual void OnDropTrigger(Net.Vpc.Upa.Callbacks.TriggerEvent @event) {
+        public virtual void OnDropTrigger(Net.TheVpc.Upa.Callbacks.TriggerEvent @event) {
         }
 
-        public virtual void OnPreCreateField(Net.Vpc.Upa.Callbacks.FieldEvent @event) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void OnPreCreateField(Net.TheVpc.Upa.Callbacks.FieldEvent @event) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
         }
 
-        public virtual void OnCreateField(Net.Vpc.Upa.Callbacks.FieldEvent @event) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void OnCreateField(Net.TheVpc.Upa.Callbacks.FieldEvent @event) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
         }
 
-        public virtual void OnPreDropField(Net.Vpc.Upa.Callbacks.FieldEvent @event) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void OnPreDropField(Net.TheVpc.Upa.Callbacks.FieldEvent @event) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
         }
 
-        public virtual void OnDropField(Net.Vpc.Upa.Callbacks.FieldEvent @event) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void OnDropField(Net.TheVpc.Upa.Callbacks.FieldEvent @event) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
         }
 
-        public virtual void OnPreMoveField(Net.Vpc.Upa.Callbacks.FieldEvent @event) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void OnPreMoveField(Net.TheVpc.Upa.Callbacks.FieldEvent @event) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
         }
 
-        public virtual void OnMoveField(Net.Vpc.Upa.Callbacks.FieldEvent @event) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void OnMoveField(Net.TheVpc.Upa.Callbacks.FieldEvent @event) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
         }
 
-        public virtual void OnCreateIndex(Net.Vpc.Upa.Callbacks.IndexEvent @event) {
+        public virtual void OnCreateIndex(Net.TheVpc.Upa.Callbacks.IndexEvent @event) {
         }
 
-        public virtual void OnPreCreateIndex(Net.Vpc.Upa.Callbacks.IndexEvent @event) {
+        public virtual void OnPreCreateIndex(Net.TheVpc.Upa.Callbacks.IndexEvent @event) {
         }
 
-        public virtual void OnDropIndex(Net.Vpc.Upa.Callbacks.IndexEvent @event) {
+        public virtual void OnDropIndex(Net.TheVpc.Upa.Callbacks.IndexEvent @event) {
         }
 
-        public virtual void OnPreDropIndex(Net.Vpc.Upa.Callbacks.IndexEvent @event) {
+        public virtual void OnPreDropIndex(Net.TheVpc.Upa.Callbacks.IndexEvent @event) {
         }
 
-        public virtual void OnPreCreatePackage(Net.Vpc.Upa.Callbacks.PackageEvent @event) {
+        public virtual void OnPreCreatePackage(Net.TheVpc.Upa.Callbacks.PackageEvent @event) {
         }
 
-        public virtual void OnCreatePackage(Net.Vpc.Upa.Callbacks.PackageEvent @event) {
+        public virtual void OnCreatePackage(Net.TheVpc.Upa.Callbacks.PackageEvent @event) {
         }
 
-        public virtual void OnPreDropPackage(Net.Vpc.Upa.Callbacks.PackageEvent @event) {
+        public virtual void OnPreDropPackage(Net.TheVpc.Upa.Callbacks.PackageEvent @event) {
         }
 
-        public virtual void OnDropPackage(Net.Vpc.Upa.Callbacks.PackageEvent @event) {
+        public virtual void OnDropPackage(Net.TheVpc.Upa.Callbacks.PackageEvent @event) {
         }
 
-        public virtual void OnPreMovePackage(Net.Vpc.Upa.Callbacks.PackageEvent @event) {
+        public virtual void OnPreMovePackage(Net.TheVpc.Upa.Callbacks.PackageEvent @event) {
         }
 
-        public virtual void OnMovePackage(Net.Vpc.Upa.Callbacks.PackageEvent @event) {
+        public virtual void OnMovePackage(Net.TheVpc.Upa.Callbacks.PackageEvent @event) {
         }
 
-        public virtual void OnPreCreateSection(Net.Vpc.Upa.Callbacks.SectionEvent @event) {
+        public virtual void OnPreCreateSection(Net.TheVpc.Upa.Callbacks.SectionEvent @event) {
         }
 
-        public virtual void OnCreateSection(Net.Vpc.Upa.Callbacks.SectionEvent @event) {
+        public virtual void OnCreateSection(Net.TheVpc.Upa.Callbacks.SectionEvent @event) {
         }
 
-        public virtual void OnPreDropSection(Net.Vpc.Upa.Callbacks.SectionEvent @event) {
+        public virtual void OnPreDropSection(Net.TheVpc.Upa.Callbacks.SectionEvent @event) {
         }
 
-        public virtual void OnDropSection(Net.Vpc.Upa.Callbacks.SectionEvent @event) {
+        public virtual void OnDropSection(Net.TheVpc.Upa.Callbacks.SectionEvent @event) {
         }
 
-        public virtual void OnPreMoveSection(Net.Vpc.Upa.Callbacks.SectionEvent @event) {
+        public virtual void OnPreMoveSection(Net.TheVpc.Upa.Callbacks.SectionEvent @event) {
         }
 
-        public virtual void OnMoveSection(Net.Vpc.Upa.Callbacks.SectionEvent @event) {
+        public virtual void OnMoveSection(Net.TheVpc.Upa.Callbacks.SectionEvent @event) {
         }
 
-        public virtual void OnPreCreateRelationship(Net.Vpc.Upa.Callbacks.RelationshipEvent @event) {
+        public virtual void OnPreCreateRelationship(Net.TheVpc.Upa.Callbacks.RelationshipEvent @event) {
         }
 
-        public virtual void OnCreateRelationship(Net.Vpc.Upa.Callbacks.RelationshipEvent @event) {
+        public virtual void OnCreateRelationship(Net.TheVpc.Upa.Callbacks.RelationshipEvent @event) {
         }
 
-        public virtual void OnPreDropRelationship(Net.Vpc.Upa.Callbacks.RelationshipEvent @event) {
+        public virtual void OnPreDropRelationship(Net.TheVpc.Upa.Callbacks.RelationshipEvent @event) {
         }
 
-        public virtual void OnDropRelationship(Net.Vpc.Upa.Callbacks.RelationshipEvent @event) {
+        public virtual void OnDropRelationship(Net.TheVpc.Upa.Callbacks.RelationshipEvent @event) {
         }
 
-        public virtual void OnPreCreatePersistenceUnit(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event) {
+        public virtual void OnPreCreatePersistenceUnit(Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent @event) {
         }
 
-        public virtual void OnCreatePersistenceUnit(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event) {
+        public virtual void OnCreatePersistenceUnit(Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent @event) {
         }
 
-        public virtual void OnPreDropPersistenceUnit(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event) {
+        public virtual void OnPreDropPersistenceUnit(Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent @event) {
         }
 
-        public virtual void OnDropPersistenceUnit(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event) {
+        public virtual void OnDropPersistenceUnit(Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent @event) {
         }
 
-        public virtual void OnPreCreatePersistenceGroup(Net.Vpc.Upa.Callbacks.PersistenceGroupEvent @event) {
+        public virtual void OnPreCreatePersistenceGroup(Net.TheVpc.Upa.Callbacks.PersistenceGroupEvent @event) {
         }
 
-        public virtual void OnCreatePersistenceGroup(Net.Vpc.Upa.Callbacks.PersistenceGroupEvent @event) {
+        public virtual void OnCreatePersistenceGroup(Net.TheVpc.Upa.Callbacks.PersistenceGroupEvent @event) {
         }
 
-        public virtual void OnPreDropPersistenceGroup(Net.Vpc.Upa.Callbacks.PersistenceGroupEvent @event) {
+        public virtual void OnPreDropPersistenceGroup(Net.TheVpc.Upa.Callbacks.PersistenceGroupEvent @event) {
         }
 
-        public virtual void OnDropPersistenceGroup(Net.Vpc.Upa.Callbacks.PersistenceGroupEvent @event) {
+        public virtual void OnDropPersistenceGroup(Net.TheVpc.Upa.Callbacks.PersistenceGroupEvent @event) {
         }
 
-        public virtual void OnPrePrepareEntity(Net.Vpc.Upa.Callbacks.EntityEvent @event) {
+        public virtual void OnPrePrepareEntity(Net.TheVpc.Upa.Callbacks.EntityEvent @event) {
         }
 
-        public virtual void OnPrepareEntity(Net.Vpc.Upa.Callbacks.EntityEvent @event) {
+        public virtual void OnPrepareEntity(Net.TheVpc.Upa.Callbacks.EntityEvent @event) {
         }
     }
 }

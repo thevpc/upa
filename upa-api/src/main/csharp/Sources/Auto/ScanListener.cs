@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     /**
@@ -20,10 +20,10 @@ namespace Net.Vpc.Upa
      */
     public interface ScanListener {
 
-         void ContextItemScanned(Net.Vpc.Upa.ScanEvent @event);
+         void ContextItemScanned(Net.TheVpc.Upa.ScanEvent @event);
 
-         void PersistenceGroupItemScanned(Net.Vpc.Upa.ScanEvent @event);
+         void PersistenceGroupItemScanned(Net.TheVpc.Upa.ScanEvent @event);
 
-         void PersistenceUnitItemScanned(Net.Vpc.Upa.ScanEvent @event);
+         void PersistenceUnitItemScanned(Net.TheVpc.Upa.ScanEvent @event);
     }
 }

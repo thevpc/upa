@@ -11,15 +11,15 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
 
-    public class BooleanType : Net.Vpc.Upa.Types.SeriesType {
+    public class BooleanType : Net.TheVpc.Upa.Types.SeriesType {
 
-        public static readonly Net.Vpc.Upa.Types.BooleanType BOOLEAN = new Net.Vpc.Upa.Types.BooleanType("BOOLEAN", false, true);
+        public static readonly Net.TheVpc.Upa.Types.BooleanType BOOLEAN = new Net.TheVpc.Upa.Types.BooleanType("BOOLEAN", false, true);
 
-        public static readonly Net.Vpc.Upa.Types.BooleanType BOOLEAN_REF = new Net.Vpc.Upa.Types.BooleanType("BOOLEAN", true, false);
+        public static readonly Net.TheVpc.Upa.Types.BooleanType BOOLEAN_REF = new Net.TheVpc.Upa.Types.BooleanType("BOOLEAN", true, false);
 
         public BooleanType(string name, bool nullable, bool primitiveType)  : base(name, primitiveType ? typeof(bool) : typeof(bool?), nullable){
 
@@ -34,10 +34,10 @@ namespace Net.Vpc.Upa.Types
         }
 
 
-        public override void Check(object @value, string name, string description) /* throws Net.Vpc.Upa.Types.ConstraintsException */  {
+        public override void Check(object @value, string name, string description) /* throws Net.TheVpc.Upa.Types.ConstraintsException */  {
             base.Check(@value, name, description);
             if (!(@value is bool?)) {
-                throw new Net.Vpc.Upa.Types.ConstraintsException("InvalidCast", name, description, @value);
+                throw new Net.TheVpc.Upa.Types.ConstraintsException("InvalidCast", name, description, @value);
             }
         }
 

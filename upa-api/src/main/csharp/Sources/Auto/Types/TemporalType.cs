@@ -11,10 +11,10 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
-    public abstract class TemporalType : Net.Vpc.Upa.Types.DefaultDataType {
+    public abstract class TemporalType : Net.TheVpc.Upa.Types.DefaultDataType {
 
         protected internal TemporalType(string name, System.Type platformType)  : base(name, platformType){
 
@@ -28,10 +28,10 @@ namespace Net.Vpc.Upa.Types
 
         }
 
-        public abstract Net.Vpc.Upa.Types.TemporalOption GetTemporalOption();
+        public abstract Net.TheVpc.Upa.Types.TemporalOption GetTemporalOption();
 
-        public abstract Net.Vpc.Upa.Types.Temporal ValidateDate(Net.Vpc.Upa.Types.Temporal date);
+        public abstract Net.TheVpc.Upa.Types.Temporal ValidateDate(Net.TheVpc.Upa.Types.Temporal date);
 
-        public abstract Net.Vpc.Upa.Types.Temporal Parse(string @value);
+        public abstract Net.TheVpc.Upa.Types.Temporal Parse(string @value);
     }
 }

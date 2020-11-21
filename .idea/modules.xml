@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../toolbox/j2cs/j2cs.iml" filepath="$PROJECT_DIR$/../toolbox/j2cs/j2cs.iml" />
       <module fileurl="file://$PROJECT_DIR$/upa.iml" filepath="$PROJECT_DIR$/upa.iml" />
       <module fileurl="file://$PROJECT_DIR$/upa-android/upa-android.iml" filepath="$PROJECT_DIR$/upa-android/upa-android.iml" />
       <module fileurl="file://$PROJECT_DIR$/upa-api/upa-api.iml" filepath="$PROJECT_DIR$/upa-api/upa-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/upa-box/upa-box.iml" filepath="$PROJECT_DIR$/upa-box/upa-box.iml" />
       <module fileurl="file://$PROJECT_DIR$/upa-impl/upa-impl.iml" filepath="$PROJECT_DIR$/upa-impl/upa-impl.iml" />
       <module fileurl="file://$PROJECT_DIR$/upa-impl-core/upa-impl-core.iml" filepath="$PROJECT_DIR$/upa-impl-core/upa-impl-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/upa-portable/upa-portable.iml" filepath="$PROJECT_DIR$/upa-portable/upa-portable.iml" />
@@ -18,6 +18,7 @@
       <module fileurl="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-webjsf/upa-tutorial-webjsf.iml" filepath="$PROJECT_DIR$/upa-tutorial/upa-tutorial-webjsf/upa-tutorial-webjsf.iml" />
       <module fileurl="file://$PROJECT_DIR$/upa-vfs/upa-vfs.iml" filepath="$PROJECT_DIR$/upa-vfs/upa-vfs.iml" />
       <module fileurl="file://$PROJECT_DIR$/upa-web/upa-web.iml" filepath="$PROJECT_DIR$/upa-web/upa-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/upa-xml-config/upa-xml-config.iml" filepath="$PROJECT_DIR$/upa-xml-config/upa-xml-config.iml" />
     </modules>
   </component>
 </project>

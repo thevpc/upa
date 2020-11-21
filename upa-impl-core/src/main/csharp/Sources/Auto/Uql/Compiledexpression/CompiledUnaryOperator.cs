@@ -11,19 +11,19 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledexpression
 {
 
 
-    public abstract class CompiledUnaryOperator : Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpressionImpl {
+    public abstract class CompiledUnaryOperator : Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpressionImpl {
 
 
 
         private string @operator;
 
-        private Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression;
+        private Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression;
 
-        public CompiledUnaryOperator(string @operator, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
+        public CompiledUnaryOperator(string @operator, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
             this.@operator = @operator;
             this.expression = expression;
             PrepareChildren(expression);
@@ -34,7 +34,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         }
 
 
-        public override Net.Vpc.Upa.Types.DataTypeTransform GetTypeTransform() {
+        public override Net.TheVpc.Upa.Types.DataTypeTransform GetTypeTransform() {
             return expression.GetTypeTransform();
         }
 
@@ -44,7 +44,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         }
 
 
-        public override void SetSubExpression(int index, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
+        public override void SetSubExpression(int index, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
             if (index == 0) {
                 this.expression = expression;
                 PrepareChildren(expression);
@@ -54,11 +54,11 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         }
 
 
-        public override Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetSubExpressions() {
-            return new Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] { expression };
+        public override Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetSubExpressions() {
+            return new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] { expression };
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetExpression() {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetExpression() {
             return expression;
         }
 

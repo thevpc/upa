@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
 
@@ -20,7 +20,7 @@ namespace Net.Vpc.Upa.Types
      * Date: 5 sept. 2003
      * Time: 13:02:55
      */
-    public class Time : Net.Vpc.Upa.Types.Temporal {
+    public class Time : Net.TheVpc.Upa.Types.Temporal {
 
 
 
@@ -28,7 +28,7 @@ namespace Net.Vpc.Upa.Types
 
         }
 
-        public Time(Net.Vpc.Upa.Types.Temporal date)  : this(date.GetTime()){
+        public Time(Net.TheVpc.Upa.Types.Temporal date)  : this(date.GetTime()){
 
         }
 
@@ -37,21 +37,21 @@ namespace Net.Vpc.Upa.Types
         }
 
         private static long ValidateTime(long time) {
-            Net.Vpc.Upa.Types.Calendar calendar = Net.Vpc.Upa.Types.Calendar.GetInstance();
+            Net.TheVpc.Upa.Types.Calendar calendar = Net.TheVpc.Upa.Types.Calendar.GetInstance();
             calendar.SetTimeInMillis(time);
-            calendar.Set(Net.Vpc.Upa.Types.Calendar.DAY_OF_MONTH, 1);
-            calendar.Set(Net.Vpc.Upa.Types.Calendar.MONTH, 0);
-            calendar.Set(Net.Vpc.Upa.Types.Calendar.YEAR, 1900);
+            calendar.Set(Net.TheVpc.Upa.Types.Calendar.DAY_OF_MONTH, 1);
+            calendar.Set(Net.TheVpc.Upa.Types.Calendar.MONTH, 0);
+            calendar.Set(Net.TheVpc.Upa.Types.Calendar.YEAR, 1900);
             return calendar.GetTime().GetTime();
         }
 
 
         public override string ToString() {
-            Net.Vpc.Upa.Types.Calendar c = Net.Vpc.Upa.Types.Calendar.GetInstance();
+            Net.TheVpc.Upa.Types.Calendar c = Net.TheVpc.Upa.Types.Calendar.GetInstance();
             c.SetTimeInMillis(GetTime());
-            int hour = c.Get(Net.Vpc.Upa.Types.Calendar.HOUR_OF_DAY);
-            int minute = c.Get(Net.Vpc.Upa.Types.Calendar.MINUTE);
-            int second = c.Get(Net.Vpc.Upa.Types.Calendar.SECOND);
+            int hour = c.Get(Net.TheVpc.Upa.Types.Calendar.HOUR_OF_DAY);
+            int minute = c.Get(Net.TheVpc.Upa.Types.Calendar.MINUTE);
+            int second = c.Get(Net.TheVpc.Upa.Types.Calendar.SECOND);
             string hourString;
             string minuteString;
             string secondString;

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiler
+namespace Net.TheVpc.Upa.Impl.Uql.Compiler
 {
 
 
@@ -19,17 +19,17 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiler
      *
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class DateDiffExpressionTranslator : Net.Vpc.Upa.Impl.Uql.ExpressionTranslator {
+    public class DateDiffExpressionTranslator : Net.TheVpc.Upa.Impl.Uql.ExpressionTranslator {
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TranslateExpression(object o, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
-            return CompileDateDiff((Net.Vpc.Upa.Expressions.DateDiff) o, manager, declarations);
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TranslateExpression(object o, Net.TheVpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.TheVpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
+            return CompileDateDiff((Net.TheVpc.Upa.Expressions.DateDiff) o, manager, declarations);
         }
 
-        protected internal virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDateDiff CompileDateDiff(Net.Vpc.Upa.Expressions.DateDiff v, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
+        protected internal virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledDateDiff CompileDateDiff(Net.TheVpc.Upa.Expressions.DateDiff v, Net.TheVpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.TheVpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
             if (v == null) {
                 return null;
             }
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDateDiff s = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDateDiff(v.GetDatePartType(), manager.TranslateAny(v.GetStart(), declarations), manager.TranslateAny(v.GetEnd(), declarations));
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledDateDiff s = new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledDateDiff(v.GetDatePartType(), manager.TranslateAny(v.GetStart(), declarations), manager.TranslateAny(v.GetEnd(), declarations));
             //        s.setDeclarationList(declarations);
             return s;
         }

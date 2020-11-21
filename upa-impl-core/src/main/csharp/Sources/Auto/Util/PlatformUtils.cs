@@ -12,7 +12,7 @@
 
 
 using System.Linq;
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -23,7 +23,7 @@ namespace Net.Vpc.Upa.Impl.Util
 
     public partial class PlatformUtils {
 
-        private static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.Vpc.Upa.Impl.Util.PlatformUtils)).FullName);
+        private static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.TheVpc.Upa.Impl.Util.PlatformUtils)).FullName);
 
         public static readonly System.Collections.Generic.IDictionary<System.Type , object> DEFAULT_VALUES_BY_TYPE = new System.Collections.Generic.Dictionary<System.Type , object>();
 
@@ -31,34 +31,34 @@ namespace Net.Vpc.Upa.Impl.Util
 
         public static readonly System.Collections.Generic.IDictionary<System.Type , System.Type> REF_TO_PRIMITIVE_TYPES = new System.Collections.Generic.Dictionary<System.Type , System.Type>();
 
-        public static readonly Net.Vpc.Upa.Types.Temporal MIN_DATE = new Net.Vpc.Upa.Types.DateTime(0);
+        public static readonly Net.TheVpc.Upa.Types.Temporal MIN_DATE = new Net.TheVpc.Upa.Types.DateTime(0);
 
         private static readonly System.Collections.Generic.IDictionary<System.Type , string> typeNames = new System.Collections.Generic.Dictionary<System.Type , string>();
 
-        private static Net.Vpc.Upa.Impl.Util.PlatformTypeProxy proxyFactory;
+        private static Net.TheVpc.Upa.Impl.Util.PlatformTypeProxy proxyFactory;
 
         static PlatformUtils(){
-            Net.Vpc.Upa.Impl.Util.PlatformUtils.DEFAULT_VALUES_BY_TYPE[typeof(short)]=(short) ((short)0);
-            Net.Vpc.Upa.Impl.Util.PlatformUtils.DEFAULT_VALUES_BY_TYPE[typeof(long)]=0L;
-            Net.Vpc.Upa.Impl.Util.PlatformUtils.DEFAULT_VALUES_BY_TYPE[typeof(int)]=0;
-            Net.Vpc.Upa.Impl.Util.PlatformUtils.DEFAULT_VALUES_BY_TYPE[typeof(double)]=0.0;
-            Net.Vpc.Upa.Impl.Util.PlatformUtils.DEFAULT_VALUES_BY_TYPE[typeof(float)]=0.0f;
-            Net.Vpc.Upa.Impl.Util.PlatformUtils.DEFAULT_VALUES_BY_TYPE[typeof(byte)]=(byte) ((byte)0);
-            Net.Vpc.Upa.Impl.Util.PlatformUtils.DEFAULT_VALUES_BY_TYPE[typeof(char)]=(char) ((char)0);
-            Net.Vpc.Upa.Impl.Util.PlatformUtils.PRIMITIVE_TO_REF_TYPES[typeof(short)]=typeof(short?);
-            Net.Vpc.Upa.Impl.Util.PlatformUtils.PRIMITIVE_TO_REF_TYPES[typeof(long)]=typeof(long?);
-            Net.Vpc.Upa.Impl.Util.PlatformUtils.PRIMITIVE_TO_REF_TYPES[typeof(int)]=typeof(int?);
-            Net.Vpc.Upa.Impl.Util.PlatformUtils.PRIMITIVE_TO_REF_TYPES[typeof(double)]=typeof(double?);
-            Net.Vpc.Upa.Impl.Util.PlatformUtils.PRIMITIVE_TO_REF_TYPES[typeof(float)]=typeof(float?);
-            Net.Vpc.Upa.Impl.Util.PlatformUtils.PRIMITIVE_TO_REF_TYPES[typeof(byte)]=typeof(byte?);
-            Net.Vpc.Upa.Impl.Util.PlatformUtils.PRIMITIVE_TO_REF_TYPES[typeof(char)]=typeof(char?);
-            Net.Vpc.Upa.Impl.Util.PlatformUtils.REF_TO_PRIMITIVE_TYPES[typeof(short?)]=typeof(short);
-            Net.Vpc.Upa.Impl.Util.PlatformUtils.REF_TO_PRIMITIVE_TYPES[typeof(long?)]=typeof(long);
-            Net.Vpc.Upa.Impl.Util.PlatformUtils.REF_TO_PRIMITIVE_TYPES[typeof(int?)]=typeof(int);
-            Net.Vpc.Upa.Impl.Util.PlatformUtils.REF_TO_PRIMITIVE_TYPES[typeof(double?)]=typeof(double);
-            Net.Vpc.Upa.Impl.Util.PlatformUtils.REF_TO_PRIMITIVE_TYPES[typeof(float?)]=typeof(float);
-            Net.Vpc.Upa.Impl.Util.PlatformUtils.REF_TO_PRIMITIVE_TYPES[typeof(byte?)]=typeof(byte);
-            Net.Vpc.Upa.Impl.Util.PlatformUtils.REF_TO_PRIMITIVE_TYPES[typeof(char?)]=typeof(char);
+            Net.TheVpc.Upa.Impl.Util.PlatformUtils.DEFAULT_VALUES_BY_TYPE[typeof(short)]=(short) ((short)0);
+            Net.TheVpc.Upa.Impl.Util.PlatformUtils.DEFAULT_VALUES_BY_TYPE[typeof(long)]=0L;
+            Net.TheVpc.Upa.Impl.Util.PlatformUtils.DEFAULT_VALUES_BY_TYPE[typeof(int)]=0;
+            Net.TheVpc.Upa.Impl.Util.PlatformUtils.DEFAULT_VALUES_BY_TYPE[typeof(double)]=0.0;
+            Net.TheVpc.Upa.Impl.Util.PlatformUtils.DEFAULT_VALUES_BY_TYPE[typeof(float)]=0.0f;
+            Net.TheVpc.Upa.Impl.Util.PlatformUtils.DEFAULT_VALUES_BY_TYPE[typeof(byte)]=(byte) ((byte)0);
+            Net.TheVpc.Upa.Impl.Util.PlatformUtils.DEFAULT_VALUES_BY_TYPE[typeof(char)]=(char) ((char)0);
+            Net.TheVpc.Upa.Impl.Util.PlatformUtils.PRIMITIVE_TO_REF_TYPES[typeof(short)]=typeof(short?);
+            Net.TheVpc.Upa.Impl.Util.PlatformUtils.PRIMITIVE_TO_REF_TYPES[typeof(long)]=typeof(long?);
+            Net.TheVpc.Upa.Impl.Util.PlatformUtils.PRIMITIVE_TO_REF_TYPES[typeof(int)]=typeof(int?);
+            Net.TheVpc.Upa.Impl.Util.PlatformUtils.PRIMITIVE_TO_REF_TYPES[typeof(double)]=typeof(double?);
+            Net.TheVpc.Upa.Impl.Util.PlatformUtils.PRIMITIVE_TO_REF_TYPES[typeof(float)]=typeof(float?);
+            Net.TheVpc.Upa.Impl.Util.PlatformUtils.PRIMITIVE_TO_REF_TYPES[typeof(byte)]=typeof(byte?);
+            Net.TheVpc.Upa.Impl.Util.PlatformUtils.PRIMITIVE_TO_REF_TYPES[typeof(char)]=typeof(char?);
+            Net.TheVpc.Upa.Impl.Util.PlatformUtils.REF_TO_PRIMITIVE_TYPES[typeof(short?)]=typeof(short);
+            Net.TheVpc.Upa.Impl.Util.PlatformUtils.REF_TO_PRIMITIVE_TYPES[typeof(long?)]=typeof(long);
+            Net.TheVpc.Upa.Impl.Util.PlatformUtils.REF_TO_PRIMITIVE_TYPES[typeof(int?)]=typeof(int);
+            Net.TheVpc.Upa.Impl.Util.PlatformUtils.REF_TO_PRIMITIVE_TYPES[typeof(double?)]=typeof(double);
+            Net.TheVpc.Upa.Impl.Util.PlatformUtils.REF_TO_PRIMITIVE_TYPES[typeof(float?)]=typeof(float);
+            Net.TheVpc.Upa.Impl.Util.PlatformUtils.REF_TO_PRIMITIVE_TYPES[typeof(byte?)]=typeof(byte);
+            Net.TheVpc.Upa.Impl.Util.PlatformUtils.REF_TO_PRIMITIVE_TYPES[typeof(char?)]=typeof(char);
             typeNames[typeof(string)]="string";
             typeNames[typeof(int?)]="int";
             typeNames[typeof(int)]="int";
@@ -74,16 +74,16 @@ namespace Net.Vpc.Upa.Impl.Util
             typeNames[typeof(double)]="double";
             typeNames[typeof(bool?)]="boolean";
             typeNames[typeof(bool)]="boolean";
-            typeNames[typeof(Net.Vpc.Upa.Types.Temporal)]="datetime";
-            typeNames[typeof(Net.Vpc.Upa.Types.Date)]="date";
-            typeNames[typeof(Net.Vpc.Upa.Types.Time)]="time";
-            typeNames[typeof(Net.Vpc.Upa.Types.Timestamp)]="timestamp";
-            typeNames[typeof(Net.Vpc.Upa.Types.DateTime)]="datetime";
-            typeNames[typeof(Net.Vpc.Upa.Types.Date)]="date";
-            typeNames[typeof(Net.Vpc.Upa.Types.Time)]="time";
-            typeNames[typeof(Net.Vpc.Upa.Types.Timestamp)]="timestamp";
-            typeNames[typeof(Net.Vpc.Upa.Types.Year)]="year";
-            typeNames[typeof(Net.Vpc.Upa.Types.Month)]="month";
+            typeNames[typeof(Net.TheVpc.Upa.Types.Temporal)]="datetime";
+            typeNames[typeof(Net.TheVpc.Upa.Types.Date)]="date";
+            typeNames[typeof(Net.TheVpc.Upa.Types.Time)]="time";
+            typeNames[typeof(Net.TheVpc.Upa.Types.Timestamp)]="timestamp";
+            typeNames[typeof(Net.TheVpc.Upa.Types.DateTime)]="datetime";
+            typeNames[typeof(Net.TheVpc.Upa.Types.Date)]="date";
+            typeNames[typeof(Net.TheVpc.Upa.Types.Time)]="time";
+            typeNames[typeof(Net.TheVpc.Upa.Types.Timestamp)]="timestamp";
+            typeNames[typeof(Net.TheVpc.Upa.Types.Year)]="year";
+            typeNames[typeof(Net.TheVpc.Upa.Types.Month)]="month";
             typeNames[typeof(System.Numerics.BigInteger?)]="bigint";
             typeNames[typeof(object)]="object";
             typeNames[typeof(byte[])]="blob";
@@ -93,7 +93,7 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public static System.Type ToRefType(System.Type type) {
-            System.Type t = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,System.Type>(PRIMITIVE_TO_REF_TYPES,type);
+            System.Type t = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,System.Type>(PRIMITIVE_TO_REF_TYPES,type);
             if (t != null) {
                 return t;
             }
@@ -101,7 +101,7 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public static System.Type ToPrimitiveType(System.Type type) {
-            System.Type t = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,System.Type>(REF_TO_PRIMITIVE_TYPES,type);
+            System.Type t = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,System.Type>(REF_TO_PRIMITIVE_TYPES,type);
             if (t != null) {
                 return t;
             }
@@ -176,31 +176,31 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public static bool IsTime(System.Type clazz) {
-            return typeof(Net.Vpc.Upa.Types.Time).IsAssignableFrom(clazz) || typeof(Net.Vpc.Upa.Types.Time).IsAssignableFrom(clazz);
+            return typeof(Net.TheVpc.Upa.Types.Time).IsAssignableFrom(clazz) || typeof(Net.TheVpc.Upa.Types.Time).IsAssignableFrom(clazz);
         }
 
         public static bool IsDateOnly(System.Type clazz) {
-            return typeof(Net.Vpc.Upa.Types.Date).IsAssignableFrom(clazz) || typeof(Net.Vpc.Upa.Types.Date).IsAssignableFrom(clazz);
+            return typeof(Net.TheVpc.Upa.Types.Date).IsAssignableFrom(clazz) || typeof(Net.TheVpc.Upa.Types.Date).IsAssignableFrom(clazz);
         }
 
         public static bool IsDateTime(System.Type clazz) {
-            return typeof(Net.Vpc.Upa.Types.Temporal).Equals(clazz) || typeof(Net.Vpc.Upa.Types.DateTime).IsAssignableFrom(clazz);
+            return typeof(Net.TheVpc.Upa.Types.Temporal).Equals(clazz) || typeof(Net.TheVpc.Upa.Types.DateTime).IsAssignableFrom(clazz);
         }
 
         public static bool IsTimestamp(System.Type clazz) {
-            return typeof(Net.Vpc.Upa.Types.Timestamp).IsAssignableFrom(clazz) || typeof(Net.Vpc.Upa.Types.Timestamp).IsAssignableFrom(clazz);
+            return typeof(Net.TheVpc.Upa.Types.Timestamp).IsAssignableFrom(clazz) || typeof(Net.TheVpc.Upa.Types.Timestamp).IsAssignableFrom(clazz);
         }
 
         public static bool IsMonth(System.Type clazz) {
-            return typeof(Net.Vpc.Upa.Types.Month).IsAssignableFrom(clazz);
+            return typeof(Net.TheVpc.Upa.Types.Month).IsAssignableFrom(clazz);
         }
 
         public static bool IsYear(System.Type clazz) {
-            return typeof(Net.Vpc.Upa.Types.Year).IsAssignableFrom(clazz);
+            return typeof(Net.TheVpc.Upa.Types.Year).IsAssignableFrom(clazz);
         }
 
         public static bool IsAnyDate(System.Type clazz) {
-            return typeof(Net.Vpc.Upa.Types.Temporal).IsAssignableFrom(clazz);
+            return typeof(Net.TheVpc.Upa.Types.Temporal).IsAssignableFrom(clazz);
         }
 
         public static bool IsInt64(System.Type clazz) {
@@ -281,52 +281,52 @@ namespace Net.Vpc.Upa.Impl.Util
             return (type).IsPrimitive;
         }
 
-        public static System.Type ToTemporalType(Net.Vpc.Upa.Types.TemporalOption option, System.Type baseType) {
-            System.Type upaBaseType = typeof(Net.Vpc.Upa.Types.Temporal);
-            System.Type osBaseType = typeof(Net.Vpc.Upa.Types.Temporal);
+        public static System.Type ToTemporalType(Net.TheVpc.Upa.Types.TemporalOption option, System.Type baseType) {
+            System.Type upaBaseType = typeof(Net.TheVpc.Upa.Types.Temporal);
+            System.Type osBaseType = typeof(Net.TheVpc.Upa.Types.Temporal);
             System.Type upaType = null;
             System.Type osType = null;
             switch(option) {
-                case Net.Vpc.Upa.Types.TemporalOption.TIME:
+                case Net.TheVpc.Upa.Types.TemporalOption.TIME:
                     {
-                        upaType = typeof(Net.Vpc.Upa.Types.Time);
-                        osType = typeof(Net.Vpc.Upa.Types.Time);
+                        upaType = typeof(Net.TheVpc.Upa.Types.Time);
+                        osType = typeof(Net.TheVpc.Upa.Types.Time);
                         break;
                     }
-                case Net.Vpc.Upa.Types.TemporalOption.DATE:
+                case Net.TheVpc.Upa.Types.TemporalOption.DATE:
                     {
-                        upaType = typeof(Net.Vpc.Upa.Types.Date);
-                        osType = typeof(Net.Vpc.Upa.Types.Date);
+                        upaType = typeof(Net.TheVpc.Upa.Types.Date);
+                        osType = typeof(Net.TheVpc.Upa.Types.Date);
                         break;
                     }
-                case Net.Vpc.Upa.Types.TemporalOption.DATETIME:
+                case Net.TheVpc.Upa.Types.TemporalOption.DATETIME:
                     {
-                        upaType = typeof(Net.Vpc.Upa.Types.DateTime);
-                        osType = typeof(Net.Vpc.Upa.Types.Timestamp);
+                        upaType = typeof(Net.TheVpc.Upa.Types.DateTime);
+                        osType = typeof(Net.TheVpc.Upa.Types.Timestamp);
                         break;
                     }
-                case Net.Vpc.Upa.Types.TemporalOption.TIMESTAMP:
+                case Net.TheVpc.Upa.Types.TemporalOption.TIMESTAMP:
                     {
-                        upaType = typeof(Net.Vpc.Upa.Types.Timestamp);
-                        osType = typeof(Net.Vpc.Upa.Types.Timestamp);
+                        upaType = typeof(Net.TheVpc.Upa.Types.Timestamp);
+                        osType = typeof(Net.TheVpc.Upa.Types.Timestamp);
                         break;
                     }
-                case Net.Vpc.Upa.Types.TemporalOption.MONTH:
+                case Net.TheVpc.Upa.Types.TemporalOption.MONTH:
                     {
-                        upaType = typeof(Net.Vpc.Upa.Types.Month);
-                        osType = typeof(Net.Vpc.Upa.Types.Date);
+                        upaType = typeof(Net.TheVpc.Upa.Types.Month);
+                        osType = typeof(Net.TheVpc.Upa.Types.Date);
                         break;
                     }
-                case Net.Vpc.Upa.Types.TemporalOption.YEAR:
+                case Net.TheVpc.Upa.Types.TemporalOption.YEAR:
                     {
-                        upaType = typeof(Net.Vpc.Upa.Types.Year);
-                        osType = typeof(Net.Vpc.Upa.Types.Date);
+                        upaType = typeof(Net.TheVpc.Upa.Types.Year);
+                        osType = typeof(Net.TheVpc.Upa.Types.Date);
                         break;
                     }
-                case Net.Vpc.Upa.Types.TemporalOption.DEFAULT:
+                case Net.TheVpc.Upa.Types.TemporalOption.DEFAULT:
                     {
-                        upaType = typeof(Net.Vpc.Upa.Types.DateTime);
-                        osType = typeof(Net.Vpc.Upa.Types.Timestamp);
+                        upaType = typeof(Net.TheVpc.Upa.Types.DateTime);
+                        osType = typeof(Net.TheVpc.Upa.Types.Timestamp);
                         break;
                     }
                 default:
@@ -350,7 +350,7 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public static string GetTypeName(System.Type clazz) {
-            return Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,string>(typeNames,clazz);
+            return Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,string>(typeNames,clazz);
         }
 
         public static bool IsVoid(System.Type c) {
@@ -394,7 +394,7 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public static  void AddAll<T>(System.Collections.Generic.IList<T> list, T[] arr) {
-            Net.Vpc.Upa.Impl.FwkConvertUtils.ListAddRange(list, new System.Collections.Generic.List<T>(arr));
+            Net.TheVpc.Upa.Impl.FwkConvertUtils.ListAddRange(list, new System.Collections.Generic.List<T>(arr));
         }
 
         public static string ArrayToString(object[] arr) {
@@ -416,8 +416,8 @@ namespace Net.Vpc.Upa.Impl.Util
             try {
                 return System.Activator.CreateInstance(clazz);
             } catch (System.Exception ex) {
-                log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter(null,ex));
-                throw new Net.Vpc.Upa.Exceptions.UPAException(ex, new Net.Vpc.Upa.Types.I18NString("InstantationError"));
+                log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter(null,ex));
+                throw new Net.TheVpc.Upa.Exceptions.UPAException(ex, new Net.TheVpc.Upa.Types.I18NString("InstantationError"));
             }
         }
 
@@ -425,33 +425,33 @@ namespace Net.Vpc.Upa.Impl.Util
             return (object[])System.Enum.GetValues(enumType);
         }
 
-        public static Net.Vpc.Upa.Config.Decoration GetDecoration(System.Type type, System.Type annotationClass, string persistenceGroup, string persistenceUnit, Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository repository) {
-            Net.Vpc.Upa.Config.Decoration a = repository.GetTypeDecoration(type, annotationClass);
+        public static Net.TheVpc.Upa.Config.Decoration GetDecoration(System.Type type, System.Type annotationClass, string persistenceGroup, string persistenceUnit, Net.TheVpc.Upa.Impl.Config.Decorations.DecorationRepository repository) {
+            Net.TheVpc.Upa.Config.Decoration a = repository.GetTypeDecoration(type, annotationClass);
             if (a != null && AcceptAnnotation(a, persistenceGroup, persistenceUnit)) {
                 return a;
             }
             return null;
         }
 
-        private static bool AcceptAnnotation(Net.Vpc.Upa.Config.Decoration a, string persistenceGroup, string persistenceUnit) {
+        private static bool AcceptAnnotation(Net.TheVpc.Upa.Config.Decoration a, string persistenceGroup, string persistenceUnit) {
             if (a == null) {
                 return false;
             }
-            Net.Vpc.Upa.Config.Decoration configObject = a.GetDecoration("config");
+            Net.TheVpc.Upa.Config.Decoration configObject = a.GetDecoration("config");
             if (configObject != null) {
-                string v = Net.Vpc.Upa.Impl.Util.StringUtils.Trim(configObject.GetString("persistenceGroup"));
-                if (!Net.Vpc.Upa.Impl.Util.StringUtils.MatchesSimpleExpression(persistenceGroup, v, Net.Vpc.Upa.Impl.Util.PatternType.DOT_PATH)) {
+                string v = Net.TheVpc.Upa.Impl.Util.StringUtils.Trim(configObject.GetString("persistenceGroup"));
+                if (!Net.TheVpc.Upa.Impl.Util.StringUtils.MatchesSimpleExpression(persistenceGroup, v, Net.TheVpc.Upa.Impl.Util.PatternType.DOT_PATH)) {
                     return false;
                 }
-                v = Net.Vpc.Upa.Impl.Util.StringUtils.Trim(configObject.GetString("persistenceUnit"));
-                if (!Net.Vpc.Upa.Impl.Util.StringUtils.MatchesSimpleExpression(persistenceUnit, v, Net.Vpc.Upa.Impl.Util.PatternType.DOT_PATH)) {
+                v = Net.TheVpc.Upa.Impl.Util.StringUtils.Trim(configObject.GetString("persistenceUnit"));
+                if (!Net.TheVpc.Upa.Impl.Util.StringUtils.MatchesSimpleExpression(persistenceUnit, v, Net.TheVpc.Upa.Impl.Util.PatternType.DOT_PATH)) {
                     return false;
                 }
             }
             return true;
         }
 
-        public static System.Reflection.FieldInfo FindField(System.Type clz, string name, Net.Vpc.Upa.Filters.ObjectFilter<System.Reflection.FieldInfo> filter) {
+        public static System.Reflection.FieldInfo FindField(System.Type clz, string name, Net.TheVpc.Upa.Filters.ObjectFilter<System.Reflection.FieldInfo> filter) {
             System.Type r = clz;
             while (r != null) {
                 System.Reflection.FieldInfo f = null;
@@ -595,15 +595,15 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public static bool IsStatic(System.Reflection.MethodInfo method) {
-            return (((Net.Vpc.Upa.Impl.FwkConvertUtils.GetMethodModifiers(method)) & Net.Vpc.Upa.Impl.FwkConvertUtils.STATIC) != 0);
+            return (((Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMethodModifiers(method)) & Net.TheVpc.Upa.Impl.FwkConvertUtils.STATIC) != 0);
         }
 
         public static bool IsAbstract(System.Reflection.MethodInfo method) {
-            return (((Net.Vpc.Upa.Impl.FwkConvertUtils.GetMethodModifiers(method)) & Net.Vpc.Upa.Impl.FwkConvertUtils.ABSTRACT) != 0);
+            return (((Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMethodModifiers(method)) & Net.TheVpc.Upa.Impl.FwkConvertUtils.ABSTRACT) != 0);
         }
 
         public static bool IsAbstract(System.Type type) {
-            return (((Net.Vpc.Upa.Impl.FwkConvertUtils.GetClassModifiers(type)) & Net.Vpc.Upa.Impl.FwkConvertUtils.STATIC) != 0);
+            return (((Net.TheVpc.Upa.Impl.FwkConvertUtils.GetClassModifiers(type)) & Net.TheVpc.Upa.Impl.FwkConvertUtils.STATIC) != 0);
         }
 
         public static bool IsInterface(System.Type type) {
@@ -611,11 +611,11 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public static bool IsStatic(System.Reflection.FieldInfo m) {
-            return (((Net.Vpc.Upa.Impl.FwkConvertUtils.GetFieldModifiers(m)) & Net.Vpc.Upa.Impl.FwkConvertUtils.STATIC) != 0);
+            return (((Net.TheVpc.Upa.Impl.FwkConvertUtils.GetFieldModifiers(m)) & Net.TheVpc.Upa.Impl.FwkConvertUtils.STATIC) != 0);
         }
 
         public static bool IsTransient(System.Reflection.FieldInfo m) {
-            return (((Net.Vpc.Upa.Impl.FwkConvertUtils.GetFieldModifiers(m)) & Net.Vpc.Upa.Impl.FwkConvertUtils.TRANSIENT) != 0);
+            return (((Net.TheVpc.Upa.Impl.FwkConvertUtils.GetFieldModifiers(m)) & Net.TheVpc.Upa.Impl.FwkConvertUtils.TRANSIENT) != 0);
         }
 
         public static System.Reflection.MethodInfo[] GetConcreteMethods(System.Type clz) {
@@ -641,20 +641,20 @@ namespace Net.Vpc.Upa.Impl.Util
                 return m.ToArray();
             } else {
                 System.Collections.Generic.List<System.Reflection.MethodInfo> curr = new System.Collections.Generic.List<System.Reflection.MethodInfo>();
-                Net.Vpc.Upa.Impl.FwkConvertUtils.CollectionAddRange(curr, new System.Collections.Generic.List<System.Reflection.MethodInfo>(GetDeclaredMethods(clz, false, includeAbstract)));
+                Net.TheVpc.Upa.Impl.FwkConvertUtils.CollectionAddRange(curr, new System.Collections.Generic.List<System.Reflection.MethodInfo>(GetDeclaredMethods(clz, false, includeAbstract)));
                 System.Type sc = (clz).BaseType;
                 if (sc != null) {
-                    Net.Vpc.Upa.Impl.FwkConvertUtils.CollectionAddRange(curr, new System.Collections.Generic.List<System.Reflection.MethodInfo>(GetDeclaredMethods(sc, includeInherited, includeAbstract)));
+                    Net.TheVpc.Upa.Impl.FwkConvertUtils.CollectionAddRange(curr, new System.Collections.Generic.List<System.Reflection.MethodInfo>(GetDeclaredMethods(sc, includeInherited, includeAbstract)));
                 }
                 if (includeAbstract) {
                     foreach (System.Type aInterface in clz.GetInterfaces()) {
-                        Net.Vpc.Upa.Impl.FwkConvertUtils.CollectionAddRange(curr, new System.Collections.Generic.List<System.Reflection.MethodInfo>(GetDeclaredMethods(aInterface, includeInherited, includeAbstract)));
+                        Net.TheVpc.Upa.Impl.FwkConvertUtils.CollectionAddRange(curr, new System.Collections.Generic.List<System.Reflection.MethodInfo>(GetDeclaredMethods(aInterface, includeInherited, includeAbstract)));
                     }
                     //now remove duplicates
                     System.Collections.Generic.Dictionary<string , System.Reflection.MethodInfo> noDuplicates = new System.Collections.Generic.Dictionary<string , System.Reflection.MethodInfo>();
                     foreach (System.Reflection.MethodInfo c in curr) {
                         string ms = GetMethodSignature(c);
-                        System.Reflection.MethodInfo old = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,System.Reflection.MethodInfo>(noDuplicates,ms);
+                        System.Reflection.MethodInfo old = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,System.Reflection.MethodInfo>(noDuplicates,ms);
                         if (old == null || IsAbstract(c)) {
                             noDuplicates[ms]=c;
                         }
@@ -667,7 +667,7 @@ namespace Net.Vpc.Upa.Impl.Util
 
         public static string GetMethodSignature(System.Reflection.MethodInfo method) {
             System.Text.StringBuilder types = new System.Text.StringBuilder();
-            foreach (System.Type parameterType in Net.Vpc.Upa.Impl.FwkConvertUtils.GetMethodParameterTypes(method)) {
+            foreach (System.Type parameterType in Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMethodParameterTypes(method)) {
                 if ((types).Length > 0) {
                     types.Append(",");
                 }
@@ -708,24 +708,24 @@ namespace Net.Vpc.Upa.Impl.Util
             return default(T);
         }
 
-        public static Net.Vpc.Upa.Impl.Util.PlatformTypeProxy GetProxyFactory() {
+        public static Net.TheVpc.Upa.Impl.Util.PlatformTypeProxy GetProxyFactory() {
             if (proxyFactory == null) {
-                return new Net.Vpc.Upa.Impl.Util.PlatformTypeProxyCsharp();
+                return new Net.TheVpc.Upa.Impl.Util.PlatformTypeProxyCsharp();
             }
             return proxyFactory;
         }
 
-        public static  T CreateObjectInterceptor<T>(System.Type type, Net.Vpc.Upa.Impl.Util.PlatformMethodProxy<T> methodProxy) {
+        public static  T CreateObjectInterceptor<T>(System.Type type, Net.TheVpc.Upa.Impl.Util.PlatformMethodProxy<T> methodProxy) {
             return GetProxyFactory().Create<T>(type, methodProxy);
         }
 
-        public static string ReplaceNoDollarVars(string str, Net.Vpc.Upa.Impl.Util.Converter<string , string> varConverter) {
+        public static string ReplaceNoDollarVars(string str, Net.TheVpc.Upa.Impl.Util.Converter<string , string> varConverter) {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             {
                 bool javaExprSupported = true;
                 if (javaExprSupported) {
-                    Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern p = new Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern("\\{[^\\{\\}]*\\}");
-                    Net.Vpc.Upa.Impl.Util.Regexp.PortablePatternMatcher m = p.Matcher(str == null ? "" : str);
+                    Net.TheVpc.Upa.Impl.Util.Regexp.PortablePattern p = new Net.TheVpc.Upa.Impl.Util.Regexp.PortablePattern("\\{[^\\{\\}]*\\}");
+                    Net.TheVpc.Upa.Impl.Util.Regexp.PortablePatternMatcher m = p.Matcher(str == null ? "" : str);
                     while (m.Find()) {
                         string g = m.Group(0);
                         string v = g.Substring(1, (g).Length - 1);

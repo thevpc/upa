@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
 
@@ -38,33 +38,33 @@ namespace Net.Vpc.Upa.Types
 
          int GetPrecision();
 
-         object Rewrite(object @value, string name, string description) /* throws Net.Vpc.Upa.Types.ConstraintsException */ ;
+         object Rewrite(object @value, string name, string description) /* throws Net.TheVpc.Upa.Types.ConstraintsException */ ;
 
-         void Check(object @value, string name, string description) /* throws Net.Vpc.Upa.Types.ConstraintsException */ ;
+         void Check(object @value, string name, string description) /* throws Net.TheVpc.Upa.Types.ConstraintsException */ ;
 
          object Copy();
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Types.TypeValueValidator> GetValueValidators();
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Types.TypeValueValidator> GetValueValidators();
 
-         Net.Vpc.Upa.Types.DataType AddValueValidator(Net.Vpc.Upa.Types.TypeValueValidator validator);
+         Net.TheVpc.Upa.Types.DataType AddValueValidator(Net.TheVpc.Upa.Types.TypeValueValidator validator);
 
-         Net.Vpc.Upa.Types.DataType RemoveValueValidator(Net.Vpc.Upa.Types.TypeValueValidator validator);
+         Net.TheVpc.Upa.Types.DataType RemoveValueValidator(Net.TheVpc.Upa.Types.TypeValueValidator validator);
 
-         Net.Vpc.Upa.Types.DataType AddValueRewriter(Net.Vpc.Upa.Types.TypeValueRewriter rewriter);
+         Net.TheVpc.Upa.Types.DataType AddValueRewriter(Net.TheVpc.Upa.Types.TypeValueRewriter rewriter);
 
-         Net.Vpc.Upa.Types.DataType RemoveValueReWriter(Net.Vpc.Upa.Types.TypeValueRewriter rewriter);
+         Net.TheVpc.Upa.Types.DataType RemoveValueReWriter(Net.TheVpc.Upa.Types.TypeValueRewriter rewriter);
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Types.TypeValueRewriter> GetValueRewriters();
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Types.TypeValueRewriter> GetValueRewriters();
 
          string GetUnitName();
 
-         Net.Vpc.Upa.Types.DataType SetUnitName(string unitName);
+         Net.TheVpc.Upa.Types.DataType SetUnitName(string unitName);
 
-         bool IsAssignableFrom(Net.Vpc.Upa.Types.DataType type);
+         bool IsAssignableFrom(Net.TheVpc.Upa.Types.DataType type);
 
          bool IsInstance(object @object);
 
-         void Cast(Net.Vpc.Upa.Types.DataType type);
+         void Cast(Net.TheVpc.Upa.Types.DataType type);
 
          object Convert(object @value);
 
@@ -72,10 +72,10 @@ namespace Net.Vpc.Upa.Types
 
          void SetName(string name);
 
-         Net.Vpc.Upa.Properties GetProperties();
+         Net.TheVpc.Upa.Properties GetProperties();
 
-         void SetProperties(Net.Vpc.Upa.Properties properties);
+         void SetProperties(Net.TheVpc.Upa.Properties properties);
 
-         Net.Vpc.Upa.DataTypeInfo GetInfo();
+         Net.TheVpc.Upa.DataTypeInfo GetInfo();
     }
 }

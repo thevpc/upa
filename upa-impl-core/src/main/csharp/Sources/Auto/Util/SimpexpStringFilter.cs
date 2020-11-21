@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -19,11 +19,11 @@ namespace Net.Vpc.Upa.Impl.Util
      *
      * @author taha.bensalah@gmail.com
      */
-    public class SimpexpStringFilter : Net.Vpc.Upa.Filters.ObjectFilter<string> {
+    public class SimpexpStringFilter : Net.TheVpc.Upa.Filters.ObjectFilter<string> {
 
         private string patternString;
 
-        private Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern pattern;
+        private Net.TheVpc.Upa.Impl.Util.Regexp.PortablePattern pattern;
 
         private bool nullIsEmpty;
 
@@ -31,8 +31,8 @@ namespace Net.Vpc.Upa.Impl.Util
 
         public SimpexpStringFilter(string patternString, bool nullIsEmpty, bool ignoreCase) {
             this.patternString = (nullIsEmpty && patternString == null) ? "" : patternString;
-            string pattern = Net.Vpc.Upa.Impl.Util.StringUtils.SimpexpToRegexp(patternString, Net.Vpc.Upa.Impl.Util.PatternType.DOT_PATH);
-            this.pattern = this.patternString == null ? null : new Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern(ignoreCase ? pattern.ToLower() : pattern);
+            string pattern = Net.TheVpc.Upa.Impl.Util.StringUtils.SimpexpToRegexp(patternString, Net.TheVpc.Upa.Impl.Util.PatternType.DOT_PATH);
+            this.pattern = this.patternString == null ? null : new Net.TheVpc.Upa.Impl.Util.Regexp.PortablePattern(ignoreCase ? pattern.ToLower() : pattern);
             this.nullIsEmpty = nullIsEmpty;
             this.ignoreCase = ignoreCase;
         }

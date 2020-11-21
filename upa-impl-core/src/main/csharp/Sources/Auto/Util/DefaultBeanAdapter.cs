@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -19,9 +19,9 @@ namespace Net.Vpc.Upa.Impl.Util
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 8/27/12 12:16 AM
      */
-    public class DefaultBeanAdapter : Net.Vpc.Upa.BeanAdapter {
+    public class DefaultBeanAdapter : Net.TheVpc.Upa.BeanAdapter {
 
-        private Net.Vpc.Upa.BeanType beanType;
+        private Net.TheVpc.Upa.BeanType beanType;
 
         private object instance;
 
@@ -31,7 +31,7 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public DefaultBeanAdapter(System.Type cls) {
-            this.beanType = Net.Vpc.Upa.Impl.Util.PlatformBeanTypeRepository.GetInstance().GetBeanType(cls);
+            this.beanType = Net.TheVpc.Upa.Impl.Util.PlatformBeanTypeRepository.GetInstance().GetBeanType(cls);
         }
 
         public virtual object NewInstance() {
@@ -39,7 +39,7 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
 
-        public virtual Net.Vpc.Upa.BeanType GetBeanType() {
+        public virtual Net.TheVpc.Upa.BeanType GetBeanType() {
             return beanType;
         }
 

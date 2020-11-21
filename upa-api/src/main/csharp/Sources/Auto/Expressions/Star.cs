@@ -11,21 +11,21 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class Star : Net.Vpc.Upa.Expressions.Var {
+    public class Star : Net.TheVpc.Upa.Expressions.Var {
 
         public Star()  : base("*"){
 
         }
 
 
-        public override Net.Vpc.Upa.Expressions.Expression Copy() {
-            Net.Vpc.Upa.Expressions.Star o = new Net.Vpc.Upa.Expressions.Star();
+        public override Net.TheVpc.Upa.Expressions.Expression Copy() {
+            Net.TheVpc.Upa.Expressions.Star o = new Net.TheVpc.Upa.Expressions.Star();
             return o;
         }
 

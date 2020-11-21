@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -21,7 +21,7 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public virtual V Get(K key) {
-            return Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<K,V>(data,key);
+            return Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<K,V>(data,key);
         }
 
         public virtual bool ContainsKey(K key) {

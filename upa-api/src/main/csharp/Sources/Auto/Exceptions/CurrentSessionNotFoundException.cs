@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class CurrentSessionNotFoundException : Net.Vpc.Upa.Exceptions.UPAException {
+    public class CurrentSessionNotFoundException : Net.TheVpc.Upa.Exceptions.UPAException {
 
         public CurrentSessionNotFoundException()  : base("CurrentSessionNotFoundException"){
 

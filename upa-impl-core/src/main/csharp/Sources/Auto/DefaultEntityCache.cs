@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
     /**
@@ -23,10 +23,10 @@ namespace Net.Vpc.Upa.Impl
 
         internal bool? isEmpty;
 
-        internal Net.Vpc.Upa.Impl.DefaultEntityPrivateCacheEmptyListener cache_isEmpty_Listener;
+        internal Net.TheVpc.Upa.Impl.DefaultEntityPrivateCacheEmptyListener cache_isEmpty_Listener;
 
         public DefaultEntityCache() {
-            cache_isEmpty_Listener = new Net.Vpc.Upa.Impl.DefaultEntityPrivateCacheEmptyListener(this);
+            cache_isEmpty_Listener = new Net.TheVpc.Upa.Impl.DefaultEntityPrivateCacheEmptyListener(this);
         }
     }
 }

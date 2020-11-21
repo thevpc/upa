@@ -11,11 +11,11 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
 
-    public abstract class SeriesType : Net.Vpc.Upa.Types.DefaultDataType {
+    public abstract class SeriesType : Net.TheVpc.Upa.Types.DefaultDataType {
 
         protected internal SeriesType(string name, System.Type platformType)  : base(name, platformType){
 

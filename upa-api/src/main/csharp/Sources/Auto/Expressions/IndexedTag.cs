@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
     /**
      * @author taha.bensalah@gmail.com
      */
-    public class IndexedTag : Net.Vpc.Upa.Expressions.ExpressionTag {
+    public class IndexedTag : Net.TheVpc.Upa.Expressions.ExpressionTag {
 
         private string name;
 
@@ -55,7 +55,7 @@ namespace Net.Vpc.Upa.Expressions
             if (GetType() != obj.GetType()) {
                 return false;
             }
-            Net.Vpc.Upa.Expressions.IndexedTag other = (Net.Vpc.Upa.Expressions.IndexedTag) obj;
+            Net.TheVpc.Upa.Expressions.IndexedTag other = (Net.TheVpc.Upa.Expressions.IndexedTag) obj;
             if (this.index != other.index) {
                 return false;
             }

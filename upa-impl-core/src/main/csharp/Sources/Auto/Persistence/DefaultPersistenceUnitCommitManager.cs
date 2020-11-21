@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -21,90 +21,90 @@ namespace Net.Vpc.Upa.Impl.Persistence
      */
     public class DefaultPersistenceUnitCommitManager {
 
-        protected internal static System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.Vpc.Upa.Impl.Persistence.DefaultPersistenceUnitCommitManager)).FullName);
+        protected internal static System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.TheVpc.Upa.Impl.Persistence.DefaultPersistenceUnitCommitManager)).FullName);
 
-        internal System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Persistence.StructureCommit> storage = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Persistence.StructureCommit>();
+        internal System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Persistence.StructureCommit> storage = new System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Persistence.StructureCommit>();
 
-        private Net.Vpc.Upa.PersistenceUnit persistenceUnit;
+        private Net.TheVpc.Upa.PersistenceUnit persistenceUnit;
 
-        internal Net.Vpc.Upa.Impl.Persistence.DefaultPersistenceStore persistenceStore;
+        internal Net.TheVpc.Upa.Impl.Persistence.DefaultPersistenceStore persistenceStore;
 
-        internal static Net.Vpc.Upa.Impl.Persistence.StructureCommitComparator structureCommitComparator = new Net.Vpc.Upa.Impl.Persistence.StructureCommitComparator();
+        internal static Net.TheVpc.Upa.Impl.Persistence.StructureCommitComparator structureCommitComparator = new Net.TheVpc.Upa.Impl.Persistence.StructureCommitComparator();
 
-        private System.Collections.Generic.IDictionary<Net.Vpc.Upa.UPAObject , Net.Vpc.Upa.Impl.Persistence.UPAPersistenceInfo> persistenceInfoMap = new System.Collections.Generic.Dictionary<Net.Vpc.Upa.UPAObject , Net.Vpc.Upa.Impl.Persistence.UPAPersistenceInfo>();
+        private System.Collections.Generic.IDictionary<Net.TheVpc.Upa.UPAObject , Net.TheVpc.Upa.Impl.Persistence.UPAPersistenceInfo> persistenceInfoMap = new System.Collections.Generic.Dictionary<Net.TheVpc.Upa.UPAObject , Net.TheVpc.Upa.Impl.Persistence.UPAPersistenceInfo>();
 
-        public virtual void Init(Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.Impl.Persistence.DefaultPersistenceStore persistenceStore) {
+        public virtual void Init(Net.TheVpc.Upa.PersistenceUnit persistenceUnit, Net.TheVpc.Upa.Impl.Persistence.DefaultPersistenceStore persistenceStore) {
             this.persistenceUnit = persistenceUnit;
             this.persistenceStore = persistenceStore;
         }
 
-        private Net.Vpc.Upa.Impl.Persistence.UPAPersistenceInfo GetUPAObjectInfo(Net.Vpc.Upa.UPAObject @object, bool create) {
-            Net.Vpc.Upa.Impl.Persistence.UPAPersistenceInfo info = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<Net.Vpc.Upa.UPAObject,Net.Vpc.Upa.Impl.Persistence.UPAPersistenceInfo>(persistenceInfoMap,@object);
+        private Net.TheVpc.Upa.Impl.Persistence.UPAPersistenceInfo GetUPAObjectInfo(Net.TheVpc.Upa.UPAObject @object, bool create) {
+            Net.TheVpc.Upa.Impl.Persistence.UPAPersistenceInfo info = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<Net.TheVpc.Upa.UPAObject,Net.TheVpc.Upa.Impl.Persistence.UPAPersistenceInfo>(persistenceInfoMap,@object);
             if (info == null && create) {
-                info = new Net.Vpc.Upa.Impl.Persistence.UPAPersistenceInfo(@object);
+                info = new Net.TheVpc.Upa.Impl.Persistence.UPAPersistenceInfo(@object);
                 persistenceInfoMap[@object]=info;
             }
             return info;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Persistence.PersistentObjectInfo GetPersistentObjectInfo(Net.Vpc.Upa.UPAObject @object, string type) {
-            System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Impl.Persistence.PersistentObjectInfo> persistentObjects = GetUPAObjectInfo(@object, true).persistentObjects;
-            Net.Vpc.Upa.Impl.Persistence.PersistentObjectInfo persistentObjectInfo = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.Vpc.Upa.Impl.Persistence.PersistentObjectInfo>(persistentObjects,type);
+        public virtual Net.TheVpc.Upa.Impl.Persistence.PersistentObjectInfo GetPersistentObjectInfo(Net.TheVpc.Upa.UPAObject @object, string type) {
+            System.Collections.Generic.IDictionary<string , Net.TheVpc.Upa.Impl.Persistence.PersistentObjectInfo> persistentObjects = GetUPAObjectInfo(@object, true).persistentObjects;
+            Net.TheVpc.Upa.Impl.Persistence.PersistentObjectInfo persistentObjectInfo = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.TheVpc.Upa.Impl.Persistence.PersistentObjectInfo>(persistentObjects,type);
             if (persistentObjectInfo == null) {
-                persistentObjectInfo = new Net.Vpc.Upa.Impl.Persistence.PersistentObjectInfo(@object, type);
+                persistentObjectInfo = new Net.TheVpc.Upa.Impl.Persistence.PersistentObjectInfo(@object, type);
                 persistentObjects[type]=persistentObjectInfo;
             }
             return persistentObjectInfo;
         }
 
-        private Net.Vpc.Upa.Persistence.UConnection GetConnection(Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext) {
+        private Net.TheVpc.Upa.Persistence.UConnection GetConnection(Net.TheVpc.Upa.Persistence.EntityExecutionContext executionContext) {
             return executionContext.GetConnection();
         }
 
-        public virtual void AlterPersistenceUnitAddObject(Net.Vpc.Upa.UPAObject @object) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            if (@object is Net.Vpc.Upa.PrimitiveField) {
-                storage.Add(new Net.Vpc.Upa.Impl.Persistence.Commit.PrimitiveFieldStructureCommit((Net.Vpc.Upa.PrimitiveField) @object, this));
+        public virtual void AlterPersistenceUnitAddObject(Net.TheVpc.Upa.UPAObject @object) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            if (@object is Net.TheVpc.Upa.PrimitiveField) {
+                storage.Add(new Net.TheVpc.Upa.Impl.Persistence.Commit.PrimitiveFieldStructureCommit((Net.TheVpc.Upa.PrimitiveField) @object, this));
                 return;
             }
-            if (@object is Net.Vpc.Upa.CompoundField) {
+            if (@object is Net.TheVpc.Upa.CompoundField) {
                 //nothing to do
                 //storage.add(new DummyCommit(object,ColumnPersistentObject.class));
                 return;
             }
-            if (@object is Net.Vpc.Upa.Section) {
+            if (@object is Net.TheVpc.Upa.Section) {
                 //nothing to do
                 //storage.add(new DummyCommit(object,ColumnPersistentObject.class));
                 return;
             }
-            if (@object is Net.Vpc.Upa.Package) {
+            if (@object is Net.TheVpc.Upa.Package) {
                 //nothing to do
                 //storage.add(new DummyCommit(object,ColumnPersistentObject.class));
                 return;
             }
-            if (@object is Net.Vpc.Upa.Entity) {
-                if (persistenceStore.IsView((Net.Vpc.Upa.Entity) @object)) {
-                    storage.Add(new Net.Vpc.Upa.Impl.Persistence.Commit.ViewStructureCommit((Net.Vpc.Upa.Entity) @object, this));
+            if (@object is Net.TheVpc.Upa.Entity) {
+                if (persistenceStore.IsView((Net.TheVpc.Upa.Entity) @object)) {
+                    storage.Add(new Net.TheVpc.Upa.Impl.Persistence.Commit.ViewStructureCommit((Net.TheVpc.Upa.Entity) @object, this));
                 } else {
-                    storage.Add(new Net.Vpc.Upa.Impl.Persistence.Commit.EntityStructureCommit((Net.Vpc.Upa.Entity) @object, this));
-                    storage.Add(new Net.Vpc.Upa.Impl.Persistence.Commit.EntityPKStructureCommit((Net.Vpc.Upa.Entity) @object, this));
-                    storage.Add(new Net.Vpc.Upa.Impl.Persistence.Commit.EntityImplicitViewStructureCommit((Net.Vpc.Upa.Entity) @object, this));
+                    storage.Add(new Net.TheVpc.Upa.Impl.Persistence.Commit.EntityStructureCommit((Net.TheVpc.Upa.Entity) @object, this));
+                    storage.Add(new Net.TheVpc.Upa.Impl.Persistence.Commit.EntityPKStructureCommit((Net.TheVpc.Upa.Entity) @object, this));
+                    storage.Add(new Net.TheVpc.Upa.Impl.Persistence.Commit.EntityImplicitViewStructureCommit((Net.TheVpc.Upa.Entity) @object, this));
                 }
                 return;
             }
-            if (@object is Net.Vpc.Upa.Relationship) {
-                storage.Add(new Net.Vpc.Upa.Impl.Persistence.Commit.RelationshipStructureCommit((Net.Vpc.Upa.Relationship) @object, this));
+            if (@object is Net.TheVpc.Upa.Relationship) {
+                storage.Add(new Net.TheVpc.Upa.Impl.Persistence.Commit.RelationshipStructureCommit((Net.TheVpc.Upa.Relationship) @object, this));
                 return;
             }
-            if (@object is Net.Vpc.Upa.Index) {
-                storage.Add(new Net.Vpc.Upa.Impl.Persistence.Commit.IndexStructureCommit((Net.Vpc.Upa.Index) @object, this));
+            if (@object is Net.TheVpc.Upa.Index) {
+                storage.Add(new Net.TheVpc.Upa.Impl.Persistence.Commit.IndexStructureCommit((Net.TheVpc.Upa.Index) @object, this));
             }
         }
 
-        public virtual bool CommitStructure() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Persistence.EntityExecutionContext context = ((Net.Vpc.Upa.Impl.DefaultPersistenceUnit) persistenceUnit).CreateContext(Net.Vpc.Upa.Persistence.ContextOperation.CREATE_PERSISTENCE_NAME, null);
-            Net.Vpc.Upa.Impl.FwkConvertUtils.ListSort(storage, structureCommitComparator);
+        public virtual bool CommitStructure() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Persistence.EntityExecutionContext context = ((Net.TheVpc.Upa.Impl.DefaultPersistenceUnit) persistenceUnit).CreateContext(Net.TheVpc.Upa.Persistence.ContextOperation.CREATE_PERSISTENCE_NAME, null);
+            Net.TheVpc.Upa.Impl.FwkConvertUtils.ListSort(storage, structureCommitComparator);
             bool someCommit = false;
-            foreach (Net.Vpc.Upa.Impl.Persistence.StructureCommit next in storage) {
+            foreach (Net.TheVpc.Upa.Impl.Persistence.StructureCommit next in storage) {
                 if (next.Commit(context)) {
                     someCommit = true;
                 }
@@ -113,7 +113,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
             return someCommit;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Persistence.DefaultPersistenceStore GetPersistenceUnitManager() {
+        public virtual Net.TheVpc.Upa.Impl.Persistence.DefaultPersistenceStore GetPersistenceUnitManager() {
             return persistenceStore;
         }
     }

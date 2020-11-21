@@ -11,44 +11,44 @@
 
 
 
-namespace Net.Vpc.Upa.Callbacks
+namespace Net.TheVpc.Upa.Callbacks
 {
 
 
     /**
      * @author taha.bensalah@gmail.com
      */
-    public class UpdateEvent : Net.Vpc.Upa.Callbacks.EntityEvent {
+    public class UpdateEvent : Net.TheVpc.Upa.Callbacks.EntityEvent {
 
-        private Net.Vpc.Upa.Document updatesDocument;
+        private Net.TheVpc.Upa.Document updatesDocument;
 
         private object updatesObject;
 
-        private Net.Vpc.Upa.Expressions.Expression filterExpression;
+        private Net.TheVpc.Upa.Expressions.Expression filterExpression;
 
-        public UpdateEvent(Net.Vpc.Upa.Document updatesDocument, Net.Vpc.Upa.Expressions.Expression filterExpression, Net.Vpc.Upa.Persistence.EntityExecutionContext entityExecutionContext, Net.Vpc.Upa.EventPhase phase)  : base(entityExecutionContext, phase){
+        public UpdateEvent(Net.TheVpc.Upa.Document updatesDocument, Net.TheVpc.Upa.Expressions.Expression filterExpression, Net.TheVpc.Upa.Persistence.EntityExecutionContext entityExecutionContext, Net.TheVpc.Upa.EventPhase phase)  : base(entityExecutionContext, phase){
 
             this.updatesDocument = updatesDocument;
             this.filterExpression = filterExpression;
         }
 
-        public virtual Net.Vpc.Upa.Document GetUpdatesDocument() {
+        public virtual Net.TheVpc.Upa.Document GetUpdatesDocument() {
             return updatesDocument;
         }
 
         public virtual object GetUpdatesObject() {
             if (updatesObject == null && updatesDocument != null) {
-                Net.Vpc.Upa.EntityBuilder builder = GetContext().GetEntity().GetBuilder();
+                Net.TheVpc.Upa.EntityBuilder builder = GetContext().GetEntity().GetBuilder();
                 updatesObject = builder.DocumentToObject<>(updatesDocument);
-                if (GetFilterExpression() is Net.Vpc.Upa.Expressions.IdExpression) {
-                    object id = ((Net.Vpc.Upa.Expressions.IdExpression) GetFilterExpression()).GetId();
+                if (GetFilterExpression() is Net.TheVpc.Upa.Expressions.IdExpression) {
+                    object id = ((Net.TheVpc.Upa.Expressions.IdExpression) GetFilterExpression()).GetId();
                     builder.SetObjectId(updatesObject, id);
                 }
             }
             return updatesObject;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Expression GetFilterExpression() {
+        public virtual Net.TheVpc.Upa.Expressions.Expression GetFilterExpression() {
             return filterExpression;
         }
 
@@ -58,13 +58,13 @@ namespace Net.Vpc.Upa.Callbacks
                 //already loaded
                 return;
             }
-            Net.Vpc.Upa.Expressions.Expression expr = this.GetFilterExpression();
-            Net.Vpc.Upa.Entity entity = this.GetEntity();
-            if (expr is Net.Vpc.Upa.Expressions.IdEnumerationExpression) {
-                Net.Vpc.Upa.Expressions.IdEnumerationExpression k = (Net.Vpc.Upa.Expressions.IdEnumerationExpression) expr;
-                expr = new Net.Vpc.Upa.Expressions.IdEnumerationExpression(k.GetIds(), new Net.Vpc.Upa.Expressions.Var("this"));
+            Net.TheVpc.Upa.Expressions.Expression expr = this.GetFilterExpression();
+            Net.TheVpc.Upa.Entity entity = this.GetEntity();
+            if (expr is Net.TheVpc.Upa.Expressions.IdEnumerationExpression) {
+                Net.TheVpc.Upa.Expressions.IdEnumerationExpression k = (Net.TheVpc.Upa.Expressions.IdEnumerationExpression) expr;
+                expr = new Net.TheVpc.Upa.Expressions.IdEnumerationExpression(k.GetIds(), new Net.TheVpc.Upa.Expressions.Var("this"));
             }
-            Net.Vpc.Upa.PersistenceUnit pu = this.GetPersistenceUnit();
+            Net.TheVpc.Upa.PersistenceUnit pu = this.GetPersistenceUnit();
             System.Collections.Generic.IList<object> old = pu.CreateQueryBuilder(entity.GetName()).ByExpression(expr).GetIdList<>();
             int sise = (old).Count;
             //force load!

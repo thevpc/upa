@@ -12,7 +12,7 @@
 
 
 using System.Linq;
-namespace Net.Vpc.Upa.Impl.Transform
+namespace Net.TheVpc.Upa.Impl.Transform
 {
 
 
@@ -20,14 +20,14 @@ namespace Net.Vpc.Upa.Impl.Transform
      *
      * @author taha.bensalah@gmail.com
      */
-    public class DefaultDataTypeTransformFactory : Net.Vpc.Upa.Types.DataTypeTransformFactory {
+    public class DefaultDataTypeTransformFactory : Net.TheVpc.Upa.Types.DataTypeTransformFactory {
 
         private bool IsInt(double d) {
             double d2 = (int) d;
             return d2 == d;
         }
 
-        private Net.Vpc.Upa.Types.DataTypeTransformConfig CreateDataTypeTransformConfig(string expression) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        private Net.TheVpc.Upa.Types.DataTypeTransformConfig CreateDataTypeTransformConfig(string expression) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             if ((expression.Trim()).Length > 0) {
                 string name = null;
                 System.Collections.Generic.List<string> args = new System.Collections.Generic.List<string>();
@@ -190,19 +190,19 @@ namespace Net.Vpc.Upa.Impl.Transform
             throw new System.ArgumentException ("Unsupported converter expression");
         }
 
-        private Net.Vpc.Upa.Types.DataTypeTransformConfig CreateDataTypeTransformConfig(string name, string[] args) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        private Net.TheVpc.Upa.Types.DataTypeTransformConfig CreateDataTypeTransformConfig(string name, string[] args) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             if (name.Equals("ToByteArray",System.StringComparison.InvariantCultureIgnoreCase)) {
-                Net.Vpc.Upa.Types.StringEncoderTransformConfig c = new Net.Vpc.Upa.Types.StringEncoderTransformConfig();
+                Net.TheVpc.Upa.Types.StringEncoderTransformConfig c = new Net.TheVpc.Upa.Types.StringEncoderTransformConfig();
                 if (args.Length == 0) {
                     return c;
                 } else if (args.Length == 1) {
-                    Net.Vpc.Upa.Config.StringEncoderType t = default(Net.Vpc.Upa.Config.StringEncoderType);
+                    Net.TheVpc.Upa.Config.StringEncoderType t = default(Net.TheVpc.Upa.Config.StringEncoderType);
                     try {
-                        t = (Net.Vpc.Upa.Config.StringEncoderType)(System.Enum.Parse(typeof(Net.Vpc.Upa.Config.StringEncoderType),args[0].ToUpper()));
+                        t = (Net.TheVpc.Upa.Config.StringEncoderType)(System.Enum.Parse(typeof(Net.TheVpc.Upa.Config.StringEncoderType),args[0].ToUpper()));
                     } catch (System.Exception e) {
                     }
                     //
-                    if (t != default(Net.Vpc.Upa.Config.StringEncoderType)) {
+                    if (t != default(Net.TheVpc.Upa.Config.StringEncoderType)) {
                         c.SetEncoder(t);
                     } else {
                         c.SetEncoder(args[0]);
@@ -213,7 +213,7 @@ namespace Net.Vpc.Upa.Impl.Transform
                 }
             }
             if (name.Equals("ToByteArray",System.StringComparison.InvariantCultureIgnoreCase)) {
-                Net.Vpc.Upa.Types.ByteArrayEncoderTransformConfig c = new Net.Vpc.Upa.Types.ByteArrayEncoderTransformConfig();
+                Net.TheVpc.Upa.Types.ByteArrayEncoderTransformConfig c = new Net.TheVpc.Upa.Types.ByteArrayEncoderTransformConfig();
                 if (args.Length == 0) {
                     return c;
                 } else if (args.Length == 1) {
@@ -225,37 +225,37 @@ namespace Net.Vpc.Upa.Impl.Transform
             }
             if (name.Equals("Converter",System.StringComparison.InvariantCultureIgnoreCase)) {
                 if (args.Length == 1) {
-                    return new Net.Vpc.Upa.Types.CustomTypeDataTypeTransform(args[0]);
+                    return new Net.TheVpc.Upa.Types.CustomTypeDataTypeTransform(args[0]);
                 } else {
                     throw new System.ArgumentException ("Config: Invalid argument count");
                 }
             }
             if (name.Equals("Password",System.StringComparison.InvariantCultureIgnoreCase)) {
                 if (args.Length == 0) {
-                    return new Net.Vpc.Upa.PasswordTransformConfig();
+                    return new Net.TheVpc.Upa.PasswordTransformConfig();
                 } else if (args.Length == 1) {
-                    Net.Vpc.Upa.PasswordTransformConfig c = new Net.Vpc.Upa.PasswordTransformConfig();
-                    Net.Vpc.Upa.PasswordStrategyType t = default(Net.Vpc.Upa.PasswordStrategyType);
+                    Net.TheVpc.Upa.PasswordTransformConfig c = new Net.TheVpc.Upa.PasswordTransformConfig();
+                    Net.TheVpc.Upa.PasswordStrategyType t = default(Net.TheVpc.Upa.PasswordStrategyType);
                     try {
-                        t = (Net.Vpc.Upa.PasswordStrategyType)(System.Enum.Parse(typeof(Net.Vpc.Upa.PasswordStrategyType),args[0].ToUpper()));
+                        t = (Net.TheVpc.Upa.PasswordStrategyType)(System.Enum.Parse(typeof(Net.TheVpc.Upa.PasswordStrategyType),args[0].ToUpper()));
                     } catch (System.Exception e) {
                     }
                     //
-                    if (t != default(Net.Vpc.Upa.PasswordStrategyType)) {
+                    if (t != default(Net.TheVpc.Upa.PasswordStrategyType)) {
                         c.SetCipherStrategy(t);
                     } else {
                         c.SetCipherStrategy(args[0]);
                     }
                     return c;
                 } else if (args.Length == 2) {
-                    Net.Vpc.Upa.PasswordTransformConfig c = new Net.Vpc.Upa.PasswordTransformConfig();
-                    Net.Vpc.Upa.PasswordStrategyType t = default(Net.Vpc.Upa.PasswordStrategyType);
+                    Net.TheVpc.Upa.PasswordTransformConfig c = new Net.TheVpc.Upa.PasswordTransformConfig();
+                    Net.TheVpc.Upa.PasswordStrategyType t = default(Net.TheVpc.Upa.PasswordStrategyType);
                     try {
-                        t = (Net.Vpc.Upa.PasswordStrategyType)(System.Enum.Parse(typeof(Net.Vpc.Upa.PasswordStrategyType),args[0].ToUpper()));
+                        t = (Net.TheVpc.Upa.PasswordStrategyType)(System.Enum.Parse(typeof(Net.TheVpc.Upa.PasswordStrategyType),args[0].ToUpper()));
                     } catch (System.Exception e) {
                     }
                     //
-                    if (t != default(Net.Vpc.Upa.PasswordStrategyType)) {
+                    if (t != default(Net.TheVpc.Upa.PasswordStrategyType)) {
                         c.SetCipherStrategy(t);
                     } else {
                         c.SetCipherStrategy(args[0]);
@@ -268,30 +268,30 @@ namespace Net.Vpc.Upa.Impl.Transform
             }
             if (name.Equals("Secret",System.StringComparison.InvariantCultureIgnoreCase)) {
                 if (args.Length == 0) {
-                    return new Net.Vpc.Upa.Types.SecretTransformConfig();
+                    return new Net.TheVpc.Upa.Types.SecretTransformConfig();
                 } else if (args.Length == 1) {
-                    Net.Vpc.Upa.Types.SecretTransformConfig c = new Net.Vpc.Upa.Types.SecretTransformConfig();
-                    Net.Vpc.Upa.SecretStrategyType t = default(Net.Vpc.Upa.SecretStrategyType);
+                    Net.TheVpc.Upa.Types.SecretTransformConfig c = new Net.TheVpc.Upa.Types.SecretTransformConfig();
+                    Net.TheVpc.Upa.SecretStrategyType t = default(Net.TheVpc.Upa.SecretStrategyType);
                     try {
-                        t = (Net.Vpc.Upa.SecretStrategyType)(System.Enum.Parse(typeof(Net.Vpc.Upa.SecretStrategyType),args[0].ToUpper()));
+                        t = (Net.TheVpc.Upa.SecretStrategyType)(System.Enum.Parse(typeof(Net.TheVpc.Upa.SecretStrategyType),args[0].ToUpper()));
                     } catch (System.Exception e) {
                     }
                     //
-                    if (t != default(Net.Vpc.Upa.SecretStrategyType)) {
+                    if (t != default(Net.TheVpc.Upa.SecretStrategyType)) {
                         c.SetSecretStrategy(t);
                     } else {
                         c.SetSecretStrategy(args[0]);
                     }
                     return c;
                 } else if (args.Length == 2) {
-                    Net.Vpc.Upa.Types.SecretTransformConfig c = new Net.Vpc.Upa.Types.SecretTransformConfig();
-                    Net.Vpc.Upa.SecretStrategyType t = default(Net.Vpc.Upa.SecretStrategyType);
+                    Net.TheVpc.Upa.Types.SecretTransformConfig c = new Net.TheVpc.Upa.Types.SecretTransformConfig();
+                    Net.TheVpc.Upa.SecretStrategyType t = default(Net.TheVpc.Upa.SecretStrategyType);
                     try {
-                        t = (Net.Vpc.Upa.SecretStrategyType)(System.Enum.Parse(typeof(Net.Vpc.Upa.SecretStrategyType),args[0].ToUpper()));
+                        t = (Net.TheVpc.Upa.SecretStrategyType)(System.Enum.Parse(typeof(Net.TheVpc.Upa.SecretStrategyType),args[0].ToUpper()));
                     } catch (System.Exception e) {
                     }
                     //
-                    if (t != default(Net.Vpc.Upa.SecretStrategyType)) {
+                    if (t != default(Net.TheVpc.Upa.SecretStrategyType)) {
                         c.SetSecretStrategy(t);
                     } else {
                         c.SetSecretStrategy(args[0]);
@@ -299,14 +299,14 @@ namespace Net.Vpc.Upa.Impl.Transform
                     c.SetSize(System.Convert.ToInt32(args[1]));
                     return c;
                 } else if (args.Length == 3) {
-                    Net.Vpc.Upa.Types.SecretTransformConfig c = new Net.Vpc.Upa.Types.SecretTransformConfig();
-                    Net.Vpc.Upa.SecretStrategyType t = default(Net.Vpc.Upa.SecretStrategyType);
+                    Net.TheVpc.Upa.Types.SecretTransformConfig c = new Net.TheVpc.Upa.Types.SecretTransformConfig();
+                    Net.TheVpc.Upa.SecretStrategyType t = default(Net.TheVpc.Upa.SecretStrategyType);
                     try {
-                        t = (Net.Vpc.Upa.SecretStrategyType)(System.Enum.Parse(typeof(Net.Vpc.Upa.SecretStrategyType),args[0].ToUpper()));
+                        t = (Net.TheVpc.Upa.SecretStrategyType)(System.Enum.Parse(typeof(Net.TheVpc.Upa.SecretStrategyType),args[0].ToUpper()));
                     } catch (System.Exception e) {
                     }
                     //
-                    if (t != default(Net.Vpc.Upa.SecretStrategyType)) {
+                    if (t != default(Net.TheVpc.Upa.SecretStrategyType)) {
                         c.SetSecretStrategy(t);
                     } else {
                         c.SetSecretStrategy(args[0]);
@@ -316,14 +316,14 @@ namespace Net.Vpc.Upa.Impl.Transform
                     c.SetDecodeKey(args[2]);
                     return c;
                 } else if (args.Length == 4) {
-                    Net.Vpc.Upa.Types.SecretTransformConfig c = new Net.Vpc.Upa.Types.SecretTransformConfig();
-                    Net.Vpc.Upa.SecretStrategyType t = default(Net.Vpc.Upa.SecretStrategyType);
+                    Net.TheVpc.Upa.Types.SecretTransformConfig c = new Net.TheVpc.Upa.Types.SecretTransformConfig();
+                    Net.TheVpc.Upa.SecretStrategyType t = default(Net.TheVpc.Upa.SecretStrategyType);
                     try {
-                        t = (Net.Vpc.Upa.SecretStrategyType)(System.Enum.Parse(typeof(Net.Vpc.Upa.SecretStrategyType),args[0].ToUpper()));
+                        t = (Net.TheVpc.Upa.SecretStrategyType)(System.Enum.Parse(typeof(Net.TheVpc.Upa.SecretStrategyType),args[0].ToUpper()));
                     } catch (System.Exception e) {
                     }
                     //
-                    if (t != default(Net.Vpc.Upa.SecretStrategyType)) {
+                    if (t != default(Net.TheVpc.Upa.SecretStrategyType)) {
                         c.SetSecretStrategy(t);
                     } else {
                         c.SetSecretStrategy(args[0]);
@@ -340,11 +340,11 @@ namespace Net.Vpc.Upa.Impl.Transform
             }
         }
 
-        private Net.Vpc.Upa.Types.DataTypeTransformConfig[] CreateDataTypeTransformConfigArray(string expression) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            System.Collections.Generic.List<Net.Vpc.Upa.Types.DataTypeTransformConfig> all = new System.Collections.Generic.List<Net.Vpc.Upa.Types.DataTypeTransformConfig>();
+        private Net.TheVpc.Upa.Types.DataTypeTransformConfig[] CreateDataTypeTransformConfigArray(string expression) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            System.Collections.Generic.List<Net.TheVpc.Upa.Types.DataTypeTransformConfig> all = new System.Collections.Generic.List<Net.TheVpc.Upa.Types.DataTypeTransformConfig>();
             if (expression != null && (expression).Length > 0) {
                 foreach (string c in System.Text.RegularExpressions.Regex.Split(expression,"\\|")) {
-                    Net.Vpc.Upa.Types.DataTypeTransformConfig cc = CreateDataTypeTransformConfig(c);
+                    Net.TheVpc.Upa.Types.DataTypeTransformConfig cc = CreateDataTypeTransformConfig(c);
                     if (cc != null) {
                         all.Add(cc);
                     }
@@ -353,13 +353,13 @@ namespace Net.Vpc.Upa.Impl.Transform
             return all.ToArray();
         }
 
-        public virtual Net.Vpc.Upa.Types.DataTypeTransform CreateTypeTransform(Net.Vpc.Upa.PersistenceUnit pu, Net.Vpc.Upa.Types.DataType source, Net.Vpc.Upa.Types.DataTypeTransformConfig[] configs) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Types.DataTypeTransform t = null;
-            Net.Vpc.Upa.Types.DataType s = source;
+        public virtual Net.TheVpc.Upa.Types.DataTypeTransform CreateTypeTransform(Net.TheVpc.Upa.PersistenceUnit pu, Net.TheVpc.Upa.Types.DataType source, Net.TheVpc.Upa.Types.DataTypeTransformConfig[] configs) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Types.DataTypeTransform t = null;
+            Net.TheVpc.Upa.Types.DataType s = source;
             if (configs != null) {
-                foreach (Net.Vpc.Upa.Types.DataTypeTransformConfig c in configs) {
+                foreach (Net.TheVpc.Upa.Types.DataTypeTransformConfig c in configs) {
                     if (c != null) {
-                        Net.Vpc.Upa.Types.DataTypeTransform tt = CreateTypeTransform(pu, s, c);
+                        Net.TheVpc.Upa.Types.DataTypeTransform tt = CreateTypeTransform(pu, s, c);
                         if (t == null) {
                             t = tt;
                         } else {
@@ -372,69 +372,69 @@ namespace Net.Vpc.Upa.Impl.Transform
             return t;
         }
 
-        public virtual Net.Vpc.Upa.Types.DataTypeTransform CreateTypeTransform(Net.Vpc.Upa.PersistenceUnit pu, Net.Vpc.Upa.Types.DataType source, Net.Vpc.Upa.Types.DataTypeTransformConfig transformConfig) {
+        public virtual Net.TheVpc.Upa.Types.DataTypeTransform CreateTypeTransform(Net.TheVpc.Upa.PersistenceUnit pu, Net.TheVpc.Upa.Types.DataType source, Net.TheVpc.Upa.Types.DataTypeTransformConfig transformConfig) {
             if (transformConfig == null) {
                 return null;
             }
-            if (transformConfig is Net.Vpc.Upa.Types.DataTypeTransform) {
-                return (Net.Vpc.Upa.Types.DataTypeTransform) transformConfig;
-            } else if ((transformConfig is Net.Vpc.Upa.Types.CustomExpressionDataTypeTransform)) {
-                Net.Vpc.Upa.Types.CustomExpressionDataTypeTransform c = (Net.Vpc.Upa.Types.CustomExpressionDataTypeTransform) transformConfig;
+            if (transformConfig is Net.TheVpc.Upa.Types.DataTypeTransform) {
+                return (Net.TheVpc.Upa.Types.DataTypeTransform) transformConfig;
+            } else if ((transformConfig is Net.TheVpc.Upa.Types.CustomExpressionDataTypeTransform)) {
+                Net.TheVpc.Upa.Types.CustomExpressionDataTypeTransform c = (Net.TheVpc.Upa.Types.CustomExpressionDataTypeTransform) transformConfig;
                 return CreateTypeTransform(pu, source, CreateDataTypeTransformConfigArray(c.GetExpression()));
-            } else if ((transformConfig is Net.Vpc.Upa.Types.CustomTypeDataTypeTransform)) {
-                Net.Vpc.Upa.Types.CustomTypeDataTypeTransform c = (Net.Vpc.Upa.Types.CustomTypeDataTypeTransform) transformConfig;
+            } else if ((transformConfig is Net.TheVpc.Upa.Types.CustomTypeDataTypeTransform)) {
+                Net.TheVpc.Upa.Types.CustomTypeDataTypeTransform c = (Net.TheVpc.Upa.Types.CustomTypeDataTypeTransform) transformConfig;
                 return pu.GetFactory().CreateObject<T>(c.GetCustomType());
-            } else if ((transformConfig is Net.Vpc.Upa.Types.CustomInstanceDataTypeTransform)) {
-                Net.Vpc.Upa.Types.CustomInstanceDataTypeTransform c = (Net.Vpc.Upa.Types.CustomInstanceDataTypeTransform) transformConfig;
-                Net.Vpc.Upa.Types.DataTypeTransform i = c.GetInstance();
+            } else if ((transformConfig is Net.TheVpc.Upa.Types.CustomInstanceDataTypeTransform)) {
+                Net.TheVpc.Upa.Types.CustomInstanceDataTypeTransform c = (Net.TheVpc.Upa.Types.CustomInstanceDataTypeTransform) transformConfig;
+                Net.TheVpc.Upa.Types.DataTypeTransform i = c.GetInstance();
                 return i;
-            } else if (transformConfig is Net.Vpc.Upa.PasswordTransformConfig) {
-                Net.Vpc.Upa.PasswordTransformConfig p = (Net.Vpc.Upa.PasswordTransformConfig) transformConfig;
+            } else if (transformConfig is Net.TheVpc.Upa.PasswordTransformConfig) {
+                Net.TheVpc.Upa.PasswordTransformConfig p = (Net.TheVpc.Upa.PasswordTransformConfig) transformConfig;
                 return CreatePasswordTransform(pu, source, p);
-            } else if (transformConfig is Net.Vpc.Upa.Types.SecretTransformConfig) {
-                Net.Vpc.Upa.Types.SecretTransformConfig p = (Net.Vpc.Upa.Types.SecretTransformConfig) transformConfig;
+            } else if (transformConfig is Net.TheVpc.Upa.Types.SecretTransformConfig) {
+                Net.TheVpc.Upa.Types.SecretTransformConfig p = (Net.TheVpc.Upa.Types.SecretTransformConfig) transformConfig;
                 return CreateSecretTransform(pu, source, p);
-            } else if (transformConfig is Net.Vpc.Upa.Types.StringEncoderTransformConfig) {
-                Net.Vpc.Upa.Types.StringEncoderTransformConfig p = (Net.Vpc.Upa.Types.StringEncoderTransformConfig) transformConfig;
+            } else if (transformConfig is Net.TheVpc.Upa.Types.StringEncoderTransformConfig) {
+                Net.TheVpc.Upa.Types.StringEncoderTransformConfig p = (Net.TheVpc.Upa.Types.StringEncoderTransformConfig) transformConfig;
                 return CreateStringEncoderTransform(pu, source, p);
-            } else if (transformConfig is Net.Vpc.Upa.Types.ByteArrayEncoderTransformConfig) {
-                Net.Vpc.Upa.Types.ByteArrayEncoderTransformConfig p = (Net.Vpc.Upa.Types.ByteArrayEncoderTransformConfig) transformConfig;
+            } else if (transformConfig is Net.TheVpc.Upa.Types.ByteArrayEncoderTransformConfig) {
+                Net.TheVpc.Upa.Types.ByteArrayEncoderTransformConfig p = (Net.TheVpc.Upa.Types.ByteArrayEncoderTransformConfig) transformConfig;
                 return CreateByteArrayEncoderTransform(pu, source, p);
-            } else if (transformConfig is Net.Vpc.Upa.Types.CharArrayEncoderTransformConfig) {
-                Net.Vpc.Upa.Types.CharArrayEncoderTransformConfig p = (Net.Vpc.Upa.Types.CharArrayEncoderTransformConfig) transformConfig;
+            } else if (transformConfig is Net.TheVpc.Upa.Types.CharArrayEncoderTransformConfig) {
+                Net.TheVpc.Upa.Types.CharArrayEncoderTransformConfig p = (Net.TheVpc.Upa.Types.CharArrayEncoderTransformConfig) transformConfig;
                 return CreateCharArrayEncoderTransform(pu, source, p);
             }
-            throw new Net.Vpc.Upa.Exceptions.UPAException("Unsupported Transform Method", source);
+            throw new Net.TheVpc.Upa.Exceptions.UPAException("Unsupported Transform Method", source);
         }
 
-        public virtual Net.Vpc.Upa.Types.DataTypeTransform CreatePasswordTransform(Net.Vpc.Upa.PersistenceUnit pu, Net.Vpc.Upa.Types.DataType source, Net.Vpc.Upa.PasswordTransformConfig p) {
+        public virtual Net.TheVpc.Upa.Types.DataTypeTransform CreatePasswordTransform(Net.TheVpc.Upa.PersistenceUnit pu, Net.TheVpc.Upa.Types.DataType source, Net.TheVpc.Upa.PasswordTransformConfig p) {
             if (p == null) {
-                p = new Net.Vpc.Upa.PasswordTransformConfig();
+                p = new Net.TheVpc.Upa.PasswordTransformConfig();
             }
             object s = p.GetCipherStrategy();
             if (s == null) {
-                s = Net.Vpc.Upa.PasswordStrategyType.DEFAULT;
+                s = Net.TheVpc.Upa.PasswordStrategyType.DEFAULT;
             }
-            if (s is Net.Vpc.Upa.PasswordStrategyType) {
-                switch(((Net.Vpc.Upa.PasswordStrategyType) s)) {
-                    case Net.Vpc.Upa.PasswordStrategyType.SHA1:
+            if (s is Net.TheVpc.Upa.PasswordStrategyType) {
+                switch(((Net.TheVpc.Upa.PasswordStrategyType) s)) {
+                    case Net.TheVpc.Upa.PasswordStrategyType.SHA1:
                         {
-                            s = Net.Vpc.Upa.Impl.Transform.DefaultPasswordStrategy.SHA1;
+                            s = Net.TheVpc.Upa.Impl.Transform.DefaultPasswordStrategy.SHA1;
                             break;
                         }
-                    case Net.Vpc.Upa.PasswordStrategyType.SHA256:
+                    case Net.TheVpc.Upa.PasswordStrategyType.SHA256:
                         {
-                            s = Net.Vpc.Upa.Impl.Transform.DefaultPasswordStrategy.SHA256;
+                            s = Net.TheVpc.Upa.Impl.Transform.DefaultPasswordStrategy.SHA256;
                             break;
                         }
-                    case Net.Vpc.Upa.PasswordStrategyType.MD5:
+                    case Net.TheVpc.Upa.PasswordStrategyType.MD5:
                         {
-                            s = Net.Vpc.Upa.Impl.Transform.DefaultPasswordStrategy.MD5;
+                            s = Net.TheVpc.Upa.Impl.Transform.DefaultPasswordStrategy.MD5;
                             break;
                         }
-                    case Net.Vpc.Upa.PasswordStrategyType.DEFAULT:
+                    case Net.TheVpc.Upa.PasswordStrategyType.DEFAULT:
                         {
-                            s = Net.Vpc.Upa.Impl.Transform.DefaultPasswordStrategy.MD5;
+                            s = Net.TheVpc.Upa.Impl.Transform.DefaultPasswordStrategy.MD5;
                             break;
                         }
                     default:
@@ -443,112 +443,112 @@ namespace Net.Vpc.Upa.Impl.Transform
                         }
                 }
             } else if (s is string) {
-                if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty((string) s)) {
-                    s = (Net.Vpc.Upa.PasswordStrategy) pu.GetFactory().CreateObject<T>((string) s);
+                if (!Net.TheVpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty((string) s)) {
+                    s = (Net.TheVpc.Upa.PasswordStrategy) pu.GetFactory().CreateObject<T>((string) s);
                 } else {
-                    s = Net.Vpc.Upa.Impl.Transform.DefaultPasswordStrategy.MD5;
+                    s = Net.TheVpc.Upa.Impl.Transform.DefaultPasswordStrategy.MD5;
                 }
             } else if (s is System.Type) {
-                s = (Net.Vpc.Upa.PasswordStrategy) pu.GetFactory().CreateObject<object>((System.Type) s);
-            } else if (s is Net.Vpc.Upa.PasswordStrategy) {
-                s = (Net.Vpc.Upa.PasswordStrategy) s;
+                s = (Net.TheVpc.Upa.PasswordStrategy) pu.GetFactory().CreateObject<object>((System.Type) s);
+            } else if (s is Net.TheVpc.Upa.PasswordStrategy) {
+                s = (Net.TheVpc.Upa.PasswordStrategy) s;
             } else {
                 throw new System.ArgumentException ("Unsupported CipherStrategy " + s);
             }
-            p.SetCipherStrategy((Net.Vpc.Upa.PasswordStrategy) s);
-            Net.Vpc.Upa.Types.DataTypeTransform t = null;
+            p.SetCipherStrategy((Net.TheVpc.Upa.PasswordStrategy) s);
+            Net.TheVpc.Upa.Types.DataTypeTransform t = null;
             object cipherValue = p.GetCipherValue();
-            if (!(source is Net.Vpc.Upa.Types.StringType)) {
+            if (!(source is Net.TheVpc.Upa.Types.StringType)) {
                 t = CreateStringEncoderTransform(pu, source, null);
-                Net.Vpc.Upa.Impl.Transform.PasswordDataTypeTransform t2 = new Net.Vpc.Upa.Impl.Transform.PasswordDataTypeTransform((Net.Vpc.Upa.PasswordStrategy) p.GetCipherStrategy(), cipherValue, t.GetTargetType());
+                Net.TheVpc.Upa.Impl.Transform.PasswordDataTypeTransform t2 = new Net.TheVpc.Upa.Impl.Transform.PasswordDataTypeTransform((Net.TheVpc.Upa.PasswordStrategy) p.GetCipherStrategy(), cipherValue, t.GetTargetType());
                 return t.Chain(t2);
             }
-            return new Net.Vpc.Upa.Impl.Transform.PasswordDataTypeTransform((Net.Vpc.Upa.PasswordStrategy) p.GetCipherStrategy(), cipherValue, source);
+            return new Net.TheVpc.Upa.Impl.Transform.PasswordDataTypeTransform((Net.TheVpc.Upa.PasswordStrategy) p.GetCipherStrategy(), cipherValue, source);
         }
 
-        public virtual Net.Vpc.Upa.Types.DataTypeTransform CreateSecretTransform(Net.Vpc.Upa.PersistenceUnit pu, Net.Vpc.Upa.Types.DataType source, Net.Vpc.Upa.Types.SecretTransformConfig p) {
+        public virtual Net.TheVpc.Upa.Types.DataTypeTransform CreateSecretTransform(Net.TheVpc.Upa.PersistenceUnit pu, Net.TheVpc.Upa.Types.DataType source, Net.TheVpc.Upa.Types.SecretTransformConfig p) {
             if (p == null) {
-                p = new Net.Vpc.Upa.Types.SecretTransformConfig();
+                p = new Net.TheVpc.Upa.Types.SecretTransformConfig();
             }
             object s = p.GetSecretStrategy();
             if (s == null) {
-                s = Net.Vpc.Upa.SecretStrategyType.DEFAULT;
+                s = Net.TheVpc.Upa.SecretStrategyType.DEFAULT;
             }
-            if (s is Net.Vpc.Upa.SecretStrategyType) {
-                switch(((Net.Vpc.Upa.SecretStrategyType) s)) {
-                    case Net.Vpc.Upa.SecretStrategyType.BASE64:
+            if (s is Net.TheVpc.Upa.SecretStrategyType) {
+                switch(((Net.TheVpc.Upa.SecretStrategyType) s)) {
+                    case Net.TheVpc.Upa.SecretStrategyType.BASE64:
                         {
-                            s = Net.Vpc.Upa.Impl.Transform.Base64SecretStrategy.INSTANCE;
+                            s = Net.TheVpc.Upa.Impl.Transform.Base64SecretStrategy.INSTANCE;
                             break;
                         }
-                    case Net.Vpc.Upa.SecretStrategyType.DEFAULT:
+                    case Net.TheVpc.Upa.SecretStrategyType.DEFAULT:
                         {
-                            s = new Net.Vpc.Upa.Impl.Transform.DefaultSecretStrategy();
+                            s = new Net.TheVpc.Upa.Impl.Transform.DefaultSecretStrategy();
                             break;
                         }
                     default:
                         {
-                            throw new Net.Vpc.Upa.Exceptions.UPAException("Unsupported", s);
+                            throw new Net.TheVpc.Upa.Exceptions.UPAException("Unsupported", s);
                         }
                 }
             } else if (s is string) {
                 string ss = (string) s;
-                if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(ss)) {
-                    s = (Net.Vpc.Upa.SecretStrategy) pu.GetFactory().CreateObject<T>((string) s);
+                if (!Net.TheVpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(ss)) {
+                    s = (Net.TheVpc.Upa.SecretStrategy) pu.GetFactory().CreateObject<T>((string) s);
                 } else {
                     //use default
-                    s = new Net.Vpc.Upa.Impl.Transform.DefaultSecretStrategy();
+                    s = new Net.TheVpc.Upa.Impl.Transform.DefaultSecretStrategy();
                 }
             } else if (s is System.Type) {
-                s = (Net.Vpc.Upa.SecretStrategy) pu.GetFactory().CreateObject<object>((System.Type) s);
-            } else if (s is Net.Vpc.Upa.SecretStrategy) {
-                s = (Net.Vpc.Upa.SecretStrategy) s;
+                s = (Net.TheVpc.Upa.SecretStrategy) pu.GetFactory().CreateObject<object>((System.Type) s);
+            } else if (s is Net.TheVpc.Upa.SecretStrategy) {
+                s = (Net.TheVpc.Upa.SecretStrategy) s;
             } else {
                 throw new System.ArgumentException ("Unsupported SecretStrategy " + s);
             }
-            Net.Vpc.Upa.SecretStrategy st = (Net.Vpc.Upa.SecretStrategy) s;
+            Net.TheVpc.Upa.SecretStrategy st = (Net.TheVpc.Upa.SecretStrategy) s;
             st.Init(pu, p.GetEncodeKey(), p.GetDecodeKey());
             p.SetSecretStrategy(st);
-            if (!(source is Net.Vpc.Upa.Types.ByteArrayType)) {
-                Net.Vpc.Upa.Types.DataTypeTransform t = null;
+            if (!(source is Net.TheVpc.Upa.Types.ByteArrayType)) {
+                Net.TheVpc.Upa.Types.DataTypeTransform t = null;
                 t = CreateByteArrayEncoderTransform(pu, source, null);
-                Net.Vpc.Upa.Impl.Transform.SecretDataTypeTransform t2 = new Net.Vpc.Upa.Impl.Transform.SecretDataTypeTransform(st, t.GetTargetType(), p.GetSize());
+                Net.TheVpc.Upa.Impl.Transform.SecretDataTypeTransform t2 = new Net.TheVpc.Upa.Impl.Transform.SecretDataTypeTransform(st, t.GetTargetType(), p.GetSize());
                 return t.Chain(t2);
             }
-            return new Net.Vpc.Upa.Impl.Transform.SecretDataTypeTransform(st, source, p.GetSize());
+            return new Net.TheVpc.Upa.Impl.Transform.SecretDataTypeTransform(st, source, p.GetSize());
         }
 
-        public virtual Net.Vpc.Upa.Types.DataTypeTransform CreateStringEncoderTransform(Net.Vpc.Upa.PersistenceUnit pu, Net.Vpc.Upa.Types.DataType source, Net.Vpc.Upa.Types.StringEncoderTransformConfig p) {
+        public virtual Net.TheVpc.Upa.Types.DataTypeTransform CreateStringEncoderTransform(Net.TheVpc.Upa.PersistenceUnit pu, Net.TheVpc.Upa.Types.DataType source, Net.TheVpc.Upa.Types.StringEncoderTransformConfig p) {
             if (p == null) {
-                p = new Net.Vpc.Upa.Types.StringEncoderTransformConfig();
+                p = new Net.TheVpc.Upa.Types.StringEncoderTransformConfig();
             }
-            Net.Vpc.Upa.Types.ByteArrayEncoder toStringEncoder = null;
+            Net.TheVpc.Upa.Types.ByteArrayEncoder toStringEncoder = null;
             int baseSize = 0;
             object encoderObject = p.GetEncoder();
             if (encoderObject == null) {
-                encoderObject = Net.Vpc.Upa.Config.StringEncoderType.DEFAULT;
+                encoderObject = Net.TheVpc.Upa.Config.StringEncoderType.DEFAULT;
             }
-            if (source is Net.Vpc.Upa.Types.IntType) {
-                toStringEncoder = Net.Vpc.Upa.Impl.Transform.IntToStringByteArrayEncoder.INSTANCE;
+            if (source is Net.TheVpc.Upa.Types.IntType) {
+                toStringEncoder = Net.TheVpc.Upa.Impl.Transform.IntToStringByteArrayEncoder.INSTANCE;
                 baseSize = 255;
-            } else if (source is Net.Vpc.Upa.Types.LongType) {
-                toStringEncoder = Net.Vpc.Upa.Impl.Transform.LongToStringByteArrayEncoder.INSTANCE;
+            } else if (source is Net.TheVpc.Upa.Types.LongType) {
+                toStringEncoder = Net.TheVpc.Upa.Impl.Transform.LongToStringByteArrayEncoder.INSTANCE;
                 baseSize = 255;
-            } else if (source is Net.Vpc.Upa.Types.DoubleType) {
-                toStringEncoder = Net.Vpc.Upa.Impl.Transform.DoubleToStringByteArrayEncoder.INSTANCE;
+            } else if (source is Net.TheVpc.Upa.Types.DoubleType) {
+                toStringEncoder = Net.TheVpc.Upa.Impl.Transform.DoubleToStringByteArrayEncoder.INSTANCE;
                 baseSize = 255;
-            } else if (source is Net.Vpc.Upa.Types.FloatType) {
-                toStringEncoder = Net.Vpc.Upa.Impl.Transform.FloatToStringByteArrayEncoder.INSTANCE;
+            } else if (source is Net.TheVpc.Upa.Types.FloatType) {
+                toStringEncoder = Net.TheVpc.Upa.Impl.Transform.FloatToStringByteArrayEncoder.INSTANCE;
                 baseSize = 255;
-            } else if (source is Net.Vpc.Upa.Types.ByteArrayType) {
-                toStringEncoder = Net.Vpc.Upa.Impl.Transform.IdentityByteArrayEncoder.INSTANCE;
-                baseSize = ((Net.Vpc.Upa.Types.ByteArrayType) source).GetMaxSize() == null ? ((int)(0)) : (((Net.Vpc.Upa.Types.ByteArrayType) source).GetMaxSize()).Value;
-                if (encoderObject == Net.Vpc.Upa.Config.StringEncoderType.DEFAULT) {
-                    encoderObject = Net.Vpc.Upa.Config.StringEncoderType.HEXADECIMAL;
+            } else if (source is Net.TheVpc.Upa.Types.ByteArrayType) {
+                toStringEncoder = Net.TheVpc.Upa.Impl.Transform.IdentityByteArrayEncoder.INSTANCE;
+                baseSize = ((Net.TheVpc.Upa.Types.ByteArrayType) source).GetMaxSize() == null ? ((int)(0)) : (((Net.TheVpc.Upa.Types.ByteArrayType) source).GetMaxSize()).Value;
+                if (encoderObject == Net.TheVpc.Upa.Config.StringEncoderType.DEFAULT) {
+                    encoderObject = Net.TheVpc.Upa.Config.StringEncoderType.HEXADECIMAL;
                 }
-            } else if (source is Net.Vpc.Upa.Types.EnumType) {
-                Net.Vpc.Upa.Types.EnumType et = (Net.Vpc.Upa.Types.EnumType) source;
-                toStringEncoder = new Net.Vpc.Upa.Impl.Transform.EnumToStringByteArrayEncoder(source.GetPlatformType());
+            } else if (source is Net.TheVpc.Upa.Types.EnumType) {
+                Net.TheVpc.Upa.Types.EnumType et = (Net.TheVpc.Upa.Types.EnumType) source;
+                toStringEncoder = new Net.TheVpc.Upa.Impl.Transform.EnumToStringByteArrayEncoder(source.GetPlatformType());
                 //should we
                 baseSize = 3;
                 foreach (object @value in et.GetValues()) {
@@ -565,48 +565,48 @@ namespace Net.Vpc.Upa.Impl.Transform
             if (baseSize <= 0) {
                 baseSize = 255;
             }
-            Net.Vpc.Upa.Types.StringEncoder encoder = null;
-            if (encoderObject is Net.Vpc.Upa.Config.StringEncoderType) {
-                Net.Vpc.Upa.Config.StringEncoderType set = (Net.Vpc.Upa.Config.StringEncoderType) encoderObject;
-                if (set == Net.Vpc.Upa.Config.StringEncoderType.DEFAULT) {
-                    set = Net.Vpc.Upa.Config.StringEncoderType.PLAIN;
+            Net.TheVpc.Upa.Types.StringEncoder encoder = null;
+            if (encoderObject is Net.TheVpc.Upa.Config.StringEncoderType) {
+                Net.TheVpc.Upa.Config.StringEncoderType set = (Net.TheVpc.Upa.Config.StringEncoderType) encoderObject;
+                if (set == Net.TheVpc.Upa.Config.StringEncoderType.DEFAULT) {
+                    set = Net.TheVpc.Upa.Config.StringEncoderType.PLAIN;
                 }
-                if (set == Net.Vpc.Upa.Config.StringEncoderType.CUSTOM) {
+                if (set == Net.TheVpc.Upa.Config.StringEncoderType.CUSTOM) {
                     throw new System.ArgumentException ("Unsupported");
                 }
                 switch(set) {
-                    case Net.Vpc.Upa.Config.StringEncoderType.BASE64:
+                    case Net.TheVpc.Upa.Config.StringEncoderType.BASE64:
                         {
-                            encoder = Net.Vpc.Upa.Impl.Transform.Base64Encoder.INSTANCE;
+                            encoder = Net.TheVpc.Upa.Impl.Transform.Base64Encoder.INSTANCE;
                             if (p.GetSize() <= 0) {
                                 p.SetSize(baseSize * 4 / 3 + 2);
                             }
                             break;
                         }
-                    case Net.Vpc.Upa.Config.StringEncoderType.HEXADECIMAL:
+                    case Net.TheVpc.Upa.Config.StringEncoderType.HEXADECIMAL:
                         {
-                            encoder = Net.Vpc.Upa.Impl.Transform.HexaEncoder.INSTANCE;
+                            encoder = Net.TheVpc.Upa.Impl.Transform.HexaEncoder.INSTANCE;
                             if (p.GetSize() <= 0) {
                                 p.SetSize(baseSize * 2);
                             }
                             break;
                         }
-                    case Net.Vpc.Upa.Config.StringEncoderType.PLAIN:
+                    case Net.TheVpc.Upa.Config.StringEncoderType.PLAIN:
                         {
-                            encoder = Net.Vpc.Upa.Impl.Transform.PlainStringEncoder.INSTANCE;
+                            encoder = Net.TheVpc.Upa.Impl.Transform.PlainStringEncoder.INSTANCE;
                             if (p.GetSize() <= 0) {
                                 p.SetSize(baseSize);
                             }
                             break;
                         }
-                    case Net.Vpc.Upa.Config.StringEncoderType.XML:
+                    case Net.TheVpc.Upa.Config.StringEncoderType.XML:
                         {
                             if (p.GetSize() <= 0) {
                                 p.SetSize(baseSize);
                             }
                             throw new System.ArgumentException ("Unsupported yet " + set + " Encoder");
                         }
-                    case Net.Vpc.Upa.Config.StringEncoderType.JSON:
+                    case Net.TheVpc.Upa.Config.StringEncoderType.JSON:
                         {
                             if (p.GetSize() <= 0) {
                                 p.SetSize(baseSize);
@@ -621,39 +621,39 @@ namespace Net.Vpc.Upa.Impl.Transform
             } else if (encoderObject is string) {
                 return pu.GetFactory().CreateObject<T>((string) encoderObject);
             } else if (encoderObject is System.Type) {
-                return (Net.Vpc.Upa.Types.DataTypeTransform) pu.GetFactory().CreateObject<object>((System.Type) encoderObject);
+                return (Net.TheVpc.Upa.Types.DataTypeTransform) pu.GetFactory().CreateObject<object>((System.Type) encoderObject);
             } else {
                 throw new System.ArgumentException ("Unsupported Encoder " + encoderObject);
             }
-            return new Net.Vpc.Upa.Impl.Transform.StringEncoderDataTypeTransform(encoder, source, p.GetSize(), toStringEncoder);
+            return new Net.TheVpc.Upa.Impl.Transform.StringEncoderDataTypeTransform(encoder, source, p.GetSize(), toStringEncoder);
         }
 
-        public virtual Net.Vpc.Upa.Types.DataTypeTransform CreateByteArrayEncoderTransform(Net.Vpc.Upa.PersistenceUnit pu, Net.Vpc.Upa.Types.DataType source, Net.Vpc.Upa.Types.ByteArrayEncoderTransformConfig p) {
+        public virtual Net.TheVpc.Upa.Types.DataTypeTransform CreateByteArrayEncoderTransform(Net.TheVpc.Upa.PersistenceUnit pu, Net.TheVpc.Upa.Types.DataType source, Net.TheVpc.Upa.Types.ByteArrayEncoderTransformConfig p) {
             if (p == null) {
-                p = new Net.Vpc.Upa.Types.ByteArrayEncoderTransformConfig();
+                p = new Net.TheVpc.Upa.Types.ByteArrayEncoderTransformConfig();
             }
             int baseSize = 0;
-            Net.Vpc.Upa.Types.ByteArrayEncoder enc = null;
-            if (source is Net.Vpc.Upa.Types.IntType) {
-                enc = Net.Vpc.Upa.Impl.Transform.IntToStringByteArrayEncoder.INSTANCE;
+            Net.TheVpc.Upa.Types.ByteArrayEncoder enc = null;
+            if (source is Net.TheVpc.Upa.Types.IntType) {
+                enc = Net.TheVpc.Upa.Impl.Transform.IntToStringByteArrayEncoder.INSTANCE;
                 baseSize = 255;
-            } else if (source is Net.Vpc.Upa.Types.LongType) {
-                enc = Net.Vpc.Upa.Impl.Transform.LongToStringByteArrayEncoder.INSTANCE;
+            } else if (source is Net.TheVpc.Upa.Types.LongType) {
+                enc = Net.TheVpc.Upa.Impl.Transform.LongToStringByteArrayEncoder.INSTANCE;
                 baseSize = 255;
-            } else if (source is Net.Vpc.Upa.Types.DoubleType) {
-                enc = Net.Vpc.Upa.Impl.Transform.DoubleToStringByteArrayEncoder.INSTANCE;
+            } else if (source is Net.TheVpc.Upa.Types.DoubleType) {
+                enc = Net.TheVpc.Upa.Impl.Transform.DoubleToStringByteArrayEncoder.INSTANCE;
                 baseSize = 255;
-            } else if (source is Net.Vpc.Upa.Types.FloatType) {
-                enc = Net.Vpc.Upa.Impl.Transform.FloatToStringByteArrayEncoder.INSTANCE;
+            } else if (source is Net.TheVpc.Upa.Types.FloatType) {
+                enc = Net.TheVpc.Upa.Impl.Transform.FloatToStringByteArrayEncoder.INSTANCE;
                 baseSize = 255;
-            } else if (source is Net.Vpc.Upa.Types.StringType) {
-                enc = Net.Vpc.Upa.Impl.Transform.StringToByteArrayEncoder.INSTANCE;
+            } else if (source is Net.TheVpc.Upa.Types.StringType) {
+                enc = Net.TheVpc.Upa.Impl.Transform.StringToByteArrayEncoder.INSTANCE;
                 baseSize = 255;
-            } else if (source is Net.Vpc.Upa.Types.ByteArrayType) {
+            } else if (source is Net.TheVpc.Upa.Types.ByteArrayType) {
                 enc = null;
                 baseSize = 255;
-                Net.Vpc.Upa.Types.EnumType et = (Net.Vpc.Upa.Types.EnumType) source;
-                enc = new Net.Vpc.Upa.Impl.Transform.EnumToStringByteArrayEncoder(source.GetPlatformType());
+                Net.TheVpc.Upa.Types.EnumType et = (Net.TheVpc.Upa.Types.EnumType) source;
+                enc = new Net.TheVpc.Upa.Impl.Transform.EnumToStringByteArrayEncoder(source.GetPlatformType());
                 //should we
                 baseSize = 3;
                 foreach (object @value in et.GetValues()) {
@@ -668,92 +668,92 @@ namespace Net.Vpc.Upa.Impl.Transform
                 throw new System.ArgumentException ("Unsupported");
             }
             object postEncoderObject = p.GetEncoder();
-            Net.Vpc.Upa.Types.ByteArrayEncoder postEncoder = null;
+            Net.TheVpc.Upa.Types.ByteArrayEncoder postEncoder = null;
             if (postEncoderObject == null) {
             } else if (postEncoderObject is string) {
-                if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty((string) postEncoderObject)) {
+                if (!Net.TheVpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty((string) postEncoderObject)) {
                     postEncoder = pu.GetFactory().CreateObject<T>((string) postEncoderObject);
                 }
             } else if (postEncoderObject is System.Type) {
-                postEncoder = (Net.Vpc.Upa.Types.ByteArrayEncoder) pu.GetFactory().CreateObject<object>((System.Type) postEncoderObject);
-            } else if (postEncoderObject is Net.Vpc.Upa.Types.ByteArrayEncoder) {
-                postEncoder = (Net.Vpc.Upa.Types.ByteArrayEncoder) postEncoderObject;
+                postEncoder = (Net.TheVpc.Upa.Types.ByteArrayEncoder) pu.GetFactory().CreateObject<object>((System.Type) postEncoderObject);
+            } else if (postEncoderObject is Net.TheVpc.Upa.Types.ByteArrayEncoder) {
+                postEncoder = (Net.TheVpc.Upa.Types.ByteArrayEncoder) postEncoderObject;
             } else {
                 throw new System.ArgumentException ("Unsupported");
             }
             if (p.GetSize() <= 0) {
                 p.SetSize(baseSize);
             }
-            Net.Vpc.Upa.Types.ByteArrayEncoder finalEncoder = null;
+            Net.TheVpc.Upa.Types.ByteArrayEncoder finalEncoder = null;
             if (enc == null) {
                 finalEncoder = postEncoder;
             } else if (postEncoder == null) {
                 finalEncoder = enc;
             } else {
-                finalEncoder = new Net.Vpc.Upa.Impl.Transform.ChainByteArrayEncoder(enc, postEncoder);
+                finalEncoder = new Net.TheVpc.Upa.Impl.Transform.ChainByteArrayEncoder(enc, postEncoder);
             }
             if (finalEncoder == null) {
-                finalEncoder = Net.Vpc.Upa.Impl.Transform.IdentityByteArrayEncoder.INSTANCE;
+                finalEncoder = Net.TheVpc.Upa.Impl.Transform.IdentityByteArrayEncoder.INSTANCE;
             }
-            return new Net.Vpc.Upa.Impl.Transform.ByteArrayEncoderDataTypeTransform(finalEncoder, source, p.GetSize());
+            return new Net.TheVpc.Upa.Impl.Transform.ByteArrayEncoderDataTypeTransform(finalEncoder, source, p.GetSize());
         }
 
-        public virtual Net.Vpc.Upa.Types.DataTypeTransform CreateCharArrayEncoderTransform(Net.Vpc.Upa.PersistenceUnit pu, Net.Vpc.Upa.Types.DataType source, Net.Vpc.Upa.Types.CharArrayEncoderTransformConfig p) {
+        public virtual Net.TheVpc.Upa.Types.DataTypeTransform CreateCharArrayEncoderTransform(Net.TheVpc.Upa.PersistenceUnit pu, Net.TheVpc.Upa.Types.DataType source, Net.TheVpc.Upa.Types.CharArrayEncoderTransformConfig p) {
             if (p == null) {
-                p = new Net.Vpc.Upa.Types.CharArrayEncoderTransformConfig();
+                p = new Net.TheVpc.Upa.Types.CharArrayEncoderTransformConfig();
             }
-            Net.Vpc.Upa.Types.CharArrayEncoder preEncoder = null;
+            Net.TheVpc.Upa.Types.CharArrayEncoder preEncoder = null;
             int baseSize = 0;
-            if (source is Net.Vpc.Upa.Types.IntType) {
-                preEncoder = Net.Vpc.Upa.Impl.Transform.IntToStringCharArrayEncoder.INSTANCE;
+            if (source is Net.TheVpc.Upa.Types.IntType) {
+                preEncoder = Net.TheVpc.Upa.Impl.Transform.IntToStringCharArrayEncoder.INSTANCE;
                 baseSize = 255;
-            } else if (source is Net.Vpc.Upa.Types.LongType) {
-                preEncoder = Net.Vpc.Upa.Impl.Transform.LongToStringCharArrayEncoder.INSTANCE;
+            } else if (source is Net.TheVpc.Upa.Types.LongType) {
+                preEncoder = Net.TheVpc.Upa.Impl.Transform.LongToStringCharArrayEncoder.INSTANCE;
                 baseSize = 255;
-            } else if (source is Net.Vpc.Upa.Types.DoubleType) {
-                preEncoder = Net.Vpc.Upa.Impl.Transform.DoubleToStringCharArrayEncoder.INSTANCE;
+            } else if (source is Net.TheVpc.Upa.Types.DoubleType) {
+                preEncoder = Net.TheVpc.Upa.Impl.Transform.DoubleToStringCharArrayEncoder.INSTANCE;
                 baseSize = 255;
-            } else if (source is Net.Vpc.Upa.Types.FloatType) {
-                preEncoder = Net.Vpc.Upa.Impl.Transform.FloatToStringCharArrayEncoder.INSTANCE;
+            } else if (source is Net.TheVpc.Upa.Types.FloatType) {
+                preEncoder = Net.TheVpc.Upa.Impl.Transform.FloatToStringCharArrayEncoder.INSTANCE;
                 baseSize = 255;
-            } else if (source is Net.Vpc.Upa.Types.StringType) {
-                preEncoder = Net.Vpc.Upa.Impl.Transform.StringToCharArrayEncoder.INSTANCE;
+            } else if (source is Net.TheVpc.Upa.Types.StringType) {
+                preEncoder = Net.TheVpc.Upa.Impl.Transform.StringToCharArrayEncoder.INSTANCE;
                 baseSize = 255;
-            } else if (source is Net.Vpc.Upa.Types.ByteArrayType) {
+            } else if (source is Net.TheVpc.Upa.Types.ByteArrayType) {
                 preEncoder = null;
                 baseSize = 255;
             } else {
                 throw new System.ArgumentException ("Unsupported");
             }
             object postEncoderObject = p.GetEncoder();
-            Net.Vpc.Upa.Types.CharArrayEncoder postEncoder = null;
+            Net.TheVpc.Upa.Types.CharArrayEncoder postEncoder = null;
             if (postEncoderObject == null) {
             } else if (postEncoderObject is string) {
-                if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty((string) postEncoderObject)) {
+                if (!Net.TheVpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty((string) postEncoderObject)) {
                     postEncoder = pu.GetFactory().CreateObject<T>((string) postEncoderObject);
                 }
             } else if (postEncoderObject is System.Type) {
-                postEncoder = (Net.Vpc.Upa.Types.CharArrayEncoder) pu.GetFactory().CreateObject<object>((System.Type) postEncoderObject);
-            } else if (postEncoderObject is Net.Vpc.Upa.Types.ByteArrayEncoder) {
-                postEncoder = (Net.Vpc.Upa.Types.CharArrayEncoder) postEncoderObject;
+                postEncoder = (Net.TheVpc.Upa.Types.CharArrayEncoder) pu.GetFactory().CreateObject<object>((System.Type) postEncoderObject);
+            } else if (postEncoderObject is Net.TheVpc.Upa.Types.ByteArrayEncoder) {
+                postEncoder = (Net.TheVpc.Upa.Types.CharArrayEncoder) postEncoderObject;
             } else {
                 throw new System.ArgumentException ("Unsupported");
             }
             if (p.GetSize() <= 0) {
                 p.SetSize(baseSize);
             }
-            Net.Vpc.Upa.Types.CharArrayEncoder finalEncoder = null;
+            Net.TheVpc.Upa.Types.CharArrayEncoder finalEncoder = null;
             if (preEncoder == null) {
                 finalEncoder = postEncoder;
             } else if (postEncoder == null) {
                 finalEncoder = preEncoder;
             } else {
-                finalEncoder = new Net.Vpc.Upa.Impl.Transform.ChainCharArrayEncoder(preEncoder, postEncoder);
+                finalEncoder = new Net.TheVpc.Upa.Impl.Transform.ChainCharArrayEncoder(preEncoder, postEncoder);
             }
             if (finalEncoder == null) {
-                finalEncoder = Net.Vpc.Upa.Impl.Transform.IdentityCharArrayEncoder.INSTANCE;
+                finalEncoder = Net.TheVpc.Upa.Impl.Transform.IdentityCharArrayEncoder.INSTANCE;
             }
-            return new Net.Vpc.Upa.Impl.Transform.CharArrayEncoderDataTypeTransform(finalEncoder, source, p.GetSize());
+            return new Net.TheVpc.Upa.Impl.Transform.CharArrayEncoderDataTypeTransform(finalEncoder, source, p.GetSize());
         }
     }
 }

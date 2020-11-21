@@ -11,10 +11,10 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
-    public abstract class DefaultEntityStatement : Net.Vpc.Upa.Expressions.DefaultExpression, Net.Vpc.Upa.Expressions.EntityStatement {
+    public abstract class DefaultEntityStatement : Net.TheVpc.Upa.Expressions.DefaultExpression, Net.TheVpc.Upa.Expressions.EntityStatement {
 
 
 

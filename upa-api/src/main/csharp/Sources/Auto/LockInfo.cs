@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -21,9 +21,9 @@ namespace Net.Vpc.Upa
 
         private string user;
 
-        private Net.Vpc.Upa.Types.Temporal date;
+        private Net.TheVpc.Upa.Types.Temporal date;
 
-        public LockInfo(object entity, Net.Vpc.Upa.Types.Temporal date, string user) {
+        public LockInfo(object entity, Net.TheVpc.Upa.Types.Temporal date, string user) {
             this.entity = entity;
             this.date = date;
             this.user = user;
@@ -33,7 +33,7 @@ namespace Net.Vpc.Upa
             return user;
         }
 
-        public virtual Net.Vpc.Upa.Types.Temporal GetDate() {
+        public virtual Net.TheVpc.Upa.Types.Temporal GetDate() {
             return date;
         }
 

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
 
@@ -21,6 +21,6 @@ namespace Net.Vpc.Upa.Types
      */
     public interface DataTypeTransformFactory {
 
-         Net.Vpc.Upa.Types.DataTypeTransform CreateTypeTransform(Net.Vpc.Upa.PersistenceUnit pu, Net.Vpc.Upa.Types.DataType source, Net.Vpc.Upa.Types.DataTypeTransformConfig[] transformConfig) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Types.DataTypeTransform CreateTypeTransform(Net.TheVpc.Upa.PersistenceUnit pu, Net.TheVpc.Upa.Types.DataType source, Net.TheVpc.Upa.Types.DataTypeTransformConfig[] transformConfig) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
     }
 }

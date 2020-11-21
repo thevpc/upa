@@ -11,10 +11,10 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
-    public class AlreadyLockedPersistenceUnitException : Net.Vpc.Upa.Exceptions.PersistenceUnitLockingException {
+    public class AlreadyLockedPersistenceUnitException : Net.TheVpc.Upa.Exceptions.PersistenceUnitLockingException {
 
         public AlreadyLockedPersistenceUnitException(string message, params object [] parameters)  : base(message, parameters){
 

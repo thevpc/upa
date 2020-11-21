@@ -11,9 +11,9 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
-    public interface PrimitiveField : Net.Vpc.Upa.Field {
+    public interface PrimitiveField : Net.TheVpc.Upa.Field {
     }
 }

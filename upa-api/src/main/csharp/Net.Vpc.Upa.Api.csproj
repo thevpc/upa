@@ -8,8 +8,8 @@
     <ProjectGuid>{DEFA43FF-E018-4C31-A9B1-37B1C6585375}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Net.Vpc.Upa</RootNamespace>
-    <AssemblyName>Net.Vpc.Upa</AssemblyName>
+    <RootNamespace>Net.TheVpc.Upa</RootNamespace>
+    <AssemblyName>Net.TheVpc.Upa</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
     /**
@@ -20,12 +20,12 @@ namespace Net.Vpc.Upa.Impl.Persistence
      */
     public class IdentifierStoreTranslators {
 
-        public static Net.Vpc.Upa.Impl.Persistence.IdentifierStoreTranslator UPPER = new Net.Vpc.Upa.Impl.Persistence.IdentifierStoreTranslatorUPPER();
+        public static Net.TheVpc.Upa.Impl.Persistence.IdentifierStoreTranslator UPPER = new Net.TheVpc.Upa.Impl.Persistence.IdentifierStoreTranslatorUPPER();
 
-        public static Net.Vpc.Upa.Impl.Persistence.IdentifierStoreTranslator LOWER = new Net.Vpc.Upa.Impl.Persistence.IdentifierStoreTranslatorLower();
+        public static Net.TheVpc.Upa.Impl.Persistence.IdentifierStoreTranslator LOWER = new Net.TheVpc.Upa.Impl.Persistence.IdentifierStoreTranslatorLower();
 
-        public static Net.Vpc.Upa.Impl.Persistence.IdentifierStoreTranslator MIXED = new Net.Vpc.Upa.Impl.Persistence.IdentifierStoreTranslatorMixed();
+        public static Net.TheVpc.Upa.Impl.Persistence.IdentifierStoreTranslator MIXED = new Net.TheVpc.Upa.Impl.Persistence.IdentifierStoreTranslatorMixed();
 
-        public static Net.Vpc.Upa.Impl.Persistence.IdentifierStoreTranslator MIXED_DBL_QUOTE = new Net.Vpc.Upa.Impl.Persistence.IdentifierStoreTranslatorMixedDoubleQuote();
+        public static Net.TheVpc.Upa.Impl.Persistence.IdentifierStoreTranslator MIXED_DBL_QUOTE = new Net.TheVpc.Upa.Impl.Persistence.IdentifierStoreTranslatorMixedDoubleQuote();
     }
 }

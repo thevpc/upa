@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
 
@@ -21,6 +21,6 @@ namespace Net.Vpc.Upa.Persistence
      */
     public interface TransactionManagerFactory {
 
-         Net.Vpc.Upa.TransactionManager CreateTransactionManager(Net.Vpc.Upa.Persistence.ConnectionProfile connectionProfile, Net.Vpc.Upa.ObjectFactory factory, Net.Vpc.Upa.Properties parameters);
+         Net.TheVpc.Upa.TransactionManager CreateTransactionManager(Net.TheVpc.Upa.Persistence.ConnectionProfile connectionProfile, Net.TheVpc.Upa.ObjectFactory factory, Net.TheVpc.Upa.Properties parameters);
     }
 }

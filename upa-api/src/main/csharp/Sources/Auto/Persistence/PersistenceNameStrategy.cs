@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
 
@@ -50,7 +50,7 @@ namespace Net.Vpc.Upa.Persistence
      */
     public interface PersistenceNameStrategy {
 
-         void Init(Net.Vpc.Upa.Persistence.PersistenceStore persistenceStore, Net.Vpc.Upa.Persistence.PersistenceNameConfig model, Net.Vpc.Upa.Properties properties);
+         void Init(Net.TheVpc.Upa.Persistence.PersistenceStore persistenceStore, Net.TheVpc.Upa.Persistence.PersistenceNameConfig model, Net.TheVpc.Upa.Properties properties);
 
          void Close();
 
@@ -61,6 +61,6 @@ namespace Net.Vpc.Upa.Persistence
              * @return a valid SQL Identifier
              * @throws UPAException
              */
-         string GetPersistenceName(object source, Net.Vpc.Upa.Persistence.PersistenceNameType spec) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         string GetPersistenceName(object source, Net.TheVpc.Upa.Persistence.PersistenceNameType spec) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
     }
 }

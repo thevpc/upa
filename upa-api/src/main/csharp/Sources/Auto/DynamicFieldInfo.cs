@@ -11,10 +11,10 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
-    public class DynamicFieldInfo : Net.Vpc.Upa.FieldInfo {
+    public class DynamicFieldInfo : Net.TheVpc.Upa.FieldInfo {
 
         public DynamicFieldInfo()  : base("dynamic"){
 

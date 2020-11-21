@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
     /**
      * Persistence Unit is this template use File | Settings | File Templates.
      */
-    public interface PersistenceUnit : Net.Vpc.Upa.Closeable {
+    public interface PersistenceUnit : Net.TheVpc.Upa.Closeable {
 
          bool IsAutoStart();
 
@@ -33,21 +33,21 @@ namespace Net.Vpc.Upa
 
          void SetAutoScan(bool autoScan);
 
-         Net.Vpc.Upa.Session OpenSession();
+         Net.TheVpc.Upa.Session OpenSession();
 
-         Net.Vpc.Upa.ObjectFactory GetFactory();
+         Net.TheVpc.Upa.ObjectFactory GetFactory();
 
-         Net.Vpc.Upa.PersistenceGroup GetPersistenceGroup();
+         Net.TheVpc.Upa.PersistenceGroup GetPersistenceGroup();
 
-         Net.Vpc.Upa.Types.I18NString GetTitle();
+         Net.TheVpc.Upa.Types.I18NString GetTitle();
 
-         Net.Vpc.Upa.Package AddPackage(string name, string parentPath);
+         Net.TheVpc.Upa.Package AddPackage(string name, string parentPath);
 
-         Net.Vpc.Upa.Package AddPackage(string name, string parentPath, int index);
+         Net.TheVpc.Upa.Package AddPackage(string name, string parentPath, int index);
 
-         Net.Vpc.Upa.Package AddPackage(string name);
+         Net.TheVpc.Upa.Package AddPackage(string name);
 
-         Net.Vpc.Upa.Package AddPackage(string name, int index);
+         Net.TheVpc.Upa.Package AddPackage(string name, int index);
 
         /**
              * add all modules
@@ -56,11 +56,11 @@ namespace Net.Vpc.Upa
              * @param missingStrategy
              * @return
              */
-         Net.Vpc.Upa.Package GetPackage(string path, Net.Vpc.Upa.MissingStrategy missingStrategy);
+         Net.TheVpc.Upa.Package GetPackage(string path, Net.TheVpc.Upa.MissingStrategy missingStrategy);
 
-         Net.Vpc.Upa.Package GetPackage(string path);
+         Net.TheVpc.Upa.Package GetPackage(string path);
 
-         Net.Vpc.Upa.Package GetDefaultPackage();
+         Net.TheVpc.Upa.Package GetDefaultPackage();
 
          bool IsReadOnly();
 
@@ -82,9 +82,9 @@ namespace Net.Vpc.Upa
 
          void SetCaseSensitive(bool enable);
 
-         Net.Vpc.Upa.NamingStrategy GetNamingStrategy();
+         Net.TheVpc.Upa.NamingStrategy GetNamingStrategy();
 
-         Net.Vpc.Upa.Persistence.PersistenceStore GetPersistenceStore();
+         Net.TheVpc.Upa.Persistence.PersistenceStore GetPersistenceStore();
 
         /**
              * descriptor may be
@@ -100,11 +100,11 @@ namespace Net.Vpc.Upa
              * @return
              * @
              */
-         Net.Vpc.Upa.Entity AddEntity(object descriptor);
+         Net.TheVpc.Upa.Entity AddEntity(object descriptor);
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Index> GetIndexes();
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Index> GetIndexes();
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Index> GetIndexes(string entityName);
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Index> GetIndexes(string entityName);
 
          bool ContainsEntity(string entityName);
 
@@ -115,49 +115,49 @@ namespace Net.Vpc.Upa
              *                  functions...)
              * @
              */
-         void Scan(Net.Vpc.Upa.Config.ScanSource source, Net.Vpc.Upa.ScanListener listener, bool configure);
+         void Scan(Net.TheVpc.Upa.Config.ScanSource source, Net.TheVpc.Upa.ScanListener listener, bool configure);
 
          bool ContainsField(string entityName, string fieldName);
 
-         Net.Vpc.Upa.Entity GetEntity(string entityName);
+         Net.TheVpc.Upa.Entity GetEntity(string entityName);
 
          bool ContainsEntity(System.Type entityType);
 
-         Net.Vpc.Upa.Entity FindEntity(System.Type entityType);
+         Net.TheVpc.Upa.Entity FindEntity(System.Type entityType);
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Entity> FindEntities(System.Type entityType);
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Entity> FindEntities(System.Type entityType);
 
-         Net.Vpc.Upa.Entity FindEntity(string entityName);
+         Net.TheVpc.Upa.Entity FindEntity(string entityName);
 
-         Net.Vpc.Upa.Entity GetEntity(System.Type entityType);
+         Net.TheVpc.Upa.Entity GetEntity(System.Type entityType);
 
-         void AddRelationship(Net.Vpc.Upa.RelationshipDescriptor relationDescriptor);
+         void AddRelationship(Net.TheVpc.Upa.RelationshipDescriptor relationDescriptor);
 
          void Reset();
 
          void Reset(System.Collections.Generic.IDictionary<string , object> hints);
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Entity> GetEntities();
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Entity> GetEntities();
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Package> GetPackages();
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Package> GetPackages();
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Entity> GetEntities(Net.Vpc.Upa.Filters.EntityFilter entityFilter);
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Entity> GetEntities(Net.TheVpc.Upa.Filters.EntityFilter entityFilter);
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Relationship> GetRelationships();
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Relationship> GetRelationships();
 
-         Net.Vpc.Upa.Relationship GetRelationship(string name);
+         Net.TheVpc.Upa.Relationship GetRelationship(string name);
 
          bool ContainsRelationship(string relationName);
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Relationship> GetRelationshipsByTarget(Net.Vpc.Upa.Entity entity);
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Relationship> GetRelationshipsByTarget(Net.TheVpc.Upa.Entity entity);
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Relationship> GetRelationshipsBySource(Net.Vpc.Upa.Entity entity);
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Relationship> GetRelationshipsBySource(Net.TheVpc.Upa.Entity entity);
 
          void InstallDemoData();
 
          void Start();
 
-         bool IsSystemSession(Net.Vpc.Upa.Session s);
+         bool IsSystemSession(Net.TheVpc.Upa.Session s);
 
          string GetPersistenceName();
 
@@ -169,31 +169,31 @@ namespace Net.Vpc.Upa
 
          void Clear(System.Type entity, System.Collections.Generic.IDictionary<string , object> hints);
 
-         void Clear(Net.Vpc.Upa.Filters.EntityFilter entityFilter, System.Collections.Generic.IDictionary<string , object> hints);
+         void Clear(Net.TheVpc.Upa.Filters.EntityFilter entityFilter, System.Collections.Generic.IDictionary<string , object> hints);
 
          void Clear();
 
 
-         void AddPropertyChangeListener(string propertyName, Net.Vpc.Upa.PropertyChangeListener listener);
+         void AddPropertyChangeListener(string propertyName, Net.TheVpc.Upa.PropertyChangeListener listener);
 
 
-         void AddPropertyChangeListener(Net.Vpc.Upa.PropertyChangeListener listener);
+         void AddPropertyChangeListener(Net.TheVpc.Upa.PropertyChangeListener listener);
 
 
-         void RemovePropertyChangeListener(string propertyName, Net.Vpc.Upa.PropertyChangeListener listener);
+         void RemovePropertyChangeListener(string propertyName, Net.TheVpc.Upa.PropertyChangeListener listener);
 
 
-         void RemovePropertyChangeListener(Net.Vpc.Upa.PropertyChangeListener listener);
+         void RemovePropertyChangeListener(Net.TheVpc.Upa.PropertyChangeListener listener);
 
-         Net.Vpc.Upa.PropertyChangeListener[] GetPropertyChangeListeners();
+         Net.TheVpc.Upa.PropertyChangeListener[] GetPropertyChangeListeners();
 
-         Net.Vpc.Upa.PropertyChangeListener[] GetPropertyChangeListeners(string propertyName);
+         Net.TheVpc.Upa.PropertyChangeListener[] GetPropertyChangeListeners(string propertyName);
 
          int GetStatus();
 
          void SetStatus(int status);
 
-         Net.Vpc.Upa.Properties GetProperties();
+         Net.TheVpc.Upa.Properties GetProperties();
 
          bool IsAskOnCheckCreatedPersistenceUnit();
 
@@ -201,29 +201,29 @@ namespace Net.Vpc.Upa
 
          System.Type GetEntityExtensionSupportType(System.Type entityExtensionType);
 
-         Net.Vpc.Upa.UPASecurityManager GetSecurityManager();
+         Net.TheVpc.Upa.UPASecurityManager GetSecurityManager();
 
         /**
              * @param definitionListener
              * @param trackSystem        when true system entities are also tracked
              */
-         void AddDefinitionListener(Net.Vpc.Upa.Callbacks.DefinitionListener definitionListener, bool trackSystem);
+         void AddDefinitionListener(Net.TheVpc.Upa.Callbacks.DefinitionListener definitionListener, bool trackSystem);
 
         /**
              * @param entityName
              * @param definitionListener
              * @param trackSystem        when true system entities are also tracked
              */
-         void AddDefinitionListener(string entityName, Net.Vpc.Upa.Callbacks.DefinitionListener definitionListener, bool trackSystem);
+         void AddDefinitionListener(string entityName, Net.TheVpc.Upa.Callbacks.DefinitionListener definitionListener, bool trackSystem);
 
-         void AddDefinitionListener(System.Type entityType, Net.Vpc.Upa.Callbacks.DefinitionListener definitionListener, bool trackSystem);
+         void AddDefinitionListener(System.Type entityType, Net.TheVpc.Upa.Callbacks.DefinitionListener definitionListener, bool trackSystem);
 
         /**
              * system entities are not tracked
              *
              * @param definitionListener
              */
-         void AddDefinitionListener(Net.Vpc.Upa.Callbacks.DefinitionListener definitionListener);
+         void AddDefinitionListener(Net.TheVpc.Upa.Callbacks.DefinitionListener definitionListener);
 
         /**
              * system entities are not tracked
@@ -231,45 +231,45 @@ namespace Net.Vpc.Upa
              * @param entityName
              * @param definitionListener
              */
-         void AddDefinitionListener(string entityName, Net.Vpc.Upa.Callbacks.DefinitionListener definitionListener);
+         void AddDefinitionListener(string entityName, Net.TheVpc.Upa.Callbacks.DefinitionListener definitionListener);
 
-         void RemoveDefinitionListener(Net.Vpc.Upa.Callbacks.DefinitionListener definitionListener);
+         void RemoveDefinitionListener(Net.TheVpc.Upa.Callbacks.DefinitionListener definitionListener);
 
-         void RemoveDefinitionListener(string entityName, Net.Vpc.Upa.Callbacks.DefinitionListener definitionListener);
+         void RemoveDefinitionListener(string entityName, Net.TheVpc.Upa.Callbacks.DefinitionListener definitionListener);
 
-         void RemoveDefinitionListener(System.Type entityType, Net.Vpc.Upa.Callbacks.DefinitionListener definitionListener);
+         void RemoveDefinitionListener(System.Type entityType, Net.TheVpc.Upa.Callbacks.DefinitionListener definitionListener);
 
-         void AddPersistenceUnitListener(Net.Vpc.Upa.Callbacks.PersistenceUnitListener listener);
+         void AddPersistenceUnitListener(Net.TheVpc.Upa.Callbacks.PersistenceUnitListener listener);
 
-         void RemovePersistenceUnitListener(Net.Vpc.Upa.Callbacks.PersistenceUnitListener listener);
+         void RemovePersistenceUnitListener(Net.TheVpc.Upa.Callbacks.PersistenceUnitListener listener);
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Callbacks.PersistenceUnitListener> GetPersistenceUnitListeners();
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Callbacks.PersistenceUnitListener> GetPersistenceUnitListeners();
 
-         Net.Vpc.Upa.Persistence.PersistenceStoreFactory GetPersistenceStoreFactory();
+         Net.TheVpc.Upa.Persistence.PersistenceStoreFactory GetPersistenceStoreFactory();
 
-         void AddSQLParameterProcessor(Net.Vpc.Upa.Expressions.QLParameterProcessor p);
+         void AddSQLParameterProcessor(Net.TheVpc.Upa.Expressions.QLParameterProcessor p);
 
-         void RemoveSQLParameterProcessor(Net.Vpc.Upa.Expressions.QLParameterProcessor p);
+         void RemoveSQLParameterProcessor(Net.TheVpc.Upa.Expressions.QLParameterProcessor p);
 
-         Net.Vpc.Upa.I18NStringStrategy GetI18NStringStrategy();
+         Net.TheVpc.Upa.I18NStringStrategy GetI18NStringStrategy();
 
-         Net.Vpc.Upa.LockInfo GetPersistenceUnitLockingInfo();
+         Net.TheVpc.Upa.LockInfo GetPersistenceUnitLockingInfo();
 
          void LockPersistenceUnit(string id);
 
          void UnlockPersistenceUnit(string id);
 
-         Net.Vpc.Upa.LockInfo GetLockingInfo(Net.Vpc.Upa.Entity entity);
+         Net.TheVpc.Upa.LockInfo GetLockingInfo(Net.TheVpc.Upa.Entity entity);
 
-         void LockEntityManager(Net.Vpc.Upa.Entity entity, string id);
+         void LockEntityManager(Net.TheVpc.Upa.Entity entity, string id);
 
-         void UnlockEntityManager(Net.Vpc.Upa.Entity entity, string id);
+         void UnlockEntityManager(Net.TheVpc.Upa.Entity entity, string id);
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.LockInfo> GetLockingInfo(Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.Expressions.Expression expression);
+         System.Collections.Generic.IList<Net.TheVpc.Upa.LockInfo> GetLockingInfo(Net.TheVpc.Upa.Entity entity, Net.TheVpc.Upa.Expressions.Expression expression);
 
-         void LockEntities(Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.Expressions.Expression expression, string id);
+         void LockEntities(Net.TheVpc.Upa.Entity entity, Net.TheVpc.Upa.Expressions.Expression expression, string id);
 
-         void UnlockEntities(Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.Expressions.Expression expression, string id);
+         void UnlockEntities(Net.TheVpc.Upa.Entity entity, Net.TheVpc.Upa.Expressions.Expression expression, string id);
 
         /**
              * if entityNamePattern is a simple Entity name of an existing name call
@@ -282,17 +282,17 @@ namespace Net.Vpc.Upa
              * @param system            if true include system entities
              * @
              */
-         void AddTrigger(string triggerName, Net.Vpc.Upa.Callbacks.EntityInterceptor interceptor, string entityNamePattern, bool system);
+         void AddTrigger(string triggerName, Net.TheVpc.Upa.Callbacks.EntityInterceptor interceptor, string entityNamePattern, bool system);
 
          void DropTrigger(string entityName, string triggerName);
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Callbacks.Trigger> GetTriggers(string entityName);
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Callbacks.Trigger> GetTriggers(string entityName);
 
          bool IsTriggersEnabled();
 
          void SetTriggersEnabled(bool triggersEnabled);
 
-         Net.Vpc.Upa.Persistence.ConnectionProfile GetConnectionProfile();
+         Net.TheVpc.Upa.Persistence.ConnectionProfile GetConnectionProfile();
 
          void Persist(string entityName, object objectOrDocument);
 
@@ -300,15 +300,15 @@ namespace Net.Vpc.Upa
 
          void Persist(object objectOrDocument);
 
-         Net.Vpc.Upa.RemoveTrace Remove(string entityName, object objectOrDocument);
+         Net.TheVpc.Upa.RemoveTrace Remove(string entityName, object objectOrDocument);
 
-         Net.Vpc.Upa.RemoveTrace Remove(object objectOrDocument);
+         Net.TheVpc.Upa.RemoveTrace Remove(object objectOrDocument);
 
-         Net.Vpc.Upa.UpdateQuery CreateUpdateQuery(string entityName);
+         Net.TheVpc.Upa.UpdateQuery CreateUpdateQuery(string entityName);
 
-         Net.Vpc.Upa.UpdateQuery CreateUpdateQuery(System.Type type);
+         Net.TheVpc.Upa.UpdateQuery CreateUpdateQuery(System.Type type);
 
-         Net.Vpc.Upa.UpdateQuery CreateUpdateQuery(object @object);
+         Net.TheVpc.Upa.UpdateQuery CreateUpdateQuery(object @object);
 
          void Merge(string entityName, object objectOrDocument);
 
@@ -328,13 +328,13 @@ namespace Net.Vpc.Upa
 
          void UpdateFormulas();
 
-         void UpdateFormulas(Net.Vpc.Upa.Filters.EntityFilter entityFilter, System.Collections.Generic.IDictionary<string , object> hints) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void UpdateFormulas(Net.TheVpc.Upa.Filters.EntityFilter entityFilter, System.Collections.Generic.IDictionary<string , object> hints) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.RemoveTrace Remove(System.Type entityType, object @object);
+         Net.TheVpc.Upa.RemoveTrace Remove(System.Type entityType, object @object);
 
-         Net.Vpc.Upa.RemoveTrace Remove(System.Type entityType, Net.Vpc.Upa.RemoveOptions options);
+         Net.TheVpc.Upa.RemoveTrace Remove(System.Type entityType, Net.TheVpc.Upa.RemoveOptions options);
 
-         Net.Vpc.Upa.RemoveTrace Remove(string entityName, Net.Vpc.Upa.RemoveOptions options);
+         Net.TheVpc.Upa.RemoveTrace Remove(string entityName, Net.TheVpc.Upa.RemoveOptions options);
 
           System.Collections.Generic.IList<T> FindAll<T>(System.Type entityType);
 
@@ -356,28 +356,28 @@ namespace Net.Vpc.Upa
 
          bool ExistsById(string entityName, object id);
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Document> FindAllDocuments(System.Type entityType);
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Document> FindAllDocuments(System.Type entityType);
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Document> FindAllDocuments(string entityName);
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Document> FindAllDocuments(string entityName);
 
-         Net.Vpc.Upa.Document FindDocumentById(System.Type entityType, object id);
+         Net.TheVpc.Upa.Document FindDocumentById(System.Type entityType, object id);
 
-         Net.Vpc.Upa.Document FindDocumentById(string entityName, object id);
+         Net.TheVpc.Upa.Document FindDocumentById(string entityName, object id);
 
-         Net.Vpc.Upa.QueryBuilder CreateQueryBuilder(System.Type entityType);
+         Net.TheVpc.Upa.QueryBuilder CreateQueryBuilder(System.Type entityType);
 
-         Net.Vpc.Upa.QueryBuilder CreateQueryBuilder(string entityName);
+         Net.TheVpc.Upa.QueryBuilder CreateQueryBuilder(string entityName);
 
-         Net.Vpc.Upa.Query CreateQuery(Net.Vpc.Upa.Expressions.EntityStatement query);
+         Net.TheVpc.Upa.Query CreateQuery(Net.TheVpc.Upa.Expressions.EntityStatement query);
 
-         Net.Vpc.Upa.Query CreateQuery(string query);
+         Net.TheVpc.Upa.Query CreateQuery(string query);
 
         /**
              * @param transactionType transactionType
              * @return true if a transaction has been created
              * @
              */
-         bool BeginTransaction(Net.Vpc.Upa.TransactionType transactionType);
+         bool BeginTransaction(Net.TheVpc.Upa.TransactionType transactionType);
 
          void CommitTransaction();
 
@@ -395,37 +395,37 @@ namespace Net.Vpc.Upa
 
          bool IsClosed();
 
-         Net.Vpc.Upa.ExpressionManager GetExpressionManager();
+         Net.TheVpc.Upa.ExpressionManager GetExpressionManager();
 
-         Net.Vpc.Upa.Bulk.ImportExportManager GetImportExportManager();
+         Net.TheVpc.Upa.Bulk.ImportExportManager GetImportExportManager();
 
-         Net.Vpc.Upa.Types.DataTypeTransformFactory GetTypeTransformFactory();
+         Net.TheVpc.Upa.Types.DataTypeTransformFactory GetTypeTransformFactory();
 
-         void SetTypeTransformFactory(Net.Vpc.Upa.Types.DataTypeTransformFactory typeTransformFactory);
+         void SetTypeTransformFactory(Net.TheVpc.Upa.Types.DataTypeTransformFactory typeTransformFactory);
 
-         Net.Vpc.Upa.Persistence.ConnectionConfig[] GetConnectionConfigs();
+         Net.TheVpc.Upa.Persistence.ConnectionConfig[] GetConnectionConfigs();
 
-         Net.Vpc.Upa.Persistence.ConnectionConfig[] GetRootConnectionConfigs();
+         Net.TheVpc.Upa.Persistence.ConnectionConfig[] GetRootConnectionConfigs();
 
-         void AddConnectionConfig(Net.Vpc.Upa.Persistence.ConnectionConfig connectionConfig);
+         void AddConnectionConfig(Net.TheVpc.Upa.Persistence.ConnectionConfig connectionConfig);
 
          void RemoveConnectionConfig(int index);
 
-         void AddRootConnectionConfig(Net.Vpc.Upa.Persistence.ConnectionConfig connectionConfig);
+         void AddRootConnectionConfig(Net.TheVpc.Upa.Persistence.ConnectionConfig connectionConfig);
 
          void RemoveRootConnectionConfig(int index);
 
-         Net.Vpc.Upa.Persistence.PersistenceNameConfig GetPersistenceNameConfig();
+         Net.TheVpc.Upa.Persistence.PersistenceNameConfig GetPersistenceNameConfig();
 
-         void SetPersistenceNameConfig(Net.Vpc.Upa.Persistence.PersistenceNameConfig nameStrategyModel);
+         void SetPersistenceNameConfig(Net.TheVpc.Upa.Persistence.PersistenceNameConfig nameStrategyModel);
 
-         void AddContextAnnotationStrategyFilter(Net.Vpc.Upa.Config.ScanFilter filter);
+         void AddContextAnnotationStrategyFilter(Net.TheVpc.Upa.Config.ScanFilter filter);
 
-         void RemoveContextAnnotationStrategyFilter(Net.Vpc.Upa.Config.ScanFilter filter);
+         void RemoveContextAnnotationStrategyFilter(Net.TheVpc.Upa.Config.ScanFilter filter);
 
-         Net.Vpc.Upa.Config.ScanFilter[] GetContextAnnotationStrategyFilters();
+         Net.TheVpc.Upa.Config.ScanFilter[] GetContextAnnotationStrategyFilters();
 
-         Net.Vpc.Upa.UserPrincipal GetUserPrincipal();
+         Net.TheVpc.Upa.UserPrincipal GetUserPrincipal();
 
         /**
              * push new user context if login and credentials are valid
@@ -444,39 +444,39 @@ namespace Net.Vpc.Upa
 
          bool CurrentSessionExists();
 
-         Net.Vpc.Upa.Session GetCurrentSession();
+         Net.TheVpc.Upa.Session GetCurrentSession();
 
-         Net.Vpc.Upa.Key CreateKey(params object [] keyValues);
+         Net.TheVpc.Upa.Key CreateKey(params object [] keyValues);
 
-         Net.Vpc.Upa.Callback AddCallback(Net.Vpc.Upa.MethodCallback methodCallback);
+         Net.TheVpc.Upa.Callback AddCallback(Net.TheVpc.Upa.MethodCallback methodCallback);
 
-         void AddCallback(Net.Vpc.Upa.Callback callback);
+         void AddCallback(Net.TheVpc.Upa.Callback callback);
 
-         void RemoveCallback(Net.Vpc.Upa.Callback callback);
+         void RemoveCallback(Net.TheVpc.Upa.Callback callback);
 
-         Net.Vpc.Upa.Callback[] GetCallbacks(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string name, bool system, bool preparedOnly, Net.Vpc.Upa.EventPhase phase);
+         Net.TheVpc.Upa.Callback[] GetCallbacks(Net.TheVpc.Upa.CallbackType callbackType, Net.TheVpc.Upa.ObjectType objectType, string name, bool system, bool preparedOnly, Net.TheVpc.Upa.EventPhase phase);
 
-         Net.Vpc.Upa.Persistence.UConnection GetConnection();
+         Net.TheVpc.Upa.Persistence.UConnection GetConnection();
 
-         void SetIdentityConstraintsEnabled(Net.Vpc.Upa.Entity entity, bool enable);
+         void SetIdentityConstraintsEnabled(Net.TheVpc.Upa.Entity entity, bool enable);
 
-          T Invoke<T>(Net.Vpc.Upa.Action<T> action, Net.Vpc.Upa.InvokeContext invokeContext);
+          T Invoke<T>(Net.TheVpc.Upa.Action<T> action, Net.TheVpc.Upa.InvokeContext invokeContext);
 
-          T Invoke<T>(Net.Vpc.Upa.Action<T> action);
+          T Invoke<T>(Net.TheVpc.Upa.Action<T> action);
 
-          T InvokePrivileged<T>(Net.Vpc.Upa.Action<T> action, Net.Vpc.Upa.InvokeContext invokeContext);
+          T InvokePrivileged<T>(Net.TheVpc.Upa.Action<T> action, Net.TheVpc.Upa.InvokeContext invokeContext);
 
-          T InvokePrivileged<T>(Net.Vpc.Upa.Action<T> action);
+          T InvokePrivileged<T>(Net.TheVpc.Upa.Action<T> action);
 
-         void Invoke(Net.Vpc.Upa.VoidAction action, Net.Vpc.Upa.InvokeContext invokeContext);
+         void Invoke(Net.TheVpc.Upa.VoidAction action, Net.TheVpc.Upa.InvokeContext invokeContext);
 
-         void Invoke(Net.Vpc.Upa.VoidAction action);
+         void Invoke(Net.TheVpc.Upa.VoidAction action);
 
-         void InvokePrivileged(Net.Vpc.Upa.VoidAction action, Net.Vpc.Upa.InvokeContext invokeContext);
+         void InvokePrivileged(Net.TheVpc.Upa.VoidAction action, Net.TheVpc.Upa.InvokeContext invokeContext);
 
-         void InvokePrivileged(Net.Vpc.Upa.VoidAction action);
+         void InvokePrivileged(Net.TheVpc.Upa.VoidAction action);
 
-         System.Collections.Generic.IComparer<Net.Vpc.Upa.Entity> GetDependencyComparator();
+         System.Collections.Generic.IComparer<Net.TheVpc.Upa.Entity> GetDependencyComparator();
 
           T CopyObject<T>(T r);
 
@@ -492,13 +492,13 @@ namespace Net.Vpc.Upa
 
          long GetEntityCount(System.Type entityType);
 
-         Net.Vpc.Upa.PersistenceUnitInfo GetInfo();
+         Net.TheVpc.Upa.PersistenceUnitInfo GetInfo();
 
-         Net.Vpc.Upa.NamedFormulaDefinition[] GetNamedFormulas();
+         Net.TheVpc.Upa.NamedFormulaDefinition[] GetNamedFormulas();
 
-         Net.Vpc.Upa.NamedFormulaDefinition GetNamedFormula(string name);
+         Net.TheVpc.Upa.NamedFormulaDefinition GetNamedFormula(string name);
 
-         void AddNamedFormula(string name, Net.Vpc.Upa.Formula formula);
+         void AddNamedFormula(string name, Net.TheVpc.Upa.Formula formula);
 
          void RemoveNamedFormula(string name);
     }

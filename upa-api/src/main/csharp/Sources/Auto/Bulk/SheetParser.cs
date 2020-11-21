@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Bulk
+namespace Net.TheVpc.Upa.Bulk
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public abstract class SheetParser : Net.Vpc.Upa.Bulk.AbstractDataParser {
+    public abstract class SheetParser : Net.TheVpc.Upa.Bulk.AbstractDataParser {
 
         private bool containsHeader;
 
@@ -32,16 +32,16 @@ namespace Net.Vpc.Upa.Bulk
 
         private bool skipEmptyRows = false;
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Bulk.SheetColumn> columns = new System.Collections.Generic.List<Net.Vpc.Upa.Bulk.SheetColumn>();
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Bulk.SheetColumn> columns = new System.Collections.Generic.List<Net.TheVpc.Upa.Bulk.SheetColumn>();
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Bulk.SheetColumn> GetColumns() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Bulk.SheetColumn> GetColumns() {
             return columns;
         }
 
         public virtual System.Collections.Generic.IList<string> GetColumnNames() {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Bulk.SheetColumn> columns = GetColumns();
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Bulk.SheetColumn> columns = GetColumns();
             System.Collections.Generic.IList<string> names = new System.Collections.Generic.List<string>((columns).Count);
-            foreach (Net.Vpc.Upa.Bulk.SheetColumn column in columns) {
+            foreach (Net.TheVpc.Upa.Bulk.SheetColumn column in columns) {
                 names.Add(column.GetName());
             }
             return names;

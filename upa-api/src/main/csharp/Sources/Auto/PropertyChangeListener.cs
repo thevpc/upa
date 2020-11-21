@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Net.Vpc.Upa{
+namespace Net.TheVpc.Upa{
 
     public interface PropertyChangeListener
     {

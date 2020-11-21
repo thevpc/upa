@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
 
@@ -20,8 +20,8 @@ namespace Net.Vpc.Upa.Persistence
      */
     public interface FieldPersister {
 
-         void BeforePersist(Net.Vpc.Upa.Document document, Net.Vpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void BeforePersist(Net.TheVpc.Upa.Document document, Net.TheVpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void AfterPersist(Net.Vpc.Upa.Document document, Net.Vpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void AfterPersist(Net.TheVpc.Upa.Document document, Net.TheVpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
     }
 }

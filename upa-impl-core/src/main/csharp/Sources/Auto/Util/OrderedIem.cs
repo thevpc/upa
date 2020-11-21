@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
     /**
      *
      * @author taha.bensalah@gmail.com
      */
-    public class OrderedIem<T> : System.IComparable<Net.Vpc.Upa.Impl.Util.OrderedIem<T>> {
+    public class OrderedIem<T> : System.IComparable<Net.TheVpc.Upa.Impl.Util.OrderedIem<T>> {
 
         public int order;
 
@@ -29,7 +29,7 @@ namespace Net.Vpc.Upa.Impl.Util
             this.@value = @value;
         }
 
-        public virtual int CompareTo(Net.Vpc.Upa.Impl.Util.OrderedIem<T> o) {
+        public virtual int CompareTo(Net.TheVpc.Upa.Impl.Util.OrderedIem<T> o) {
             if (o == null) {
                 return 1;
             }

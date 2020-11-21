@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Impl.Util
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 1/5/13 11:20 PM
      */
-    internal class BeanAdapterGetterSetterAttribute : Net.Vpc.Upa.Impl.Util.AbstractBeanAdapterAttribute {
+    internal class BeanAdapterGetterSetterAttribute : Net.TheVpc.Upa.Impl.Util.AbstractBeanAdapterAttribute {
 
         private System.Reflection.MethodInfo getter;
 

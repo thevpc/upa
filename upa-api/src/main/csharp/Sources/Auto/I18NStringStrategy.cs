@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -20,20 +20,20 @@ namespace Net.Vpc.Upa
      */
     public interface I18NStringStrategy {
 
-         Net.Vpc.Upa.Types.I18NString GetPackageString(Net.Vpc.Upa.Package module);
+         Net.TheVpc.Upa.Types.I18NString GetPackageString(Net.TheVpc.Upa.Package module);
 
-         Net.Vpc.Upa.Types.I18NString GetSectionString(Net.Vpc.Upa.Section section);
+         Net.TheVpc.Upa.Types.I18NString GetSectionString(Net.TheVpc.Upa.Section section);
 
-         Net.Vpc.Upa.Types.I18NString GetRelationshipRoleString(Net.Vpc.Upa.RelationshipRole role);
+         Net.TheVpc.Upa.Types.I18NString GetRelationshipRoleString(Net.TheVpc.Upa.RelationshipRole role);
 
-         Net.Vpc.Upa.Types.I18NString GetRelationshipString(Net.Vpc.Upa.Relationship relation);
+         Net.TheVpc.Upa.Types.I18NString GetRelationshipString(Net.TheVpc.Upa.Relationship relation);
 
-         Net.Vpc.Upa.Types.I18NString GetEntityString(Net.Vpc.Upa.Entity entity);
+         Net.TheVpc.Upa.Types.I18NString GetEntityString(Net.TheVpc.Upa.Entity entity);
 
-         Net.Vpc.Upa.Types.I18NString GetFieldListString(Net.Vpc.Upa.Entity entity);
+         Net.TheVpc.Upa.Types.I18NString GetFieldListString(Net.TheVpc.Upa.Entity entity);
 
-         Net.Vpc.Upa.Types.I18NString GetFieldString(Net.Vpc.Upa.Field field);
+         Net.TheVpc.Upa.Types.I18NString GetFieldString(Net.TheVpc.Upa.Field field);
 
-         Net.Vpc.Upa.Types.I18NString GetIndexString(Net.Vpc.Upa.Index index);
+         Net.TheVpc.Upa.Types.I18NString GetIndexString(Net.TheVpc.Upa.Index index);
     }
 }

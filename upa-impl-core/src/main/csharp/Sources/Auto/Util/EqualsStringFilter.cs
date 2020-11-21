@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Impl.Util
      *
      * @author taha.bensalah@gmail.com
      */
-    public class EqualsStringFilter : Net.Vpc.Upa.Filters.ObjectFilter<string> {
+    public class EqualsStringFilter : Net.TheVpc.Upa.Filters.ObjectFilter<string> {
 
         private string @base;
 

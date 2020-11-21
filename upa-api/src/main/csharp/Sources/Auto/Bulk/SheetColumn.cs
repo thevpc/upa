@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Bulk
+namespace Net.TheVpc.Upa.Bulk
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class SheetColumn : Net.Vpc.Upa.Bulk.DataColumn {
+    public class SheetColumn : Net.TheVpc.Upa.Bulk.DataColumn {
 
         private int skippedColumns;
 
@@ -33,7 +33,7 @@ namespace Net.Vpc.Upa.Bulk
             this.skippedColumns = skippedColumns;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.DataColumn UpdateSkippedColumns(int skippedColumns) {
+        public virtual Net.TheVpc.Upa.Bulk.DataColumn UpdateSkippedColumns(int skippedColumns) {
             SetSkippedColumns(skippedColumns);
             return this;
         }

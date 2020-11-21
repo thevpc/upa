@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class Param : Net.Vpc.Upa.Expressions.DefaultExpression {
+    public class Param : Net.TheVpc.Upa.Expressions.DefaultExpression {
 
 
 
@@ -48,12 +48,12 @@ namespace Net.Vpc.Upa.Expressions
         }
 
 
-        public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
-            return new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+        public override System.Collections.Generic.IList<Net.TheVpc.Upa.Expressions.TaggedExpression> GetChildren() {
+            return new System.Collections.Generic.List<Net.TheVpc.Upa.Expressions.TaggedExpression>();
         }
 
 
-        public override void SetChild(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.Expressions.ExpressionTag tag) {
+        public override void SetChild(Net.TheVpc.Upa.Expressions.Expression e, Net.TheVpc.Upa.Expressions.ExpressionTag tag) {
             throw new System.Exception("Not supported yet.");
         }
 
@@ -74,8 +74,8 @@ namespace Net.Vpc.Upa.Expressions
         }
 
 
-        public override Net.Vpc.Upa.Expressions.Expression Copy() {
-            Net.Vpc.Upa.Expressions.Param o = unspecified ? new Net.Vpc.Upa.Expressions.Param(name) : new Net.Vpc.Upa.Expressions.Param(name, @value);
+        public override Net.TheVpc.Upa.Expressions.Expression Copy() {
+            Net.TheVpc.Upa.Expressions.Param o = unspecified ? new Net.TheVpc.Upa.Expressions.Param(name) : new Net.TheVpc.Upa.Expressions.Param(name, @value);
             return o;
         }
 

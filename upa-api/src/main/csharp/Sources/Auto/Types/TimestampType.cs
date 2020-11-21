@@ -11,23 +11,23 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
 
-    public class TimestampType : Net.Vpc.Upa.Types.TemporalType {
+    public class TimestampType : Net.TheVpc.Upa.Types.TemporalType {
 
-        public static readonly Net.Vpc.Upa.Types.TimestampType DEFAULT = new Net.Vpc.Upa.Types.TimestampType("TIMESTAMP", typeof(Net.Vpc.Upa.Types.Timestamp), null, null, true);
-
-
+        public static readonly Net.TheVpc.Upa.Types.TimestampType DEFAULT = new Net.TheVpc.Upa.Types.TimestampType("TIMESTAMP", typeof(Net.TheVpc.Upa.Types.Timestamp), null, null, true);
 
 
 
-        protected internal Net.Vpc.Upa.Types.Timestamp min = null;
 
-        protected internal Net.Vpc.Upa.Types.Timestamp max = null;
 
-        public TimestampType(bool nullable)  : this(typeof(Net.Vpc.Upa.Types.Timestamp), nullable){
+        protected internal Net.TheVpc.Upa.Types.Timestamp min = null;
+
+        protected internal Net.TheVpc.Upa.Types.Timestamp max = null;
+
+        public TimestampType(bool nullable)  : this(typeof(Net.TheVpc.Upa.Types.Timestamp), nullable){
 
         }
 
@@ -35,7 +35,7 @@ namespace Net.Vpc.Upa.Types
 
         }
 
-        public TimestampType(System.Type type, Net.Vpc.Upa.Types.Timestamp min, Net.Vpc.Upa.Types.Timestamp max, bool nullable)  : this("TIMESTAMP", type, min, max, nullable){
+        public TimestampType(System.Type type, Net.TheVpc.Upa.Types.Timestamp min, Net.TheVpc.Upa.Types.Timestamp max, bool nullable)  : this("TIMESTAMP", type, min, max, nullable){
 
         }
 
@@ -43,58 +43,58 @@ namespace Net.Vpc.Upa.Types
 
         }
 
-        public TimestampType(string name, System.Type type, Net.Vpc.Upa.Types.Timestamp min, Net.Vpc.Upa.Types.Timestamp max, bool nullable)  : base(name, type == null ? typeof(Net.Vpc.Upa.Types.Timestamp) : type, 0, 0, nullable){
+        public TimestampType(string name, System.Type type, Net.TheVpc.Upa.Types.Timestamp min, Net.TheVpc.Upa.Types.Timestamp max, bool nullable)  : base(name, type == null ? typeof(Net.TheVpc.Upa.Types.Timestamp) : type, 0, 0, nullable){
 
-            if (type != null && !type.Equals(typeof(Net.Vpc.Upa.Types.Timestamp)) && !type.Equals(typeof(Net.Vpc.Upa.Types.Timestamp)) && !type.Equals(typeof(Net.Vpc.Upa.Types.Temporal))) {
-                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("Invalid Temporal Type " + type);
+            if (type != null && !type.Equals(typeof(Net.TheVpc.Upa.Types.Timestamp)) && !type.Equals(typeof(Net.TheVpc.Upa.Types.Timestamp)) && !type.Equals(typeof(Net.TheVpc.Upa.Types.Temporal))) {
+                throw new Net.TheVpc.Upa.Exceptions.UPAIllegalArgumentException("Invalid Temporal Type " + type);
             }
             this.min = min;
             this.max = max;
         }
 
 
-        public override Net.Vpc.Upa.Types.TemporalOption GetTemporalOption() {
-            return Net.Vpc.Upa.Types.TemporalOption.TIMESTAMP;
+        public override Net.TheVpc.Upa.Types.TemporalOption GetTemporalOption() {
+            return Net.TheVpc.Upa.Types.TemporalOption.TIMESTAMP;
         }
 
 
         protected internal override void ReevaluateCachedValues() {
             base.ReevaluateCachedValues();
             if (!defaultValueUserDefined && !IsNullable()) {
-                defaultValue = (Convert(new Net.Vpc.Upa.Types.DateTime(0)));
+                defaultValue = (Convert(new Net.TheVpc.Upa.Types.DateTime(0)));
             }
         }
 
-        public virtual Net.Vpc.Upa.Types.Temporal GetMin() {
+        public virtual Net.TheVpc.Upa.Types.Temporal GetMin() {
             return min;
         }
 
-        public virtual Net.Vpc.Upa.Types.Temporal GetMax() {
+        public virtual Net.TheVpc.Upa.Types.Temporal GetMax() {
             return max;
         }
 
-        public virtual void SetMin(Net.Vpc.Upa.Types.Timestamp newMin) {
+        public virtual void SetMin(Net.TheVpc.Upa.Types.Timestamp newMin) {
             min = newMin;
         }
 
-        public virtual void SetMax(Net.Vpc.Upa.Types.Timestamp newMax) {
+        public virtual void SetMax(Net.TheVpc.Upa.Types.Timestamp newMax) {
             max = newMax;
         }
 
 
-        public override void Check(object @value, string name, string description) /* throws Net.Vpc.Upa.Types.ConstraintsException */  {
+        public override void Check(object @value, string name, string description) /* throws Net.TheVpc.Upa.Types.ConstraintsException */  {
             base.Check(@value, name, description);
             if (@value == null) {
                 return;
             }
-            if (!(@value is Net.Vpc.Upa.Types.Date)) {
-                throw new Net.Vpc.Upa.Types.ConstraintsException("InvalidCast", name, description, @value);
+            if (!(@value is Net.TheVpc.Upa.Types.Date)) {
+                throw new Net.TheVpc.Upa.Types.ConstraintsException("InvalidCast", name, description, @value);
             }
-            if (GetMin() != null && GetMin().CompareTo((Net.Vpc.Upa.Types.Temporal) @value) > 0) {
-                throw new Net.Vpc.Upa.Types.ConstraintsException("DateTooEarly", name, description, @value, min);
+            if (GetMin() != null && GetMin().CompareTo((Net.TheVpc.Upa.Types.Temporal) @value) > 0) {
+                throw new Net.TheVpc.Upa.Types.ConstraintsException("DateTooEarly", name, description, @value, min);
             }
-            if (GetMax() != null && GetMax().CompareTo((Net.Vpc.Upa.Types.Temporal) @value) < 0) {
-                throw new Net.Vpc.Upa.Types.ConstraintsException("DateTooLate", name, description, @value, max);
+            if (GetMax() != null && GetMax().CompareTo((Net.TheVpc.Upa.Types.Temporal) @value) < 0) {
+                throw new Net.TheVpc.Upa.Types.ConstraintsException("DateTooLate", name, description, @value, max);
             }
         }
 
@@ -103,13 +103,13 @@ namespace Net.Vpc.Upa.Types
             if (@value == null) {
                 return null;
             }
-            if (@value is Net.Vpc.Upa.Types.Temporal) {
-                return ValidateDate((Net.Vpc.Upa.Types.Temporal) @value);
+            if (@value is Net.TheVpc.Upa.Types.Temporal) {
+                return ValidateDate((Net.TheVpc.Upa.Types.Temporal) @value);
             }
             return base.Convert(@value);
         }
 
-        public override Net.Vpc.Upa.Types.Temporal ValidateDate(Net.Vpc.Upa.Types.Temporal date) {
+        public override Net.TheVpc.Upa.Types.Temporal ValidateDate(Net.TheVpc.Upa.Types.Temporal date) {
             if (date == null) {
                 return null;
             }
@@ -117,15 +117,15 @@ namespace Net.Vpc.Upa.Types
             if (date.GetType().Equals(type)) {
                 return date;
             }
-            Net.Vpc.Upa.Types.Calendar c = Net.Vpc.Upa.Types.Calendar.GetInstance();
+            Net.TheVpc.Upa.Types.Calendar c = Net.TheVpc.Upa.Types.Calendar.GetInstance();
             c.SetTime(date);
             long time = date.GetTime();
-            if (typeof(Net.Vpc.Upa.Types.Timestamp).IsAssignableFrom(type)) {
-                return new Net.Vpc.Upa.Types.Timestamp(time);
-            } else if (typeof(Net.Vpc.Upa.Types.Temporal).IsAssignableFrom(type)) {
-                return new Net.Vpc.Upa.Types.DateTime(time);
+            if (typeof(Net.TheVpc.Upa.Types.Timestamp).IsAssignableFrom(type)) {
+                return new Net.TheVpc.Upa.Types.Timestamp(time);
+            } else if (typeof(Net.TheVpc.Upa.Types.Temporal).IsAssignableFrom(type)) {
+                return new Net.TheVpc.Upa.Types.DateTime(time);
             } else {
-                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException();
+                throw new Net.TheVpc.Upa.Exceptions.UPAIllegalArgumentException();
             }
         }
 
@@ -153,7 +153,7 @@ namespace Net.Vpc.Upa.Types
             if (this == o) return true;
             if (o == null || GetType() != o.GetType()) return false;
             if (!base.Equals(o)) return false;
-            Net.Vpc.Upa.Types.TimestampType that = (Net.Vpc.Upa.Types.TimestampType) o;
+            Net.TheVpc.Upa.Types.TimestampType that = (Net.TheVpc.Upa.Types.TimestampType) o;
             if (min != null ? !min.Equals(that.min) : that.min != null) return false;
             return max != null ? max.Equals(that.max) : that.max == null;
         }
@@ -167,23 +167,23 @@ namespace Net.Vpc.Upa.Types
         }
 
 
-        public override Net.Vpc.Upa.DataTypeInfo GetInfo() {
-            Net.Vpc.Upa.DataTypeInfo d = base.GetInfo();
+        public override Net.TheVpc.Upa.DataTypeInfo GetInfo() {
+            Net.TheVpc.Upa.DataTypeInfo d = base.GetInfo();
             if (min != null) {
-                d.GetProperties()["min"]=System.Convert.ToString(Net.Vpc.Upa.Types.PlatformUtils.FormatUniversalTimestamp(min));
+                d.GetProperties()["min"]=System.Convert.ToString(Net.TheVpc.Upa.Types.PlatformUtils.FormatUniversalTimestamp(min));
             }
             if (max != null) {
-                d.GetProperties()["max"]=System.Convert.ToString(Net.Vpc.Upa.Types.PlatformUtils.FormatUniversalTimestamp(max));
+                d.GetProperties()["max"]=System.Convert.ToString(Net.TheVpc.Upa.Types.PlatformUtils.FormatUniversalTimestamp(max));
             }
             return d;
         }
 
 
-        public override Net.Vpc.Upa.Types.Temporal Parse(string @value) {
+        public override Net.TheVpc.Upa.Types.Temporal Parse(string @value) {
             if (@value == null || (@value.Trim().Length==0)) {
                 return null;
             }
-            return ValidateDate(Net.Vpc.Upa.Types.PlatformUtils.ParseUniversalTimestamp(@value));
+            return ValidateDate(Net.TheVpc.Upa.Types.PlatformUtils.ParseUniversalTimestamp(@value));
         }
     }
 }

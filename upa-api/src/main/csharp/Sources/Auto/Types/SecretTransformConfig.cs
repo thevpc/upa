@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class SecretTransformConfig : Net.Vpc.Upa.Types.DataTypeTransformConfig {
+    public class SecretTransformConfig : Net.TheVpc.Upa.Types.DataTypeTransformConfig {
 
         private object secretStrategy;
 
@@ -40,11 +40,11 @@ namespace Net.Vpc.Upa.Types
             this.SetSecretStrategyObject(cipherStrategy);
         }
 
-        public virtual void SetSecretStrategy(Net.Vpc.Upa.SecretStrategy secretStrategy) {
+        public virtual void SetSecretStrategy(Net.TheVpc.Upa.SecretStrategy secretStrategy) {
             this.SetSecretStrategyObject(secretStrategy);
         }
 
-        public virtual void SetSecretStrategy(Net.Vpc.Upa.SecretStrategyType secretStrategy) {
+        public virtual void SetSecretStrategy(Net.TheVpc.Upa.SecretStrategyType secretStrategy) {
             this.SetSecretStrategyObject(secretStrategy);
         }
 
@@ -52,8 +52,8 @@ namespace Net.Vpc.Upa.Types
             if (secretStrategy == null) {
                 throw new System.NullReferenceException();
             }
-            if (!(secretStrategy is string || secretStrategy is System.Type || secretStrategy is Net.Vpc.Upa.SecretStrategy || (secretStrategy is Net.Vpc.Upa.SecretStrategyType && !secretStrategy.Equals(Net.Vpc.Upa.SecretStrategyType.CUSTOM)))) {
-                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("secretStrategy should be of type String (as SecretStrategy class name), Class (SecretStrategy implementing class) or SecretStrategy (instance)");
+            if (!(secretStrategy is string || secretStrategy is System.Type || secretStrategy is Net.TheVpc.Upa.SecretStrategy || (secretStrategy is Net.TheVpc.Upa.SecretStrategyType && !secretStrategy.Equals(Net.TheVpc.Upa.SecretStrategyType.CUSTOM)))) {
+                throw new Net.TheVpc.Upa.Exceptions.UPAIllegalArgumentException("secretStrategy should be of type String (as SecretStrategy class name), Class (SecretStrategy implementing class) or SecretStrategy (instance)");
             }
             this.secretStrategy = secretStrategy;
         }

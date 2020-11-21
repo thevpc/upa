@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config.Annotationparser
+namespace Net.TheVpc.Upa.Impl.Config.Annotationparser
 {
 
 
@@ -31,13 +31,13 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             return oldVal;
         }
 
-        internal static void ValidInt(int c, Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<int?> oldVal, int nullVal, int processOrder) {
+        internal static void ValidInt(int c, Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<int?> oldVal, int nullVal, int processOrder) {
             if (c != nullVal) {
                 oldVal.SetBetterValue(c, processOrder);
             }
         }
 
-        internal static void ValidStr(string c, Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> oldVal, int processOrder) {
+        internal static void ValidStr(string c, Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> oldVal, int processOrder) {
             if (c != null) {
                 c = c.Trim();
                 if ((c).Length > 0) {
@@ -57,7 +57,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             return oldVal;
         }
 
-        internal static void ValidClass(System.Type c, Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<System.Type> oldVal, System.Type type, int processOrder) {
+        internal static void ValidClass(System.Type c, Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<System.Type> oldVal, System.Type type, int processOrder) {
             if (c != null && !c.Equals(typeof(void))) {
                 if (type.IsAssignableFrom(c)) {
                     oldVal.SetBetterValue(c, processOrder);
@@ -78,7 +78,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             return def;
         }
 
-        internal static System.Numerics.BigInteger? ParseBigInteger(Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> val, System.Numerics.BigInteger? def) {
+        internal static System.Numerics.BigInteger? ParseBigInteger(Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> val, System.Numerics.BigInteger? def) {
             if (val.specified) {
                 string s = val.@value;
                 if (s == null) {
@@ -86,7 +86,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                 }
                 s = s.Trim();
                 if ((s).Length != 0) {
-                    return Net.Vpc.Upa.Impl.FwkConvertUtils.CreateBigInteger(s);
+                    return Net.TheVpc.Upa.Impl.FwkConvertUtils.CreateBigInteger(s);
                 }
             }
             return def;
@@ -94,7 +94,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
 
 
 
-        internal static int? ParseInt(Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> val, int? def) {
+        internal static int? ParseInt(Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> val, int? def) {
             if (val.specified) {
                 string s = val.@value;
                 if (s == null) {
@@ -116,7 +116,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             return def;
         }
 
-        internal static byte? ParseByte(Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> val, byte? def) {
+        internal static byte? ParseByte(Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> val, byte? def) {
             if (val.specified) {
                 string s = val.@value;
                 if (s == null) {
@@ -130,7 +130,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             return def;
         }
 
-        internal static short? ParseShort(Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> val, short? def) {
+        internal static short? ParseShort(Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> val, short? def) {
             if (val.specified) {
                 string s = val.@value;
                 if (s == null) {
@@ -152,7 +152,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             return def;
         }
 
-        internal static long? ParseLong(Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> val, long? def) {
+        internal static long? ParseLong(Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> val, long? def) {
             if (val.specified) {
                 string s = val.@value;
                 if (s == null) {
@@ -174,7 +174,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             return def;
         }
 
-        internal static double? ParseDouble(Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> val, double? def) {
+        internal static double? ParseDouble(Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> val, double? def) {
             if (val.specified) {
                 string s = val.@value;
                 if (s == null) {
@@ -196,7 +196,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             return def;
         }
 
-        internal static float? ParseFloat(Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> val, float? def) {
+        internal static float? ParseFloat(Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> val, float? def) {
             if (val.specified) {
                 string s = val.@value;
                 if (s == null) {
@@ -219,34 +219,34 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
         }
 
         internal static string CreateDateFormatString(System.Type type1) {
-            if (typeof(Net.Vpc.Upa.Types.Date).Equals(type1)) {
+            if (typeof(Net.TheVpc.Upa.Types.Date).Equals(type1)) {
                 return "yyyy-MM-dd HH:mm:ss.SSS";
-            } else if (typeof(Net.Vpc.Upa.Types.Date).Equals(type1)) {
+            } else if (typeof(Net.TheVpc.Upa.Types.Date).Equals(type1)) {
                 return "yyyy-MM-dd HH:mm:ss.SSS";
-            } else if (typeof(Net.Vpc.Upa.Types.Time).Equals(type1)) {
+            } else if (typeof(Net.TheVpc.Upa.Types.Time).Equals(type1)) {
                 return "HH:mm:ss.SSS";
-            } else if (typeof(Net.Vpc.Upa.Types.Time).Equals(type1)) {
+            } else if (typeof(Net.TheVpc.Upa.Types.Time).Equals(type1)) {
                 return "HH:mm:ss.SSS";
-            } else if (typeof(Net.Vpc.Upa.Types.DateTime).Equals(type1)) {
+            } else if (typeof(Net.TheVpc.Upa.Types.DateTime).Equals(type1)) {
                 return "yyyy-MM-dd HH:mm:ss.SSS";
-            } else if (typeof(Net.Vpc.Upa.Types.Date).Equals(type1)) {
+            } else if (typeof(Net.TheVpc.Upa.Types.Date).Equals(type1)) {
                 return "yyyy-MM-dd";
-            } else if (typeof(Net.Vpc.Upa.Types.Month).Equals(type1)) {
+            } else if (typeof(Net.TheVpc.Upa.Types.Month).Equals(type1)) {
                 return "yyyy-MM";
-            } else if (typeof(Net.Vpc.Upa.Types.Year).Equals(type1)) {
+            } else if (typeof(Net.TheVpc.Upa.Types.Year).Equals(type1)) {
                 return "yyyy";
-            } else if (typeof(Net.Vpc.Upa.Types.Timestamp).Equals(type1)) {
+            } else if (typeof(Net.TheVpc.Upa.Types.Timestamp).Equals(type1)) {
                 return "yyyy-MM-dd HH:mm:ss.SSS";
             } else {
                 return "yyyy-MM-dd HH:mm:ss.SSS";
             }
         }
 
-        internal static Net.Vpc.Upa.Types.Temporal ParseDate(System.Type type1, Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> @value, Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> format) /* throws System.Exception */  {
+        internal static Net.TheVpc.Upa.Types.Temporal ParseDate(System.Type type1, Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> @value, Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> format) /* throws System.Exception */  {
             return ParseDate(type1, @value, format, false);
         }
 
-        internal static Net.Vpc.Upa.Types.Temporal ParseDate(System.Type type1, Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> @value, Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> format, bool end) /* throws System.Exception */  {
+        internal static Net.TheVpc.Upa.Types.Temporal ParseDate(System.Type type1, Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> @value, Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> format, bool end) /* throws System.Exception */  {
             string svalue = @value.specified ? @value.@value : null;
             if (svalue == null) {
                 svalue = "";
@@ -259,31 +259,31 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             if (sformat == null || (sformat.Trim()).Length == 0) {
                 sformat = CreateDateFormatString(type1);
             }
-            Net.Vpc.Upa.Types.Temporal s = Net.Vpc.Upa.Impl.Util.DateUtils.ParseDateTime(svalue, sformat);
-            if (type1.Equals(typeof(Net.Vpc.Upa.Types.Date))) {
-                return new Net.Vpc.Upa.Types.Date(s.GetTime());
-            } else if (type1.Equals(typeof(Net.Vpc.Upa.Types.Date))) {
-                return new Net.Vpc.Upa.Types.Date(s.GetTime());
-            } else if (type1.Equals(typeof(Net.Vpc.Upa.Types.Time))) {
-                return new Net.Vpc.Upa.Types.Time(s);
-            } else if (type1.Equals(typeof(Net.Vpc.Upa.Types.Time))) {
-                return new Net.Vpc.Upa.Types.Time(s.GetTime());
-            } else if (type1.Equals(typeof(Net.Vpc.Upa.Types.DateTime))) {
-                return new Net.Vpc.Upa.Types.DateTime(s);
-            } else if (type1.Equals(typeof(Net.Vpc.Upa.Types.Timestamp))) {
-                return new Net.Vpc.Upa.Types.Timestamp(s.GetTime());
-            } else if (type1.Equals(typeof(Net.Vpc.Upa.Types.Timestamp))) {
-                return new Net.Vpc.Upa.Types.Timestamp(s.GetTime());
-            } else if (type1.Equals(typeof(Net.Vpc.Upa.Types.Month))) {
-                return new Net.Vpc.Upa.Types.Month(s.GetTime());
-            } else if (type1.Equals(typeof(Net.Vpc.Upa.Types.Year))) {
-                return new Net.Vpc.Upa.Types.Year(s.GetTime());
+            Net.TheVpc.Upa.Types.Temporal s = Net.TheVpc.Upa.Impl.Util.DateUtils.ParseDateTime(svalue, sformat);
+            if (type1.Equals(typeof(Net.TheVpc.Upa.Types.Date))) {
+                return new Net.TheVpc.Upa.Types.Date(s.GetTime());
+            } else if (type1.Equals(typeof(Net.TheVpc.Upa.Types.Date))) {
+                return new Net.TheVpc.Upa.Types.Date(s.GetTime());
+            } else if (type1.Equals(typeof(Net.TheVpc.Upa.Types.Time))) {
+                return new Net.TheVpc.Upa.Types.Time(s);
+            } else if (type1.Equals(typeof(Net.TheVpc.Upa.Types.Time))) {
+                return new Net.TheVpc.Upa.Types.Time(s.GetTime());
+            } else if (type1.Equals(typeof(Net.TheVpc.Upa.Types.DateTime))) {
+                return new Net.TheVpc.Upa.Types.DateTime(s);
+            } else if (type1.Equals(typeof(Net.TheVpc.Upa.Types.Timestamp))) {
+                return new Net.TheVpc.Upa.Types.Timestamp(s.GetTime());
+            } else if (type1.Equals(typeof(Net.TheVpc.Upa.Types.Timestamp))) {
+                return new Net.TheVpc.Upa.Types.Timestamp(s.GetTime());
+            } else if (type1.Equals(typeof(Net.TheVpc.Upa.Types.Month))) {
+                return new Net.TheVpc.Upa.Types.Month(s.GetTime());
+            } else if (type1.Equals(typeof(Net.TheVpc.Upa.Types.Year))) {
+                return new Net.TheVpc.Upa.Types.Year(s.GetTime());
             } else {
                 return s;
             }
         }
 
-        public static object ParseStringValue(string s, Net.Vpc.Upa.Types.DataType dataType, object defaultValue) /* throws System.Exception */  {
+        public static object ParseStringValue(string s, Net.TheVpc.Upa.Types.DataType dataType, object defaultValue) /* throws System.Exception */  {
             if (s == null || (s).Length == 0) {
                 return defaultValue;
             }
@@ -292,25 +292,25 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                 return s;
             } else if (typeof(char?).Equals(c)) {
                 return s[0];
-            } else if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsInt32(c)) {
+            } else if (Net.TheVpc.Upa.Impl.Util.PlatformUtils.IsInt32(c)) {
                 return System.Convert.ToInt32(s);
-            } else if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsInt64(c)) {
+            } else if (Net.TheVpc.Upa.Impl.Util.PlatformUtils.IsInt64(c)) {
                 return System.Convert.ToInt64(s);
-            } else if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsInt16(c)) {
+            } else if (Net.TheVpc.Upa.Impl.Util.PlatformUtils.IsInt16(c)) {
                 return System.Convert.ToInt16(s);
-            } else if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsInt8(c)) {
+            } else if (Net.TheVpc.Upa.Impl.Util.PlatformUtils.IsInt8(c)) {
                 return System.Convert.ToByte(s);
-            } else if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsFloat64(c)) {
+            } else if (Net.TheVpc.Upa.Impl.Util.PlatformUtils.IsFloat64(c)) {
                 return System.Convert.ToDouble(s);
-            } else if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsFloat32(c)) {
+            } else if (Net.TheVpc.Upa.Impl.Util.PlatformUtils.IsFloat32(c)) {
                 return System.Convert.ToSingle(s);
-            } else if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsBigInt(c)) {
-                return Net.Vpc.Upa.Impl.FwkConvertUtils.CreateBigInteger(s);
-            } else if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsAnyDate(c)) {
-                Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> vv = new Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string>();
+            } else if (Net.TheVpc.Upa.Impl.Util.PlatformUtils.IsBigInt(c)) {
+                return Net.TheVpc.Upa.Impl.FwkConvertUtils.CreateBigInteger(s);
+            } else if (Net.TheVpc.Upa.Impl.Util.PlatformUtils.IsAnyDate(c)) {
+                Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> vv = new Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string>();
                 vv.SetValue(s);
-                return ParseDate(c, vv, new Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string>(), false);
-            } else if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsBool(c)) {
+                return ParseDate(c, vv, new Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string>(), false);
+            } else if (Net.TheVpc.Upa.Impl.Util.PlatformUtils.IsBool(c)) {
                 return System.Convert.ToBoolean(s);
             }
             return null;

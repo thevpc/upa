@@ -2,7 +2,7 @@ using System;
 using System.IO;
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 

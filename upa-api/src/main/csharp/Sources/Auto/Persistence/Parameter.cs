@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
 
@@ -22,7 +22,7 @@ namespace Net.Vpc.Upa.Persistence
 
          string GetName();
 
-         Net.Vpc.Upa.Types.DataTypeTransform GetTypeTransform();
+         Net.TheVpc.Upa.Types.DataTypeTransform GetTypeTransform();
 
          object GetValue();
 

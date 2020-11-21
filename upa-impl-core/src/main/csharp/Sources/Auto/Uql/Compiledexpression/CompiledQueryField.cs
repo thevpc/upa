@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledexpression
 {
 
     /**
      * Created with IntelliJ IDEA. User: vpc Date: 8/16/12 Time: 10:10 PM To change
      * this template use File | Settings | File Templates.
      */
-    public class CompiledQueryField : Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression {
+    public class CompiledQueryField : Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression {
 
         private int index = -1;
 
@@ -30,33 +30,33 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
 
         private string aliasBinding;
 
-        private static string ResolveName(string alias, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
+        private static string ResolveName(string alias, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
             if (alias != null) {
                 return alias;
             }
-            if (expression is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) {
-                Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar cv = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) expression;
-                Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod dc = cv.GetDeepChild();
-                return (dc == null ? ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod)(cv)) : dc).GetName();
+            if (expression is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) {
+                Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar cv = (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) expression;
+                Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod dc = cv.GetDeepChild();
+                return (dc == null ? ((Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod)(cv)) : dc).GetName();
             }
             return null;
         }
 
-        private static string ResolveBinding(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
-            if (expression is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) {
-                Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar cv = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) expression;
-                Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod cv1 = cv.GetDeepChild();
-                if (cv1 != null && cv1 is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) {
-                    Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression cv2 = cv1.GetParentExpression();
-                    if (cv2 != null && cv2 is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) {
-                        return ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) cv2).GetChildlessPath();
+        private static string ResolveBinding(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
+            if (expression is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) {
+                Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar cv = (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) expression;
+                Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod cv1 = cv.GetDeepChild();
+                if (cv1 != null && cv1 is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) {
+                    Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression cv2 = cv1.GetParentExpression();
+                    if (cv2 != null && cv2 is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) {
+                        return ((Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) cv2).GetChildlessPath();
                     }
                 }
             }
             return null;
         }
 
-        public CompiledQueryField(string alias, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression)  : base(ResolveName(alias, expression), expression){
+        public CompiledQueryField(string alias, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression)  : base(ResolveName(alias, expression), expression){
 
             this.alias = alias;
             this.binding = ResolveBinding(expression);
@@ -72,7 +72,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
 
 
         public override string ToString() {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e = GetExpression();
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e = GetExpression();
             return (e == null ? "NULL" : e.ToString()) + (alias == null ? "" : (" " + alias));
         }
 
@@ -80,7 +80,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return binding;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField SetBinding(string binding) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField SetBinding(string binding) {
             this.binding = binding;
             return this;
         }
@@ -89,7 +89,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return aliasBinding;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField SetAliasBinding(string aliasBinding) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField SetAliasBinding(string aliasBinding) {
             this.aliasBinding = aliasBinding;
             return this;
         }
@@ -98,7 +98,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return index;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField SetIndex(int index) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField SetIndex(int index) {
             this.index = index;
             return this;
         }
@@ -107,7 +107,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return expanded;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField SetExpanded(bool expanded) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField SetExpanded(bool expanded) {
             this.expanded = expanded;
             return this;
         }

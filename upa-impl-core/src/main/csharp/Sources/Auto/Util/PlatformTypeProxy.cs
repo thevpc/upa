@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
     /**
@@ -19,6 +19,6 @@ namespace Net.Vpc.Upa.Impl.Util
      */
     public interface PlatformTypeProxy {
 
-          T Create<T>(System.Type type, Net.Vpc.Upa.Impl.Util.PlatformMethodProxy<?> methodProxy);
+          T Create<T>(System.Type type, Net.TheVpc.Upa.Impl.Util.PlatformMethodProxy<?> methodProxy);
     }
 }

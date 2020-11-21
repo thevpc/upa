@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -19,10 +19,10 @@ namespace Net.Vpc.Upa.Impl.Persistence
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 8/30/12 1:09 AM
      */
-    public class DefaultEntityInitializeOperation : Net.Vpc.Upa.Persistence.EntityInitializeOperation {
+    public class DefaultEntityInitializeOperation : Net.TheVpc.Upa.Persistence.EntityInitializeOperation {
 
 
-        public virtual int Initialize(Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual int Initialize(Net.TheVpc.Upa.Entity entity, Net.TheVpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return 0;
         }
     }

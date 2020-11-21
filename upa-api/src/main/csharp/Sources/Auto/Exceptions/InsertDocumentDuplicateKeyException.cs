@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
-    public class InsertDocumentDuplicateKeyException : Net.Vpc.Upa.Exceptions.EntityException {
+    public class InsertDocumentDuplicateKeyException : Net.TheVpc.Upa.Exceptions.EntityException {
 
-        public InsertDocumentDuplicateKeyException(Net.Vpc.Upa.Entity entity)  : base(entity, "insert.DuplicateKey"){
+        public InsertDocumentDuplicateKeyException(Net.TheVpc.Upa.Entity entity)  : base(entity, "insert.DuplicateKey"){
 
         }
     }

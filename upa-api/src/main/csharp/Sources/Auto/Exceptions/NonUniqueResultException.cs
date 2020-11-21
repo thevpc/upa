@@ -11,16 +11,16 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class NonUniqueResultException : Net.Vpc.Upa.Exceptions.EntityException {
+    public class NonUniqueResultException : Net.TheVpc.Upa.Exceptions.EntityException {
 
-        public NonUniqueResultException()  : base(new Net.Vpc.Upa.Types.I18NString("NonUniqueResultException")){
+        public NonUniqueResultException()  : base(new Net.TheVpc.Upa.Types.I18NString("NonUniqueResultException")){
 
         }
     }

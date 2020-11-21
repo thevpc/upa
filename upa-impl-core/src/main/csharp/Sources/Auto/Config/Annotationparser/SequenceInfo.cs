@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config.Annotationparser
+namespace Net.TheVpc.Upa.Impl.Config.Annotationparser
 {
 
 
@@ -21,9 +21,9 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
      */
     internal class SequenceInfo {
 
-        internal Net.Vpc.Upa.SequenceStrategy strategy;
+        internal Net.TheVpc.Upa.SequenceStrategy strategy;
 
-        internal Net.Vpc.Upa.SequenceType sequenceType = Net.Vpc.Upa.SequenceType.DEFAULT;
+        internal Net.TheVpc.Upa.SequenceType sequenceType = Net.TheVpc.Upa.SequenceType.DEFAULT;
 
         internal int? initialValue;
 
@@ -41,29 +41,29 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
 
         internal bool specified = false;
 
-        internal Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository repo;
+        internal Net.TheVpc.Upa.Impl.Config.Decorations.DecorationRepository repo;
 
-        public SequenceInfo(Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository repo) {
+        public SequenceInfo(Net.TheVpc.Upa.Impl.Config.Decorations.DecorationRepository repo) {
             this.repo = repo;
         }
 
         public virtual void Parse(System.Collections.Generic.IList<System.Reflection.FieldInfo> fields) {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Config.Decoration> persistSequenceFields = new System.Collections.Generic.List<Net.Vpc.Upa.Config.Decoration>();
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Config.Decoration> persistSequenceFields = new System.Collections.Generic.List<Net.TheVpc.Upa.Config.Decoration>();
             foreach (System.Reflection.FieldInfo javaField in fields) {
-                Net.Vpc.Upa.Config.Decoration gid = repo.GetFieldDecoration(javaField, typeof(Net.Vpc.Upa.Config.Sequence));
+                Net.TheVpc.Upa.Config.Decoration gid = repo.GetFieldDecoration(javaField, typeof(Net.TheVpc.Upa.Config.Sequence));
                 if (gid != null) {
                     persistSequenceFields.Add(gid);
                 }
             }
             if ((persistSequenceFields).Count > 1) {
-                Net.Vpc.Upa.Impl.FwkConvertUtils.ListSort(persistSequenceFields, Net.Vpc.Upa.Impl.Config.Annotationparser.DecorationComparator.INSTANCE);
+                Net.TheVpc.Upa.Impl.FwkConvertUtils.ListSort(persistSequenceFields, Net.TheVpc.Upa.Impl.Config.Annotationparser.DecorationComparator.INSTANCE);
             }
-            foreach (Net.Vpc.Upa.Config.Decoration gid in persistSequenceFields) {
+            foreach (Net.TheVpc.Upa.Config.Decoration gid in persistSequenceFields) {
                 MergeSequence(gid);
             }
         }
 
-        public virtual void MergeSequence(Net.Vpc.Upa.Config.Decoration gid) {
+        public virtual void MergeSequence(Net.TheVpc.Upa.Config.Decoration gid) {
             specified = true;
             if (gid.GetConfig().GetOrder() >= configOrder) {
                 specified = true;
@@ -79,14 +79,14 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                 if ((gid.GetString("group")).Length > 0) {
                     group = gid.GetString("group");
                 }
-                if (!System.Collections.Generic.EqualityComparer<Net.Vpc.Upa.SequenceType>.Default.Equals(gid.GetEnum<Net.Vpc.Upa.SequenceType>("type", typeof(Net.Vpc.Upa.SequenceType)),Net.Vpc.Upa.SequenceType.DEFAULT)) {
-                    sequenceType = gid.GetEnum<Net.Vpc.Upa.SequenceType>("type", typeof(Net.Vpc.Upa.SequenceType));
+                if (!System.Collections.Generic.EqualityComparer<Net.TheVpc.Upa.SequenceType>.Default.Equals(gid.GetEnum<Net.TheVpc.Upa.SequenceType>("type", typeof(Net.TheVpc.Upa.SequenceType)),Net.TheVpc.Upa.SequenceType.DEFAULT)) {
+                    sequenceType = gid.GetEnum<Net.TheVpc.Upa.SequenceType>("type", typeof(Net.TheVpc.Upa.SequenceType));
                 }
                 if ((gid.GetString("name")).Length > 0) {
                     name = gid.GetString("name");
                 }
-                if (!System.Collections.Generic.EqualityComparer<Net.Vpc.Upa.SequenceStrategy>.Default.Equals(gid.GetEnum<Net.Vpc.Upa.SequenceStrategy>("strategy", typeof(Net.Vpc.Upa.SequenceStrategy)),Net.Vpc.Upa.SequenceStrategy.UNSPECIFIED)) {
-                    strategy = gid.GetEnum<Net.Vpc.Upa.SequenceStrategy>("strategy", typeof(Net.Vpc.Upa.SequenceStrategy));
+                if (!System.Collections.Generic.EqualityComparer<Net.TheVpc.Upa.SequenceStrategy>.Default.Equals(gid.GetEnum<Net.TheVpc.Upa.SequenceStrategy>("strategy", typeof(Net.TheVpc.Upa.SequenceStrategy)),Net.TheVpc.Upa.SequenceStrategy.UNSPECIFIED)) {
+                    strategy = gid.GetEnum<Net.TheVpc.Upa.SequenceStrategy>("strategy", typeof(Net.TheVpc.Upa.SequenceStrategy));
                 }
                 if (gid.GetInt("formulaOrder") != System.Int32.MinValue) {
                     formulaOrder = gid.GetInt("formulaOrder");

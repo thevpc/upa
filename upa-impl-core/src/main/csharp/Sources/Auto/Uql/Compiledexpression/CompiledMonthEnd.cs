@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledexpression
 {
 
 
@@ -39,7 +39,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
      *          the date at the end of the next "count" month. when count=0, the end of the current month
      * </pre>
      */
-    public class CompiledMonthEnd : Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledFunction {
+    public class CompiledMonthEnd : Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledFunction {
 
 
 
@@ -47,27 +47,27 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
 
         }
 
-        public CompiledMonthEnd(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression date, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression count)  : this(){
+        public CompiledMonthEnd(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression date, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression count)  : this(){
 
             ProtectedAddArgument(date);
             ProtectedAddArgument(count);
         }
 
-        public CompiledMonthEnd(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression count)  : this(){
+        public CompiledMonthEnd(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression count)  : this(){
 
             ProtectedAddArgument(count);
             PrepareChildren(count);
         }
 
 
-        public override Net.Vpc.Upa.Types.DataTypeTransform GetTypeTransform() {
-            return Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.STRING;
+        public override Net.TheVpc.Upa.Types.DataTypeTransform GetTypeTransform() {
+            return Net.TheVpc.Upa.Impl.Transform.IdentityDataTypeTransform.STRING;
         }
 
 
-        public override Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledMonthEnd o = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledMonthEnd();
-            foreach (Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression in GetArguments()) {
+        public override Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledMonthEnd o = new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledMonthEnd();
+            foreach (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression in GetArguments()) {
                 o.ProtectedAddArgument(expression.Copy());
             }
             o.SetDescription(GetDescription());

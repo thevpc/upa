@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Connection
+namespace Net.TheVpc.Upa.Impl.Persistence.Connection
 {
 
 
@@ -19,10 +19,10 @@ namespace Net.Vpc.Upa.Impl.Persistence.Connection
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 11/24/12 8:40 AM
      */
-    public interface ManagedCloseable : Net.Vpc.Upa.Closeable {
+    public interface ManagedCloseable : Net.TheVpc.Upa.Closeable {
 
-         void AddCloseListener(Net.Vpc.Upa.CloseListener closeListener);
+         void AddCloseListener(Net.TheVpc.Upa.CloseListener closeListener);
 
-         void RemoveCloseListener(Net.Vpc.Upa.CloseListener closeListener);
+         void RemoveCloseListener(Net.TheVpc.Upa.CloseListener closeListener);
     }
 }

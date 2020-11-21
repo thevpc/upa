@@ -11,10 +11,10 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
-    public class PrimitiveFieldInfo : Net.Vpc.Upa.FieldInfo {
+    public class PrimitiveFieldInfo : Net.TheVpc.Upa.FieldInfo {
 
         public PrimitiveFieldInfo()  : base("primitive"){
 

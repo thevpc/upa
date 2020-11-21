@@ -11,40 +11,40 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
 
     public class JoinCriteria : System.ICloneable {
 
-        private Net.Vpc.Upa.Expressions.JoinType type;
+        private Net.TheVpc.Upa.Expressions.JoinType type;
 
-        private Net.Vpc.Upa.Expressions.NameOrQuery entity;
+        private Net.TheVpc.Upa.Expressions.NameOrQuery entity;
 
         private string alias;
 
-        private Net.Vpc.Upa.Expressions.Expression condition;
+        private Net.TheVpc.Upa.Expressions.Expression condition;
 
-        public virtual Net.Vpc.Upa.Expressions.JoinType GetJoinType() {
+        public virtual Net.TheVpc.Upa.Expressions.JoinType GetJoinType() {
             return type;
         }
 
         public virtual string GetEntityName() {
-            if (entity is Net.Vpc.Upa.Expressions.EntityName) {
-                return ((Net.Vpc.Upa.Expressions.EntityName) entity).GetName();
+            if (entity is Net.TheVpc.Upa.Expressions.EntityName) {
+                return ((Net.TheVpc.Upa.Expressions.EntityName) entity).GetName();
             }
             return null;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.NameOrQuery GetEntity() {
+        public virtual Net.TheVpc.Upa.Expressions.NameOrQuery GetEntity() {
             return entity;
         }
 
-        public virtual void SetEntity(Net.Vpc.Upa.Expressions.NameOrQuery entity) {
+        public virtual void SetEntity(Net.TheVpc.Upa.Expressions.NameOrQuery entity) {
             this.entity = entity;
         }
 
-        public virtual void SetCondition(Net.Vpc.Upa.Expressions.Expression condition) {
+        public virtual void SetCondition(Net.TheVpc.Upa.Expressions.Expression condition) {
             this.condition = condition;
         }
 
@@ -52,16 +52,16 @@ namespace Net.Vpc.Upa.Expressions
             return alias;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Expression GetCondition() {
+        public virtual Net.TheVpc.Upa.Expressions.Expression GetCondition() {
             return condition;
         }
 
-        public JoinCriteria(Net.Vpc.Upa.Expressions.JoinType type, Net.Vpc.Upa.Expressions.NameOrQuery entity, string alias, Net.Vpc.Upa.Expressions.Expression condition) {
+        public JoinCriteria(Net.TheVpc.Upa.Expressions.JoinType type, Net.TheVpc.Upa.Expressions.NameOrQuery entity, string alias, Net.TheVpc.Upa.Expressions.Expression condition) {
             this.type = type;
             this.entity = entity;
             this.alias = alias;
             this.condition = condition;
-            if (type.Equals(Net.Vpc.Upa.Expressions.JoinType.CROSS_JOIN)) {
+            if (type.Equals(Net.TheVpc.Upa.Expressions.JoinType.CROSS_JOIN)) {
                 this.condition = null;
             }
         }
@@ -73,19 +73,19 @@ namespace Net.Vpc.Upa.Expressions
             string aliasString = GetEntityAlias();
             string joinKey = "Inner Join";
             switch(GetJoinType()) {
-                case Net.Vpc.Upa.Expressions.JoinType.INNER_JOIN:
+                case Net.TheVpc.Upa.Expressions.JoinType.INNER_JOIN:
                     joinKey = "Inner Join";
                     break;
-                case Net.Vpc.Upa.Expressions.JoinType.FULL_JOIN:
+                case Net.TheVpc.Upa.Expressions.JoinType.FULL_JOIN:
                     joinKey = "Full Join";
                     break;
-                case Net.Vpc.Upa.Expressions.JoinType.LEFT_JOIN:
+                case Net.TheVpc.Upa.Expressions.JoinType.LEFT_JOIN:
                     joinKey = "Left Join";
                     break;
-                case Net.Vpc.Upa.Expressions.JoinType.RIGHT_JOIN:
+                case Net.TheVpc.Upa.Expressions.JoinType.RIGHT_JOIN:
                     joinKey = "Right Join";
                     break;
-                case Net.Vpc.Upa.Expressions.JoinType.CROSS_JOIN:
+                case Net.TheVpc.Upa.Expressions.JoinType.CROSS_JOIN:
                     joinKey = "Cross Join";
                     break;
             }

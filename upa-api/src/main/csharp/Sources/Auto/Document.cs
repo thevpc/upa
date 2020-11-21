@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -59,13 +59,13 @@ namespace Net.Vpc.Upa
 
          float GetFloat();
 
-         Net.Vpc.Upa.Types.Temporal GetDate(string key);
+         Net.TheVpc.Upa.Types.Temporal GetDate(string key);
 
-         Net.Vpc.Upa.Types.Temporal GetDate(string key, Net.Vpc.Upa.Types.Temporal @value);
+         Net.TheVpc.Upa.Types.Temporal GetDate(string key, Net.TheVpc.Upa.Types.Temporal @value);
 
-         void SetDate(string key, Net.Vpc.Upa.Types.Temporal @value);
+         void SetDate(string key, Net.TheVpc.Upa.Types.Temporal @value);
 
-         Net.Vpc.Upa.Types.Temporal GetDate();
+         Net.TheVpc.Upa.Types.Temporal GetDate();
 
          string GetString(string key);
 
@@ -119,9 +119,9 @@ namespace Net.Vpc.Upa
 
          void SetAll(System.Collections.Generic.IDictionary<string , object> other, params string [] keys);
 
-         void SetAll(Net.Vpc.Upa.Document other);
+         void SetAll(Net.TheVpc.Upa.Document other);
 
-         void SetAll(Net.Vpc.Upa.Document other, params string [] keys);
+         void SetAll(Net.TheVpc.Upa.Document other, params string [] keys);
 
          bool IsSet(string key);
 
@@ -129,16 +129,16 @@ namespace Net.Vpc.Upa
 
          bool RetainAll(System.Collections.Generic.ISet<string> keys);
 
-         void AddPropertyChangeListener(string key, Net.Vpc.Upa.PropertyChangeListener listener);
+         void AddPropertyChangeListener(string key, Net.TheVpc.Upa.PropertyChangeListener listener);
 
-         void RemovePropertyChangeListener(string key, Net.Vpc.Upa.PropertyChangeListener listener);
+         void RemovePropertyChangeListener(string key, Net.TheVpc.Upa.PropertyChangeListener listener);
 
-         void AddPropertyChangeListener(Net.Vpc.Upa.PropertyChangeListener listener);
+         void AddPropertyChangeListener(Net.TheVpc.Upa.PropertyChangeListener listener);
 
-         void RemovePropertyChangeListener(Net.Vpc.Upa.PropertyChangeListener listener);
+         void RemovePropertyChangeListener(Net.TheVpc.Upa.PropertyChangeListener listener);
 
          bool IsEmpty();
 
-         Net.Vpc.Upa.Document Copy();
+         Net.TheVpc.Upa.Document Copy();
     }
 }

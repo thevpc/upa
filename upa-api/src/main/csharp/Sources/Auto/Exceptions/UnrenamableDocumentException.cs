@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
-    public class UnrenamableDocumentException : Net.Vpc.Upa.Exceptions.EntityException {
+    public class UnrenamableDocumentException : Net.TheVpc.Upa.Exceptions.EntityException {
 
-        public UnrenamableDocumentException(Net.Vpc.Upa.Entity entity)  : base(entity, "rename.Unrenamable"){
+        public UnrenamableDocumentException(Net.TheVpc.Upa.Entity entity)  : base(entity, "rename.Unrenamable"){
 
         }
     }

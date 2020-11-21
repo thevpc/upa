@@ -11,25 +11,25 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
 
-    public class Delete : Net.Vpc.Upa.Expressions.DefaultEntityStatement, Net.Vpc.Upa.Expressions.NonQueryStatement {
+    public class Delete : Net.TheVpc.Upa.Expressions.DefaultEntityStatement, Net.TheVpc.Upa.Expressions.NonQueryStatement {
 
-        private static readonly Net.Vpc.Upa.Expressions.DefaultTag ENTITY = new Net.Vpc.Upa.Expressions.DefaultTag("ENTITY");
+        private static readonly Net.TheVpc.Upa.Expressions.DefaultTag ENTITY = new Net.TheVpc.Upa.Expressions.DefaultTag("ENTITY");
 
-        private static readonly Net.Vpc.Upa.Expressions.DefaultTag COND = new Net.Vpc.Upa.Expressions.DefaultTag("COND");
+        private static readonly Net.TheVpc.Upa.Expressions.DefaultTag COND = new Net.TheVpc.Upa.Expressions.DefaultTag("COND");
 
 
 
-        protected internal Net.Vpc.Upa.Expressions.Expression condition;
+        protected internal Net.TheVpc.Upa.Expressions.Expression condition;
 
-        protected internal Net.Vpc.Upa.Expressions.EntityName entity;
+        protected internal Net.TheVpc.Upa.Expressions.EntityName entity;
 
         protected internal string entityAlias;
 
-        public Delete(Net.Vpc.Upa.Expressions.Delete other)  : this(){
+        public Delete(Net.TheVpc.Upa.Expressions.Delete other)  : this(){
 
             AddQuery(other);
         }
@@ -39,61 +39,61 @@ namespace Net.Vpc.Upa.Expressions
             entityAlias = null;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Delete From(string entity, string alias) {
-            this.entity = new Net.Vpc.Upa.Expressions.EntityName(entity);
+        public virtual Net.TheVpc.Upa.Expressions.Delete From(string entity, string alias) {
+            this.entity = new Net.TheVpc.Upa.Expressions.EntityName(entity);
             entityAlias = alias;
             return this;
         }
 
 
-        public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> all = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>(2);
+        public override System.Collections.Generic.IList<Net.TheVpc.Upa.Expressions.TaggedExpression> GetChildren() {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Expressions.TaggedExpression> all = new System.Collections.Generic.List<Net.TheVpc.Upa.Expressions.TaggedExpression>(2);
             if (entity != null) {
-                all.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(entity, ENTITY));
+                all.Add(new Net.TheVpc.Upa.Expressions.TaggedExpression(entity, ENTITY));
             }
             if (condition != null) {
-                all.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(condition, COND));
+                all.Add(new Net.TheVpc.Upa.Expressions.TaggedExpression(condition, COND));
             }
             return all;
         }
 
 
-        public override void SetChild(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.Expressions.ExpressionTag tag) {
+        public override void SetChild(Net.TheVpc.Upa.Expressions.Expression e, Net.TheVpc.Upa.Expressions.ExpressionTag tag) {
             if (ENTITY.Equals(tag)) {
-                this.entity = (Net.Vpc.Upa.Expressions.EntityName) e;
+                this.entity = (Net.TheVpc.Upa.Expressions.EntityName) e;
             } else if (COND.Equals(tag)) {
                 this.condition = e;
             }
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Delete From(string entity) {
+        public virtual Net.TheVpc.Upa.Expressions.Delete From(string entity) {
             return From(entity, null);
         }
 
-        public virtual Net.Vpc.Upa.Expressions.EntityName GetEntity() {
+        public virtual Net.TheVpc.Upa.Expressions.EntityName GetEntity() {
             return entity;
         }
 
         public override string GetEntityName() {
-            Net.Vpc.Upa.Expressions.EntityName e = GetEntity();
-            return (e != null) ? ((Net.Vpc.Upa.Expressions.EntityName) e).GetName() : null;
+            Net.TheVpc.Upa.Expressions.EntityName e = GetEntity();
+            return (e != null) ? ((Net.TheVpc.Upa.Expressions.EntityName) e).GetName() : null;
         }
 
         public override string GetEntityAlias() {
             return entityAlias;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Delete Where(Net.Vpc.Upa.Expressions.Expression condition) {
+        public virtual Net.TheVpc.Upa.Expressions.Delete Where(Net.TheVpc.Upa.Expressions.Expression condition) {
             this.condition = condition;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Expression GetCondition() {
+        public virtual Net.TheVpc.Upa.Expressions.Expression GetCondition() {
             return condition;
         }
 
-        public override Net.Vpc.Upa.Expressions.Expression Copy() {
-            Net.Vpc.Upa.Expressions.Delete o = new Net.Vpc.Upa.Expressions.Delete();
+        public override Net.TheVpc.Upa.Expressions.Expression Copy() {
+            Net.TheVpc.Upa.Expressions.Delete o = new Net.TheVpc.Upa.Expressions.Delete();
             o.AddQuery(this);
             return o;
         }
@@ -102,7 +102,7 @@ namespace Net.Vpc.Upa.Expressions
         public override string ToString() {
             System.Text.StringBuilder sb = new System.Text.StringBuilder("Delete From " + entity);
             if (entityAlias != null) {
-                sb.Append(" ").Append(Net.Vpc.Upa.Expressions.ExpressionHelper.EscapeIdentifier(entityAlias));
+                sb.Append(" ").Append(Net.TheVpc.Upa.Expressions.ExpressionHelper.EscapeIdentifier(entityAlias));
             }
             if (condition != null && condition.IsValid()) {
                 sb.Append(" Where ").Append(GetCondition().ToString());
@@ -114,12 +114,12 @@ namespace Net.Vpc.Upa.Expressions
             return 3;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Delete AddQuery(Net.Vpc.Upa.Expressions.Delete other) {
+        public virtual Net.TheVpc.Upa.Expressions.Delete AddQuery(Net.TheVpc.Upa.Expressions.Delete other) {
             if (other == null) {
                 return this;
             }
             if (other.entity != null) {
-                entity = (Net.Vpc.Upa.Expressions.EntityName) other.entity.Copy();
+                entity = (Net.TheVpc.Upa.Expressions.EntityName) other.entity.Copy();
             }
             if (other.entityAlias != null) {
                 entityAlias = other.entityAlias;

@@ -11,16 +11,16 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class NoSuchRelationshipException : Net.Vpc.Upa.Exceptions.EntityException {
+    public class NoSuchRelationshipException : Net.TheVpc.Upa.Exceptions.EntityException {
 
-        public NoSuchRelationshipException(string relationAbsoluteName, System.Exception cause)  : base(cause, new Net.Vpc.Upa.Types.I18NString("NoSuchRelationException"), relationAbsoluteName){
+        public NoSuchRelationshipException(string relationAbsoluteName, System.Exception cause)  : base(cause, new Net.TheVpc.Upa.Types.I18NString("NoSuchRelationException"), relationAbsoluteName){
 
         }
     }

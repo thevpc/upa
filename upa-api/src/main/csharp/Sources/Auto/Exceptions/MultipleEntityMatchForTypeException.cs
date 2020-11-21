@@ -11,18 +11,18 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class MultipleEntityMatchForTypeException : Net.Vpc.Upa.Exceptions.EntityException {
+    public class MultipleEntityMatchForTypeException : Net.TheVpc.Upa.Exceptions.EntityException {
 
         private string[] names;
 
-        public MultipleEntityMatchForTypeException(System.Type entityType, string[] names)  : base((System.Exception) null, new Net.Vpc.Upa.Types.I18NString("MultipleEntityMatchForType"), entityType, new System.Collections.Generic.List<string>(names)){
+        public MultipleEntityMatchForTypeException(System.Type entityType, string[] names)  : base((System.Exception) null, new Net.TheVpc.Upa.Types.I18NString("MultipleEntityMatchForType"), entityType, new System.Collections.Generic.List<string>(names)){
 
             this.names = names;
         }

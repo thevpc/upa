@@ -11,17 +11,17 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
-    public class PersistDocumentNotAllowedException : Net.Vpc.Upa.Exceptions.EntityException {
+    public class PersistDocumentNotAllowedException : Net.TheVpc.Upa.Exceptions.EntityException {
 
-        public PersistDocumentNotAllowedException(Net.Vpc.Upa.Entity entity)  : base(entity, "insert.NotAllowed"){
+        public PersistDocumentNotAllowedException(Net.TheVpc.Upa.Entity entity)  : base(entity, "insert.NotAllowed"){
 
         }
 
-        public PersistDocumentNotAllowedException(Net.Vpc.Upa.Entity entity, string operationName)  : base(entity, operationName){
+        public PersistDocumentNotAllowedException(Net.TheVpc.Upa.Entity entity, string operationName)  : base(entity, operationName){
 
         }
     }

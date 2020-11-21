@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -21,10 +21,10 @@ namespace Net.Vpc.Upa
      * @param expression entities (rows) filter
      * @param executionContext executionContext
      */
-    public interface CustomMultiFormulaContext : Net.Vpc.Upa.BaseFormulaContext {
+    public interface CustomMultiFormulaContext : Net.TheVpc.Upa.BaseFormulaContext {
 
-         System.Collections.Generic.ISet<Net.Vpc.Upa.Field> GetFields();
+         System.Collections.Generic.ISet<Net.TheVpc.Upa.Field> GetFields();
 
-         Net.Vpc.Upa.Expressions.Expression GetFilter();
+         Net.TheVpc.Upa.Expressions.Expression GetFilter();
     }
 }

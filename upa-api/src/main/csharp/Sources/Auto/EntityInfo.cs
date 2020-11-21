@@ -11,15 +11,15 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
-    public class EntityInfo : Net.Vpc.Upa.PersistenceUnitPartInfo {
+    public class EntityInfo : Net.TheVpc.Upa.PersistenceUnitPartInfo {
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.EntityPartInfo> children;
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.EntityPartInfo> children;
 
-        private Net.Vpc.Upa.EntityModifier[] modifiers;
+        private Net.TheVpc.Upa.EntityModifier[] modifiers;
 
         private bool hierarchical;
 
@@ -37,7 +37,7 @@ namespace Net.Vpc.Upa
 
         private string[] oneToManyRelationships;
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.IndexInfo> indexes;
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.IndexInfo> indexes;
 
         private string compositionRelationship;
 
@@ -71,11 +71,11 @@ namespace Net.Vpc.Upa
             this.view = view;
         }
 
-        public virtual Net.Vpc.Upa.EntityModifier[] GetModifiers() {
+        public virtual Net.TheVpc.Upa.EntityModifier[] GetModifiers() {
             return modifiers;
         }
 
-        public virtual void SetModifiers(Net.Vpc.Upa.EntityModifier[] modifiers) {
+        public virtual void SetModifiers(Net.TheVpc.Upa.EntityModifier[] modifiers) {
             this.modifiers = modifiers;
         }
 
@@ -119,11 +119,11 @@ namespace Net.Vpc.Upa
             this.oneToManyRelationships = oneToManyRelationships;
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.IndexInfo> GetIndexes() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.IndexInfo> GetIndexes() {
             return indexes;
         }
 
-        public virtual void SetIndexes(System.Collections.Generic.IList<Net.Vpc.Upa.IndexInfo> indexes) {
+        public virtual void SetIndexes(System.Collections.Generic.IList<Net.TheVpc.Upa.IndexInfo> indexes) {
             this.indexes = indexes;
         }
 
@@ -143,11 +143,11 @@ namespace Net.Vpc.Upa
             this.parentEntity = parentEntity;
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.EntityPartInfo> GetChildren() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.EntityPartInfo> GetChildren() {
             return children;
         }
 
-        public virtual void SetChildren(System.Collections.Generic.IList<Net.Vpc.Upa.EntityPartInfo> children) {
+        public virtual void SetChildren(System.Collections.Generic.IList<Net.TheVpc.Upa.EntityPartInfo> children) {
             this.children = children;
         }
     }

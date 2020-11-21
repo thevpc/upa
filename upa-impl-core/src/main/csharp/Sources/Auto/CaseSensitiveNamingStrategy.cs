@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
     /**
     * Created by vpc on 12/20/13.*/
-    internal class CaseSensitiveNamingStrategy : Net.Vpc.Upa.NamingStrategy {
+    internal class CaseSensitiveNamingStrategy : Net.TheVpc.Upa.NamingStrategy {
 
         public virtual string GetUniformValue(string name) {
             return name;

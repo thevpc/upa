@@ -12,7 +12,7 @@
 
 
 using System.Linq;
-namespace Net.Vpc.Upa.Impl.Util.Classpath
+namespace Net.TheVpc.Upa.Impl.Util.Classpath
 {
 
 
@@ -20,14 +20,14 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 12/16/12 1:05 PM
      */
-    public class PatternListClassNameFilter : Net.Vpc.Upa.Impl.Config.ClassNameFilter {
+    public class PatternListClassNameFilter : Net.TheVpc.Upa.Impl.Config.ClassNameFilter {
 
-        private Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern[] patterns;
+        private Net.TheVpc.Upa.Impl.Util.Regexp.PortablePattern[] patterns;
 
         private string[] userPatterns;
 
         public PatternListClassNameFilter(string[] filter) {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern> patternsList = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern>();
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Util.Regexp.PortablePattern> patternsList = new System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Util.Regexp.PortablePattern>();
             System.Collections.Generic.IList<string> userPatternsList = new System.Collections.Generic.List<string>();
             if (filter != null) {
                 for (int i = 0; i < filter.Length; i++) {
@@ -39,7 +39,7 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
                         }
                     }
                     if (f != null) {
-                        patternsList.Add(new Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern(Convert(f)));
+                        patternsList.Add(new Net.TheVpc.Upa.Impl.Util.Regexp.PortablePattern(Convert(f)));
                         userPatternsList.Add(f);
                     }
                 }
@@ -114,7 +114,7 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
             if (patterns == null || patterns.Length == 0) {
                 return true;
             }
-            foreach (Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern pattern in patterns) {
+            foreach (Net.TheVpc.Upa.Impl.Util.Regexp.PortablePattern pattern in patterns) {
                 if (pattern == null || pattern.Matcher(cls).Matches()) {
                     return true;
                 }
@@ -122,7 +122,7 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
             return false;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern[] GetPatterns() {
+        public virtual Net.TheVpc.Upa.Impl.Util.Regexp.PortablePattern[] GetPatterns() {
             return patterns;
         }
 

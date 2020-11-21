@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Navigator
+namespace Net.TheVpc.Upa.Impl.Navigator
 {
 
 
@@ -21,28 +21,28 @@ namespace Net.Vpc.Upa.Impl.Navigator
      */
     public class EntityNavigatorFactory {
 
-        public static Net.Vpc.Upa.Impl.Navigator.DefaultEntityNavigator CreateDefaultNavigator(Net.Vpc.Upa.Entity e) {
-            return new Net.Vpc.Upa.Impl.Navigator.DefaultEntityNavigator(e);
+        public static Net.TheVpc.Upa.Impl.Navigator.DefaultEntityNavigator CreateDefaultNavigator(Net.TheVpc.Upa.Entity e) {
+            return new Net.TheVpc.Upa.Impl.Navigator.DefaultEntityNavigator(e);
         }
 
-        public static Net.Vpc.Upa.Impl.Navigator.StringKeyEntityNavigator CreateStringNavigator(Net.Vpc.Upa.Entity e) {
-            return new Net.Vpc.Upa.Impl.Navigator.StringKeyEntityNavigator(e);
+        public static Net.TheVpc.Upa.Impl.Navigator.StringKeyEntityNavigator CreateStringNavigator(Net.TheVpc.Upa.Entity e) {
+            return new Net.TheVpc.Upa.Impl.Navigator.StringKeyEntityNavigator(e);
         }
 
-        public static Net.Vpc.Upa.Impl.Navigator.StringSequenceEntityNavigator CreateStringSequenceNavigator(Net.Vpc.Upa.Entity entity, string name, string format, string group, int initialValue, int allocationSize) {
-            return new Net.Vpc.Upa.Impl.Navigator.StringSequenceEntityNavigator(entity, name, format, group, initialValue, allocationSize);
+        public static Net.TheVpc.Upa.Impl.Navigator.StringSequenceEntityNavigator CreateStringSequenceNavigator(Net.TheVpc.Upa.Entity entity, string name, string format, string group, int initialValue, int allocationSize) {
+            return new Net.TheVpc.Upa.Impl.Navigator.StringSequenceEntityNavigator(entity, name, format, group, initialValue, allocationSize);
         }
 
-        public static Net.Vpc.Upa.Impl.Navigator.IntegerKeyEntityNavigator CreateIntegerNavigator(Net.Vpc.Upa.Entity e) {
-            return new Net.Vpc.Upa.Impl.Navigator.IntegerKeyEntityNavigator(e);
+        public static Net.TheVpc.Upa.Impl.Navigator.IntegerKeyEntityNavigator CreateIntegerNavigator(Net.TheVpc.Upa.Entity e) {
+            return new Net.TheVpc.Upa.Impl.Navigator.IntegerKeyEntityNavigator(e);
         }
 
-        public static Net.Vpc.Upa.Impl.Navigator.DateKeyEntityNavigator CreateDateNavigator(Net.Vpc.Upa.Entity e) {
-            return new Net.Vpc.Upa.Impl.Navigator.DateKeyEntityNavigator(e);
+        public static Net.TheVpc.Upa.Impl.Navigator.DateKeyEntityNavigator CreateDateNavigator(Net.TheVpc.Upa.Entity e) {
+            return new Net.TheVpc.Upa.Impl.Navigator.DateKeyEntityNavigator(e);
         }
 
-        public static Net.Vpc.Upa.Impl.Navigator.LongKeyEntityNavigator CreateLongNavigator(Net.Vpc.Upa.Entity e) {
-            return new Net.Vpc.Upa.Impl.Navigator.LongKeyEntityNavigator(e);
+        public static Net.TheVpc.Upa.Impl.Navigator.LongKeyEntityNavigator CreateLongNavigator(Net.TheVpc.Upa.Entity e) {
+            return new Net.TheVpc.Upa.Impl.Navigator.LongKeyEntityNavigator(e);
         }
     }
 }

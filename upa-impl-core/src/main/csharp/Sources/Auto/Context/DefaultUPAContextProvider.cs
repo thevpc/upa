@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Context
+namespace Net.TheVpc.Upa.Impl.Context
 {
 
 
@@ -19,15 +19,15 @@ namespace Net.Vpc.Upa.Impl.Context
      *
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class DefaultUPAContextProvider : Net.Vpc.Upa.UPAContextProvider {
+    public class DefaultUPAContextProvider : Net.TheVpc.Upa.UPAContextProvider {
 
-        private static Net.Vpc.Upa.UPAContext instance;
+        private static Net.TheVpc.Upa.UPAContext instance;
 
-        public virtual Net.Vpc.Upa.UPAContext GetContext() {
+        public virtual Net.TheVpc.Upa.UPAContext GetContext() {
             return instance;
         }
 
-        public virtual void SetContext(Net.Vpc.Upa.UPAContext newInstance) {
+        public virtual void SetContext(Net.TheVpc.Upa.UPAContext newInstance) {
             instance = newInstance;
         }
     }

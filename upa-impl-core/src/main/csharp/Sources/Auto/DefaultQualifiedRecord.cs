@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
@@ -19,26 +19,26 @@ namespace Net.Vpc.Upa.Impl
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 9/3/12 1:19 AM
      */
-    public class DefaultQualifiedRecord : Net.Vpc.Upa.Impl.AbstractRecord, Net.Vpc.Upa.QualifiedRecord {
+    public class DefaultQualifiedRecord : Net.TheVpc.Upa.Impl.AbstractRecord, Net.TheVpc.Upa.QualifiedRecord {
 
-        private Net.Vpc.Upa.Entity entity;
+        private Net.TheVpc.Upa.Entity entity;
 
-        private Net.Vpc.Upa.Record record;
+        private Net.TheVpc.Upa.Record record;
 
-        public DefaultQualifiedRecord(Net.Vpc.Upa.Entity entity)  : this(entity, entity.GetBuilder().CreateRecord()){
+        public DefaultQualifiedRecord(Net.TheVpc.Upa.Entity entity)  : this(entity, entity.GetBuilder().CreateRecord()){
 
         }
 
-        public DefaultQualifiedRecord(Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.Record record) {
+        public DefaultQualifiedRecord(Net.TheVpc.Upa.Entity entity, Net.TheVpc.Upa.Record record) {
             this.entity = entity;
             this.record = record;
         }
 
-        public virtual Net.Vpc.Upa.Entity GetEntity() {
+        public virtual Net.TheVpc.Upa.Entity GetEntity() {
             return entity;
         }
 
-        public virtual Net.Vpc.Upa.Record GetRecord() {
+        public virtual Net.TheVpc.Upa.Record GetRecord() {
             return record;
         }
 
@@ -46,30 +46,30 @@ namespace Net.Vpc.Upa.Impl
             return GetRecord().GetObject<T>(GetEntity().GetMainField().GetName());
         }
 
-        public virtual Net.Vpc.Upa.Key GetKey() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual Net.TheVpc.Upa.Key GetKey() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return GetEntity().GetBuilder().RecordToKey(GetRecord());
         }
 
-        public virtual void SetRawId(params object [] ids) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Record kr = GetEntity().GetBuilder().KeyToRecord(GetEntity().GetBuilder().CreateKey(ids));
+        public virtual void SetRawId(params object [] ids) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Record kr = GetEntity().GetBuilder().KeyToRecord(GetEntity().GetBuilder().CreateKey(ids));
             GetRecord().SetAll(kr);
         }
 
-        public virtual void SetIdentifier(object @value) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Record kr = GetEntity().GetBuilder().IdToRecord(@value);
+        public virtual void SetIdentifier(object @value) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Record kr = GetEntity().GetBuilder().IdToRecord(@value);
             GetRecord().SetAll(kr);
         }
 
-        public virtual void SetKey(Net.Vpc.Upa.Key key) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Record kr = GetEntity().GetBuilder().KeyToRecord(key);
+        public virtual void SetKey(Net.TheVpc.Upa.Key key) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Record kr = GetEntity().GetBuilder().KeyToRecord(key);
             GetRecord().SetAll(kr);
         }
 
-        public virtual object GetId() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual object GetId() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return GetEntity().GetBuilder().RecordToId(GetRecord());
         }
 
-        public virtual object[] GetRawId() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual object[] GetRawId() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return GetKey().GetValue();
         }
 
@@ -110,22 +110,22 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
-        public override void AddPropertyChangeListener(string key, Net.Vpc.Upa.PropertyChangeListener listener) {
+        public override void AddPropertyChangeListener(string key, Net.TheVpc.Upa.PropertyChangeListener listener) {
             GetRecord().AddPropertyChangeListener(key, listener);
         }
 
 
-        public override void RemovePropertyChangeListener(string key, Net.Vpc.Upa.PropertyChangeListener listener) {
+        public override void RemovePropertyChangeListener(string key, Net.TheVpc.Upa.PropertyChangeListener listener) {
             GetRecord().RemovePropertyChangeListener(key, listener);
         }
 
 
-        public override void AddPropertyChangeListener(Net.Vpc.Upa.PropertyChangeListener listener) {
+        public override void AddPropertyChangeListener(Net.TheVpc.Upa.PropertyChangeListener listener) {
             GetRecord().AddPropertyChangeListener(listener);
         }
 
 
-        public override void RemovePropertyChangeListener(Net.Vpc.Upa.PropertyChangeListener listener) {
+        public override void RemovePropertyChangeListener(Net.TheVpc.Upa.PropertyChangeListener listener) {
             GetRecord().RemovePropertyChangeListener(listener);
         }
 

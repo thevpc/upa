@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiler
+namespace Net.TheVpc.Upa.Impl.Uql.Compiler
 {
 
 
@@ -19,17 +19,17 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiler
      *
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class BetweenExpressionTranslator : Net.Vpc.Upa.Impl.Uql.ExpressionTranslator {
+    public class BetweenExpressionTranslator : Net.TheVpc.Upa.Impl.Uql.ExpressionTranslator {
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TranslateExpression(object o, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
-            return CompileBetween((Net.Vpc.Upa.Expressions.Between) o, manager, declarations);
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TranslateExpression(object o, Net.TheVpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.TheVpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
+            return CompileBetween((Net.TheVpc.Upa.Expressions.Between) o, manager, declarations);
         }
 
-        protected internal virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledBetween CompileBetween(Net.Vpc.Upa.Expressions.Between v, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
+        protected internal virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledBetween CompileBetween(Net.TheVpc.Upa.Expressions.Between v, Net.TheVpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.TheVpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
             if (v == null) {
                 return null;
             }
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledBetween s = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledBetween(manager.TranslateAny(v.GetLeft(), declarations), manager.TranslateAny(v.GetMin(), declarations), manager.TranslateAny(v.GetMax(), declarations));
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledBetween s = new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledBetween(manager.TranslateAny(v.GetLeft(), declarations), manager.TranslateAny(v.GetMin(), declarations), manager.TranslateAny(v.GetMax(), declarations));
             //        s.setDeclarationList(declarations);
             return s;
         }

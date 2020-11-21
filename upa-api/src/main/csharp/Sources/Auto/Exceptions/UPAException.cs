@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
@@ -20,7 +20,7 @@ namespace Net.Vpc.Upa.Exceptions
      */
     public class UPAException : System.Exception {
 
-        private Net.Vpc.Upa.Types.I18NString messageId;
+        private Net.TheVpc.Upa.Types.I18NString messageId;
 
         private object[] parameters;
 
@@ -28,25 +28,25 @@ namespace Net.Vpc.Upa.Exceptions
 
         }
 
-        public UPAException(string message, params object [] parameters)  : this(new Net.Vpc.Upa.Types.I18NString(message), parameters){
+        public UPAException(string message, params object [] parameters)  : this(new Net.TheVpc.Upa.Types.I18NString(message), parameters){
 
         }
 
-        public UPAException(Net.Vpc.Upa.Types.I18NString message, params object [] parameters)  : this(null, message, parameters){
+        public UPAException(Net.TheVpc.Upa.Types.I18NString message, params object [] parameters)  : this(null, message, parameters){
 
         }
 
-        public UPAException(System.Exception cause)  : this(cause, new Net.Vpc.Upa.Types.I18NString(cause.ToString())){
+        public UPAException(System.Exception cause)  : this(cause, new Net.TheVpc.Upa.Types.I18NString(cause.ToString())){
 
         }
 
-        public UPAException(System.Exception cause, Net.Vpc.Upa.Types.I18NString messageId, params object [] parameters)  : base(BuildMessage(messageId, parameters), cause){
+        public UPAException(System.Exception cause, Net.TheVpc.Upa.Types.I18NString messageId, params object [] parameters)  : base(BuildMessage(messageId, parameters), cause){
 
             this.messageId = messageId;
             this.parameters = parameters;
         }
 
-        public virtual Net.Vpc.Upa.Types.I18NString GetMessageId() {
+        public virtual Net.TheVpc.Upa.Types.I18NString GetMessageId() {
             return messageId;
         }
 
@@ -54,7 +54,7 @@ namespace Net.Vpc.Upa.Exceptions
             return parameters;
         }
 
-        private static string BuildMessage(Net.Vpc.Upa.Types.I18NString messageId, params object [] parameters) {
+        private static string BuildMessage(Net.TheVpc.Upa.Types.I18NString messageId, params object [] parameters) {
             System.Text.StringBuilder b = new System.Text.StringBuilder();
             string m0 = null;
             if (messageId != null) {
@@ -74,8 +74,8 @@ namespace Net.Vpc.Upa.Exceptions
                         b.Append(",");
                     }
                     m0 = null;
-                    if (parameters[i] != null && parameters[i] is Net.Vpc.Upa.Types.I18NString) {
-                        Net.Vpc.Upa.Types.I18NString messageId2 = (Net.Vpc.Upa.Types.I18NString) parameters[i];
+                    if (parameters[i] != null && parameters[i] is Net.TheVpc.Upa.Types.I18NString) {
+                        Net.TheVpc.Upa.Types.I18NString messageId2 = (Net.TheVpc.Upa.Types.I18NString) parameters[i];
                         if ((messageId2.GetKeys()).Count > 0) {
                             m0 = messageId2.GetKey(0);
                         } else {

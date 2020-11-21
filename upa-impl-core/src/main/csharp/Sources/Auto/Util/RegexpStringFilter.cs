@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -19,11 +19,11 @@ namespace Net.Vpc.Upa.Impl.Util
      *
      * @author taha.bensalah@gmail.com
      */
-    public class RegexpStringFilter : Net.Vpc.Upa.Filters.ObjectFilter<string> {
+    public class RegexpStringFilter : Net.TheVpc.Upa.Filters.ObjectFilter<string> {
 
         private string patternString;
 
-        private Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern pattern;
+        private Net.TheVpc.Upa.Impl.Util.Regexp.PortablePattern pattern;
 
         private bool nullIsEmpty;
 
@@ -34,9 +34,9 @@ namespace Net.Vpc.Upa.Impl.Util
             this.ignoreCase = ignoreCase;
             if (patternString != null) {
                 if (ignoreCase) {
-                    this.pattern = new Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern(patternString.ToLower());
+                    this.pattern = new Net.TheVpc.Upa.Impl.Util.Regexp.PortablePattern(patternString.ToLower());
                 } else {
-                    this.pattern = new Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern(patternString);
+                    this.pattern = new Net.TheVpc.Upa.Impl.Util.Regexp.PortablePattern(patternString);
                 }
             }
             this.nullIsEmpty = nullIsEmpty;

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -20,13 +20,13 @@ namespace Net.Vpc.Upa.Impl.Persistence
     * @creationdate 1/3/13 10:11 AM*/
     public class ValidationPass : System.IComparable<object> {
 
-        private System.Collections.Generic.ISet<Net.Vpc.Upa.Field> fields = new System.Collections.Generic.HashSet<Net.Vpc.Upa.Field>();
+        private System.Collections.Generic.ISet<Net.TheVpc.Upa.Field> fields = new System.Collections.Generic.HashSet<Net.TheVpc.Upa.Field>();
 
         private int pass;
 
-        private Net.Vpc.Upa.Impl.Persistence.ValidationPassType type;
+        private Net.TheVpc.Upa.Impl.Persistence.ValidationPassType type;
 
-        public ValidationPass(int pass, Net.Vpc.Upa.Impl.Persistence.ValidationPassType type) {
+        public ValidationPass(int pass, Net.TheVpc.Upa.Impl.Persistence.ValidationPassType type) {
             this.type = type;
             this.pass = pass;
         }
@@ -38,7 +38,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
             if (o == this) {
                 return 0;
             }
-            Net.Vpc.Upa.Impl.Persistence.ValidationPass oth = (Net.Vpc.Upa.Impl.Persistence.ValidationPass) o;
+            Net.TheVpc.Upa.Impl.Persistence.ValidationPass oth = (Net.TheVpc.Upa.Impl.Persistence.ValidationPass) o;
             if (pass > oth.pass) {
                 return 1;
             } else if (pass < oth.pass) {
@@ -48,7 +48,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
             }
         }
 
-        public virtual System.Collections.Generic.ISet<Net.Vpc.Upa.Field> GetFields() {
+        public virtual System.Collections.Generic.ISet<Net.TheVpc.Upa.Field> GetFields() {
             return fields;
         }
 
@@ -56,7 +56,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
             return pass;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Persistence.ValidationPassType GetType() {
+        public virtual Net.TheVpc.Upa.Impl.Persistence.ValidationPassType GetType() {
             return type;
         }
     }

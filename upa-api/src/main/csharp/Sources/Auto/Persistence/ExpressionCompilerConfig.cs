@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
 
@@ -28,7 +28,7 @@ namespace Net.Vpc.Upa.Persistence
 
         private bool resolveThis = true;
 
-        private Net.Vpc.Upa.Filters.FieldFilter expandFieldFilter;
+        private Net.TheVpc.Upa.Filters.FieldFilter expandFieldFilter;
 
         private string thisAlias = null;
 
@@ -39,7 +39,7 @@ namespace Net.Vpc.Upa.Persistence
             return aliasToEntityContext;
         }
 
-        public virtual Net.Vpc.Upa.Persistence.ExpressionCompilerConfig BindAliasToEntity(string alias, string entityName) {
+        public virtual Net.TheVpc.Upa.Persistence.ExpressionCompilerConfig BindAliasToEntity(string alias, string entityName) {
             if (aliasToEntityContext == null) {
                 aliasToEntityContext = new System.Collections.Generic.Dictionary<string , string>();
             }
@@ -51,11 +51,11 @@ namespace Net.Vpc.Upa.Persistence
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Filters.FieldFilter GetExpandFieldFilter() {
+        public virtual Net.TheVpc.Upa.Filters.FieldFilter GetExpandFieldFilter() {
             return expandFieldFilter;
         }
 
-        public virtual Net.Vpc.Upa.Persistence.ExpressionCompilerConfig SetExpandFieldFilter(Net.Vpc.Upa.Filters.FieldFilter expandFieldFilter) {
+        public virtual Net.TheVpc.Upa.Persistence.ExpressionCompilerConfig SetExpandFieldFilter(Net.TheVpc.Upa.Filters.FieldFilter expandFieldFilter) {
             this.expandFieldFilter = expandFieldFilter;
             return this;
         }
@@ -68,12 +68,12 @@ namespace Net.Vpc.Upa.Persistence
             return !compile;
         }
 
-        public virtual Net.Vpc.Upa.Persistence.ExpressionCompilerConfig SetCompile(bool compile) {
+        public virtual Net.TheVpc.Upa.Persistence.ExpressionCompilerConfig SetCompile(bool compile) {
             this.compile = compile;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Persistence.ExpressionCompilerConfig SetTranslateOnly() {
+        public virtual Net.TheVpc.Upa.Persistence.ExpressionCompilerConfig SetTranslateOnly() {
             this.compile = false;
             return this;
         }
@@ -82,7 +82,7 @@ namespace Net.Vpc.Upa.Persistence
             return thisAlias;
         }
 
-        public virtual Net.Vpc.Upa.Persistence.ExpressionCompilerConfig SetThisAlias(string thisAlias) {
+        public virtual Net.TheVpc.Upa.Persistence.ExpressionCompilerConfig SetThisAlias(string thisAlias) {
             this.thisAlias = thisAlias;
             return this;
         }
@@ -92,21 +92,21 @@ namespace Net.Vpc.Upa.Persistence
         }
 
         public virtual object GetHint(string hintName) {
-            return hints == null ? null : Net.Vpc.Upa.FwkConvertUtils.GetMapValue<string,object>(hints,hintName);
+            return hints == null ? null : Net.TheVpc.Upa.FwkConvertUtils.GetMapValue<string,object>(hints,hintName);
         }
 
         public virtual object GetHint(string hintName, object defaultValue) {
-            object c = hints == null ? null : Net.Vpc.Upa.FwkConvertUtils.GetMapValue<string,object>(hints,hintName);
+            object c = hints == null ? null : Net.TheVpc.Upa.FwkConvertUtils.GetMapValue<string,object>(hints,hintName);
             return c == null ? defaultValue : c;
         }
 
-        public virtual Net.Vpc.Upa.Persistence.ExpressionCompilerConfig SetHints(System.Collections.Generic.IDictionary<string , object> hints) {
+        public virtual Net.TheVpc.Upa.Persistence.ExpressionCompilerConfig SetHints(System.Collections.Generic.IDictionary<string , object> hints) {
             this.hints = hints;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Persistence.ExpressionCompilerConfig Copy() {
-            Net.Vpc.Upa.Persistence.ExpressionCompilerConfig other = new Net.Vpc.Upa.Persistence.ExpressionCompilerConfig();
+        public virtual Net.TheVpc.Upa.Persistence.ExpressionCompilerConfig Copy() {
+            Net.TheVpc.Upa.Persistence.ExpressionCompilerConfig other = new Net.TheVpc.Upa.Persistence.ExpressionCompilerConfig();
             other.aliasToEntityContext = aliasToEntityContext == null ? null : new System.Collections.Generic.Dictionary<string , string>(aliasToEntityContext);
             other.hints = hints == null ? null : new System.Collections.Generic.Dictionary<string , object>(hints);
             other.compile = compile;
@@ -118,7 +118,7 @@ namespace Net.Vpc.Upa.Persistence
             return resolveThis;
         }
 
-        public virtual Net.Vpc.Upa.Persistence.ExpressionCompilerConfig SetResolveThis(bool resolveThis) {
+        public virtual Net.TheVpc.Upa.Persistence.ExpressionCompilerConfig SetResolveThis(bool resolveThis) {
             this.resolveThis = resolveThis;
             return this;
         }

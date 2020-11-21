@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
     /**
      * @author taha.bensalah@gmail.com
      */
-    public class PrimitiveDataType : Net.Vpc.Upa.Types.DefaultDataType {
+    public class PrimitiveDataType : Net.TheVpc.Upa.Types.DefaultDataType {
 
         public PrimitiveDataType(string name, System.Type platformType)  : base(name, platformType){
 

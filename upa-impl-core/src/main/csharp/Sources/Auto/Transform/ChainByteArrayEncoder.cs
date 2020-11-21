@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Transform
+namespace Net.TheVpc.Upa.Impl.Transform
 {
 
 
@@ -19,13 +19,13 @@ namespace Net.Vpc.Upa.Impl.Transform
      *
      * @author taha.bensalah@gmail.com
      */
-    public class ChainByteArrayEncoder : Net.Vpc.Upa.Types.ByteArrayEncoder {
+    public class ChainByteArrayEncoder : Net.TheVpc.Upa.Types.ByteArrayEncoder {
 
-        private Net.Vpc.Upa.Types.ByteArrayEncoder a;
+        private Net.TheVpc.Upa.Types.ByteArrayEncoder a;
 
-        private Net.Vpc.Upa.Types.ByteArrayEncoder b;
+        private Net.TheVpc.Upa.Types.ByteArrayEncoder b;
 
-        public ChainByteArrayEncoder(Net.Vpc.Upa.Types.ByteArrayEncoder a, Net.Vpc.Upa.Types.ByteArrayEncoder b) {
+        public ChainByteArrayEncoder(Net.TheVpc.Upa.Types.ByteArrayEncoder a, Net.TheVpc.Upa.Types.ByteArrayEncoder b) {
             this.a = a;
             this.b = b;
         }

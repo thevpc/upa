@@ -12,7 +12,7 @@
 
 
 using System.Linq;
-namespace Net.Vpc.Upa.Impl.Config.Decorations
+namespace Net.TheVpc.Upa.Impl.Config.Decorations
 {
 
 
@@ -20,32 +20,32 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
      *
      * @author taha.bensalah@gmail.com
      */
-    public abstract class AbstractDecorationValue : Net.Vpc.Upa.Config.DecorationValue {
+    public abstract class AbstractDecorationValue : Net.TheVpc.Upa.Config.DecorationValue {
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Config.DecorationValue> alternatives = new System.Collections.Generic.List<Net.Vpc.Upa.Config.DecorationValue>();
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Config.DecorationValue> alternatives = new System.Collections.Generic.List<Net.TheVpc.Upa.Config.DecorationValue>();
 
         public AbstractDecorationValue() {
             AddAlternative(this);
         }
 
-        public virtual void AddAlternative(Net.Vpc.Upa.Config.DecorationValue other) {
+        public virtual void AddAlternative(Net.TheVpc.Upa.Config.DecorationValue other) {
             alternatives.Add(other);
-            Net.Vpc.Upa.Impl.FwkConvertUtils.ListSort(alternatives, null);
+            Net.TheVpc.Upa.Impl.FwkConvertUtils.ListSort(alternatives, null);
         }
 
-        public virtual Net.Vpc.Upa.Config.DecorationValue[] GetAlternatives() {
+        public virtual Net.TheVpc.Upa.Config.DecorationValue[] GetAlternatives() {
             return alternatives.ToArray();
         }
 
-        public virtual int CompareTo(Net.Vpc.Upa.Config.DecorationValue o) {
+        public virtual int CompareTo(Net.TheVpc.Upa.Config.DecorationValue o) {
             if (o == null) {
                 return 1;
             }
             if (o == this) {
                 return 0;
             }
-            Net.Vpc.Upa.Config.ConfigInfo c1 = this.GetConfig();
-            Net.Vpc.Upa.Config.ConfigInfo c2 = o.GetConfig();
+            Net.TheVpc.Upa.Config.ConfigInfo c1 = this.GetConfig();
+            Net.TheVpc.Upa.Config.ConfigInfo c2 = o.GetConfig();
             if (c1 == c2) {
                 return 0;
             }
@@ -55,21 +55,21 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
             return 0;
         }
 
-        public virtual Net.Vpc.Upa.Config.DecorationValue[] Shrink(Net.Vpc.Upa.Config.DecorationValue[] alternatives) {
-            System.Collections.Generic.List<Net.Vpc.Upa.Config.DecorationValue> ok = new System.Collections.Generic.List<Net.Vpc.Upa.Config.DecorationValue>();
-            foreach (Net.Vpc.Upa.Config.DecorationValue alternative in alternatives) {
+        public virtual Net.TheVpc.Upa.Config.DecorationValue[] Shrink(Net.TheVpc.Upa.Config.DecorationValue[] alternatives) {
+            System.Collections.Generic.List<Net.TheVpc.Upa.Config.DecorationValue> ok = new System.Collections.Generic.List<Net.TheVpc.Upa.Config.DecorationValue>();
+            foreach (Net.TheVpc.Upa.Config.DecorationValue alternative in alternatives) {
                 switch(alternative.GetConfig().GetConfigAction()) {
-                    case Net.Vpc.Upa.Config.ConfigAction.MERGE:
+                    case Net.TheVpc.Upa.Config.ConfigAction.MERGE:
                         {
                             ok.Add(alternative);
                             break;
                         }
-                    case Net.Vpc.Upa.Config.ConfigAction.DELETE:
+                    case Net.TheVpc.Upa.Config.ConfigAction.DELETE:
                         {
                             ok.Clear();
                             break;
                         }
-                    case Net.Vpc.Upa.Config.ConfigAction.REPLACE:
+                    case Net.TheVpc.Upa.Config.ConfigAction.REPLACE:
                         {
                             ok.Clear();
                             ok.Add(alternative);
@@ -80,6 +80,6 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
             return ok.ToArray();
         }
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
-        public abstract Net.Vpc.Upa.Config.ConfigInfo GetConfig();
+        public abstract Net.TheVpc.Upa.Config.ConfigInfo GetConfig();
     }
 }

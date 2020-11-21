@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -21,11 +21,11 @@ namespace Net.Vpc.Upa
      */
     public class ScanEvent {
 
-        private Net.Vpc.Upa.UPAContext context;
+        private Net.TheVpc.Upa.UPAContext context;
 
-        private Net.Vpc.Upa.PersistenceGroup persistenceGroup;
+        private Net.TheVpc.Upa.PersistenceGroup persistenceGroup;
 
-        private Net.Vpc.Upa.PersistenceUnit persistenceUnit;
+        private Net.TheVpc.Upa.PersistenceUnit persistenceUnit;
 
         private System.Type contract;
 
@@ -33,13 +33,13 @@ namespace Net.Vpc.Upa
 
         private System.Reflection.MethodInfo visitedMethod;
 
-        private Net.Vpc.Upa.Field visitedField;
+        private Net.TheVpc.Upa.Field visitedField;
 
-        private Net.Vpc.Upa.Config.Decoration visitedDecoration;
+        private Net.TheVpc.Upa.Config.Decoration visitedDecoration;
 
         private object userObject;
 
-        public ScanEvent(Net.Vpc.Upa.UPAContext context, Net.Vpc.Upa.PersistenceGroup persistenceGroup, Net.Vpc.Upa.PersistenceUnit persistenceUnit, System.Type contract, System.Type type, System.Reflection.MethodInfo method, Net.Vpc.Upa.Field field, Net.Vpc.Upa.Config.Decoration decoration, object instance) {
+        public ScanEvent(Net.TheVpc.Upa.UPAContext context, Net.TheVpc.Upa.PersistenceGroup persistenceGroup, Net.TheVpc.Upa.PersistenceUnit persistenceUnit, System.Type contract, System.Type type, System.Reflection.MethodInfo method, Net.TheVpc.Upa.Field field, Net.TheVpc.Upa.Config.Decoration decoration, object instance) {
             this.context = context;
             this.persistenceGroup = persistenceGroup;
             this.persistenceUnit = persistenceUnit;
@@ -51,7 +51,7 @@ namespace Net.Vpc.Upa
             this.userObject = instance;
         }
 
-        public ScanEvent(Net.Vpc.Upa.UPAContext context, Net.Vpc.Upa.PersistenceGroup persistenceGroup, Net.Vpc.Upa.PersistenceUnit persistenceUnit, System.Type contract, System.Type type, object instance) {
+        public ScanEvent(Net.TheVpc.Upa.UPAContext context, Net.TheVpc.Upa.PersistenceGroup persistenceGroup, Net.TheVpc.Upa.PersistenceUnit persistenceUnit, System.Type contract, System.Type type, object instance) {
             this.context = context;
             this.persistenceGroup = persistenceGroup;
             this.persistenceUnit = persistenceUnit;
@@ -64,15 +64,15 @@ namespace Net.Vpc.Upa
             return userObject;
         }
 
-        public virtual Net.Vpc.Upa.UPAContext GetContext() {
+        public virtual Net.TheVpc.Upa.UPAContext GetContext() {
             return context;
         }
 
-        public virtual Net.Vpc.Upa.PersistenceGroup GetPersistenceGroup() {
+        public virtual Net.TheVpc.Upa.PersistenceGroup GetPersistenceGroup() {
             return persistenceGroup;
         }
 
-        public virtual Net.Vpc.Upa.PersistenceUnit GetPersistenceUnit() {
+        public virtual Net.TheVpc.Upa.PersistenceUnit GetPersistenceUnit() {
             return persistenceUnit;
         }
 
@@ -88,11 +88,11 @@ namespace Net.Vpc.Upa
             return visitedMethod;
         }
 
-        public virtual Net.Vpc.Upa.Field GetVisitedField() {
+        public virtual Net.TheVpc.Upa.Field GetVisitedField() {
             return visitedField;
         }
 
-        public virtual Net.Vpc.Upa.Config.Decoration GetVisitedDecoration() {
+        public virtual Net.TheVpc.Upa.Config.Decoration GetVisitedDecoration() {
             return visitedDecoration;
         }
     }

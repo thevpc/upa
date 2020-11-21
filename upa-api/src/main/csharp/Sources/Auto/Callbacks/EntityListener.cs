@@ -11,28 +11,28 @@
 
 
 
-namespace Net.Vpc.Upa.Callbacks
+namespace Net.TheVpc.Upa.Callbacks
 {
 
-    public interface EntityListener : Net.Vpc.Upa.Callbacks.EntityInterceptor {
+    public interface EntityListener : Net.TheVpc.Upa.Callbacks.EntityInterceptor {
 
-         void OnPrePersist(Net.Vpc.Upa.Callbacks.PersistEvent @event);
+         void OnPrePersist(Net.TheVpc.Upa.Callbacks.PersistEvent @event);
 
-         void OnPersist(Net.Vpc.Upa.Callbacks.PersistEvent @event);
+         void OnPersist(Net.TheVpc.Upa.Callbacks.PersistEvent @event);
 
-         void OnPreUpdate(Net.Vpc.Upa.Callbacks.UpdateEvent @event);
+         void OnPreUpdate(Net.TheVpc.Upa.Callbacks.UpdateEvent @event);
 
-         void OnUpdate(Net.Vpc.Upa.Callbacks.UpdateEvent @event);
+         void OnUpdate(Net.TheVpc.Upa.Callbacks.UpdateEvent @event);
 
-         void OnPreRemove(Net.Vpc.Upa.Callbacks.RemoveEvent @event);
+         void OnPreRemove(Net.TheVpc.Upa.Callbacks.RemoveEvent @event);
 
-         void OnRemove(Net.Vpc.Upa.Callbacks.RemoveEvent @event);
+         void OnRemove(Net.TheVpc.Upa.Callbacks.RemoveEvent @event);
 
-         void OnPreUpdateFormula(Net.Vpc.Upa.Callbacks.UpdateFormulaEvent @event);
+         void OnPreUpdateFormula(Net.TheVpc.Upa.Callbacks.UpdateFormulaEvent @event);
 
-         void OnUpdateFormula(Net.Vpc.Upa.Callbacks.UpdateFormulaEvent @event);
+         void OnUpdateFormula(Net.TheVpc.Upa.Callbacks.UpdateFormulaEvent @event);
 
-         void OnPreInitialize(Net.Vpc.Upa.Callbacks.EntityEvent @event);
+         void OnPreInitialize(Net.TheVpc.Upa.Callbacks.EntityEvent @event);
 
         /**
              * called when Entity is initialized aka default entities / Documents where
@@ -40,14 +40,14 @@ namespace Net.Vpc.Upa.Callbacks
              *
              * @param event
              */
-         void OnInitialize(Net.Vpc.Upa.Callbacks.EntityEvent @event);
+         void OnInitialize(Net.TheVpc.Upa.Callbacks.EntityEvent @event);
 
-         void OnPreClear(Net.Vpc.Upa.Callbacks.EntityEvent @event);
+         void OnPreClear(Net.TheVpc.Upa.Callbacks.EntityEvent @event);
 
-         void OnClear(Net.Vpc.Upa.Callbacks.EntityEvent @event);
+         void OnClear(Net.TheVpc.Upa.Callbacks.EntityEvent @event);
 
-         void OnPreReset(Net.Vpc.Upa.Callbacks.EntityEvent @event);
+         void OnPreReset(Net.TheVpc.Upa.Callbacks.EntityEvent @event);
 
-         void OnReset(Net.Vpc.Upa.Callbacks.EntityEvent @event);
+         void OnReset(Net.TheVpc.Upa.Callbacks.EntityEvent @event);
     }
 }

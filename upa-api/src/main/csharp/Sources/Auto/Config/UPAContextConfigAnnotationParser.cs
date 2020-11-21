@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Config
+namespace Net.TheVpc.Upa.Config
 {
 
 
@@ -21,6 +21,6 @@ namespace Net.Vpc.Upa.Config
      */
     public interface UPAContextConfigAnnotationParser {
 
-         Net.Vpc.Upa.Persistence.UPAContextConfig Parse(System.Type clazz);
+         Net.TheVpc.Upa.Persistence.UPAContextConfig Parse(System.Type clazz);
     }
 }

@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     /**
      *
      * @author taha.bensalah@gmail.com
      */
-    public class DefaultUserPrincipal : Net.Vpc.Upa.UserPrincipal {
+    public class DefaultUserPrincipal : Net.TheVpc.Upa.UserPrincipal {
 
         private string name;
 
@@ -53,7 +53,7 @@ namespace Net.Vpc.Upa
             if (GetType() != obj.GetType()) {
                 return false;
             }
-            Net.Vpc.Upa.DefaultUserPrincipal other = (Net.Vpc.Upa.DefaultUserPrincipal) obj;
+            Net.TheVpc.Upa.DefaultUserPrincipal other = (Net.TheVpc.Upa.DefaultUserPrincipal) obj;
             if ((this.name == null) ? (other.name != null) : !this.name.Equals(other.name)) {
                 return false;
             }

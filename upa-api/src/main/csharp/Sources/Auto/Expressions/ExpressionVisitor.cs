@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
     /**
@@ -26,6 +26,6 @@ namespace Net.Vpc.Upa.Expressions
              * @param tag        associated tag
              * @return true to continue visiting or false to stop visit
              */
-         bool Visit(Net.Vpc.Upa.Expressions.Expression expression, Net.Vpc.Upa.Expressions.ExpressionTag tag);
+         bool Visit(Net.TheVpc.Upa.Expressions.Expression expression, Net.TheVpc.Upa.Expressions.ExpressionTag tag);
     }
 }

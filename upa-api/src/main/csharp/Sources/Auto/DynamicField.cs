@@ -11,9 +11,9 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
-    public interface DynamicField : Net.Vpc.Upa.Field {
+    public interface DynamicField : Net.TheVpc.Upa.Field {
     }
 }

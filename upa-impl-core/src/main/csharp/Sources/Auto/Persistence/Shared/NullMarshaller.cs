@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Shared
+namespace Net.TheVpc.Upa.Impl.Persistence.Shared
 {
 
 
     /**
     * @author Taha BEN SALAH <taha.bensalah@gmail.com>
     * @creationdate 12/20/12 2:46 AM*/
-    public class NullMarshaller : Net.Vpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
+    public class NullMarshaller : Net.TheVpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
 
         public override object Read(int index, System.Data.IDataReader resultSet) /* throws System.Exception */  {
             System.Convert.ToString(resultSet[index]);

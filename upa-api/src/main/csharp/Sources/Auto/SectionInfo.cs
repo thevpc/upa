@@ -11,23 +11,23 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
-    public class SectionInfo : Net.Vpc.Upa.EntityPartInfo {
+    public class SectionInfo : Net.TheVpc.Upa.EntityPartInfo {
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.EntityPartInfo> children;
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.EntityPartInfo> children;
 
         public SectionInfo()  : base("section"){
 
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.EntityPartInfo> GetChildren() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.EntityPartInfo> GetChildren() {
             return children;
         }
 
-        public virtual void SetChildren(System.Collections.Generic.IList<Net.Vpc.Upa.EntityPartInfo> children) {
+        public virtual void SetChildren(System.Collections.Generic.IList<Net.TheVpc.Upa.EntityPartInfo> children) {
             this.children = children;
         }
     }

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
 
@@ -21,8 +21,8 @@ namespace Net.Vpc.Upa.Persistence
      */
     public interface EntityPersistOperation {
 
-         void Insert(Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.Document originalDocument, Net.Vpc.Upa.Document persistentDocument, Net.Vpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void Insert(Net.TheVpc.Upa.Entity entity, Net.TheVpc.Upa.Document originalDocument, Net.TheVpc.Upa.Document persistentDocument, Net.TheVpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Query CreateQuery(Net.Vpc.Upa.Entity e, Net.Vpc.Upa.Expressions.Insert query, Net.Vpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Query CreateQuery(Net.TheVpc.Upa.Entity e, Net.TheVpc.Upa.Expressions.Insert query, Net.TheVpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
     }
 }

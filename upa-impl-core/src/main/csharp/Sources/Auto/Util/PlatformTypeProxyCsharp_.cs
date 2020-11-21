@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
-    public class PlatformTypeProxyCsharp : Net.Vpc.Upa.Impl.Util.PlatformTypeProxy
+    public class PlatformTypeProxyCsharp : Net.TheVpc.Upa.Impl.Util.PlatformTypeProxy
     {
         public T Create<T>(Type type, PlatformMethodProxy<T> methodProxy) {
             PlatformMethodProxyAdapterCsharp<T> t=new PlatformMethodProxyAdapterCsharp<T>(type,methodProxy);

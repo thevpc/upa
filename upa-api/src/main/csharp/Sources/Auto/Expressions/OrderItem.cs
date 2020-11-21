@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
     /**
@@ -20,16 +20,16 @@ namespace Net.Vpc.Upa.Expressions
      */
     internal class OrderItem {
 
-        private Net.Vpc.Upa.Expressions.Expression expression;
+        private Net.TheVpc.Upa.Expressions.Expression expression;
 
         private bool asc;
 
-        public OrderItem(Net.Vpc.Upa.Expressions.Expression expression, bool asc) {
+        public OrderItem(Net.TheVpc.Upa.Expressions.Expression expression, bool asc) {
             this.expression = expression;
             this.asc = asc;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Expression GetExpression() {
+        public virtual Net.TheVpc.Upa.Expressions.Expression GetExpression() {
             return expression;
         }
 

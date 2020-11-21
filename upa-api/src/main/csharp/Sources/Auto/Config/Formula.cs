@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Config
+namespace Net.TheVpc.Upa.Config
 {
 
 
@@ -29,7 +29,7 @@ namespace Net.Vpc.Upa.Config
         }
 
 
-        private System.Type _CustomType = typeof(Net.Vpc.Upa.Formula);
+        private System.Type _CustomType = typeof(Net.TheVpc.Upa.Formula);
         public  System.Type CustomType{
             get {return _CustomType;}
             set {_CustomType=value;}
@@ -53,8 +53,8 @@ namespace Net.Vpc.Upa.Config
         }
 
 
-        private Net.Vpc.Upa.FormulaType[] _FormulaType = {  };
-        public  Net.Vpc.Upa.FormulaType[] FormulaType{
+        private Net.TheVpc.Upa.FormulaType[] _FormulaType = {  };
+        public  Net.TheVpc.Upa.FormulaType[] FormulaType{
             get {return _FormulaType;}
             set {_FormulaType=value;}
         }
@@ -65,8 +65,8 @@ namespace Net.Vpc.Upa.Config
              *
              * @return annotation configuration
              */
-        private Net.Vpc.Upa.Config.ItemConfig _Config = new Net.Vpc.Upa.Config.ItemConfig();
-        public  Net.Vpc.Upa.Config.ItemConfig Config{
+        private Net.TheVpc.Upa.Config.ItemConfig _Config = new Net.TheVpc.Upa.Config.ItemConfig();
+        public  Net.TheVpc.Upa.Config.ItemConfig Config{
             get {return _Config;}
             set {_Config=value;}
         }

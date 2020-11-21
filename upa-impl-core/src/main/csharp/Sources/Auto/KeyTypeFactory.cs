@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
@@ -19,9 +19,9 @@ namespace Net.Vpc.Upa.Impl
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 8/27/12 1:51 AM
      */
-    public class KeyTypeFactory : Net.Vpc.Upa.Impl.KeyFactory {
+    public class KeyTypeFactory : Net.TheVpc.Upa.Impl.KeyFactory {
 
-        public static readonly System.Collections.Generic.HashSet<System.Type> ACCEPTED_TYPES = new System.Collections.Generic.HashSet<System.Type>(new System.Collections.Generic.List<System.Type>(new[]{typeof(string), typeof(Net.Vpc.Upa.Types.Temporal), typeof(Net.Vpc.Upa.Types.Date), typeof(Net.Vpc.Upa.Types.Timestamp), typeof(Net.Vpc.Upa.Types.Time), typeof(Net.Vpc.Upa.Types.DateTime), typeof(Net.Vpc.Upa.Types.Date), typeof(Net.Vpc.Upa.Types.Month), typeof(Net.Vpc.Upa.Types.Time), typeof(Net.Vpc.Upa.Types.Year), typeof(int?), typeof(int), typeof(short?), typeof(short), typeof(long?), typeof(long), typeof(double?), typeof(double), typeof(float?), typeof(float)}));
+        public static readonly System.Collections.Generic.HashSet<System.Type> ACCEPTED_TYPES = new System.Collections.Generic.HashSet<System.Type>(new System.Collections.Generic.List<System.Type>(new[]{typeof(string), typeof(Net.TheVpc.Upa.Types.Temporal), typeof(Net.TheVpc.Upa.Types.Date), typeof(Net.TheVpc.Upa.Types.Timestamp), typeof(Net.TheVpc.Upa.Types.Time), typeof(Net.TheVpc.Upa.Types.DateTime), typeof(Net.TheVpc.Upa.Types.Date), typeof(Net.TheVpc.Upa.Types.Month), typeof(Net.TheVpc.Upa.Types.Time), typeof(Net.TheVpc.Upa.Types.Year), typeof(int?), typeof(int), typeof(short?), typeof(short), typeof(long?), typeof(long), typeof(double?), typeof(double), typeof(float?), typeof(float)}));
 
         private System.Type keyType;
 
@@ -37,11 +37,11 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
-        public virtual Net.Vpc.Upa.Key CreateKey(params object [] idValues) {
+        public virtual Net.TheVpc.Upa.Key CreateKey(params object [] idValues) {
             if (idValues == null) {
                 return null;
             }
-            return new Net.Vpc.Upa.Impl.DefaultKey(idValues);
+            return new Net.TheVpc.Upa.Impl.DefaultKey(idValues);
         }
 
 
@@ -53,7 +53,7 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
-        public virtual object GetId(Net.Vpc.Upa.Key unstructuredKey) {
+        public virtual object GetId(Net.TheVpc.Upa.Key unstructuredKey) {
             if (unstructuredKey == null) {
                 return null;
             }
@@ -61,7 +61,7 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
-        public virtual Net.Vpc.Upa.Key GetKey(object id) {
+        public virtual Net.TheVpc.Upa.Key GetKey(object id) {
             if (id == null) {
                 return null;
             }

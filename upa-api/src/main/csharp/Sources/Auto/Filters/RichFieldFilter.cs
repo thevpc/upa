@@ -11,22 +11,22 @@
 
 
 
-namespace Net.Vpc.Upa.Filters
+namespace Net.TheVpc.Upa.Filters
 {
 
     /**
      * @author taha.bensalah@gmail.com on 7/31/16.
      */
-    public interface RichFieldFilter : Net.Vpc.Upa.Filters.FieldFilter {
+    public interface RichFieldFilter : Net.TheVpc.Upa.Filters.FieldFilter {
 
-         Net.Vpc.Upa.Filters.RichFieldFilter And(Net.Vpc.Upa.Filters.FieldFilter filter);
+         Net.TheVpc.Upa.Filters.RichFieldFilter And(Net.TheVpc.Upa.Filters.FieldFilter filter);
 
-         Net.Vpc.Upa.Filters.RichFieldFilter AndNot(Net.Vpc.Upa.Filters.FieldFilter filter);
+         Net.TheVpc.Upa.Filters.RichFieldFilter AndNot(Net.TheVpc.Upa.Filters.FieldFilter filter);
 
-         Net.Vpc.Upa.Filters.RichFieldFilter Or(Net.Vpc.Upa.Filters.FieldFilter filter);
+         Net.TheVpc.Upa.Filters.RichFieldFilter Or(Net.TheVpc.Upa.Filters.FieldFilter filter);
 
-         Net.Vpc.Upa.Filters.RichFieldFilter OrNot(Net.Vpc.Upa.Filters.FieldFilter filter);
+         Net.TheVpc.Upa.Filters.RichFieldFilter OrNot(Net.TheVpc.Upa.Filters.FieldFilter filter);
 
-         Net.Vpc.Upa.Filters.RichFieldFilter Negate();
+         Net.TheVpc.Upa.Filters.RichFieldFilter Negate();
     }
 }

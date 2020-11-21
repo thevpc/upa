@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     /**
@@ -22,7 +22,7 @@ namespace Net.Vpc.Upa
 
          string GetEntityName();
 
-         Net.Vpc.Upa.RelationshipType GetRelationshipType();
+         Net.TheVpc.Upa.RelationshipType GetRelationshipType();
 
          long GetCount();
     }

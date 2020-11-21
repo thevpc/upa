@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Callbacks
+namespace Net.TheVpc.Upa.Callbacks
 {
 
 
@@ -21,6 +21,6 @@ namespace Net.Vpc.Upa.Callbacks
      */
     public interface EntityInstaller {
 
-         void InstallDefaults(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void InstallDefaults(Net.TheVpc.Upa.Entity entity) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
     }
 }

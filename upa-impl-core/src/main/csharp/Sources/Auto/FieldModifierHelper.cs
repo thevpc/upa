@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
@@ -21,13 +21,13 @@ namespace Net.Vpc.Upa.Impl
      */
     internal class FieldModifierHelper {
 
-        internal Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.FieldModifier> modifiers = Net.Vpc.Upa.FlagSets.NoneOf<Net.Vpc.Upa.FieldModifier>();
+        internal Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.FieldModifier> modifiers = Net.TheVpc.Upa.FlagSets.NoneOf<Net.TheVpc.Upa.FieldModifier>();
 
-        internal Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> positiveModifiers = Net.Vpc.Upa.FlagSets.NoneOf<Net.Vpc.Upa.UserFieldModifier>();
+        internal Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> positiveModifiers = Net.TheVpc.Upa.FlagSets.NoneOf<Net.TheVpc.Upa.UserFieldModifier>();
 
-        internal Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> negativeModifiers = Net.Vpc.Upa.FlagSets.NoneOf<Net.Vpc.Upa.UserFieldModifier>();
+        internal Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> negativeModifiers = Net.TheVpc.Upa.FlagSets.NoneOf<Net.TheVpc.Upa.UserFieldModifier>();
 
-        public FieldModifierHelper(Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> positive, Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> negative) {
+        public FieldModifierHelper(Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> positive, Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> negative) {
             if (positive != null) {
                 this.positiveModifiers = this.positiveModifiers.AddAll(positive);
             }
@@ -36,24 +36,24 @@ namespace Net.Vpc.Upa.Impl
             }
         }
 
-        public virtual Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> GetPositive() {
+        public virtual Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> GetPositive() {
             return positiveModifiers;
         }
 
-        public virtual Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> GetNegative() {
+        public virtual Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> GetNegative() {
             return positiveModifiers;
         }
 
-        public virtual Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.FieldModifier> GetEffective() {
+        public virtual Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.FieldModifier> GetEffective() {
             return modifiers;
         }
 
-        public virtual void Add(Net.Vpc.Upa.FieldModifier m) {
+        public virtual void Add(Net.TheVpc.Upa.FieldModifier m) {
             modifiers = modifiers.Add(m);
         }
 
-        public virtual void AddUnlessNegated(Net.Vpc.Upa.FieldModifier m, params Net.Vpc.Upa.UserFieldModifier [] all) {
-            foreach (Net.Vpc.Upa.UserFieldModifier x in all) {
+        public virtual void AddUnlessNegated(Net.TheVpc.Upa.FieldModifier m, params Net.TheVpc.Upa.UserFieldModifier [] all) {
+            foreach (Net.TheVpc.Upa.UserFieldModifier x in all) {
                 if (negativeModifiers.Contains(x)) {
                     return;
                 }
@@ -61,8 +61,8 @@ namespace Net.Vpc.Upa.Impl
             modifiers = modifiers.Add(m);
         }
 
-        public virtual void AddUnless(Net.Vpc.Upa.FieldModifier m, params Net.Vpc.Upa.UserFieldModifier [] all) {
-            foreach (Net.Vpc.Upa.UserFieldModifier x in all) {
+        public virtual void AddUnless(Net.TheVpc.Upa.FieldModifier m, params Net.TheVpc.Upa.UserFieldModifier [] all) {
+            foreach (Net.TheVpc.Upa.UserFieldModifier x in all) {
                 if (positiveModifiers.Contains(x)) {
                     return;
                 }
@@ -70,24 +70,24 @@ namespace Net.Vpc.Upa.Impl
             modifiers = modifiers.Add(m);
         }
 
-        public virtual bool IsNotSet(Net.Vpc.Upa.UserFieldModifier m) {
+        public virtual bool IsNotSet(Net.TheVpc.Upa.UserFieldModifier m) {
             return !positiveModifiers.Contains(m) && !negativeModifiers.Contains(m);
         }
 
-        public virtual bool Contains(Net.Vpc.Upa.UserFieldModifier m) {
+        public virtual bool Contains(Net.TheVpc.Upa.UserFieldModifier m) {
             return positiveModifiers.Contains(m) && !negativeModifiers.Contains(m);
         }
 
-        public virtual bool ContainsNot(Net.Vpc.Upa.UserFieldModifier m) {
+        public virtual bool ContainsNot(Net.TheVpc.Upa.UserFieldModifier m) {
             return !positiveModifiers.Contains(m) || negativeModifiers.Contains(m);
         }
 
-        public virtual bool Rejects(Net.Vpc.Upa.UserFieldModifier m) {
+        public virtual bool Rejects(Net.TheVpc.Upa.UserFieldModifier m) {
             return negativeModifiers.Contains(m);
         }
 
-        public virtual void AddWhenFound(Net.Vpc.Upa.FieldModifier m, params Net.Vpc.Upa.UserFieldModifier [] any) {
-            foreach (Net.Vpc.Upa.UserFieldModifier a in any) {
+        public virtual void AddWhenFound(Net.TheVpc.Upa.FieldModifier m, params Net.TheVpc.Upa.UserFieldModifier [] any) {
+            foreach (Net.TheVpc.Upa.UserFieldModifier a in any) {
                 if (positiveModifiers.Contains(a) && !negativeModifiers.Contains(a)) {
                     modifiers = modifiers.Add(m);
                     return;

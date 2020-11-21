@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Shared
+namespace Net.TheVpc.Upa.Impl.Persistence.Shared
 {
 
 
@@ -22,9 +22,9 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
      * Time: 17:26:10
      * To change this template use Options | File Templates.
      */
-    public class CastAsSQLProvider : Net.Vpc.Upa.Impl.Uql.Parser.FunctionSQLProvider {
+    public class CastAsSQLProvider : Net.TheVpc.Upa.Impl.Uql.Parser.FunctionSQLProvider {
 
-        public CastAsSQLProvider()  : base(typeof(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledCast)){
+        public CastAsSQLProvider()  : base(typeof(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledCast)){
 
         }
 

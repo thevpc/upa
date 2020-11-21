@@ -11,62 +11,62 @@
 
 
 
-namespace Net.Vpc.Upa.Filters
+namespace Net.TheVpc.Upa.Filters
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class CustomFieldFilter : Net.Vpc.Upa.Filters.AbstractFieldFilter {
+    public class CustomFieldFilter : Net.TheVpc.Upa.Filters.AbstractFieldFilter {
 
-        private Net.Vpc.Upa.Filters.FieldFilter @base;
+        private Net.TheVpc.Upa.Filters.FieldFilter @base;
 
-        internal CustomFieldFilter(Net.Vpc.Upa.Filters.FieldFilter @base) {
+        internal CustomFieldFilter(Net.TheVpc.Upa.Filters.FieldFilter @base) {
             this.@base = @base;
         }
 
-        public static Net.Vpc.Upa.Filters.RichFieldFilter As(Net.Vpc.Upa.Filters.FieldFilter @base) {
+        public static Net.TheVpc.Upa.Filters.RichFieldFilter As(Net.TheVpc.Upa.Filters.FieldFilter @base) {
             if (@base == null) {
-                return Net.Vpc.Upa.Filters.FieldFilters.All();
+                return Net.TheVpc.Upa.Filters.FieldFilters.All();
             }
-            if (@base is Net.Vpc.Upa.Filters.CustomFieldFilter) {
-                return (Net.Vpc.Upa.Filters.CustomFieldFilter) @base;
+            if (@base is Net.TheVpc.Upa.Filters.CustomFieldFilter) {
+                return (Net.TheVpc.Upa.Filters.CustomFieldFilter) @base;
             }
-            return new Net.Vpc.Upa.Filters.CustomFieldFilter(@base);
+            return new Net.TheVpc.Upa.Filters.CustomFieldFilter(@base);
         }
 
-        public virtual Net.Vpc.Upa.Filters.RichFieldFilter ByPrimitive() {
-            return As(new Net.Vpc.Upa.Filters.FieldPrimitiveFilter(@base));
+        public virtual Net.TheVpc.Upa.Filters.RichFieldFilter ByPrimitive() {
+            return As(new Net.TheVpc.Upa.Filters.FieldPrimitiveFilter(@base));
         }
 
-        public override Net.Vpc.Upa.Filters.RichFieldFilter And(Net.Vpc.Upa.Filters.FieldFilter other) {
-            return As(Net.Vpc.Upa.Filters.FieldAndFilter.And(@base, other));
+        public override Net.TheVpc.Upa.Filters.RichFieldFilter And(Net.TheVpc.Upa.Filters.FieldFilter other) {
+            return As(Net.TheVpc.Upa.Filters.FieldAndFilter.And(@base, other));
         }
 
-        public override Net.Vpc.Upa.Filters.RichFieldFilter AndNot(Net.Vpc.Upa.Filters.FieldFilter other) {
-            return And(new Net.Vpc.Upa.Filters.FieldReverseFilter(other));
+        public override Net.TheVpc.Upa.Filters.RichFieldFilter AndNot(Net.TheVpc.Upa.Filters.FieldFilter other) {
+            return And(new Net.TheVpc.Upa.Filters.FieldReverseFilter(other));
         }
 
-        public override Net.Vpc.Upa.Filters.RichFieldFilter Or(Net.Vpc.Upa.Filters.FieldFilter other) {
-            return new Net.Vpc.Upa.Filters.CustomFieldFilter(Net.Vpc.Upa.Filters.FieldOrFilter.Or(@base, other));
+        public override Net.TheVpc.Upa.Filters.RichFieldFilter Or(Net.TheVpc.Upa.Filters.FieldFilter other) {
+            return new Net.TheVpc.Upa.Filters.CustomFieldFilter(Net.TheVpc.Upa.Filters.FieldOrFilter.Or(@base, other));
         }
 
-        public override Net.Vpc.Upa.Filters.RichFieldFilter OrNot(Net.Vpc.Upa.Filters.FieldFilter other) {
-            return Or(new Net.Vpc.Upa.Filters.FieldReverseFilter(other));
+        public override Net.TheVpc.Upa.Filters.RichFieldFilter OrNot(Net.TheVpc.Upa.Filters.FieldFilter other) {
+            return Or(new Net.TheVpc.Upa.Filters.FieldReverseFilter(other));
         }
 
-        public override Net.Vpc.Upa.Filters.RichFieldFilter Negate() {
-            return new Net.Vpc.Upa.Filters.CustomFieldFilter(new Net.Vpc.Upa.Filters.FieldReverseFilter(@base));
+        public override Net.TheVpc.Upa.Filters.RichFieldFilter Negate() {
+            return new Net.TheVpc.Upa.Filters.CustomFieldFilter(new Net.TheVpc.Upa.Filters.FieldReverseFilter(@base));
         }
 
 
-        public override bool AcceptDynamic() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public override bool AcceptDynamic() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return @base.AcceptDynamic();
         }
 
 
-        public override bool Accept(Net.Vpc.Upa.Field f) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public override bool Accept(Net.TheVpc.Upa.Field f) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return @base.Accept(f);
         }
 
@@ -85,7 +85,7 @@ namespace Net.Vpc.Upa.Filters
             if (GetType() != obj.GetType()) {
                 return false;
             }
-            Net.Vpc.Upa.Filters.CustomFieldFilter other = (Net.Vpc.Upa.Filters.CustomFieldFilter) obj;
+            Net.TheVpc.Upa.Filters.CustomFieldFilter other = (Net.TheVpc.Upa.Filters.CustomFieldFilter) obj;
             if (this.@base != other.@base && (this.@base == null || !this.@base.Equals(other.@base))) {
                 return false;
             }

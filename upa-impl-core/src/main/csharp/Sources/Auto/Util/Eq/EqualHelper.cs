@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util.Eq
+namespace Net.TheVpc.Upa.Impl.Util.Eq
 {
 
     /**

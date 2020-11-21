@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Bulk
+namespace Net.TheVpc.Upa.Bulk
 {
 
 
@@ -20,6 +20,6 @@ namespace Net.Vpc.Upa.Bulk
      */
     public interface ImportDataManager {
 
-         void ImportEntity(Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.Bulk.DataReader dataIterator, Net.Vpc.Upa.Bulk.ImportDataConfig config);
+         void ImportEntity(Net.TheVpc.Upa.Entity entity, Net.TheVpc.Upa.Bulk.DataReader dataIterator, Net.TheVpc.Upa.Bulk.ImportDataConfig config);
     }
 }

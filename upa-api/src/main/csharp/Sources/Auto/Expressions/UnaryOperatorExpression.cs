@@ -11,43 +11,43 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
 
-    public abstract class UnaryOperatorExpression : Net.Vpc.Upa.Expressions.OperatorExpression {
+    public abstract class UnaryOperatorExpression : Net.TheVpc.Upa.Expressions.OperatorExpression {
 
-        private static readonly Net.Vpc.Upa.Expressions.DefaultTag EXPR = new Net.Vpc.Upa.Expressions.DefaultTag("Expr");
+        private static readonly Net.TheVpc.Upa.Expressions.DefaultTag EXPR = new Net.TheVpc.Upa.Expressions.DefaultTag("Expr");
 
 
 
         private string operatorString;
 
-        private Net.Vpc.Upa.Expressions.UnaryOperator unaryOperator;
+        private Net.TheVpc.Upa.Expressions.UnaryOperator unaryOperator;
 
-        private Net.Vpc.Upa.Expressions.Expression expression;
+        private Net.TheVpc.Upa.Expressions.Expression expression;
 
-        public UnaryOperatorExpression(Net.Vpc.Upa.Expressions.UnaryOperator unaryOperator, string operatorString, Net.Vpc.Upa.Expressions.Expression expression) {
+        public UnaryOperatorExpression(Net.TheVpc.Upa.Expressions.UnaryOperator unaryOperator, string operatorString, Net.TheVpc.Upa.Expressions.Expression expression) {
             this.operatorString = operatorString;
             this.unaryOperator = unaryOperator;
             this.expression = expression;
         }
 
 
-        public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>(1);
+        public override System.Collections.Generic.IList<Net.TheVpc.Upa.Expressions.TaggedExpression> GetChildren() {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.TheVpc.Upa.Expressions.TaggedExpression>(1);
             if (expression != null) {
-                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(expression, EXPR));
+                list.Add(new Net.TheVpc.Upa.Expressions.TaggedExpression(expression, EXPR));
             }
             return list;
         }
 
 
-        public override void SetChild(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.Expressions.ExpressionTag tag) {
+        public override void SetChild(Net.TheVpc.Upa.Expressions.Expression e, Net.TheVpc.Upa.Expressions.ExpressionTag tag) {
             if (tag.Equals(EXPR)) {
                 this.expression = e;
             } else {
-                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("Unsupported");
+                throw new Net.TheVpc.Upa.Exceptions.UPAIllegalArgumentException("Unsupported");
             }
         }
 
@@ -60,7 +60,7 @@ namespace Net.Vpc.Upa.Expressions
             return expression.IsValid();
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Expression GetExpression() {
+        public virtual Net.TheVpc.Upa.Expressions.Expression GetExpression() {
             return expression;
         }
 
@@ -68,7 +68,7 @@ namespace Net.Vpc.Upa.Expressions
             return operatorString;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.UnaryOperator GetOperator() {
+        public virtual Net.TheVpc.Upa.Expressions.UnaryOperator GetOperator() {
             return unaryOperator;
         }
     }

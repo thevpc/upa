@@ -11,29 +11,29 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
 
-    public class ListType : Net.Vpc.Upa.Types.SeriesType {
+    public class ListType : Net.TheVpc.Upa.Types.SeriesType {
 
-        protected internal Net.Vpc.Upa.Types.DataType elementType;
+        protected internal Net.TheVpc.Upa.Types.DataType elementType;
 
         protected internal System.Collections.Generic.IList<object> elements;
 
-        public ListType(string name, System.Collections.Generic.IList<object> collection, Net.Vpc.Upa.Types.DataType modelClass, bool nullable)  : this(name, collection, modelClass, 0, 0, nullable){
+        public ListType(string name, System.Collections.Generic.IList<object> collection, Net.TheVpc.Upa.Types.DataType modelClass, bool nullable)  : this(name, collection, modelClass, 0, 0, nullable){
 
         }
 
-        public ListType(string name, System.Collections.Generic.IList<object> collection, Net.Vpc.Upa.Types.DataType modelClass)  : this(name, collection, modelClass, 0, 0, false){
+        public ListType(string name, System.Collections.Generic.IList<object> collection, Net.TheVpc.Upa.Types.DataType modelClass)  : this(name, collection, modelClass, 0, 0, false){
 
         }
 
-        public ListType(string name, object[] collection, Net.Vpc.Upa.Types.DataType modelClass)  : this(name, new System.Collections.Generic.List<object>(collection), modelClass, 0, 0, false){
+        public ListType(string name, object[] collection, Net.TheVpc.Upa.Types.DataType modelClass)  : this(name, new System.Collections.Generic.List<object>(collection), modelClass, 0, 0, false){
 
         }
 
-        public ListType(string name, System.Collections.Generic.IList<object> collection, Net.Vpc.Upa.Types.DataType elementType, int length, int precision, bool nullable)  : base(name, elementType.GetPlatformType(), length, precision, nullable){
+        public ListType(string name, System.Collections.Generic.IList<object> collection, Net.TheVpc.Upa.Types.DataType elementType, int length, int precision, bool nullable)  : base(name, elementType.GetPlatformType(), length, precision, nullable){
 
             this.elementType = elementType;
             SetData(collection);
@@ -51,11 +51,11 @@ namespace Net.Vpc.Upa.Types
             }
         }
 
-        public ListType(string name, System.Collections.Generic.IList<object> collection, Net.Vpc.Upa.Types.DataType modelClass, int length, int precision)  : this(name, collection, modelClass, length, precision, false){
+        public ListType(string name, System.Collections.Generic.IList<object> collection, Net.TheVpc.Upa.Types.DataType modelClass, int length, int precision)  : this(name, collection, modelClass, length, precision, false){
 
         }
 
-        public virtual Net.Vpc.Upa.Types.DataType GetElementType() {
+        public virtual Net.TheVpc.Upa.Types.DataType GetElementType() {
             return elementType;
         }
 
@@ -83,7 +83,7 @@ namespace Net.Vpc.Upa.Types
         }
 
 
-        public override void Check(object @value, string name, string description) /* throws Net.Vpc.Upa.Types.ConstraintsException */  {
+        public override void Check(object @value, string name, string description) /* throws Net.TheVpc.Upa.Types.ConstraintsException */  {
             base.Check(@value, name, description);
             elementType.Check(@value, name, description);
         }
@@ -123,11 +123,11 @@ namespace Net.Vpc.Upa.Types
 
         public override object Copy() {
             try {
-                Net.Vpc.Upa.Types.ListType l = (Net.Vpc.Upa.Types.ListType) Clone();
+                Net.TheVpc.Upa.Types.ListType l = (Net.TheVpc.Upa.Types.ListType) Clone();
                 l.elements = new System.Collections.Generic.List<object>(l.elements);
                 return l;
             } catch (System.Exception ex) {
-                throw new Net.Vpc.Upa.Exceptions.UnexpectedException("Clone Not Supported", ex);
+                throw new Net.TheVpc.Upa.Exceptions.UnexpectedException("Clone Not Supported", ex);
             }
         }
 
@@ -136,7 +136,7 @@ namespace Net.Vpc.Upa.Types
             if (this == o) return true;
             if (o == null || GetType() != o.GetType()) return false;
             if (!base.Equals(o)) return false;
-            Net.Vpc.Upa.Types.ListType listType = (Net.Vpc.Upa.Types.ListType) o;
+            Net.TheVpc.Upa.Types.ListType listType = (Net.TheVpc.Upa.Types.ListType) o;
             if (elementType != null ? !elementType.Equals(listType.elementType) : listType.elementType != null) return false;
             return elements != null ? elements.Equals(listType.elements) : listType.elements == null;
         }
@@ -150,8 +150,8 @@ namespace Net.Vpc.Upa.Types
         }
 
 
-        public override Net.Vpc.Upa.DataTypeInfo GetInfo() {
-            Net.Vpc.Upa.DataTypeInfo d = base.GetInfo();
+        public override Net.TheVpc.Upa.DataTypeInfo GetInfo() {
+            Net.TheVpc.Upa.DataTypeInfo d = base.GetInfo();
             System.Text.StringBuilder s = new System.Text.StringBuilder();
             d.GetProperties()["elementType"]=System.Convert.ToString(elementType);
             foreach (object o in elements) {

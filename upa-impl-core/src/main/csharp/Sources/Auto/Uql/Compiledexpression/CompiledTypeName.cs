@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledexpression
 {
 
 
@@ -19,16 +19,16 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
      * Created with IntelliJ IDEA. User: vpc Date: 8/16/12 Time: 11:04 PM To change
      * this template use File | Settings | File Templates.
      */
-    public class CompiledTypeName : Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpressionImpl {
+    public class CompiledTypeName : Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpressionImpl {
 
-        private Net.Vpc.Upa.Types.DataTypeTransform type;
+        private Net.TheVpc.Upa.Types.DataTypeTransform type;
 
-        public CompiledTypeName(Net.Vpc.Upa.Types.DataTypeTransform type) {
+        public CompiledTypeName(Net.TheVpc.Upa.Types.DataTypeTransform type) {
             this.type = type;
         }
 
 
-        public override Net.Vpc.Upa.Types.DataTypeTransform GetTypeTransform() {
+        public override Net.TheVpc.Upa.Types.DataTypeTransform GetTypeTransform() {
             return type;
         }
 
@@ -38,20 +38,20 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         }
 
 
-        public override Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledTypeName o = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledTypeName(type);
+        public override Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledTypeName o = new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledTypeName(type);
             o.SetDescription(GetDescription());
             o.GetClientParameters().SetAll(GetClientParameters());
             return o;
         }
 
 
-        public override Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetSubExpressions() {
+        public override Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetSubExpressions() {
             return null;
         }
 
 
-        public override void SetSubExpression(int index, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
+        public override void SetSubExpression(int index, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
             throw new System.Exception("Not supported.");
         }
 

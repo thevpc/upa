@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Shared
+namespace Net.TheVpc.Upa.Impl.Persistence.Shared
 {
 
 
@@ -22,7 +22,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
      * Time: 10:20 PM
      * To change this template use File | Settings | File Templates.
      */
-    public abstract class AbstractSQLProvider : Net.Vpc.Upa.Impl.Persistence.SQLProvider {
+    public abstract class AbstractSQLProvider : Net.TheVpc.Upa.Impl.Persistence.SQLProvider {
 
         private System.Type type;
 
@@ -35,6 +35,6 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
             return type;
         }
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
-        public abstract string GetSQL(object arg1, Net.Vpc.Upa.Persistence.EntityExecutionContext arg2, Net.Vpc.Upa.Impl.Persistence.SQLManager arg3, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList arg4);
+        public abstract string GetSQL(object arg1, Net.TheVpc.Upa.Persistence.EntityExecutionContext arg2, Net.TheVpc.Upa.Impl.Persistence.SQLManager arg3, Net.TheVpc.Upa.Impl.Uql.ExpressionDeclarationList arg4);
     }
 }

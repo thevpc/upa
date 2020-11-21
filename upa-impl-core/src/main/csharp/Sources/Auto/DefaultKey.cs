@@ -11,11 +11,11 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
-    public class DefaultKey : Net.Vpc.Upa.Impl.AbstractKey {
+    public class DefaultKey : Net.TheVpc.Upa.Impl.AbstractKey {
 
 
 
@@ -34,7 +34,7 @@ namespace Net.Vpc.Upa.Impl
                 if (aValue == null) {
                     throw new System.Exception("key cannot contain a null value");
                 }
-                if (aValue is Net.Vpc.Upa.Key) {
+                if (aValue is Net.TheVpc.Upa.Key) {
                     throw new System.Exception("bad key : Key");
                 }
                 if ((aValue.GetType()).IsArray) {
@@ -48,8 +48,8 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
-        public override object GetValue(Net.Vpc.Upa.Entity entity, string fieldName) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Field> f = entity.GetPrimaryFields();
+        public override object GetValue(Net.TheVpc.Upa.Entity entity, string fieldName) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Field> f = entity.GetPrimaryFields();
             for (int i = 0; i < (f).Count; i++) {
                 if (f[i].GetName().Equals(fieldName)) {
                     return @value[i];
@@ -64,7 +64,7 @@ namespace Net.Vpc.Upa.Impl
 
 
         public override bool Equals(object @object) {
-            if (!(@object is Net.Vpc.Upa.Impl.DefaultKey)) {
+            if (!(@object is Net.TheVpc.Upa.Impl.DefaultKey)) {
                 return false;
             }
             return base.Equals(@object);

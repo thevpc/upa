@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util.Classpath
+namespace Net.TheVpc.Upa.Impl.Util.Classpath
 {
 
 
@@ -19,33 +19,33 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
      *
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class DefaultConfigFilter : Net.Vpc.Upa.Impl.Util.Classpath.ClassPathFilter {
+    public class DefaultConfigFilter : Net.TheVpc.Upa.Impl.Util.Classpath.ClassPathFilter {
 
-        private static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.Vpc.Upa.Impl.Util.Classpath.DefaultConfigFilter)).FullName);
+        private static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.TheVpc.Upa.Impl.Util.Classpath.DefaultConfigFilter)).FullName);
 
         private bool emptyResult = false;
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Config.DefaultConfigFilterItem> items = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Config.DefaultConfigFilterItem>();
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Config.DefaultConfigFilterItem> items = new System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Config.DefaultConfigFilterItem>();
 
-        private System.Collections.Generic.IDictionary<string , System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Config.DefaultConfigFilterItem>> cache = new System.Collections.Generic.Dictionary<string , System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Config.DefaultConfigFilterItem>>();
+        private System.Collections.Generic.IDictionary<string , System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Config.DefaultConfigFilterItem>> cache = new System.Collections.Generic.Dictionary<string , System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Config.DefaultConfigFilterItem>>();
 
 
 
-        public DefaultConfigFilter(Net.Vpc.Upa.Config.ScanFilter[] filterList) {
+        public DefaultConfigFilter(Net.TheVpc.Upa.Config.ScanFilter[] filterList) {
             //always add upa classes
-            Add(new Net.Vpc.Upa.Config.ScanFilter("", "net.vpc.upa.**", true, System.Int32.MinValue));
-            foreach (Net.Vpc.Upa.Config.ScanFilter filter in filterList) {
+            Add(new Net.TheVpc.Upa.Config.ScanFilter("", "Net.TheVpc.Upa.**", true, System.Int32.MinValue));
+            foreach (Net.TheVpc.Upa.Config.ScanFilter filter in filterList) {
                 Add(filter);
             }
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Config.DefaultConfigFilterItem> GetDefaultConfigFilterItem(string url) {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Config.DefaultConfigFilterItem> found = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Config.DefaultConfigFilterItem>>(cache,url);
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Config.DefaultConfigFilterItem> GetDefaultConfigFilterItem(string url) {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Config.DefaultConfigFilterItem> found = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Config.DefaultConfigFilterItem>>(cache,url);
             if (found == null) {
-                found = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Config.DefaultConfigFilterItem>();
-                foreach (Net.Vpc.Upa.Impl.Config.DefaultConfigFilterItem defaultConfigFilterItem in items) {
+                found = new System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Config.DefaultConfigFilterItem>();
+                foreach (Net.TheVpc.Upa.Impl.Config.DefaultConfigFilterItem defaultConfigFilterItem in items) {
                     if (defaultConfigFilterItem.GetLibFilter().Accept(url)) {
-                        Net.Vpc.Upa.Impl.Util.Classpath.PatternListClassNameFilter p = defaultConfigFilterItem.GetTypeFilter();
+                        Net.TheVpc.Upa.Impl.Util.Classpath.PatternListClassNameFilter p = defaultConfigFilterItem.GetTypeFilter();
                         if (p.GetUserPatterns().Length == 0) {
                             found.Add(defaultConfigFilterItem);
                         } else {
@@ -79,14 +79,14 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
                                 }
                                 if ((prefix).Length > 0) {
                                     string rr = prefix.ToString().Replace('.', '/');
-                                    Net.Vpc.Upa.Impl.Util.Classpath.ClassPathRoot cr = new Net.Vpc.Upa.Impl.Util.Classpath.ClassPathRoot(url);
+                                    Net.TheVpc.Upa.Impl.Util.Classpath.ClassPathRoot cr = new Net.TheVpc.Upa.Impl.Util.Classpath.ClassPathRoot(url);
                                     try {
                                         if (cr.Contains(rr)) {
                                             found.Add(defaultConfigFilterItem);
                                             break;
                                         }
                                     } catch (System.Exception e) {
-                                        log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter(null,e));
+                                        log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter(null,e));
                                     }
                                 } else {
                                     found.Add(defaultConfigFilterItem);
@@ -102,7 +102,7 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
         }
 
         public virtual bool AcceptLibrary(string url) {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Config.DefaultConfigFilterItem> found = GetDefaultConfigFilterItem(url);
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Config.DefaultConfigFilterItem> found = GetDefaultConfigFilterItem(url);
             if ((found).Count == 0) {
                 if ((items).Count == 0) {
                     return emptyResult;
@@ -113,8 +113,8 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
         }
 
         public virtual bool AcceptClassName(string url, string className) {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Config.DefaultConfigFilterItem> item = GetDefaultConfigFilterItem(url);
-            foreach (Net.Vpc.Upa.Impl.Config.DefaultConfigFilterItem y in item) {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Config.DefaultConfigFilterItem> item = GetDefaultConfigFilterItem(url);
+            foreach (Net.TheVpc.Upa.Impl.Config.DefaultConfigFilterItem y in item) {
                 if (y.GetTypeFilter().Accept(className)) {
                     return true;
                 }
@@ -129,8 +129,8 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
             return true;
         }
 
-        private void Add(Net.Vpc.Upa.Config.ScanFilter filter) {
-            Net.Vpc.Upa.Impl.Config.DefaultConfigFilterItem defaultConfigFilterItem = new Net.Vpc.Upa.Impl.Config.DefaultConfigFilterItem(new Net.Vpc.Upa.Impl.Util.Classpath.PatternListLibNameFilter(new string[] { filter.GetLibs() }), new Net.Vpc.Upa.Impl.Util.Classpath.PatternListClassNameFilter(new string[] { filter.GetTypes() }));
+        private void Add(Net.TheVpc.Upa.Config.ScanFilter filter) {
+            Net.TheVpc.Upa.Impl.Config.DefaultConfigFilterItem defaultConfigFilterItem = new Net.TheVpc.Upa.Impl.Config.DefaultConfigFilterItem(new Net.TheVpc.Upa.Impl.Util.Classpath.PatternListLibNameFilter(new string[] { filter.GetLibs() }), new Net.TheVpc.Upa.Impl.Util.Classpath.PatternListClassNameFilter(new string[] { filter.GetTypes() }));
             items.Add(defaultConfigFilterItem);
         }
     }

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledexpression
 {
 
 
@@ -27,7 +27,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             }
         }
 
-        public virtual void AddScript(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNativeScript script) {
+        public virtual void AddScript(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNativeScript script) {
             if (script != null) {
                 for (int i = 0; i < script.Size(); i++) {
                     AddStatement(script.GetStatement(i));

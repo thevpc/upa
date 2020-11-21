@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Shared
+namespace Net.TheVpc.Upa.Impl.Persistence.Shared
 {
 
 
     /**
     * @author Taha BEN SALAH <taha.bensalah@gmail.com>
     * @creationdate 12/20/12 2:49 AM*/
-    public class ObjectMarshaller : Net.Vpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
+    public class ObjectMarshaller : Net.TheVpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
 
         public override object Read(int index, System.Data.IDataReader resultSet) /* throws System.Exception */  {
             
@@ -26,7 +26,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
         }
 
         public override string ToSQLLiteral(object @object) {
-            Net.Vpc.Upa.Impl.Persistence.TypeMarshaller wrapper = GetMarshallManager().GetTypeMarshaller(@object.GetType());
+            Net.TheVpc.Upa.Impl.Persistence.TypeMarshaller wrapper = GetMarshallManager().GetTypeMarshaller(@object.GetType());
             if (wrapper != null && wrapper.GetType() != GetType()) {
                 return wrapper.ToSQLLiteral(@object);
             }

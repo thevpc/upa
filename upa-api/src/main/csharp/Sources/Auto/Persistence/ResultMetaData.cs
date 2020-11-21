@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
 
@@ -21,8 +21,8 @@ namespace Net.Vpc.Upa.Persistence
      */
     public interface ResultMetaData {
 
-         Net.Vpc.Upa.Expressions.EntityStatement GetStatement();
+         Net.TheVpc.Upa.Expressions.EntityStatement GetStatement();
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.ResultField> GetResultFields();
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Persistence.ResultField> GetResultFields();
     }
 }

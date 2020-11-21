@@ -11,16 +11,16 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Shared
+namespace Net.TheVpc.Upa.Impl.Persistence.Shared
 {
 
 
     /**
     * @author Taha BEN SALAH <taha.bensalah@gmail.com>
     * @creationdate 12/20/12 2:49 AM*/
-    public class ClassDelegateMarshaller : Net.Vpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
+    public class ClassDelegateMarshaller : Net.TheVpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
 
-        private Net.Vpc.Upa.Impl.Persistence.TypeMarshaller @delegate;
+        private Net.TheVpc.Upa.Impl.Persistence.TypeMarshaller @delegate;
 
         private System.Type delegateType;
 
@@ -28,7 +28,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
             this.delegateType = delegateType;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Persistence.TypeMarshaller GetDelegate() {
+        public virtual Net.TheVpc.Upa.Impl.Persistence.TypeMarshaller GetDelegate() {
             return @delegate = GetMarshallManager().GetTypeMarshaller(delegateType);
         }
 

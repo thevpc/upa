@@ -12,17 +12,17 @@
 
 
 using System.Linq;
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
-    public class DefaultIndex : Net.Vpc.Upa.Impl.AbstractUPAObject, Net.Vpc.Upa.Index {
+    public class DefaultIndex : Net.TheVpc.Upa.Impl.AbstractUPAObject, Net.TheVpc.Upa.Index {
 
-        private Net.Vpc.Upa.Entity entity;
+        private Net.TheVpc.Upa.Entity entity;
 
         private string[] fieldNames;
 
-        private Net.Vpc.Upa.Field[] fields;
+        private Net.TheVpc.Upa.Field[] fields;
 
         private bool unique;
 
@@ -38,14 +38,14 @@ namespace Net.Vpc.Upa.Impl
             return unique;
         }
 
-        public virtual Net.Vpc.Upa.Field[] GetFields() {
+        public virtual Net.TheVpc.Upa.Field[] GetFields() {
             if (fields == null) {
                 throw new System.ArgumentException ("Model Changes are not yet committed");
             }
             return fields;
         }
 
-        public virtual Net.Vpc.Upa.Entity GetEntity() {
+        public virtual Net.TheVpc.Upa.Entity GetEntity() {
             if (entity == null) {
                 throw new System.ArgumentException ("Model Changes are not yet committed");
             }
@@ -58,11 +58,11 @@ namespace Net.Vpc.Upa.Impl
 
 
         public virtual void CommitModelChanges() {
-            System.Collections.Generic.List<Net.Vpc.Upa.Field> fields = new System.Collections.Generic.List<Net.Vpc.Upa.Field>(entity.GetFields(Net.Vpc.Upa.Filters.Fields.ByName(fieldNames)));
+            System.Collections.Generic.List<Net.TheVpc.Upa.Field> fields = new System.Collections.Generic.List<Net.TheVpc.Upa.Field>(entity.GetFields(Net.TheVpc.Upa.Filters.Fields.ByName(fieldNames)));
             this.fields = fields.ToArray();
         }
 
-        public virtual void SetEntity(Net.Vpc.Upa.Entity entity) {
+        public virtual void SetEntity(Net.TheVpc.Upa.Entity entity) {
             this.entity = entity;
         }
 
@@ -75,7 +75,7 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
-        public override void Close() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public override void Close() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
         }
     }
 }

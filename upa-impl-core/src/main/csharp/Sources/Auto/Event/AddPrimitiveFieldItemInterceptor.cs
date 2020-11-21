@@ -11,39 +11,39 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Event
+namespace Net.TheVpc.Upa.Impl.Event
 {
 
 
     /**
     * @author Taha BEN SALAH <taha.bensalah@gmail.com>
     * @creationdate 1/4/13 12:17 AM*/
-    public class AddPrimitiveFieldItemInterceptor : Net.Vpc.Upa.Impl.Util.ItemInterceptor<Net.Vpc.Upa.PrimitiveField> {
+    public class AddPrimitiveFieldItemInterceptor : Net.TheVpc.Upa.Impl.Util.ItemInterceptor<Net.TheVpc.Upa.PrimitiveField> {
 
-        private Net.Vpc.Upa.Impl.DefaultCompoundField defaultCompoundField;
+        private Net.TheVpc.Upa.Impl.DefaultCompoundField defaultCompoundField;
 
-        public AddPrimitiveFieldItemInterceptor(Net.Vpc.Upa.Impl.DefaultCompoundField defaultCompoundField) {
+        public AddPrimitiveFieldItemInterceptor(Net.TheVpc.Upa.Impl.DefaultCompoundField defaultCompoundField) {
             this.defaultCompoundField = defaultCompoundField;
         }
 
 
-        public virtual void Before(Net.Vpc.Upa.PrimitiveField primitiveField, int index) {
+        public virtual void Before(Net.TheVpc.Upa.PrimitiveField primitiveField, int index) {
         }
 
 
-        public virtual void After(Net.Vpc.Upa.PrimitiveField child, int index) {
-            Net.Vpc.Upa.EntityPart oldParent = child.GetParent();
+        public virtual void After(Net.TheVpc.Upa.PrimitiveField child, int index) {
+            Net.TheVpc.Upa.EntityPart oldParent = child.GetParent();
             if (oldParent != null && oldParent != defaultCompoundField) {
-                if (oldParent is Net.Vpc.Upa.Section) {
-                    Net.Vpc.Upa.Section x = (Net.Vpc.Upa.Section) oldParent;
+                if (oldParent is Net.TheVpc.Upa.Section) {
+                    Net.TheVpc.Upa.Section x = (Net.TheVpc.Upa.Section) oldParent;
                     x.RemovePartAt(x.IndexOfPart(child));
-                } else if (oldParent is Net.Vpc.Upa.CompoundField) {
-                    Net.Vpc.Upa.CompoundField x = (Net.Vpc.Upa.CompoundField) oldParent;
-                    ((Net.Vpc.Upa.Impl.DefaultCompoundField) x).DropFieldAt(x.IndexOfField(child));
+                } else if (oldParent is Net.TheVpc.Upa.CompoundField) {
+                    Net.TheVpc.Upa.CompoundField x = (Net.TheVpc.Upa.CompoundField) oldParent;
+                    ((Net.TheVpc.Upa.Impl.DefaultCompoundField) x).DropFieldAt(x.IndexOfField(child));
                 }
             }
             if (oldParent != defaultCompoundField) {
-                Net.Vpc.Upa.Impl.Util.DefaultBeanAdapter adapter = new Net.Vpc.Upa.Impl.Util.DefaultBeanAdapter(child);
+                Net.TheVpc.Upa.Impl.Util.DefaultBeanAdapter adapter = new Net.TheVpc.Upa.Impl.Util.DefaultBeanAdapter(child);
                 adapter.SetProperty("parent", defaultCompoundField);
             }
         }

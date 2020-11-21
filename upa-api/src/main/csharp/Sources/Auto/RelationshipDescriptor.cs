@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -38,7 +38,7 @@ namespace Net.Vpc.Upa
 
          System.Type GetTargetEntityType();
 
-         Net.Vpc.Upa.Expressions.Expression GetFilter();
+         Net.TheVpc.Upa.Expressions.Expression GetFilter();
 
          string GetBaseField();
 
@@ -48,6 +48,6 @@ namespace Net.Vpc.Upa
 
          string GetName();
 
-         Net.Vpc.Upa.RelationshipType GetRelationshipType();
+         Net.TheVpc.Upa.RelationshipType GetRelationshipType();
     }
 }

@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
     /**
     * @author Taha BEN SALAH <taha.bensalah@gmail.com>
     * @creationdate 1/5/13 11:18 PM*/
-    internal abstract class AbstractBeanAdapterAttribute : Net.Vpc.Upa.Impl.Util.BeanAdapterAttribute {
+    internal abstract class AbstractBeanAdapterAttribute : Net.TheVpc.Upa.Impl.Util.BeanAdapterAttribute {
 
         protected internal string name;
 
@@ -40,7 +40,7 @@ namespace Net.Vpc.Upa.Impl.Util
 
         public virtual bool IsDefaultValue(object o) {
             object fieldValue = GetValue(o);
-            object fieldDefaultValue = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,object>(Net.Vpc.Upa.Impl.Util.PlatformUtils.DEFAULT_VALUES_BY_TYPE,GetFieldType());
+            object fieldDefaultValue = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,object>(Net.TheVpc.Upa.Impl.Util.PlatformUtils.DEFAULT_VALUES_BY_TYPE,GetFieldType());
             if (fieldDefaultValue == null) {
                 return fieldValue == null;
             } else {
@@ -50,7 +50,7 @@ namespace Net.Vpc.Upa.Impl.Util
 
 
         public virtual object GetDefaultValue() {
-            return Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,object>(Net.Vpc.Upa.Impl.Util.PlatformUtils.DEFAULT_VALUES_BY_TYPE,GetFieldType());
+            return Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,object>(Net.TheVpc.Upa.Impl.Util.PlatformUtils.DEFAULT_VALUES_BY_TYPE,GetFieldType());
         }
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract object GetValue(object arg1);

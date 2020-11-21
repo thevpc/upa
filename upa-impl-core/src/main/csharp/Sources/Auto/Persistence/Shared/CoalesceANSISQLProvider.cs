@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Shared
+namespace Net.TheVpc.Upa.Impl.Persistence.Shared
 {
 
 
@@ -22,16 +22,16 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
      * Time: 17:17:34
      * To change this template use Options | File Templates.
      */
-    public class CoalesceANSISQLProvider : Net.Vpc.Upa.Impl.Persistence.Shared.ANSIFunctionSQLProvider {
+    public class CoalesceANSISQLProvider : Net.TheVpc.Upa.Impl.Persistence.Shared.ANSIFunctionSQLProvider {
 
-        public CoalesceANSISQLProvider()  : base(typeof(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledCoalesce)){
+        public CoalesceANSISQLProvider()  : base(typeof(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledCoalesce)){
 
         }
 
 
         public override string Simplify(string functionName, string[] @params, System.Collections.Generic.IDictionary<string , object> context) {
             if (@params.Length < 1) {
-                throw new System.ArgumentException ("function '" + functionName + "' requieres at least 1 argument.\n Error near " + functionName + "(" + Net.Vpc.Upa.Impl.Util.StringUtils.Format(@params) + ")");
+                throw new System.ArgumentException ("function '" + functionName + "' requieres at least 1 argument.\n Error near " + functionName + "(" + Net.TheVpc.Upa.Impl.Util.StringUtils.Format(@params) + ")");
             } else {
                 System.Text.StringBuilder sb = new System.Text.StringBuilder("Coalesce(");
                 for (int i = 0; i < @params.Length; i++) {

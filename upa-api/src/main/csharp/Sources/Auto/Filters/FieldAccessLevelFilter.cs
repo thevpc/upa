@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Filters
+namespace Net.TheVpc.Upa.Filters
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class FieldAccessLevelFilter : Net.Vpc.Upa.Filters.AbstractFieldFilter {
+    public class FieldAccessLevelFilter : Net.TheVpc.Upa.Filters.AbstractFieldFilter {
 
         private bool dynamic;
 
@@ -28,50 +28,50 @@ namespace Net.Vpc.Upa.Filters
 
         private bool checkSelect;
 
-        private System.Collections.Generic.HashSet<Net.Vpc.Upa.AccessLevel> accepted;
+        private System.Collections.Generic.HashSet<Net.TheVpc.Upa.AccessLevel> accepted;
 
-        public static Net.Vpc.Upa.Filters.FieldAccessLevelFilter ForAll(params Net.Vpc.Upa.AccessLevel [] accepted) {
-            System.Collections.Generic.HashSet<Net.Vpc.Upa.AccessLevel> all = new System.Collections.Generic.HashSet<Net.Vpc.Upa.AccessLevel>();
-            Net.Vpc.Upa.FwkConvertUtils.CollectionAddRange(all, new System.Collections.Generic.List<Net.Vpc.Upa.AccessLevel>(accepted));
-            return new Net.Vpc.Upa.Filters.FieldAccessLevelFilter(true, true, true, all, false);
+        public static Net.TheVpc.Upa.Filters.FieldAccessLevelFilter ForAll(params Net.TheVpc.Upa.AccessLevel [] accepted) {
+            System.Collections.Generic.HashSet<Net.TheVpc.Upa.AccessLevel> all = new System.Collections.Generic.HashSet<Net.TheVpc.Upa.AccessLevel>();
+            Net.TheVpc.Upa.FwkConvertUtils.CollectionAddRange(all, new System.Collections.Generic.List<Net.TheVpc.Upa.AccessLevel>(accepted));
+            return new Net.TheVpc.Upa.Filters.FieldAccessLevelFilter(true, true, true, all, false);
         }
 
-        public static Net.Vpc.Upa.Filters.FieldAccessLevelFilter ForPersist(params Net.Vpc.Upa.AccessLevel [] accepted) {
-            System.Collections.Generic.HashSet<Net.Vpc.Upa.AccessLevel> all = new System.Collections.Generic.HashSet<Net.Vpc.Upa.AccessLevel>();
-            Net.Vpc.Upa.FwkConvertUtils.CollectionAddRange(all, new System.Collections.Generic.List<Net.Vpc.Upa.AccessLevel>(accepted));
-            return new Net.Vpc.Upa.Filters.FieldAccessLevelFilter(true, false, false, all, false);
+        public static Net.TheVpc.Upa.Filters.FieldAccessLevelFilter ForPersist(params Net.TheVpc.Upa.AccessLevel [] accepted) {
+            System.Collections.Generic.HashSet<Net.TheVpc.Upa.AccessLevel> all = new System.Collections.Generic.HashSet<Net.TheVpc.Upa.AccessLevel>();
+            Net.TheVpc.Upa.FwkConvertUtils.CollectionAddRange(all, new System.Collections.Generic.List<Net.TheVpc.Upa.AccessLevel>(accepted));
+            return new Net.TheVpc.Upa.Filters.FieldAccessLevelFilter(true, false, false, all, false);
         }
 
-        public static Net.Vpc.Upa.Filters.FieldAccessLevelFilter ForUpdate(params Net.Vpc.Upa.AccessLevel [] accepted) {
-            System.Collections.Generic.HashSet<Net.Vpc.Upa.AccessLevel> all = new System.Collections.Generic.HashSet<Net.Vpc.Upa.AccessLevel>();
-            Net.Vpc.Upa.FwkConvertUtils.CollectionAddRange(all, new System.Collections.Generic.List<Net.Vpc.Upa.AccessLevel>(accepted));
-            return new Net.Vpc.Upa.Filters.FieldAccessLevelFilter(false, true, false, all, false);
+        public static Net.TheVpc.Upa.Filters.FieldAccessLevelFilter ForUpdate(params Net.TheVpc.Upa.AccessLevel [] accepted) {
+            System.Collections.Generic.HashSet<Net.TheVpc.Upa.AccessLevel> all = new System.Collections.Generic.HashSet<Net.TheVpc.Upa.AccessLevel>();
+            Net.TheVpc.Upa.FwkConvertUtils.CollectionAddRange(all, new System.Collections.Generic.List<Net.TheVpc.Upa.AccessLevel>(accepted));
+            return new Net.TheVpc.Upa.Filters.FieldAccessLevelFilter(false, true, false, all, false);
         }
 
-        public static Net.Vpc.Upa.Filters.FieldAccessLevelFilter ForFind(params Net.Vpc.Upa.AccessLevel [] accepted) {
-            System.Collections.Generic.HashSet<Net.Vpc.Upa.AccessLevel> all = new System.Collections.Generic.HashSet<Net.Vpc.Upa.AccessLevel>();
-            Net.Vpc.Upa.FwkConvertUtils.CollectionAddRange(all, new System.Collections.Generic.List<Net.Vpc.Upa.AccessLevel>(accepted));
-            return new Net.Vpc.Upa.Filters.FieldAccessLevelFilter(false, false, true, all, false);
+        public static Net.TheVpc.Upa.Filters.FieldAccessLevelFilter ForFind(params Net.TheVpc.Upa.AccessLevel [] accepted) {
+            System.Collections.Generic.HashSet<Net.TheVpc.Upa.AccessLevel> all = new System.Collections.Generic.HashSet<Net.TheVpc.Upa.AccessLevel>();
+            Net.TheVpc.Upa.FwkConvertUtils.CollectionAddRange(all, new System.Collections.Generic.List<Net.TheVpc.Upa.AccessLevel>(accepted));
+            return new Net.TheVpc.Upa.Filters.FieldAccessLevelFilter(false, false, true, all, false);
         }
 
-        public FieldAccessLevelFilter(bool checkPersist, bool checkUpdate, bool checkSelect, System.Collections.Generic.ISet<Net.Vpc.Upa.AccessLevel> accepted, bool dynamic) {
+        public FieldAccessLevelFilter(bool checkPersist, bool checkUpdate, bool checkSelect, System.Collections.Generic.ISet<Net.TheVpc.Upa.AccessLevel> accepted, bool dynamic) {
             this.checkPersist = checkPersist;
             this.checkUpdate = checkUpdate;
             this.checkSelect = checkSelect;
             this.dynamic = dynamic;
-            this.accepted = new System.Collections.Generic.HashSet<Net.Vpc.Upa.AccessLevel>();
+            this.accepted = new System.Collections.Generic.HashSet<Net.TheVpc.Upa.AccessLevel>();
             if (accepted != null) {
-                Net.Vpc.Upa.FwkConvertUtils.CollectionAddRange(this.accepted, accepted);
+                Net.TheVpc.Upa.FwkConvertUtils.CollectionAddRange(this.accepted, accepted);
             }
         }
 
 
-        public override bool AcceptDynamic() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public override bool AcceptDynamic() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return dynamic;
         }
 
 
-        public override bool Accept(Net.Vpc.Upa.Field f) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public override bool Accept(Net.TheVpc.Upa.Field f) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             if (checkPersist) {
                 if (!accepted.Contains(f.GetPersistAccessLevel())) {
                     return false;

@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Bulk
+namespace Net.TheVpc.Upa.Bulk
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public interface DataWriter : Net.Vpc.Upa.Closeable {
+    public interface DataWriter : Net.TheVpc.Upa.Closeable {
 
          void WriteObject(object row);
 

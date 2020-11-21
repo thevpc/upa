@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config.Decorations
+namespace Net.TheVpc.Upa.Impl.Config.Decorations
 {
 
 
@@ -29,7 +29,7 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
              *
              * @return
              */
-         Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.Config.DecorationTarget> GetDecorationTargets();
+         Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.Config.DecorationTarget> GetDecorationTargets();
 
          bool AcceptMethodDecoration(string name, string targetMethod, string targetType, object @value);
 

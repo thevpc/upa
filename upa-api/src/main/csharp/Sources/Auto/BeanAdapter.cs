@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     /**
@@ -20,7 +20,7 @@ namespace Net.Vpc.Upa
      */
     public interface BeanAdapter {
 
-         Net.Vpc.Upa.PlatformBeanType GetPlatformBeanType();
+         Net.TheVpc.Upa.PlatformBeanType GetPlatformBeanType();
 
          object GetProperty(string field);
 

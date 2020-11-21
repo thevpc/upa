@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
-    public class PlatformMethodProxyEventCsharp<T> : Net.Vpc.Upa.Impl.Util.PlatformMethodProxyEvent<T>
+    public class PlatformMethodProxyEventCsharp<T> : Net.TheVpc.Upa.Impl.Util.PlatformMethodProxyEvent<T>
     {
             private T @object;
             private object[] arguments;

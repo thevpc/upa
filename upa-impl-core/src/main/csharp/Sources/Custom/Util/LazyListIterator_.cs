@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -14,9 +14,9 @@ namespace Net.Vpc.Upa.Impl.Util
              */
         internal int cursor = 0;
 
-        private Net.Vpc.Upa.Impl.Util.LazyList<T> iteratorList;
+        private Net.TheVpc.Upa.Impl.Util.LazyList<T> iteratorList;
 
-        internal LazyListIterator(Net.Vpc.Upa.Impl.Util.LazyList<T> iteratorList, int cursor) {
+        internal LazyListIterator(Net.TheVpc.Upa.Impl.Util.LazyList<T> iteratorList, int cursor) {
             this.iteratorList = iteratorList;
             this.cursor = cursor;
         }

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Extension
+namespace Net.TheVpc.Upa.Impl.Extension
 {
 
 
@@ -19,16 +19,16 @@ namespace Net.Vpc.Upa.Impl.Extension
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 1/8/13 2:29 PM
      */
-    internal class UnionPersistenceUnitInterceptorAdapter : Net.Vpc.Upa.Callbacks.PersistenceUnitListenerAdapter {
+    internal class UnionPersistenceUnitInterceptorAdapter : Net.TheVpc.Upa.Callbacks.PersistenceUnitListenerAdapter {
 
-        private Net.Vpc.Upa.Impl.Extension.DefaultUnionEntityExtension defaultUnionEntityExtensionSupport;
+        private Net.TheVpc.Upa.Impl.Extension.DefaultUnionEntityExtension defaultUnionEntityExtensionSupport;
 
-        public UnionPersistenceUnitInterceptorAdapter(Net.Vpc.Upa.Impl.Extension.DefaultUnionEntityExtension defaultUnionEntityExtensionSupport) {
+        public UnionPersistenceUnitInterceptorAdapter(Net.TheVpc.Upa.Impl.Extension.DefaultUnionEntityExtension defaultUnionEntityExtensionSupport) {
             this.defaultUnionEntityExtensionSupport = defaultUnionEntityExtensionSupport;
         }
 
 
-        public override void OnModelChanged(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event) {
+        public override void OnModelChanged(Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent @event) {
             if (defaultUnionEntityExtensionSupport.viewQuery == null) {
                 defaultUnionEntityExtensionSupport.viewQuery = defaultUnionEntityExtensionSupport.CreateViewQuery();
             }

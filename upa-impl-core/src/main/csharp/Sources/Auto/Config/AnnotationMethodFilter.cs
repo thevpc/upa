@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config
+namespace Net.TheVpc.Upa.Impl.Config
 {
 
 
@@ -21,18 +21,18 @@ namespace Net.Vpc.Upa.Impl.Config
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 12/31/12 3:27 AM
      */
-    public class AnnotationMethodFilter : Net.Vpc.Upa.MethodFilter {
+    public class AnnotationMethodFilter : Net.TheVpc.Upa.MethodFilter {
 
         private System.Type annotationType;
 
-        private Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository decorationRepository;
+        private Net.TheVpc.Upa.Impl.Config.Decorations.DecorationRepository decorationRepository;
 
         /**
              * simple constructor
              *
              * @param annotationType annotation to look for
              */
-        public AnnotationMethodFilter(System.Type annotationType, Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository decorationRepository) {
+        public AnnotationMethodFilter(System.Type annotationType, Net.TheVpc.Upa.Impl.Config.Decorations.DecorationRepository decorationRepository) {
             this.annotationType = annotationType;
             this.decorationRepository = decorationRepository;
         }

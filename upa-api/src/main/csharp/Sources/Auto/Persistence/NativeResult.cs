@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
 
@@ -148,7 +148,7 @@ namespace Net.Vpc.Upa.Persistence
              * @return the column value; if the value is SQL <code>NULL</code>, the
              * value returned is <code>null</code>
              */
-         Net.Vpc.Upa.Types.Date GetDate(int columnIndex);
+         Net.TheVpc.Upa.Types.Date GetDate(int columnIndex);
 
         /**
              * Retrieves the value of the designated column in the current row of this
@@ -159,7 +159,7 @@ namespace Net.Vpc.Upa.Persistence
              * @return the column value; if the value is SQL <code>NULL</code>, the
              * value returned is <code>null</code>
              */
-         Net.Vpc.Upa.Types.Time GetTime(int columnIndex);
+         Net.TheVpc.Upa.Types.Time GetTime(int columnIndex);
 
         /**
              * Retrieves the value of the designated column in the current row of this
@@ -170,7 +170,7 @@ namespace Net.Vpc.Upa.Persistence
              * @return the column value; if the value is SQL <code>NULL</code>, the
              * value returned is <code>null</code>
              */
-         Net.Vpc.Upa.Types.Timestamp GetTimestamp(int columnIndex);
+         Net.TheVpc.Upa.Types.Timestamp GetTimestamp(int columnIndex);
 
         /**
              * Updates the designated column with a <code>null</code> value.
@@ -329,7 +329,7 @@ namespace Net.Vpc.Upa.Persistence
              * @param x the new column value
              * @since 1.2
              */
-         void UpdateDate(int columnIndex, Net.Vpc.Upa.Types.Date x);
+         void UpdateDate(int columnIndex, Net.TheVpc.Upa.Types.Date x);
 
         /**
              * Updates the designated column with a <code>java.sql.Time</code> value.
@@ -342,7 +342,7 @@ namespace Net.Vpc.Upa.Persistence
              * @param x the new column value
              * @since 1.2
              */
-         void UpdateTime(int columnIndex, Net.Vpc.Upa.Types.Time x);
+         void UpdateTime(int columnIndex, Net.TheVpc.Upa.Types.Time x);
 
         /**
              * Updates the designated column with a <code>java.sql.Timestamp</code>
@@ -355,7 +355,7 @@ namespace Net.Vpc.Upa.Persistence
              * @param x the new column value
              * @since 1.2
              */
-         void UpdateTimestamp(int columnIndex, Net.Vpc.Upa.Types.Timestamp x);
+         void UpdateTimestamp(int columnIndex, Net.TheVpc.Upa.Types.Timestamp x);
 
         /**
              * Updates the designated column with an ascii stream value, which will have
@@ -450,15 +450,15 @@ namespace Net.Vpc.Upa.Persistence
 
          System.Decimal? GetBigDecimal(int index);
 
-         Net.Vpc.Upa.Types.Blob GetBlob(int index);
+         Net.TheVpc.Upa.Types.Blob GetBlob(int index);
 
-         void UpdateBlob(int i, Net.Vpc.Upa.Types.Blob blob);
+         void UpdateBlob(int i, Net.TheVpc.Upa.Types.Blob blob);
 
          void UpdateBlob(int i, System.IO.Stream byteArrayInputStream);
 
-         Net.Vpc.Upa.Types.Clob GetClob(int index);
+         Net.TheVpc.Upa.Types.Clob GetClob(int index);
 
-         void UpdateClob(int i, Net.Vpc.Upa.Types.Clob clob);
+         void UpdateClob(int i, Net.TheVpc.Upa.Types.Clob clob);
 
          void UpdateClob(int i, System.IO.TextReader reader);
     }

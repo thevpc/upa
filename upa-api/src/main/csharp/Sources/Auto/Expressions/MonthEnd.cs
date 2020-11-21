@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
 
@@ -39,33 +39,33 @@ namespace Net.Vpc.Upa.Expressions
      *          the date at the end of the next "count" month. when count=0, the end of the current month
      * </pre>
      */
-    public class MonthEnd : Net.Vpc.Upa.Expressions.FunctionExpression {
+    public class MonthEnd : Net.TheVpc.Upa.Expressions.FunctionExpression {
 
 
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.Expression> expressions = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression>(2);
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Expressions.Expression> expressions = new System.Collections.Generic.List<Net.TheVpc.Upa.Expressions.Expression>(2);
 
         public MonthEnd() {
         }
 
-        public MonthEnd(Net.Vpc.Upa.Expressions.Expression[] expressions) {
+        public MonthEnd(Net.TheVpc.Upa.Expressions.Expression[] expressions) {
             if (expressions.Length != 0 && expressions.Length != 1 && expressions.Length != 2) {
                 CheckArgCount(GetName(), expressions, 1);
             }
-            Net.Vpc.Upa.FwkConvertUtils.ListAddRange(this.expressions, new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression>(expressions));
+            Net.TheVpc.Upa.FwkConvertUtils.ListAddRange(this.expressions, new System.Collections.Generic.List<Net.TheVpc.Upa.Expressions.Expression>(expressions));
         }
 
-        public MonthEnd(Net.Vpc.Upa.Expressions.Expression date, Net.Vpc.Upa.Expressions.Expression count) {
+        public MonthEnd(Net.TheVpc.Upa.Expressions.Expression date, Net.TheVpc.Upa.Expressions.Expression count) {
             expressions.Add(date);
             expressions.Add(count);
         }
 
-        public MonthEnd(Net.Vpc.Upa.Expressions.Expression count) {
+        public MonthEnd(Net.TheVpc.Upa.Expressions.Expression count) {
             expressions.Add(count);
         }
 
 
-        public override void SetArgument(int index, Net.Vpc.Upa.Expressions.Expression e) {
+        public override void SetArgument(int index, Net.TheVpc.Upa.Expressions.Expression e) {
             expressions[index]=e;
         }
 
@@ -80,14 +80,14 @@ namespace Net.Vpc.Upa.Expressions
         }
 
 
-        public override Net.Vpc.Upa.Expressions.Expression GetArgument(int index) {
+        public override Net.TheVpc.Upa.Expressions.Expression GetArgument(int index) {
             return expressions[index];
         }
 
 
-        public override Net.Vpc.Upa.Expressions.Expression Copy() {
-            Net.Vpc.Upa.Expressions.MonthEnd o = new Net.Vpc.Upa.Expressions.MonthEnd();
-            foreach (Net.Vpc.Upa.Expressions.Expression expression in expressions) {
+        public override Net.TheVpc.Upa.Expressions.Expression Copy() {
+            Net.TheVpc.Upa.Expressions.MonthEnd o = new Net.TheVpc.Upa.Expressions.MonthEnd();
+            foreach (Net.TheVpc.Upa.Expressions.Expression expression in expressions) {
                 o.expressions.Add(expression.Copy());
             }
             return o;

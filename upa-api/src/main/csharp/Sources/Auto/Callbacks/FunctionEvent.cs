@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Callbacks
+namespace Net.TheVpc.Upa.Callbacks
 {
 
 
@@ -19,15 +19,15 @@ namespace Net.Vpc.Upa.Callbacks
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 11/27/12 9:52 PM
      */
-    public class FunctionEvent : Net.Vpc.Upa.Callbacks.UPAEvent {
+    public class FunctionEvent : Net.TheVpc.Upa.Callbacks.UPAEvent {
 
-        private Net.Vpc.Upa.FunctionDefinition functionDefinition;
+        private Net.TheVpc.Upa.FunctionDefinition functionDefinition;
 
-        public FunctionEvent(Net.Vpc.Upa.FunctionDefinition functionDefinition) {
+        public FunctionEvent(Net.TheVpc.Upa.FunctionDefinition functionDefinition) {
             this.functionDefinition = functionDefinition;
         }
 
-        public virtual Net.Vpc.Upa.FunctionDefinition GetFunctionDefinition() {
+        public virtual Net.TheVpc.Upa.FunctionDefinition GetFunctionDefinition() {
             return functionDefinition;
         }
     }

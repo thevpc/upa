@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Net.Vpc.Upa{
+namespace Net.TheVpc.Upa{
 
     public class PropertyChangeSupport
     {
@@ -85,9 +85,9 @@ namespace Net.Vpc.Upa{
             }
         }
 
-        public virtual Net.Vpc.Upa.PropertyChangeListener[] GetPropertyChangeListeners()
+        public virtual Net.TheVpc.Upa.PropertyChangeListener[] GetPropertyChangeListeners()
         {
-            List<Net.Vpc.Upa.PropertyChangeListener> ret = new List<Net.Vpc.Upa.PropertyChangeListener>();
+            List<Net.TheVpc.Upa.PropertyChangeListener> ret = new List<Net.TheVpc.Upa.PropertyChangeListener>();
             foreach (var entry in listeners)
             {
                 foreach (var item in entry.Value)
@@ -99,9 +99,9 @@ namespace Net.Vpc.Upa{
         }
 
 
-        public virtual Net.Vpc.Upa.PropertyChangeListener[] GetPropertyChangeListeners(string property)
+        public virtual Net.TheVpc.Upa.PropertyChangeListener[] GetPropertyChangeListeners(string property)
         {
-            List<Net.Vpc.Upa.PropertyChangeListener> ret = new List<Net.Vpc.Upa.PropertyChangeListener>();
+            List<Net.TheVpc.Upa.PropertyChangeListener> ret = new List<Net.TheVpc.Upa.PropertyChangeListener>();
             List<PropertyChangeListener> r = null;
             listeners.TryGetValue(property, out r);
             if (r != null)

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config.Annotationparser
+namespace Net.TheVpc.Upa.Impl.Config.Annotationparser
 {
 
 
@@ -21,60 +21,60 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
      */
     public class AnyFormulaInfo {
 
-        internal System.Collections.Generic.IDictionary<Net.Vpc.Upa.FormulaType , object> all = new System.Collections.Generic.Dictionary<Net.Vpc.Upa.FormulaType , object>();
+        internal System.Collections.Generic.IDictionary<Net.TheVpc.Upa.FormulaType , object> all = new System.Collections.Generic.Dictionary<Net.TheVpc.Upa.FormulaType , object>();
 
-        internal Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository repo;
+        internal Net.TheVpc.Upa.Impl.Config.Decorations.DecorationRepository repo;
 
-        public AnyFormulaInfo(Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository repo) {
+        public AnyFormulaInfo(Net.TheVpc.Upa.Impl.Config.Decorations.DecorationRepository repo) {
             this.repo = repo;
         }
 
         public virtual void Parse(System.Collections.Generic.IList<System.Reflection.FieldInfo> fields) {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Config.Decoration> formulas = new System.Collections.Generic.List<Net.Vpc.Upa.Config.Decoration>();
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Config.Decoration> formulas = new System.Collections.Generic.List<Net.TheVpc.Upa.Config.Decoration>();
             foreach (System.Reflection.FieldInfo javaField in fields) {
-                Net.Vpc.Upa.Config.Decoration gid = repo.GetFieldDecoration(javaField, typeof(Net.Vpc.Upa.Config.Formula));
+                Net.TheVpc.Upa.Config.Decoration gid = repo.GetFieldDecoration(javaField, typeof(Net.TheVpc.Upa.Config.Formula));
                 if (gid != null) {
                     formulas.Add(gid);
                 }
-                Net.Vpc.Upa.Config.Decoration flist = repo.GetFieldDecoration(javaField, typeof(Net.Vpc.Upa.Config.Formulas));
+                Net.TheVpc.Upa.Config.Decoration flist = repo.GetFieldDecoration(javaField, typeof(Net.TheVpc.Upa.Config.Formulas));
                 if (flist != null) {
-                    foreach (Net.Vpc.Upa.Config.DecorationValue ff in flist.GetArray("value")) {
-                        //net.vpc.upa.config.Formula formula
-                        formulas.Add((Net.Vpc.Upa.Config.Decoration) ff);
+                    foreach (Net.TheVpc.Upa.Config.DecorationValue ff in flist.GetArray("value")) {
+                        //Net.TheVpc.Upa.config.Formula formula
+                        formulas.Add((Net.TheVpc.Upa.Config.Decoration) ff);
                     }
                 }
             }
             if ((formulas).Count > 1) {
-                Net.Vpc.Upa.Impl.FwkConvertUtils.ListSort(formulas, Net.Vpc.Upa.Impl.Config.Annotationparser.DecorationComparator.INSTANCE);
+                Net.TheVpc.Upa.Impl.FwkConvertUtils.ListSort(formulas, Net.TheVpc.Upa.Impl.Config.Annotationparser.DecorationComparator.INSTANCE);
             }
-            foreach (Net.Vpc.Upa.Config.Decoration gid in formulas) {
+            foreach (Net.TheVpc.Upa.Config.Decoration gid in formulas) {
                 MergeFormula(gid);
             }
-            System.Collections.Generic.IList<Net.Vpc.Upa.Config.Decoration> sequences = new System.Collections.Generic.List<Net.Vpc.Upa.Config.Decoration>();
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Config.Decoration> sequences = new System.Collections.Generic.List<Net.TheVpc.Upa.Config.Decoration>();
             foreach (System.Reflection.FieldInfo javaField in fields) {
-                Net.Vpc.Upa.Config.Decoration gid = repo.GetFieldDecoration(javaField, typeof(Net.Vpc.Upa.Config.Sequence));
+                Net.TheVpc.Upa.Config.Decoration gid = repo.GetFieldDecoration(javaField, typeof(Net.TheVpc.Upa.Config.Sequence));
                 if (gid != null) {
                     sequences.Add(gid);
                 }
             }
             if ((sequences).Count > 1) {
-                Net.Vpc.Upa.Impl.FwkConvertUtils.ListSort(sequences, Net.Vpc.Upa.Impl.Config.Annotationparser.DecorationComparator.INSTANCE);
+                Net.TheVpc.Upa.Impl.FwkConvertUtils.ListSort(sequences, Net.TheVpc.Upa.Impl.Config.Annotationparser.DecorationComparator.INSTANCE);
             }
-            foreach (Net.Vpc.Upa.Config.Decoration gid in sequences) {
+            foreach (Net.TheVpc.Upa.Config.Decoration gid in sequences) {
                 MergeSequence(gid);
             }
         }
 
-        public virtual void MergeFormula(Net.Vpc.Upa.Config.Decoration formulaInfo) {
-            Net.Vpc.Upa.FormulaType[] types = formulaInfo.GetPrimitiveArray<Net.Vpc.Upa.FormulaType>("type", typeof(Net.Vpc.Upa.FormulaType));
+        public virtual void MergeFormula(Net.TheVpc.Upa.Config.Decoration formulaInfo) {
+            Net.TheVpc.Upa.FormulaType[] types = formulaInfo.GetPrimitiveArray<Net.TheVpc.Upa.FormulaType>("type", typeof(Net.TheVpc.Upa.FormulaType));
             if (types.Length == 0) {
-                types = new Net.Vpc.Upa.FormulaType[] { Net.Vpc.Upa.FormulaType.PERSIST, Net.Vpc.Upa.FormulaType.UPDATE };
+                types = new Net.TheVpc.Upa.FormulaType[] { Net.TheVpc.Upa.FormulaType.PERSIST, Net.TheVpc.Upa.FormulaType.UPDATE };
             }
-            foreach (Net.Vpc.Upa.FormulaType type in types) {
-                object o = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<Net.Vpc.Upa.FormulaType,object>(all,type);
-                Net.Vpc.Upa.Impl.Config.Annotationparser.FormulaInfo old = (o is Net.Vpc.Upa.Impl.Config.Annotationparser.FormulaInfo) ? (Net.Vpc.Upa.Impl.Config.Annotationparser.FormulaInfo) o : null;
+            foreach (Net.TheVpc.Upa.FormulaType type in types) {
+                object o = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<Net.TheVpc.Upa.FormulaType,object>(all,type);
+                Net.TheVpc.Upa.Impl.Config.Annotationparser.FormulaInfo old = (o is Net.TheVpc.Upa.Impl.Config.Annotationparser.FormulaInfo) ? (Net.TheVpc.Upa.Impl.Config.Annotationparser.FormulaInfo) o : null;
                 if (old == null) {
-                    old = new Net.Vpc.Upa.Impl.Config.Annotationparser.FormulaInfo();
+                    old = new Net.TheVpc.Upa.Impl.Config.Annotationparser.FormulaInfo();
                     old.configOrder = System.Int32.MinValue;
                     old.formulaType = type;
                     all[type]=old;
@@ -83,35 +83,35 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             }
         }
 
-        public virtual void MergeSequence(Net.Vpc.Upa.Config.Decoration formulaInfo) {
-            Net.Vpc.Upa.SequenceType stype = formulaInfo.GetEnum<Net.Vpc.Upa.SequenceType>("type", typeof(Net.Vpc.Upa.SequenceType));
-            Net.Vpc.Upa.FormulaType[] types = null;
+        public virtual void MergeSequence(Net.TheVpc.Upa.Config.Decoration formulaInfo) {
+            Net.TheVpc.Upa.SequenceType stype = formulaInfo.GetEnum<Net.TheVpc.Upa.SequenceType>("type", typeof(Net.TheVpc.Upa.SequenceType));
+            Net.TheVpc.Upa.FormulaType[] types = null;
             switch(stype) {
-                case Net.Vpc.Upa.SequenceType.DEFAULT:
-                case Net.Vpc.Upa.SequenceType.PERSIST:
+                case Net.TheVpc.Upa.SequenceType.DEFAULT:
+                case Net.TheVpc.Upa.SequenceType.PERSIST:
                     {
-                        types = new Net.Vpc.Upa.FormulaType[] { Net.Vpc.Upa.FormulaType.PERSIST };
+                        types = new Net.TheVpc.Upa.FormulaType[] { Net.TheVpc.Upa.FormulaType.PERSIST };
                         break;
                     }
-                case Net.Vpc.Upa.SequenceType.UPDATE:
+                case Net.TheVpc.Upa.SequenceType.UPDATE:
                     {
-                        types = new Net.Vpc.Upa.FormulaType[] { Net.Vpc.Upa.FormulaType.UPDATE };
+                        types = new Net.TheVpc.Upa.FormulaType[] { Net.TheVpc.Upa.FormulaType.UPDATE };
                         break;
                     }
-                case Net.Vpc.Upa.SequenceType.BOTH:
+                case Net.TheVpc.Upa.SequenceType.BOTH:
                     {
-                        types = new Net.Vpc.Upa.FormulaType[] { Net.Vpc.Upa.FormulaType.PERSIST, Net.Vpc.Upa.FormulaType.UPDATE };
+                        types = new Net.TheVpc.Upa.FormulaType[] { Net.TheVpc.Upa.FormulaType.PERSIST, Net.TheVpc.Upa.FormulaType.UPDATE };
                         break;
                     }
             }
             if (types.Length == 0) {
-                types = new Net.Vpc.Upa.FormulaType[] { Net.Vpc.Upa.FormulaType.PERSIST, Net.Vpc.Upa.FormulaType.UPDATE };
+                types = new Net.TheVpc.Upa.FormulaType[] { Net.TheVpc.Upa.FormulaType.PERSIST, Net.TheVpc.Upa.FormulaType.UPDATE };
             }
-            foreach (Net.Vpc.Upa.FormulaType type in types) {
-                object o = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<Net.Vpc.Upa.FormulaType,object>(all,type);
-                Net.Vpc.Upa.Impl.Config.Annotationparser.SequenceInfo old = (o is Net.Vpc.Upa.Impl.Config.Annotationparser.SequenceInfo) ? (Net.Vpc.Upa.Impl.Config.Annotationparser.SequenceInfo) o : null;
+            foreach (Net.TheVpc.Upa.FormulaType type in types) {
+                object o = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<Net.TheVpc.Upa.FormulaType,object>(all,type);
+                Net.TheVpc.Upa.Impl.Config.Annotationparser.SequenceInfo old = (o is Net.TheVpc.Upa.Impl.Config.Annotationparser.SequenceInfo) ? (Net.TheVpc.Upa.Impl.Config.Annotationparser.SequenceInfo) o : null;
                 if (old == null) {
-                    old = new Net.Vpc.Upa.Impl.Config.Annotationparser.SequenceInfo(repo);
+                    old = new Net.TheVpc.Upa.Impl.Config.Annotationparser.SequenceInfo(repo);
                     old.configOrder = System.Int32.MinValue;
                     all[type]=old;
                 }

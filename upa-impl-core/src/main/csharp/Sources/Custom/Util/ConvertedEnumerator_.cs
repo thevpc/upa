@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
     class ConvertedEnumerator<K,V> : IEnumerator<V>
     {
         private IEnumerator<K> source;
-        private Net.Vpc.Upa.Impl.Util.Converter<K, V> converter;
+        private Net.TheVpc.Upa.Impl.Util.Converter<K, V> converter;
 
         public ConvertedEnumerator(IEnumerator<K> source, Converter<K, V> converter)
         {

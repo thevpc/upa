@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Exceptions
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 9/7/12 9:27 PM
      */
-    public class BootstrapException : Net.Vpc.Upa.Exceptions.UPAException {
+    public class BootstrapException : Net.TheVpc.Upa.Exceptions.UPAException {
 
         public BootstrapException()  : this(null){
 
@@ -29,7 +29,7 @@ namespace Net.Vpc.Upa.Exceptions
 
         }
 
-        public BootstrapException(string message, System.Exception throwable)  : base(throwable, new Net.Vpc.Upa.Types.I18NString("BootstrapException"), message){
+        public BootstrapException(string message, System.Exception throwable)  : base(throwable, new Net.TheVpc.Upa.Types.I18NString("BootstrapException"), message){
 
         }
     }

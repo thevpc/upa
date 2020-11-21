@@ -11,21 +11,21 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
-    public interface Index : Net.Vpc.Upa.UPAObject {
+    public interface Index : Net.TheVpc.Upa.UPAObject {
 
          void CommitModelChanges();
 
-         Net.Vpc.Upa.Field[] GetFields();
+         Net.TheVpc.Upa.Field[] GetFields();
 
          string[] GetFieldNames();
 
-         Net.Vpc.Upa.Entity GetEntity();
+         Net.TheVpc.Upa.Entity GetEntity();
 
          bool IsUnique();
 
-         Net.Vpc.Upa.IndexInfo GetInfo();
+         Net.TheVpc.Upa.IndexInfo GetInfo();
     }
 }

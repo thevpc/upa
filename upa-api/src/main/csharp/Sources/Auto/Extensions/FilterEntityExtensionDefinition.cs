@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Extensions
+namespace Net.TheVpc.Upa.Extensions
 {
 
 
@@ -19,10 +19,10 @@ namespace Net.Vpc.Upa.Extensions
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 8/28/12 8:37 PM
      */
-    public interface FilterEntityExtensionDefinition : Net.Vpc.Upa.Extensions.EntityExtensionDefinition {
+    public interface FilterEntityExtensionDefinition : Net.TheVpc.Upa.Extensions.EntityExtensionDefinition {
 
          string GetEntityName();
 
-         Net.Vpc.Upa.Expressions.QueryStatement GetQuery();
+         Net.TheVpc.Upa.Expressions.QueryStatement GetQuery();
     }
 }

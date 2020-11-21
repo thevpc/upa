@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Parser.Syntax
+namespace Net.TheVpc.Upa.Impl.Uql.Parser.Syntax
 {
 
 
@@ -24,7 +24,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Parser.Syntax
      * You can modify this class to customize your error reporting
      * mechanisms so long as you retain the public fields.
      */
-    public class ParseException : Net.Vpc.Upa.Exceptions.UPAException {
+    public class ParseException : Net.TheVpc.Upa.Exceptions.UPAException {
 
 
 

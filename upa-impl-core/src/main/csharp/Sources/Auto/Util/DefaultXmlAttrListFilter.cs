@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Impl.Util
      *
      * @author taha.bensalah@gmail.com
      */
-    public class DefaultXmlAttrListFilter : Net.Vpc.Upa.Impl.Util.XmlAttrListFilter {
+    public class DefaultXmlAttrListFilter : Net.TheVpc.Upa.Impl.Util.XmlAttrListFilter {
 
         private readonly System.Collections.Generic.ISet<string> names = new System.Collections.Generic.HashSet<string>();
 
@@ -31,7 +31,7 @@ namespace Net.Vpc.Upa.Impl.Util
 
 
         public virtual string AcceptAndConvert(string s) {
-            string n = Net.Vpc.Upa.Impl.Util.XMLUtils.UniformName(s);
+            string n = Net.TheVpc.Upa.Impl.Util.XMLUtils.UniformName(s);
             if (names.Contains(n)) {
                 return n;
             }
@@ -39,8 +39,8 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         private string CheckUniformName(string s) {
-            if (!s.Equals(Net.Vpc.Upa.Impl.Util.XMLUtils.UniformName(s))) {
-                throw new System.ArgumentException ("Expected Uniform Name " + s + " ==> " + Net.Vpc.Upa.Impl.Util.XMLUtils.UniformName(s));
+            if (!s.Equals(Net.TheVpc.Upa.Impl.Util.XMLUtils.UniformName(s))) {
+                throw new System.ArgumentException ("Expected Uniform Name " + s + " ==> " + Net.TheVpc.Upa.Impl.Util.XMLUtils.UniformName(s));
             }
             return s;
         }

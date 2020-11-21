@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Config
+namespace Net.TheVpc.Upa.Config
 {
 
 
@@ -44,15 +44,15 @@ namespace Net.Vpc.Upa.Config
         }
 
 
-        private Net.Vpc.Upa.Persistence.StructureStrategy _StructureStrategy = Net.Vpc.Upa.Persistence.StructureStrategy.CREATE;
-        public  Net.Vpc.Upa.Persistence.StructureStrategy StructureStrategy{
+        private Net.TheVpc.Upa.Persistence.StructureStrategy _StructureStrategy = Net.TheVpc.Upa.Persistence.StructureStrategy.CREATE;
+        public  Net.TheVpc.Upa.Persistence.StructureStrategy StructureStrategy{
             get {return _StructureStrategy;}
             set {_StructureStrategy=value;}
         }
 
 
-        private Net.Vpc.Upa.Config.Property[] _Properties = {  };
-        public  Net.Vpc.Upa.Config.Property[] Properties{
+        private Net.TheVpc.Upa.Config.Property[] _Properties = {  };
+        public  Net.TheVpc.Upa.Config.Property[] Properties{
             get {return _Properties;}
             set {_Properties=value;}
         }

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -20,21 +20,21 @@ namespace Net.Vpc.Upa.Impl.Util
      */
     public class PlatformBeanTypeRepository {
 
-        private static Net.Vpc.Upa.Impl.Util.PlatformBeanTypeRepository instance = new Net.Vpc.Upa.Impl.Util.PlatformBeanTypeRepository();
+        private static Net.TheVpc.Upa.Impl.Util.PlatformBeanTypeRepository instance = new Net.TheVpc.Upa.Impl.Util.PlatformBeanTypeRepository();
 
-        private readonly System.Collections.Generic.IDictionary<System.Type , Net.Vpc.Upa.BeanType> classBeanTypeReflectorMap = new System.Collections.Generic.Dictionary<System.Type , Net.Vpc.Upa.BeanType>();
+        private readonly System.Collections.Generic.IDictionary<System.Type , Net.TheVpc.Upa.BeanType> classBeanTypeReflectorMap = new System.Collections.Generic.Dictionary<System.Type , Net.TheVpc.Upa.BeanType>();
 
-        public static Net.Vpc.Upa.Impl.Util.PlatformBeanTypeRepository GetInstance() {
+        public static Net.TheVpc.Upa.Impl.Util.PlatformBeanTypeRepository GetInstance() {
             return instance;
         }
 
-        public virtual Net.Vpc.Upa.BeanType GetBeanType(System.Type cls) {
-            Net.Vpc.Upa.BeanType beanType = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,Net.Vpc.Upa.BeanType>(classBeanTypeReflectorMap,cls);
+        public virtual Net.TheVpc.Upa.BeanType GetBeanType(System.Type cls) {
+            Net.TheVpc.Upa.BeanType beanType = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,Net.TheVpc.Upa.BeanType>(classBeanTypeReflectorMap,cls);
             if (beanType == null) {
                 lock (classBeanTypeReflectorMap) {
-                    beanType = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,Net.Vpc.Upa.BeanType>(classBeanTypeReflectorMap,cls);
+                    beanType = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,Net.TheVpc.Upa.BeanType>(classBeanTypeReflectorMap,cls);
                     if (beanType == null) {
-                        beanType = new Net.Vpc.Upa.Impl.Util.DefaultBeanType(cls);
+                        beanType = new Net.TheVpc.Upa.Impl.Util.DefaultBeanType(cls);
                         classBeanTypeReflectorMap[cls]=beanType;
                     }
                 }

@@ -11,11 +11,11 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledexpression
 {
 
 
-    public class CompiledVar : Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod {
+    public class CompiledVar : Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod {
 
         public const char DOT = '.';
 
@@ -23,7 +23,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
 
         private object oldReferrer;
 
-        public CompiledVar(Net.Vpc.Upa.Field field)  : this(field.GetName(), field){
+        public CompiledVar(Net.TheVpc.Upa.Field field)  : this(field.GetName(), field){
 
         }
 
@@ -45,11 +45,11 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         }
 
 
-        public override Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar o = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar(GetName(), GetReferrer());
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod c = GetChild();
+        public override Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar o = new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar(GetName(), GetReferrer());
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod c = GetChild();
             if (c != null) {
-                c = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod) c.Copy();
+                c = (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod) c.Copy();
             }
             o.SetChild(c);
             o.SetBinding(GetBinding());
@@ -59,10 +59,10 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return o;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.CompiledExpression GetNonVarParent() {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression p = GetParentExpression();
+        public virtual Net.TheVpc.Upa.Expressions.CompiledExpression GetNonVarParent() {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression p = GetParentExpression();
             while (p != null) {
-                if (!(p is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod)) {
+                if (!(p is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod)) {
                     return p;
                 }
                 p = p.GetParentExpression();
@@ -74,8 +74,8 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             System.Text.StringBuilder v = new System.Text.StringBuilder();
             if (GetParentExpression() != null) {
                 v.Append(".");
-                if (GetParentExpression() is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) {
-                    v.Append(((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) GetParentExpression()).GetChildlessPath());
+                if (GetParentExpression() is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) {
+                    v.Append(((Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) GetParentExpression()).GetChildlessPath());
                 } else {
                     v.Append(GetParentExpression().ToString());
                 }
@@ -96,17 +96,17 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         }
 
 
-        public override void SetSubExpression(int index, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
+        public override void SetSubExpression(int index, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
             if (index == 0) {
-                SetChild((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod) expression);
+                SetChild((Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod) expression);
             }
             throw new System.Exception();
         }
 
 
-        public override Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetSubExpressions() {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression c = GetChild();
-            return c == null ? null : new Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] { c };
+        public override Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetSubExpressions() {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression c = GetChild();
+            return c == null ? null : new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] { c };
         }
     }
 }

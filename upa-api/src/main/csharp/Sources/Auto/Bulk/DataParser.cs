@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Bulk
+namespace Net.TheVpc.Upa.Bulk
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public interface DataParser : Net.Vpc.Upa.Closeable {
+    public interface DataParser : Net.TheVpc.Upa.Closeable {
 
         /**
              *
@@ -27,14 +27,14 @@ namespace Net.Vpc.Upa.Bulk
              */
          void Configure(object source) /* throws System.IO.IOException */ ;
 
-         void SetDataDeserializer(Net.Vpc.Upa.Bulk.DataDeserializer dataDeserializer);
+         void SetDataDeserializer(Net.TheVpc.Upa.Bulk.DataDeserializer dataDeserializer);
 
-         Net.Vpc.Upa.Bulk.DataDeserializer GetDataDeserializer();
+         Net.TheVpc.Upa.Bulk.DataDeserializer GetDataDeserializer();
 
-         Net.Vpc.Upa.Bulk.DataReader Parse() /* throws System.IO.IOException */ ;
+         Net.TheVpc.Upa.Bulk.DataReader Parse() /* throws System.IO.IOException */ ;
 
-         Net.Vpc.Upa.ObjectFactory GetFactory();
+         Net.TheVpc.Upa.ObjectFactory GetFactory();
 
-         void SetFactory(Net.Vpc.Upa.ObjectFactory factory);
+         void SetFactory(Net.TheVpc.Upa.ObjectFactory factory);
     }
 }

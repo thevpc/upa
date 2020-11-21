@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
@@ -19,25 +19,25 @@ namespace Net.Vpc.Upa.Impl
      *
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class DefaultEntityPrivateListener : Net.Vpc.Upa.UPAObjectListener {
+    public class DefaultEntityPrivateListener : Net.TheVpc.Upa.UPAObjectListener {
 
-        private Net.Vpc.Upa.Impl.DefaultEntity entity;
+        private Net.TheVpc.Upa.Impl.DefaultEntity entity;
 
-        public DefaultEntityPrivateListener(Net.Vpc.Upa.Impl.DefaultEntity entity) {
+        public DefaultEntityPrivateListener(Net.TheVpc.Upa.Impl.DefaultEntity entity) {
             this.entity = entity;
         }
 
-        public virtual void ItemRemoved(Net.Vpc.Upa.UPAObject @object, int position, Net.Vpc.Upa.EventPhase eventPhase) {
+        public virtual void ItemRemoved(Net.TheVpc.Upa.UPAObject @object, int position, Net.TheVpc.Upa.EventPhase eventPhase) {
         }
 
-        public virtual void ItemMoved(Net.Vpc.Upa.UPAObject @object, int position, int toPosition, Net.Vpc.Upa.EventPhase eventPhase) {
+        public virtual void ItemMoved(Net.TheVpc.Upa.UPAObject @object, int position, int toPosition, Net.TheVpc.Upa.EventPhase eventPhase) {
         }
 
-        public virtual void ItemAdded(Net.Vpc.Upa.UPAObject @object, int position, Net.Vpc.Upa.UPAObject parent, Net.Vpc.Upa.EventPhase eventPhase) {
-            if (eventPhase == Net.Vpc.Upa.EventPhase.BEFORE) {
-                entity.BeforePartAdded((Net.Vpc.Upa.EntityPart) parent, (Net.Vpc.Upa.EntityPart) @object, position);
+        public virtual void ItemAdded(Net.TheVpc.Upa.UPAObject @object, int position, Net.TheVpc.Upa.UPAObject parent, Net.TheVpc.Upa.EventPhase eventPhase) {
+            if (eventPhase == Net.TheVpc.Upa.EventPhase.BEFORE) {
+                entity.BeforePartAdded((Net.TheVpc.Upa.EntityPart) parent, (Net.TheVpc.Upa.EntityPart) @object, position);
             } else {
-                entity.AfterPartAdded((Net.Vpc.Upa.EntityPart) parent, (Net.Vpc.Upa.EntityPart) @object, position);
+                entity.AfterPartAdded((Net.TheVpc.Upa.EntityPart) parent, (Net.TheVpc.Upa.EntityPart) @object, position);
             }
         }
     }

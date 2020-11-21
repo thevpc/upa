@@ -11,28 +11,28 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
 
     public class GroupCriteria : System.ICloneable {
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.Expression> fields = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression>(1);
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Expressions.Expression> fields = new System.Collections.Generic.List<Net.TheVpc.Upa.Expressions.Expression>(1);
 
         public GroupCriteria() {
         }
 
-        public virtual Net.Vpc.Upa.Expressions.GroupCriteria AddGroup(Net.Vpc.Upa.Expressions.GroupCriteria order) {
-            Net.Vpc.Upa.FwkConvertUtils.ListAddRange(fields, order.fields);
+        public virtual Net.TheVpc.Upa.Expressions.GroupCriteria AddGroup(Net.TheVpc.Upa.Expressions.GroupCriteria order) {
+            Net.TheVpc.Upa.FwkConvertUtils.ListAddRange(fields, order.fields);
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.GroupCriteria AddGroup(Net.Vpc.Upa.Expressions.Expression field) {
+        public virtual Net.TheVpc.Upa.Expressions.GroupCriteria AddGroup(Net.TheVpc.Upa.Expressions.Expression field) {
             fields.Add(field);
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.GroupCriteria RemoveGroup(Net.Vpc.Upa.Expressions.Expression field) {
+        public virtual Net.TheVpc.Upa.Expressions.GroupCriteria RemoveGroup(Net.TheVpc.Upa.Expressions.Expression field) {
             int i = fields.IndexOf(field);
             if (i >= 0) {
                 fields.RemoveAt(i);
@@ -40,45 +40,45 @@ namespace Net.Vpc.Upa.Expressions
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.GroupCriteria RemoveGroup(int index) {
+        public virtual Net.TheVpc.Upa.Expressions.GroupCriteria RemoveGroup(int index) {
             fields.RemoveAt(index);
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.GroupCriteria InsertGroup(int index, Net.Vpc.Upa.Expressions.Expression field) {
+        public virtual Net.TheVpc.Upa.Expressions.GroupCriteria InsertGroup(int index, Net.TheVpc.Upa.Expressions.Expression field) {
             fields.Insert(index, field);
             return this;
         }
 
-        public virtual int IndexOf(Net.Vpc.Upa.Expressions.Expression field) {
+        public virtual int IndexOf(Net.TheVpc.Upa.Expressions.Expression field) {
             return fields.IndexOf(field);
         }
 
-        public virtual void SetGroupAt(int index, Net.Vpc.Upa.Expressions.Expression expression) {
+        public virtual void SetGroupAt(int index, Net.TheVpc.Upa.Expressions.Expression expression) {
             fields[index]=expression;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Expression GetGroupAt(int index) {
-            return (Net.Vpc.Upa.Expressions.Expression) fields[index];
+        public virtual Net.TheVpc.Upa.Expressions.Expression GetGroupAt(int index) {
+            return (Net.TheVpc.Upa.Expressions.Expression) fields[index];
         }
 
         public virtual int Size() {
             return (fields).Count;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.GroupCriteria Clear() {
+        public virtual Net.TheVpc.Upa.Expressions.GroupCriteria Clear() {
             fields.Clear();
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.GroupCriteria NoGroup() {
+        public virtual Net.TheVpc.Upa.Expressions.GroupCriteria NoGroup() {
             fields.Clear();
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.GroupCriteria Copy() {
-            Net.Vpc.Upa.Expressions.GroupCriteria o = new Net.Vpc.Upa.Expressions.GroupCriteria();
-            foreach (Net.Vpc.Upa.Expressions.Expression field in fields) {
+        public virtual Net.TheVpc.Upa.Expressions.GroupCriteria Copy() {
+            Net.TheVpc.Upa.Expressions.GroupCriteria o = new Net.TheVpc.Upa.Expressions.GroupCriteria();
+            foreach (Net.TheVpc.Upa.Expressions.Expression field in fields) {
                 o.fields.Add(field.Copy());
             }
             return o;

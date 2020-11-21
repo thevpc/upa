@@ -2,7 +2,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
@@ -19,19 +19,19 @@ namespace Net.Vpc.Upa.Impl
      *
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    internal class DefaultSectionPrivateRemoveItemInterceptor : Net.Vpc.Upa.Impl.Util.ItemInterceptor<Net.Vpc.Upa.EntityPart> {
+    internal class DefaultSectionPrivateRemoveItemInterceptor : Net.TheVpc.Upa.Impl.Util.ItemInterceptor<Net.TheVpc.Upa.EntityPart> {
 
         public DefaultSectionPrivateRemoveItemInterceptor() {
         }
 
 
-        public virtual void Before(Net.Vpc.Upa.EntityPart child, int index) {
-            Net.Vpc.Upa.Impl.Util.DefaultBeanAdapter adapter = new Net.Vpc.Upa.Impl.Util.DefaultBeanAdapter(child);
+        public virtual void Before(Net.TheVpc.Upa.EntityPart child, int index) {
+            Net.TheVpc.Upa.Impl.Util.DefaultBeanAdapter adapter = new Net.TheVpc.Upa.Impl.Util.DefaultBeanAdapter(child);
             adapter.InjectNull("parent");
         }
 
 
-        public virtual void After(Net.Vpc.Upa.EntityPart entityItem, int index) {
+        public virtual void After(Net.TheVpc.Upa.EntityPart entityItem, int index) {
         }
     }
 }

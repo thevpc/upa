@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Shared
+namespace Net.TheVpc.Upa.Impl.Persistence.Shared
 {
 
 
@@ -22,15 +22,15 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
      * Time: 11:46 PM
      * To change this template use File | Settings | File Templates.
      */
-    public class UnaryOperatorSQLProvider : Net.Vpc.Upa.Impl.Persistence.Shared.AbstractSQLProvider {
+    public class UnaryOperatorSQLProvider : Net.TheVpc.Upa.Impl.Persistence.Shared.AbstractSQLProvider {
 
-        public UnaryOperatorSQLProvider()  : base(typeof(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledUnaryOperator)){
+        public UnaryOperatorSQLProvider()  : base(typeof(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledUnaryOperator)){
 
         }
 
 
-        public override string GetSQL(object oo, Net.Vpc.Upa.Persistence.EntityExecutionContext qlContext, Net.Vpc.Upa.Impl.Persistence.SQLManager sqlManager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledUnaryOperator o = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledUnaryOperator) oo;
+        public override string GetSQL(object oo, Net.TheVpc.Upa.Persistence.EntityExecutionContext qlContext, Net.TheVpc.Upa.Impl.Persistence.SQLManager sqlManager, Net.TheVpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledUnaryOperator o = (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledUnaryOperator) oo;
             return o.GetOperator() + sqlManager.GetSQL(o.GetExpression(), qlContext, declarations);
         }
     }

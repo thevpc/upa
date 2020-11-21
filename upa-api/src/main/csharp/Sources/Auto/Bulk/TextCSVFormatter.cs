@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Bulk
+namespace Net.TheVpc.Upa.Bulk
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public abstract class TextCSVFormatter : Net.Vpc.Upa.Bulk.AbstractDataFormatter {
+    public abstract class TextCSVFormatter : Net.TheVpc.Upa.Bulk.AbstractDataFormatter {
 
         private bool writeHeader;
 
@@ -32,19 +32,19 @@ namespace Net.Vpc.Upa.Bulk
 
         private bool supportsBackSlash = true;
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Bulk.TextCSVColumn> columns = new System.Collections.Generic.List<Net.Vpc.Upa.Bulk.TextCSVColumn>();
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Bulk.TextCSVColumn> columns = new System.Collections.Generic.List<Net.TheVpc.Upa.Bulk.TextCSVColumn>();
 
         private string newLine;
 
         private int skipRows;
 
-        public virtual Net.Vpc.Upa.Bulk.TextCSVColumn AddColumn(string name) {
-            Net.Vpc.Upa.Bulk.TextCSVColumn column = new Net.Vpc.Upa.Bulk.TextCSVColumn();
-            GetColumns().Add((Net.Vpc.Upa.Bulk.TextCSVColumn) column.UpdateName(name));
+        public virtual Net.TheVpc.Upa.Bulk.TextCSVColumn AddColumn(string name) {
+            Net.TheVpc.Upa.Bulk.TextCSVColumn column = new Net.TheVpc.Upa.Bulk.TextCSVColumn();
+            GetColumns().Add((Net.TheVpc.Upa.Bulk.TextCSVColumn) column.UpdateName(name));
             return column;
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Bulk.TextCSVColumn> GetColumns() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Bulk.TextCSVColumn> GetColumns() {
             return columns;
         }
 
@@ -52,7 +52,7 @@ namespace Net.Vpc.Upa.Bulk
             return writeHeader;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.TextCSVFormatter SetWriteHeader(bool writeHeader) {
+        public virtual Net.TheVpc.Upa.Bulk.TextCSVFormatter SetWriteHeader(bool writeHeader) {
             this.writeHeader = writeHeader;
             return this;
         }
@@ -61,7 +61,7 @@ namespace Net.Vpc.Upa.Bulk
             return separators;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.TextCSVFormatter SetSeparators(string separators) {
+        public virtual Net.TheVpc.Upa.Bulk.TextCSVFormatter SetSeparators(string separators) {
             this.separators = separators;
             return this;
         }
@@ -70,7 +70,7 @@ namespace Net.Vpc.Upa.Bulk
             return supportsDoubleQuote;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.TextCSVFormatter SetSupportsDoubleQuote(bool supportsDoubleQuote) {
+        public virtual Net.TheVpc.Upa.Bulk.TextCSVFormatter SetSupportsDoubleQuote(bool supportsDoubleQuote) {
             this.supportsDoubleQuote = supportsDoubleQuote;
             return this;
         }
@@ -79,7 +79,7 @@ namespace Net.Vpc.Upa.Bulk
             return supportsSimpleQuote;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.TextCSVFormatter SetSupportsSimpleQuote(bool supportsSimpleQuote) {
+        public virtual Net.TheVpc.Upa.Bulk.TextCSVFormatter SetSupportsSimpleQuote(bool supportsSimpleQuote) {
             this.supportsSimpleQuote = supportsSimpleQuote;
             return this;
         }
@@ -88,7 +88,7 @@ namespace Net.Vpc.Upa.Bulk
             return supportsBackSlash;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.TextCSVFormatter SetSupportsBackSlash(bool supportsBackSlash) {
+        public virtual Net.TheVpc.Upa.Bulk.TextCSVFormatter SetSupportsBackSlash(bool supportsBackSlash) {
             this.supportsBackSlash = supportsBackSlash;
             return this;
         }
@@ -97,7 +97,7 @@ namespace Net.Vpc.Upa.Bulk
             return trimValues;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.TextCSVFormatter SetTrimValues(bool trimValues) {
+        public virtual Net.TheVpc.Upa.Bulk.TextCSVFormatter SetTrimValues(bool trimValues) {
             this.trimValues = trimValues;
             return this;
         }
@@ -106,7 +106,7 @@ namespace Net.Vpc.Upa.Bulk
             return newLine;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.TextCSVFormatter SetNewLine(string newLine) {
+        public virtual Net.TheVpc.Upa.Bulk.TextCSVFormatter SetNewLine(string newLine) {
             this.newLine = newLine;
             return this;
         }
@@ -115,7 +115,7 @@ namespace Net.Vpc.Upa.Bulk
             return skipRows;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.TextCSVFormatter SetSkipRows(int skipRows) {
+        public virtual Net.TheVpc.Upa.Bulk.TextCSVFormatter SetSkipRows(int skipRows) {
             this.skipRows = skipRows;
             return this;
         }

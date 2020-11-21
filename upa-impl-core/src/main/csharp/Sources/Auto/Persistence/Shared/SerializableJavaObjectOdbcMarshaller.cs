@@ -11,19 +11,19 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Shared
+namespace Net.TheVpc.Upa.Impl.Persistence.Shared
 {
 
 
     /**
     * @author Taha BEN SALAH <taha.bensalah@gmail.com>
     * @creationdate 12/20/12 2:49 AM*/
-    public class SerializableJavaObjectOdbcMarshaller : Net.Vpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
+    public class SerializableJavaObjectOdbcMarshaller : Net.TheVpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
 
-        private Net.Vpc.Upa.Impl.Persistence.MarshallManager pm;
+        private Net.TheVpc.Upa.Impl.Persistence.MarshallManager pm;
 
 
-        public override void SetMarshallManager(Net.Vpc.Upa.Impl.Persistence.MarshallManager marshallManager) {
+        public override void SetMarshallManager(Net.TheVpc.Upa.Impl.Persistence.MarshallManager marshallManager) {
             this.pm = marshallManager;
         }
 
@@ -36,7 +36,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
             if (@object == null) {
                 return base.ToSQLLiteral(@object);
             }
-            Net.Vpc.Upa.Impl.Persistence.TypeMarshaller wrapper = pm.GetTypeMarshaller(@object.GetType());
+            Net.TheVpc.Upa.Impl.Persistence.TypeMarshaller wrapper = pm.GetTypeMarshaller(@object.GetType());
             if (wrapper != null && wrapper.GetType() != GetType()) {
                 return wrapper.ToSQLLiteral(@object);
             }

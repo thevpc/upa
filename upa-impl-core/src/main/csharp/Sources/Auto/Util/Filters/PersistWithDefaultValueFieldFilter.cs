@@ -11,23 +11,23 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util.Filters
+namespace Net.TheVpc.Upa.Impl.Util.Filters
 {
 
 
     /**
     * Created by vpc on 12/23/13.*/
-    public class PersistWithDefaultValueFieldFilter : Net.Vpc.Upa.Filters.AbstractFieldFilter {
+    public class PersistWithDefaultValueFieldFilter : Net.TheVpc.Upa.Filters.AbstractFieldFilter {
 
 
-        public override bool AcceptDynamic() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public override bool AcceptDynamic() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return false;
         }
 
 
-        public override bool Accept(Net.Vpc.Upa.Field f) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.FieldModifier> effectiveModifiers = f.GetModifiers();
-            return effectiveModifiers.Contains(Net.Vpc.Upa.FieldModifier.PERSIST) && !effectiveModifiers.Contains(Net.Vpc.Upa.FieldModifier.ID) && !effectiveModifiers.Contains(Net.Vpc.Upa.FieldModifier.PERSIST_SEQUENCE);
+        public override bool Accept(Net.TheVpc.Upa.Field f) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.FieldModifier> effectiveModifiers = f.GetModifiers();
+            return effectiveModifiers.Contains(Net.TheVpc.Upa.FieldModifier.PERSIST) && !effectiveModifiers.Contains(Net.TheVpc.Upa.FieldModifier.ID) && !effectiveModifiers.Contains(Net.TheVpc.Upa.FieldModifier.PERSIST_SEQUENCE);
         }
     }
 }

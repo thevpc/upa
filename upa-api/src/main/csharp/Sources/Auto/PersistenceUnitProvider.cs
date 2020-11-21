@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     /**
@@ -20,8 +20,8 @@ namespace Net.Vpc.Upa
      */
     public interface PersistenceUnitProvider {
 
-         string GetPersistenceUnitName(Net.Vpc.Upa.PersistenceGroup persistenceGroup);
+         string GetPersistenceUnitName(Net.TheVpc.Upa.PersistenceGroup persistenceGroup);
 
-         void SetPersistenceUnitName(Net.Vpc.Upa.PersistenceGroup persistenceGroup, string current);
+         void SetPersistenceUnitName(Net.TheVpc.Upa.PersistenceGroup persistenceGroup, string current);
     }
 }

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
 
@@ -19,15 +19,15 @@ namespace Net.Vpc.Upa.Persistence
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 11/16/12 7:00 PM
      */
-    public class DefaultParameter : Net.Vpc.Upa.Persistence.Parameter {
+    public class DefaultParameter : Net.TheVpc.Upa.Persistence.Parameter {
 
         private string name;
 
-        private Net.Vpc.Upa.Types.DataTypeTransform type;
+        private Net.TheVpc.Upa.Types.DataTypeTransform type;
 
         private object @value;
 
-        public DefaultParameter(string name, object @value, Net.Vpc.Upa.Types.DataTypeTransform type) {
+        public DefaultParameter(string name, object @value, Net.TheVpc.Upa.Types.DataTypeTransform type) {
             this.name = name;
             this.@value = @value;
             this.type = type;
@@ -37,7 +37,7 @@ namespace Net.Vpc.Upa.Persistence
             return name;
         }
 
-        public virtual Net.Vpc.Upa.Types.DataTypeTransform GetTypeTransform() {
+        public virtual Net.TheVpc.Upa.Types.DataTypeTransform GetTypeTransform() {
             return type;
         }
 
@@ -53,7 +53,7 @@ namespace Net.Vpc.Upa.Persistence
         public override bool Equals(object o) {
             if (this == o) return true;
             if (o == null || GetType() != o.GetType()) return false;
-            Net.Vpc.Upa.Persistence.DefaultParameter that = (Net.Vpc.Upa.Persistence.DefaultParameter) o;
+            Net.TheVpc.Upa.Persistence.DefaultParameter that = (Net.TheVpc.Upa.Persistence.DefaultParameter) o;
             if (name != null ? !name.Equals(that.name) : that.name != null) return false;
             if (type != null ? !type.Equals(that.type) : that.type != null) return false;
             return true;

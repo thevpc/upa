@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -19,12 +19,12 @@ namespace Net.Vpc.Upa.Impl.Util
      *
      * @author taha.bensalah@gmail.com
      */
-    public class BeanFieldFilter : Net.Vpc.Upa.Filters.ObjectFilter<System.Reflection.FieldInfo> {
+    public class BeanFieldFilter : Net.TheVpc.Upa.Filters.ObjectFilter<System.Reflection.FieldInfo> {
 
-        public static readonly Net.Vpc.Upa.Impl.Util.BeanFieldFilter INSTANCE = new Net.Vpc.Upa.Impl.Util.BeanFieldFilter();
+        public static readonly Net.TheVpc.Upa.Impl.Util.BeanFieldFilter INSTANCE = new Net.TheVpc.Upa.Impl.Util.BeanFieldFilter();
 
         public virtual bool Accept(System.Reflection.FieldInfo s) {
-            return !Net.Vpc.Upa.Impl.Util.PlatformUtils.IsStatic(s);
+            return !Net.TheVpc.Upa.Impl.Util.PlatformUtils.IsStatic(s);
         }
     }
 }

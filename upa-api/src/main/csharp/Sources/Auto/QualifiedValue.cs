@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     /**
@@ -20,16 +20,16 @@ namespace Net.Vpc.Upa
      */
     public class QualifiedValue {
 
-        private Net.Vpc.Upa.Entity entityManager;
+        private Net.TheVpc.Upa.Entity entityManager;
 
         private object @value;
 
-        public QualifiedValue(Net.Vpc.Upa.Entity entityManager, object @value) {
+        public QualifiedValue(Net.TheVpc.Upa.Entity entityManager, object @value) {
             this.entityManager = entityManager;
             this.@value = @value;
         }
 
-        public virtual Net.Vpc.Upa.Entity GetEntity() {
+        public virtual Net.TheVpc.Upa.Entity GetEntity() {
             return entityManager;
         }
 

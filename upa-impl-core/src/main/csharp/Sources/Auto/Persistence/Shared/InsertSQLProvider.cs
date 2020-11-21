@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Shared
+namespace Net.TheVpc.Upa.Impl.Persistence.Shared
 {
 
 
@@ -22,17 +22,17 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
      * Time: 12:52 AM
      * To change this template use File | Settings | File Templates.
      */
-    public class InsertSQLProvider : Net.Vpc.Upa.Impl.Persistence.Shared.AbstractSQLProvider {
+    public class InsertSQLProvider : Net.TheVpc.Upa.Impl.Persistence.Shared.AbstractSQLProvider {
 
-        public InsertSQLProvider()  : base(typeof(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledInsert)){
+        public InsertSQLProvider()  : base(typeof(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledInsert)){
 
         }
 
 
-        public override string GetSQL(object oo, Net.Vpc.Upa.Persistence.EntityExecutionContext context, Net.Vpc.Upa.Impl.Persistence.SQLManager sqlManager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledInsert o = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledInsert) oo;
+        public override string GetSQL(object oo, Net.TheVpc.Upa.Persistence.EntityExecutionContext context, Net.TheVpc.Upa.Impl.Persistence.SQLManager sqlManager, Net.TheVpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledInsert o = (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledInsert) oo;
             //        PersistenceUnitManager persistenceManager = context.getPersistenceStore();
-            Net.Vpc.Upa.Entity entity = context.GetPersistenceUnit().GetEntity(o.GetEntity().GetName());
+            Net.TheVpc.Upa.Entity entity = context.GetPersistenceUnit().GetEntity(o.GetEntity().GetName());
             string n = context.GetPersistenceStore().GetValidIdentifier(context.GetPersistenceStore().GetPersistenceName(entity));
             System.Text.StringBuilder sb = new System.Text.StringBuilder("Insert Into " + n);
             sb.Append("(");

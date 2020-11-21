@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     /**
@@ -27,16 +27,16 @@ namespace Net.Vpc.Upa
 
          int FieldSize();
 
-         Net.Vpc.Upa.Document GetPlainDocument();
+         Net.TheVpc.Upa.Document GetPlainDocument();
 
-         Net.Vpc.Upa.Document GetPlainDocument(bool create);
+         Net.TheVpc.Upa.Document GetPlainDocument(bool create);
 
-         Net.Vpc.Upa.Document GetDocument(string entityName);
+         Net.TheVpc.Upa.Document GetDocument(string entityName);
 
-         void SetDocument(string entityName, Net.Vpc.Upa.Document document);
+         void SetDocument(string entityName, Net.TheVpc.Upa.Document document);
 
-         Net.Vpc.Upa.Document GetSingleDocument();
+         Net.TheVpc.Upa.Document GetSingleDocument();
 
-         Net.Vpc.Upa.Document Merge();
+         Net.TheVpc.Upa.Document Merge();
     }
 }

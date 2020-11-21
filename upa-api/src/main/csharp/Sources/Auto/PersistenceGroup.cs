@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -19,11 +19,11 @@ namespace Net.Vpc.Upa
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 9/11/12 9:38 PM
      */
-    public interface PersistenceGroup : Net.Vpc.Upa.Closeable {
+    public interface PersistenceGroup : Net.TheVpc.Upa.Closeable {
 
-         void Scan(Net.Vpc.Upa.Config.ScanSource strategy, Net.Vpc.Upa.ScanListener listener, bool configure) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void Scan(Net.TheVpc.Upa.Config.ScanSource strategy, Net.TheVpc.Upa.ScanListener listener, bool configure) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         string GetName() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         string GetName() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
         /**
              * if true, when no scan filter is specified will scan all class-path
@@ -34,84 +34,84 @@ namespace Net.Vpc.Upa
 
          void SetAutoScan(bool autoScan);
 
-         Net.Vpc.Upa.UPAContext GetContext();
+         Net.TheVpc.Upa.UPAContext GetContext();
 
-         Net.Vpc.Upa.PersistenceUnit GetPersistenceUnit() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.PersistenceUnit GetPersistenceUnit() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void SetPersistenceUnit(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void SetPersistenceUnit(string name) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.PersistenceUnit> GetPersistenceUnits() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         System.Collections.Generic.IList<Net.TheVpc.Upa.PersistenceUnit> GetPersistenceUnits() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.PersistenceUnit GetPersistenceUnit(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.PersistenceUnit GetPersistenceUnit(string name) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.ObjectFactory GetFactory() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.ObjectFactory GetFactory() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         bool ContainsPersistenceUnit(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool ContainsPersistenceUnit(string name) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.PersistenceUnit AddPersistenceUnit(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.PersistenceUnit AddPersistenceUnit(string name) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void DropPersistenceUnit(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void DropPersistenceUnit(string name) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
          bool CurrentSessionExists();
 
-         Net.Vpc.Upa.Session GetCurrentSession() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Session GetCurrentSession() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void SetCurrentSession(Net.Vpc.Upa.Session session) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void SetCurrentSession(Net.TheVpc.Upa.Session session) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Session FindCurrentSession() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Session FindCurrentSession() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Session OpenSession();
+         Net.TheVpc.Upa.Session OpenSession();
 
          bool IsClosed();
 
-         void AddPersistenceUnitDefinitionListener(Net.Vpc.Upa.Callbacks.PersistenceUnitDefinitionListener definitionListener);
+         void AddPersistenceUnitDefinitionListener(Net.TheVpc.Upa.Callbacks.PersistenceUnitDefinitionListener definitionListener);
 
-         void RemovePersistenceUnitDefinitionListener(Net.Vpc.Upa.Callbacks.PersistenceUnitDefinitionListener definitionListener);
+         void RemovePersistenceUnitDefinitionListener(Net.TheVpc.Upa.Callbacks.PersistenceUnitDefinitionListener definitionListener);
 
-         void AddContextAnnotationStrategyFilter(Net.Vpc.Upa.Config.ScanFilter filter);
+         void AddContextAnnotationStrategyFilter(Net.TheVpc.Upa.Config.ScanFilter filter);
 
-         void RemoveContextAnnotationStrategyFilter(Net.Vpc.Upa.Config.ScanFilter filter);
+         void RemoveContextAnnotationStrategyFilter(Net.TheVpc.Upa.Config.ScanFilter filter);
 
-         Net.Vpc.Upa.Config.ScanFilter[] GetContextAnnotationStrategyFilters();
+         Net.TheVpc.Upa.Config.ScanFilter[] GetContextAnnotationStrategyFilters();
 
-         Net.Vpc.Upa.UPASecurityManager GetSecurityManager();
+         Net.TheVpc.Upa.UPASecurityManager GetSecurityManager();
 
-         Net.Vpc.Upa.PersistenceGroupSecurityManager GetPersistenceGroupSecurityManager();
+         Net.TheVpc.Upa.PersistenceGroupSecurityManager GetPersistenceGroupSecurityManager();
 
-         void SetPersistenceGroupSecurityManager(Net.Vpc.Upa.PersistenceGroupSecurityManager securityManager);
+         void SetPersistenceGroupSecurityManager(Net.TheVpc.Upa.PersistenceGroupSecurityManager securityManager);
 
-         Net.Vpc.Upa.Callback AddCallback(Net.Vpc.Upa.MethodCallback callback);
+         Net.TheVpc.Upa.Callback AddCallback(Net.TheVpc.Upa.MethodCallback callback);
 
-         void AddCallback(Net.Vpc.Upa.Callback callback);
+         void AddCallback(Net.TheVpc.Upa.Callback callback);
 
-         void RemoveCallback(Net.Vpc.Upa.Callback callback);
+         void RemoveCallback(Net.TheVpc.Upa.Callback callback);
 
-         Net.Vpc.Upa.Callback[] GetCallbacks(Net.Vpc.Upa.CallbackType nameFilter, Net.Vpc.Upa.ObjectType objectType, string name, bool system, bool preparedOnly, Net.Vpc.Upa.EventPhase phase);
+         Net.TheVpc.Upa.Callback[] GetCallbacks(Net.TheVpc.Upa.CallbackType nameFilter, Net.TheVpc.Upa.ObjectType objectType, string name, bool system, bool preparedOnly, Net.TheVpc.Upa.EventPhase phase);
 
-          T Invoke<T>(Net.Vpc.Upa.Action<T> action, Net.Vpc.Upa.InvokeContext invokeContext);
+          T Invoke<T>(Net.TheVpc.Upa.Action<T> action, Net.TheVpc.Upa.InvokeContext invokeContext);
 
-          T Invoke<T>(Net.Vpc.Upa.Action<T> action);
+          T Invoke<T>(Net.TheVpc.Upa.Action<T> action);
 
-          T InvokePrivileged<T>(Net.Vpc.Upa.Action<T> action, Net.Vpc.Upa.InvokeContext invokeContext);
+          T InvokePrivileged<T>(Net.TheVpc.Upa.Action<T> action, Net.TheVpc.Upa.InvokeContext invokeContext);
 
-          T InvokePrivileged<T>(Net.Vpc.Upa.Action<T> action);
+          T InvokePrivileged<T>(Net.TheVpc.Upa.Action<T> action);
 
-         void Invoke(Net.Vpc.Upa.VoidAction action, Net.Vpc.Upa.InvokeContext invokeContext);
+         void Invoke(Net.TheVpc.Upa.VoidAction action, Net.TheVpc.Upa.InvokeContext invokeContext);
 
-         void Invoke(Net.Vpc.Upa.VoidAction action);
+         void Invoke(Net.TheVpc.Upa.VoidAction action);
 
-         void InvokePrivileged(Net.Vpc.Upa.VoidAction action, Net.Vpc.Upa.InvokeContext invokeContext);
+         void InvokePrivileged(Net.TheVpc.Upa.VoidAction action, Net.TheVpc.Upa.InvokeContext invokeContext);
 
-         void InvokePrivileged(Net.Vpc.Upa.VoidAction action);
+         void InvokePrivileged(Net.TheVpc.Upa.VoidAction action);
 
-         Net.Vpc.Upa.Properties GetProperties();
+         Net.TheVpc.Upa.Properties GetProperties();
 
-         Net.Vpc.Upa.PersistenceGroupInfo GetInfo();
+         Net.TheVpc.Upa.PersistenceGroupInfo GetInfo();
 
-         Net.Vpc.Upa.UPAI18n GetI18n();
+         Net.TheVpc.Upa.UPAI18n GetI18n();
 
-         void SetI18n(Net.Vpc.Upa.UPAI18n i18n);
+         void SetI18n(Net.TheVpc.Upa.UPAI18n i18n);
 
-         Net.Vpc.Upa.UPAI18n GetI18nOrDefault();
+         Net.TheVpc.Upa.UPAI18n GetI18nOrDefault();
     }
 }

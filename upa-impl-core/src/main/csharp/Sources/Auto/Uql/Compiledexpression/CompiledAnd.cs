@@ -11,15 +11,15 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledexpression
 {
 
 
-    public sealed class CompiledAnd : Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledBinaryOperatorExpression {
+    public sealed class CompiledAnd : Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledBinaryOperatorExpression {
 
 
 
-        public static Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TryAddCopies(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression left, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression right) {
+        public static Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TryAddCopies(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression left, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression right) {
             if (left != null) {
                 left = left.Copy();
             }
@@ -29,28 +29,28 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return TryAdd(left, right);
         }
 
-        public static Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TryAdd(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression left, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression right) {
+        public static Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TryAdd(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression left, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression right) {
             if (left == null) {
                 return right;
             }
             if (right == null) {
                 return left;
             }
-            return new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledAnd(right, left);
+            return new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledAnd(right, left);
         }
 
-        public CompiledAnd(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression left, object right)  : base(Net.Vpc.Upa.Expressions.BinaryOperator.AND, left, right){
+        public CompiledAnd(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression left, object right)  : base(Net.TheVpc.Upa.Expressions.BinaryOperator.AND, left, right){
 
             System.Type t = left.GetTypeTransform().GetSourceType().GetPlatformType();
             System.Type r = left.GetTypeTransform().GetSourceType().GetPlatformType();
         }
 
-        public CompiledAnd(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression left, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression right)  : base(Net.Vpc.Upa.Expressions.BinaryOperator.AND, left, right){
+        public CompiledAnd(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression left, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression right)  : base(Net.TheVpc.Upa.Expressions.BinaryOperator.AND, left, right){
 
         }
 
-        public override Net.Vpc.Upa.Types.DataTypeTransform GetTypeTransform() {
-            return Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.BOOLEAN;
+        public override Net.TheVpc.Upa.Types.DataTypeTransform GetTypeTransform() {
+            return Net.TheVpc.Upa.Impl.Transform.IdentityDataTypeTransform.BOOLEAN;
         }
 
 

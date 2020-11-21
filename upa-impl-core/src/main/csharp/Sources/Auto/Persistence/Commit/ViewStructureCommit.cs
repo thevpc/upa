@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Commit
+namespace Net.TheVpc.Upa.Impl.Persistence.Commit
 {
 
 
@@ -19,30 +19,30 @@ namespace Net.Vpc.Upa.Impl.Persistence.Commit
      *
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class ViewStructureCommit : Net.Vpc.Upa.Impl.Persistence.StructureCommit {
+    public class ViewStructureCommit : Net.TheVpc.Upa.Impl.Persistence.StructureCommit {
 
-        protected internal static System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.Vpc.Upa.Impl.Persistence.Commit.ViewStructureCommit)).FullName);
+        protected internal static System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.TheVpc.Upa.Impl.Persistence.Commit.ViewStructureCommit)).FullName);
 
-        public ViewStructureCommit(Net.Vpc.Upa.Entity @object, Net.Vpc.Upa.Impl.Persistence.DefaultPersistenceUnitCommitManager persistenceUnitCommitManager)  : base(persistenceUnitCommitManager, @object, typeof(Net.Vpc.Upa.Entity), null){
+        public ViewStructureCommit(Net.TheVpc.Upa.Entity @object, Net.TheVpc.Upa.Impl.Persistence.DefaultPersistenceUnitCommitManager persistenceUnitCommitManager)  : base(persistenceUnitCommitManager, @object, typeof(Net.TheVpc.Upa.Entity), null){
 
         }
 
 
-        public override void Persist(Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext, Net.Vpc.Upa.PersistenceState status) /* throws System.Exception, Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Entity entityManager = (Net.Vpc.Upa.Entity) @object;
-            Net.Vpc.Upa.Impl.Persistence.DefaultPersistenceStore persistenceUnitManager = (Net.Vpc.Upa.Impl.Persistence.DefaultPersistenceStore) executionContext.GetPersistenceStore();
-            log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Commit {0} / {1} : found {2}, persist",null,new object[] { @object, typedObject, status }));
-            Net.Vpc.Upa.Persistence.UConnection b = executionContext.GetConnection();
-            System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.ViewEntityExtension> specSupport = entityManager.GetExtensions<Net.Vpc.Upa.Persistence.ViewEntityExtension>(typeof(Net.Vpc.Upa.Persistence.ViewEntityExtension));
-            foreach (Net.Vpc.Upa.Persistence.ViewEntityExtension ss in specSupport) {
+        public override void Persist(Net.TheVpc.Upa.Persistence.EntityExecutionContext executionContext, Net.TheVpc.Upa.PersistenceState status) /* throws System.Exception, Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Entity entityManager = (Net.TheVpc.Upa.Entity) @object;
+            Net.TheVpc.Upa.Impl.Persistence.DefaultPersistenceStore persistenceUnitManager = (Net.TheVpc.Upa.Impl.Persistence.DefaultPersistenceStore) executionContext.GetPersistenceStore();
+            log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Commit {0} / {1} : found {2}, persist",null,new object[] { @object, typedObject, status }));
+            Net.TheVpc.Upa.Persistence.UConnection b = executionContext.GetConnection();
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Persistence.ViewEntityExtension> specSupport = entityManager.GetExtensions<Net.TheVpc.Upa.Persistence.ViewEntityExtension>(typeof(Net.TheVpc.Upa.Persistence.ViewEntityExtension));
+            foreach (Net.TheVpc.Upa.Persistence.ViewEntityExtension ss in specSupport) {
                 b.ExecuteNonQuery(persistenceUnitManager.GetCreateViewStatement(entityManager, ss.GetQuery(), executionContext), null, null);
             }
-            System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.UnionEntityExtension> uspecSupport = entityManager.GetExtensions<Net.Vpc.Upa.Persistence.UnionEntityExtension>(typeof(Net.Vpc.Upa.Persistence.UnionEntityExtension));
-            foreach (Net.Vpc.Upa.Persistence.UnionEntityExtension ss in uspecSupport) {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Persistence.UnionEntityExtension> uspecSupport = entityManager.GetExtensions<Net.TheVpc.Upa.Persistence.UnionEntityExtension>(typeof(Net.TheVpc.Upa.Persistence.UnionEntityExtension));
+            foreach (Net.TheVpc.Upa.Persistence.UnionEntityExtension ss in uspecSupport) {
                 b.ExecuteNonQuery(persistenceUnitManager.GetCreateViewStatement(entityManager, ss.GetQuery(), executionContext), null, null);
             }
-            System.Collections.Generic.IList<Net.Vpc.Upa.Extensions.FilterEntityExtensionDefinition> fspecSupport = entityManager.GetExtensionDefinitions<Net.Vpc.Upa.Extensions.FilterEntityExtensionDefinition>(typeof(Net.Vpc.Upa.Extensions.FilterEntityExtensionDefinition));
-            foreach (Net.Vpc.Upa.Extensions.FilterEntityExtensionDefinition ss in fspecSupport) {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Extensions.FilterEntityExtensionDefinition> fspecSupport = entityManager.GetExtensionDefinitions<Net.TheVpc.Upa.Extensions.FilterEntityExtensionDefinition>(typeof(Net.TheVpc.Upa.Extensions.FilterEntityExtensionDefinition));
+            foreach (Net.TheVpc.Upa.Extensions.FilterEntityExtensionDefinition ss in fspecSupport) {
                 b.ExecuteNonQuery(persistenceUnitManager.GetCreateViewStatement(entityManager, ss.GetQuery(), executionContext), null, null);
             }
         }

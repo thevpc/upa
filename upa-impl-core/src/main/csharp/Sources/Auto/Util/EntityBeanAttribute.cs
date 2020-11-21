@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -27,8 +27,8 @@ namespace Net.Vpc.Upa.Impl.Util
 
          void SetValue(object o, object @value);
 
-         object GetDefaultValue() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         object GetDefaultValue() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         bool IsDefaultValue(object o) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsDefaultValue(object o) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
     }
 }

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
 
@@ -20,19 +20,19 @@ namespace Net.Vpc.Upa.Expressions
      * Created with IntelliJ IDEA. User: vpc Date: 8/16/12 Time: 10:54 PM To change
      * this template use File | Settings | File Templates.
      */
-    public abstract class FunctionExpression : Net.Vpc.Upa.Expressions.DefaultExpression {
+    public abstract class FunctionExpression : Net.TheVpc.Upa.Expressions.DefaultExpression {
 
         public abstract string GetName();
 
         public abstract int GetArgumentsCount();
 
-        public abstract Net.Vpc.Upa.Expressions.Expression GetArgument(int index);
+        public abstract Net.TheVpc.Upa.Expressions.Expression GetArgument(int index);
 
-        public abstract void SetArgument(int index, Net.Vpc.Upa.Expressions.Expression e);
+        public abstract void SetArgument(int index, Net.TheVpc.Upa.Expressions.Expression e);
 
-        public virtual Net.Vpc.Upa.Expressions.Expression[] GetArguments() {
+        public virtual Net.TheVpc.Upa.Expressions.Expression[] GetArguments() {
             int max = GetArgumentsCount();
-            Net.Vpc.Upa.Expressions.Expression[] p = new Net.Vpc.Upa.Expressions.Expression[max];
+            Net.TheVpc.Upa.Expressions.Expression[] p = new Net.TheVpc.Upa.Expressions.Expression[max];
             for (int i = 0; i < max; i++) {
                 p[i] = GetArgument(i);
             }
@@ -40,21 +40,21 @@ namespace Net.Vpc.Upa.Expressions
         }
 
 
-        public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
-            Net.Vpc.Upa.Expressions.Expression[] arr = GetArguments();
-            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> all = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>(arr.Length);
+        public override System.Collections.Generic.IList<Net.TheVpc.Upa.Expressions.TaggedExpression> GetChildren() {
+            Net.TheVpc.Upa.Expressions.Expression[] arr = GetArguments();
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Expressions.TaggedExpression> all = new System.Collections.Generic.List<Net.TheVpc.Upa.Expressions.TaggedExpression>(arr.Length);
             for (int i = 0; i < arr.Length; i++) {
-                Net.Vpc.Upa.Expressions.Expression e = arr[i];
+                Net.TheVpc.Upa.Expressions.Expression e = arr[i];
                 if (e != null) {
-                    all.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(e, new Net.Vpc.Upa.Expressions.IndexedTag("arg", i)));
+                    all.Add(new Net.TheVpc.Upa.Expressions.TaggedExpression(e, new Net.TheVpc.Upa.Expressions.IndexedTag("arg", i)));
                 }
             }
             return all;
         }
 
 
-        public override void SetChild(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.Expressions.ExpressionTag tag) {
-            int n = ((Net.Vpc.Upa.Expressions.IndexedTag) tag).GetIndex();
+        public override void SetChild(Net.TheVpc.Upa.Expressions.Expression e, Net.TheVpc.Upa.Expressions.ExpressionTag tag) {
+            int n = ((Net.TheVpc.Upa.Expressions.IndexedTag) tag).GetIndex();
             SetArgument(n, e);
         }
 
@@ -71,9 +71,9 @@ namespace Net.Vpc.Upa.Expressions
             return s.ToString();
         }
 
-        protected internal static void CheckArgCount(string name, Net.Vpc.Upa.Expressions.Expression[] args, int count) {
+        protected internal static void CheckArgCount(string name, Net.TheVpc.Upa.Expressions.Expression[] args, int count) {
             if (args.Length != count) {
-                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("function " + name + " expects " + count + " argument(s) but found " + args.Length);
+                throw new Net.TheVpc.Upa.Exceptions.UPAIllegalArgumentException("function " + name + " expects " + count + " argument(s) but found " + args.Length);
             }
         }
     }

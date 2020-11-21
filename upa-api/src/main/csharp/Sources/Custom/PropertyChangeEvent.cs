@@ -1,6 +1,6 @@
 using System;
 
-namespace Net.Vpc.Upa{
+namespace Net.TheVpc.Upa{
 
 	public partial class PropertyChangeEvent {
         private Object source;

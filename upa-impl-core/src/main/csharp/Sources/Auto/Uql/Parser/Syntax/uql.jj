@@ -20,9 +20,9 @@ options {
 }
 
 PARSER_BEGIN(UQLParser)
-package net.vpc.upa.impl.uql.parser.syntax;
-import net.vpc.upa.expressions.*;
-import net.vpc.upa.impl.util.*;
+package Net.TheVpc.Upa.impl.uql.parser.syntax;
+import Net.TheVpc.Upa.expressions.*;
+import Net.TheVpc.Upa.impl.util.*;
 import java.util.ArrayList;
 import java.util.List;
 /** UQL parser. */

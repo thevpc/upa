@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <upa xmlns="http://github.com/thevpc/upa/upa-1.0.xsd" >
-    <scan types="net.vpc.upa.test.autoscan.**"/>
+    <scan types="Net.TheVpc.Upa.test.autoscan.**"/>
     <!--<configure/>-->
     <!--<include url="" file="" resource=""/>-->
     <!--<persistenceGroup>-->
@@ -21,7 +21,7 @@
                 <property name="persistenceName">UPA_*</property>
             <property name="simpleName">simpleValue</property>
             <configure types=""/>
-            <configure types="net.vpc.upa.test.**"/>
+            <configure types="Net.TheVpc.Upa.test.**"/>
         </persistenceUnit>-->
     <!--        <persistenceUnit name="noconfig" start="false">
         <connection>
@@ -29,7 +29,7 @@
             <userName>upatest</userName>
             <password type="plain">upatest</password>
         </connection>
-        <configure types="net.vpc.upa.test.**"/>
+        <configure types="Net.TheVpc.Upa.test.**"/>
     </persistenceUnit>-->
     <!--        <persistenceUnit name="partial" start="false" >
         <connection>

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Callbacks
+namespace Net.TheVpc.Upa.Callbacks
 {
 
 
@@ -19,25 +19,25 @@ namespace Net.Vpc.Upa.Callbacks
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 11/27/12 9:52 PM
      */
-    public class SectionEvent : Net.Vpc.Upa.Callbacks.UPAEvent {
+    public class SectionEvent : Net.TheVpc.Upa.Callbacks.UPAEvent {
 
-        private Net.Vpc.Upa.PersistenceUnit persistenceUnit;
+        private Net.TheVpc.Upa.PersistenceUnit persistenceUnit;
 
         private int index;
 
         private int oldIndex;
 
-        private Net.Vpc.Upa.Entity entity;
+        private Net.TheVpc.Upa.Entity entity;
 
-        private Net.Vpc.Upa.Section item;
+        private Net.TheVpc.Upa.Section item;
 
-        private Net.Vpc.Upa.Section parent;
+        private Net.TheVpc.Upa.Section parent;
 
-        private Net.Vpc.Upa.Section oldParent;
+        private Net.TheVpc.Upa.Section oldParent;
 
-        private Net.Vpc.Upa.EventPhase phase;
+        private Net.TheVpc.Upa.EventPhase phase;
 
-        public SectionEvent(Net.Vpc.Upa.Section item, Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.Section parent, int index, Net.Vpc.Upa.Section oldParent, int oldIndex, Net.Vpc.Upa.EventPhase phase) {
+        public SectionEvent(Net.TheVpc.Upa.Section item, Net.TheVpc.Upa.PersistenceUnit persistenceUnit, Net.TheVpc.Upa.Entity entity, Net.TheVpc.Upa.Section parent, int index, Net.TheVpc.Upa.Section oldParent, int oldIndex, Net.TheVpc.Upa.EventPhase phase) {
             this.persistenceUnit = persistenceUnit;
             this.item = item;
             this.parent = parent;
@@ -48,11 +48,11 @@ namespace Net.Vpc.Upa.Callbacks
             this.phase = phase;
         }
 
-        public virtual Net.Vpc.Upa.EventPhase GetPhase() {
+        public virtual Net.TheVpc.Upa.EventPhase GetPhase() {
             return phase;
         }
 
-        public virtual Net.Vpc.Upa.PersistenceUnit GetPersistenceUnit() {
+        public virtual Net.TheVpc.Upa.PersistenceUnit GetPersistenceUnit() {
             return persistenceUnit;
         }
 
@@ -64,19 +64,19 @@ namespace Net.Vpc.Upa.Callbacks
             return oldIndex;
         }
 
-        public virtual Net.Vpc.Upa.Section GetItem() {
+        public virtual Net.TheVpc.Upa.Section GetItem() {
             return item;
         }
 
-        public virtual Net.Vpc.Upa.Section GetParent() {
+        public virtual Net.TheVpc.Upa.Section GetParent() {
             return parent;
         }
 
-        public virtual Net.Vpc.Upa.Section GetOldParent() {
+        public virtual Net.TheVpc.Upa.Section GetOldParent() {
             return oldParent;
         }
 
-        public virtual Net.Vpc.Upa.Entity GetEntity() {
+        public virtual Net.TheVpc.Upa.Entity GetEntity() {
             return entity;
         }
     }

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Transform
+namespace Net.TheVpc.Upa.Impl.Transform
 {
 
 
@@ -19,22 +19,22 @@ namespace Net.Vpc.Upa.Impl.Transform
      *
      * @author taha.bensalah@gmail.com
      */
-    public class SecretDataTypeTransform : Net.Vpc.Upa.Types.DataTypeTransform {
+    public class SecretDataTypeTransform : Net.TheVpc.Upa.Types.DataTypeTransform {
 
-        private Net.Vpc.Upa.SecretStrategy secretStrategy;
+        private Net.TheVpc.Upa.SecretStrategy secretStrategy;
 
-        private Net.Vpc.Upa.Types.DataType sourceType;
+        private Net.TheVpc.Upa.Types.DataType sourceType;
 
-        private Net.Vpc.Upa.Types.DataType targetType;
+        private Net.TheVpc.Upa.Types.DataType targetType;
 
-        public SecretDataTypeTransform(Net.Vpc.Upa.SecretStrategy secretStrategy, Net.Vpc.Upa.Types.DataType source, int? targetMax) {
+        public SecretDataTypeTransform(Net.TheVpc.Upa.SecretStrategy secretStrategy, Net.TheVpc.Upa.Types.DataType source, int? targetMax) {
             this.secretStrategy = secretStrategy;
             this.sourceType = source;
-            this.targetType = new Net.Vpc.Upa.Types.ByteArrayType(null, targetMax == null ? ((Net.Vpc.Upa.Types.DataType)(255)) : targetMax, source.IsNullable());
+            this.targetType = new Net.TheVpc.Upa.Types.ByteArrayType(null, targetMax == null ? ((Net.TheVpc.Upa.Types.DataType)(255)) : targetMax, source.IsNullable());
         }
 
         public virtual object TransformValue(object @value) {
-            Net.Vpc.Upa.SecretStrategy ss = secretStrategy;
+            Net.TheVpc.Upa.SecretStrategy ss = secretStrategy;
             byte[] bytes = ss.Encode((byte[]) @value);
             return bytes;
         }
@@ -43,11 +43,11 @@ namespace Net.Vpc.Upa.Impl.Transform
             return secretStrategy.Decode((byte[]) @value);
         }
 
-        public virtual Net.Vpc.Upa.Types.DataType GetSourceType() {
+        public virtual Net.TheVpc.Upa.Types.DataType GetSourceType() {
             return sourceType;
         }
 
-        public virtual Net.Vpc.Upa.Types.DataType GetTargetType() {
+        public virtual Net.TheVpc.Upa.Types.DataType GetTargetType() {
             return targetType;
         }
 
@@ -57,8 +57,8 @@ namespace Net.Vpc.Upa.Impl.Transform
         }
 
 
-        public virtual Net.Vpc.Upa.Types.DataTypeTransform Chain(Net.Vpc.Upa.Types.DataTypeTransform other) {
-            return Net.Vpc.Upa.Impl.Transform.DataTypeTransformList.Chain(this, other);
+        public virtual Net.TheVpc.Upa.Types.DataTypeTransform Chain(Net.TheVpc.Upa.Types.DataTypeTransform other) {
+            return Net.TheVpc.Upa.Impl.Transform.DataTypeTransformList.Chain(this, other);
         }
     }
 }

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Result
+namespace Net.TheVpc.Upa.Impl.Persistence.Result
 {
 
     /**

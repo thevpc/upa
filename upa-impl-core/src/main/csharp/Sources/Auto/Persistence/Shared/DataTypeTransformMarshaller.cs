@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Shared
+namespace Net.TheVpc.Upa.Impl.Persistence.Shared
 {
 
 
@@ -19,13 +19,13 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 12/20/12 2:46 AM
      */
-    public class DataTypeTransformMarshaller : Net.Vpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
+    public class DataTypeTransformMarshaller : Net.TheVpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
 
-        private Net.Vpc.Upa.Types.DataTypeTransform dataTypeTransform;
+        private Net.TheVpc.Upa.Types.DataTypeTransform dataTypeTransform;
 
-        private Net.Vpc.Upa.Impl.Persistence.TypeMarshaller targetMarshaller;
+        private Net.TheVpc.Upa.Impl.Persistence.TypeMarshaller targetMarshaller;
 
-        public DataTypeTransformMarshaller(Net.Vpc.Upa.Types.DataTypeTransform dataTypeTransform, Net.Vpc.Upa.Impl.Persistence.TypeMarshaller targetMarshaller) {
+        public DataTypeTransformMarshaller(Net.TheVpc.Upa.Types.DataTypeTransform dataTypeTransform, Net.TheVpc.Upa.Impl.Persistence.TypeMarshaller targetMarshaller) {
             this.dataTypeTransform = dataTypeTransform;
             this.targetMarshaller = targetMarshaller;
         }
@@ -48,7 +48,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
         }
 
 
-        public override Net.Vpc.Upa.Types.DataType GetPersistentDataType(Net.Vpc.Upa.Types.DataType datatype) {
+        public override Net.TheVpc.Upa.Types.DataType GetPersistentDataType(Net.TheVpc.Upa.Types.DataType datatype) {
             return dataTypeTransform.GetTargetType();
         }
     }

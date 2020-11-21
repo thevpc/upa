@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
@@ -19,33 +19,33 @@ namespace Net.Vpc.Upa.Impl
      *
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    internal class DefaultPackagePrivateAddPartInterceptor : Net.Vpc.Upa.Impl.Util.ItemInterceptor<Net.Vpc.Upa.PersistenceUnitPart> {
+    internal class DefaultPackagePrivateAddPartInterceptor : Net.TheVpc.Upa.Impl.Util.ItemInterceptor<Net.TheVpc.Upa.PersistenceUnitPart> {
 
-        private Net.Vpc.Upa.Package p;
+        private Net.TheVpc.Upa.Package p;
 
-        public DefaultPackagePrivateAddPartInterceptor(Net.Vpc.Upa.Package p) {
+        public DefaultPackagePrivateAddPartInterceptor(Net.TheVpc.Upa.Package p) {
             this.p = p;
         }
 
-        public virtual void Before(Net.Vpc.Upa.PersistenceUnitPart t, int index) {
-            Net.Vpc.Upa.PersistenceUnitPart oldParent = t.GetParent();
+        public virtual void Before(Net.TheVpc.Upa.PersistenceUnitPart t, int index) {
+            Net.TheVpc.Upa.PersistenceUnitPart oldParent = t.GetParent();
             if (oldParent != null && oldParent != p) {
-                if (oldParent is Net.Vpc.Upa.Package) {
-                    Net.Vpc.Upa.Package x = (Net.Vpc.Upa.Package) oldParent;
+                if (oldParent is Net.TheVpc.Upa.Package) {
+                    Net.TheVpc.Upa.Package x = (Net.TheVpc.Upa.Package) oldParent;
                     x.RemovePartAt(x.IndexOfPart(t));
-                } else if (oldParent is Net.Vpc.Upa.PrimitiveField) {
+                } else if (oldParent is Net.TheVpc.Upa.PrimitiveField) {
                 }
             }
         }
 
-        public virtual void After(Net.Vpc.Upa.PersistenceUnitPart t, int index) {
-            Net.Vpc.Upa.PersistenceUnitPart oldParent = t.GetParent();
+        public virtual void After(Net.TheVpc.Upa.PersistenceUnitPart t, int index) {
+            Net.TheVpc.Upa.PersistenceUnitPart oldParent = t.GetParent();
             if (oldParent != p) {
-                Net.Vpc.Upa.Impl.Util.DefaultBeanAdapter a = new Net.Vpc.Upa.Impl.Util.DefaultBeanAdapter(t);
+                Net.TheVpc.Upa.Impl.Util.DefaultBeanAdapter a = new Net.TheVpc.Upa.Impl.Util.DefaultBeanAdapter(t);
                 a.SetProperty("parent", p);
             }
             //in case of move => same parent!
-            Net.Vpc.Upa.Impl.Util.UPAUtils.PreparePostAdd(p.GetPersistenceUnit(), t);
+            Net.TheVpc.Upa.Impl.Util.UPAUtils.PreparePostAdd(p.GetPersistenceUnit(), t);
         }
     }
 }

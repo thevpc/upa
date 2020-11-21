@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Config
+namespace Net.TheVpc.Upa.Config
 {
 
     /**
@@ -81,7 +81,7 @@ namespace Net.Vpc.Upa.Config
             if (GetType() != obj.GetType()) {
                 return false;
             }
-            Net.Vpc.Upa.Config.ScanFilter other = (Net.Vpc.Upa.Config.ScanFilter) obj;
+            Net.TheVpc.Upa.Config.ScanFilter other = (Net.TheVpc.Upa.Config.ScanFilter) obj;
             if ((this.libs == null) ? (other.libs != null) : !this.libs.Equals(other.libs)) {
                 return false;
             }

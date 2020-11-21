@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config
+namespace Net.TheVpc.Upa.Impl.Config
 {
 
 
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Impl.Config
      *
      * @author taha.bensalah@gmail.com
      */
-    public abstract class BaseScanSource : Net.Vpc.Upa.Config.ScanSource {
+    public abstract class BaseScanSource : Net.TheVpc.Upa.Config.ScanSource {
 
         public abstract System.Collections.Generic.IEnumerable<System.Type> ToIterable(object context);
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit

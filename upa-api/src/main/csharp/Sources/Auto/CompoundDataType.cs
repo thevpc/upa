@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     /**
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa
      */
     public interface CompoundDataType {
 
-         Net.Vpc.Upa.FieldDescriptor[] GetComposingFields(Net.Vpc.Upa.FieldDescriptor fieldDescriptor);
+         Net.TheVpc.Upa.FieldDescriptor[] GetComposingFields(Net.TheVpc.Upa.FieldDescriptor fieldDescriptor);
 
         /**
              * flatten an object value to resolve every primitive field value

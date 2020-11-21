@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Config
+namespace Net.TheVpc.Upa.Config
 {
 
 
@@ -23,15 +23,15 @@ namespace Net.Vpc.Upa.Config
 
     public class Sequence : System.Attribute {
 
-        private Net.Vpc.Upa.SequenceStrategy _Strategy = Net.Vpc.Upa.SequenceStrategy.AUTO;
-        public  Net.Vpc.Upa.SequenceStrategy Strategy{
+        private Net.TheVpc.Upa.SequenceStrategy _Strategy = Net.TheVpc.Upa.SequenceStrategy.AUTO;
+        public  Net.TheVpc.Upa.SequenceStrategy Strategy{
             get {return _Strategy;}
             set {_Strategy=value;}
         }
 
 
-        private Net.Vpc.Upa.SequenceType _SequenceType = Net.Vpc.Upa.SequenceType.PERSIST;
-        public  Net.Vpc.Upa.SequenceType SequenceType{
+        private Net.TheVpc.Upa.SequenceType _SequenceType = Net.TheVpc.Upa.SequenceType.PERSIST;
+        public  Net.TheVpc.Upa.SequenceType SequenceType{
             get {return _SequenceType;}
             set {_SequenceType=value;}
         }
@@ -84,8 +84,8 @@ namespace Net.Vpc.Upa.Config
              *
              * @return annotation configuration
              */
-        private Net.Vpc.Upa.Config.ItemConfig _Config = new Net.Vpc.Upa.Config.ItemConfig();
-        public  Net.Vpc.Upa.Config.ItemConfig Config{
+        private Net.TheVpc.Upa.Config.ItemConfig _Config = new Net.TheVpc.Upa.Config.ItemConfig();
+        public  Net.TheVpc.Upa.Config.ItemConfig Config{
             get {return _Config;}
             set {_Config=value;}
         }

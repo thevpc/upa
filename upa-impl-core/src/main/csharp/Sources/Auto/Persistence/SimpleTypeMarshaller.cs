@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -22,7 +22,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
      * Time: 5:40 PM
      * To change this template use File | Settings | File Templates.
      */
-    public abstract class SimpleTypeMarshaller : Net.Vpc.Upa.Impl.Persistence.DefaultTypeMarshaller {
+    public abstract class SimpleTypeMarshaller : Net.TheVpc.Upa.Impl.Persistence.DefaultTypeMarshaller {
 
 
         public override string ToSQLLiteral(object @object) {
@@ -47,7 +47,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
             return name;
         }
 
-        public override Net.Vpc.Upa.Types.DataType GetPersistentDataType(Net.Vpc.Upa.Types.DataType datatype) {
+        public override Net.TheVpc.Upa.Types.DataType GetPersistentDataType(Net.TheVpc.Upa.Types.DataType datatype) {
             return null;
         }
     }

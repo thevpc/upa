@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util.Regexp
+namespace Net.TheVpc.Upa.Impl.Util.Regexp
 {
 
 
@@ -26,8 +26,8 @@ namespace Net.Vpc.Upa.Impl.Util.Regexp
             this.pattern = new System.Text.RegularExpressions.Regex(pattern);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Util.Regexp.PortablePatternMatcher Matcher(string @value) {
-            return new Net.Vpc.Upa.Impl.Util.Regexp.PortablePatternMatcher(pattern.Matches(@value),@value);
+        public virtual Net.TheVpc.Upa.Impl.Util.Regexp.PortablePatternMatcher Matcher(string @value) {
+            return new Net.TheVpc.Upa.Impl.Util.Regexp.PortablePatternMatcher(pattern.Matches(@value),@value);
         }
     }
 }

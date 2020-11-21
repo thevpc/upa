@@ -11,22 +11,22 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class DefaultQueryResult : Net.Vpc.Upa.Persistence.QueryResult {
+    public class DefaultQueryResult : Net.TheVpc.Upa.Persistence.QueryResult {
 
         private System.Data.IDataReader resultSet;
 
         private System.Data.IDbCommand statement;
 
-        private Net.Vpc.Upa.Impl.Persistence.TypeMarshaller[] marshallers;
+        private Net.TheVpc.Upa.Impl.Persistence.TypeMarshaller[] marshallers;
 
-        private Net.Vpc.Upa.Types.DataTypeTransform[] types;
+        private Net.TheVpc.Upa.Types.DataTypeTransform[] types;
 
         private bool closed;
 
@@ -34,9 +34,9 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
         private System.Collections.Generic.IDictionary<int? , object> updates = new System.Collections.Generic.Dictionary<int? , object>();
 
-        private static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.Vpc.Upa.Impl.Persistence.DefaultQueryResult)).FullName);
+        private static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.TheVpc.Upa.Impl.Persistence.DefaultQueryResult)).FullName);
 
-        public DefaultQueryResult(System.Data.IDataReader resultSet, System.Data.IDbCommand statement, Net.Vpc.Upa.Impl.Persistence.TypeMarshaller[] marshallers, Net.Vpc.Upa.Types.DataTypeTransform[] types) {
+        public DefaultQueryResult(System.Data.IDataReader resultSet, System.Data.IDbCommand statement, Net.TheVpc.Upa.Impl.Persistence.TypeMarshaller[] marshallers, Net.TheVpc.Upa.Types.DataTypeTransform[] types) {
             this.resultSet = resultSet;
             this.statement = statement;
             this.marshallers = marshallers;
@@ -44,7 +44,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
             this.nativePos = new int[marshallers.Length];
             int lastNativePos = 1;
             int np = 0;
-            foreach (Net.Vpc.Upa.Impl.Persistence.TypeMarshaller marshaller in marshallers) {
+            foreach (Net.TheVpc.Upa.Impl.Persistence.TypeMarshaller marshaller in marshallers) {
                 nativePos[np] = lastNativePos;
                 lastNativePos += marshaller.GetSize();
                 np++;
@@ -63,7 +63,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
                 //            read = types[index].reverseTransformValue(read);
                 return (T) read;
             } catch (System.Exception e) {
-                throw new Net.Vpc.Upa.Exceptions.FindException(e, new Net.Vpc.Upa.Types.I18NString("ReadQueryResultColumnFailed"), index, nativePos[index]);
+                throw new Net.TheVpc.Upa.Exceptions.FindException(e, new Net.TheVpc.Upa.Types.I18NString("ReadQueryResultColumnFailed"), index, nativePos[index]);
             }
         }
 
@@ -76,7 +76,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
         public virtual bool HasNext() {
             try {
                 if (closed || (resultSet).IsClosed) {
-                    log.TraceEvent(System.Diagnostics.TraceEventType.Warning,90,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("ResultSet closed, unable to retrieve next record",null));
+                    log.TraceEvent(System.Diagnostics.TraceEventType.Warning,90,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("ResultSet closed, unable to retrieve next record",null));
                 }
                 updates.Clear();
                 return resultSet.NextResult();
@@ -90,7 +90,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
                 if (alreadyClosed) {
                     return false;
                 }
-                throw new Net.Vpc.Upa.Exceptions.FindException(e, new Net.Vpc.Upa.Types.I18NString("ReadQueryHasNextFailed"));
+                throw new Net.TheVpc.Upa.Exceptions.FindException(e, new Net.TheVpc.Upa.Types.I18NString("ReadQueryHasNextFailed"));
             }
         }
 
@@ -103,7 +103,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
                     }
                 }
             } catch (System.Exception e) {
-                throw new Net.Vpc.Upa.Exceptions.FindException(e, new Net.Vpc.Upa.Types.I18NString("CloseFailed"));
+                throw new Net.TheVpc.Upa.Exceptions.FindException(e, new Net.TheVpc.Upa.Types.I18NString("CloseFailed"));
             }
         }
 
@@ -115,7 +115,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
                     marshallers[index].Write((entry).Value, nativePos[index], resultSet);
                 }
             } catch (System.Exception e) {
-                throw new Net.Vpc.Upa.Exceptions.FindException(e, new Net.Vpc.Upa.Types.I18NString("ReadQueryResultColumnFailed"), index, index == null ? null : nativePos[index]);
+                throw new Net.TheVpc.Upa.Exceptions.FindException(e, new Net.TheVpc.Upa.Types.I18NString("ReadQueryResultColumnFailed"), index, index == null ? null : nativePos[index]);
             }
         }
     }

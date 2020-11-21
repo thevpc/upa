@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledexpression
 {
 
 
@@ -22,7 +22,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
      * Time: 17:00:10
      * To change this template use Options | File Templates.
      */
-    public class CompiledCurrentUser : Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledFunction {
+    public class CompiledCurrentUser : Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledFunction {
 
 
 
@@ -31,13 +31,13 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         }
 
 
-        public override Net.Vpc.Upa.Types.DataTypeTransform GetTypeTransform() {
-            return Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.DATE;
+        public override Net.TheVpc.Upa.Types.DataTypeTransform GetTypeTransform() {
+            return Net.TheVpc.Upa.Impl.Transform.IdentityDataTypeTransform.DATE;
         }
 
 
-        public override Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledCurrentUser o = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledCurrentUser();
+        public override Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledCurrentUser o = new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledCurrentUser();
             o.SetDescription(GetDescription());
             o.GetClientParameters().SetAll(GetClientParameters());
             return o;

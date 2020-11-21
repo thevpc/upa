@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config
+namespace Net.TheVpc.Upa.Impl.Config
 {
 
 
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Impl.Config
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 9/24/12 3:01 AM
      */
-    public class ClassesScanSource : Net.Vpc.Upa.Impl.Config.BaseScanSource {
+    public class ClassesScanSource : Net.TheVpc.Upa.Impl.Config.BaseScanSource {
 
         private readonly System.Type[] classes;
 

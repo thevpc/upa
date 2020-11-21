@@ -11,21 +11,21 @@
 
 
 
-namespace Net.Vpc.Upa.Callbacks
+namespace Net.TheVpc.Upa.Callbacks
 {
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 11/27/12 9:17 PM
      */
-    public interface TriggerDefinitionListener : Net.Vpc.Upa.Callbacks.DefinitionListener {
+    public interface TriggerDefinitionListener : Net.TheVpc.Upa.Callbacks.DefinitionListener {
 
-         void OnPreCreateTrigger(Net.Vpc.Upa.Callbacks.TriggerEvent @event);
+         void OnPreCreateTrigger(Net.TheVpc.Upa.Callbacks.TriggerEvent @event);
 
-         void OnCreateTrigger(Net.Vpc.Upa.Callbacks.TriggerEvent @event);
+         void OnCreateTrigger(Net.TheVpc.Upa.Callbacks.TriggerEvent @event);
 
-         void OnPreDropTrigger(Net.Vpc.Upa.Callbacks.TriggerEvent @event);
+         void OnPreDropTrigger(Net.TheVpc.Upa.Callbacks.TriggerEvent @event);
 
-         void OnDropTrigger(Net.Vpc.Upa.Callbacks.TriggerEvent @event);
+         void OnDropTrigger(Net.TheVpc.Upa.Callbacks.TriggerEvent @event);
     }
 }

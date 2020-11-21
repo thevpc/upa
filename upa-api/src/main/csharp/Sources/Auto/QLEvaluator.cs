@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -21,10 +21,10 @@ namespace Net.Vpc.Upa
      */
     public interface QLEvaluator {
 
-         Net.Vpc.Upa.Expressions.Expression EvalString(string expression, object context);
+         Net.TheVpc.Upa.Expressions.Expression EvalString(string expression, object context);
 
-         Net.Vpc.Upa.Expressions.Expression EvalObject(Net.Vpc.Upa.Expressions.Expression expression, object context);
+         Net.TheVpc.Upa.Expressions.Expression EvalObject(Net.TheVpc.Upa.Expressions.Expression expression, object context);
 
-         Net.Vpc.Upa.QLEvaluatorRegistry GetRegistry();
+         Net.TheVpc.Upa.QLEvaluatorRegistry GetRegistry();
     }
 }

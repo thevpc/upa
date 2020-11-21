@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Config
+namespace Net.TheVpc.Upa.Config
 {
 
 
@@ -37,8 +37,8 @@ namespace Net.Vpc.Upa.Config
         }
 
 
-        private Net.Vpc.Upa.Config.BoolEnum _Propagate = Net.Vpc.Upa.Config.BoolEnum.UNDEFINED;
-        public  Net.Vpc.Upa.Config.BoolEnum Propagate{
+        private Net.TheVpc.Upa.Config.BoolEnum _Propagate = Net.TheVpc.Upa.Config.BoolEnum.UNDEFINED;
+        public  Net.TheVpc.Upa.Config.BoolEnum Propagate{
             get {return _Propagate;}
             set {_Propagate=value;}
         }

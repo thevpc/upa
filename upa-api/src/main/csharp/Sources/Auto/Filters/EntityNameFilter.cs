@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Filters
+namespace Net.TheVpc.Upa.Filters
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class EntityNameFilter : Net.Vpc.Upa.Filters.AbstractRichEntityFilter {
+    public class EntityNameFilter : Net.TheVpc.Upa.Filters.AbstractRichEntityFilter {
 
         private System.Collections.Generic.ISet<string> names;
 
@@ -26,7 +26,7 @@ namespace Net.Vpc.Upa.Filters
             this.names = new System.Collections.Generic.HashSet<string>(names);
         }
 
-        public override bool Accept(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public override bool Accept(Net.TheVpc.Upa.Entity entity) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return names.Contains(entity.GetName());
         }
     }

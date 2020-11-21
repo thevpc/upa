@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Filters
+namespace Net.TheVpc.Upa.Impl.Uql.Filters
 {
 
 
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Filters
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 2/3/13 9:16 PM
      */
-    public class TypeExpressionFilter : Net.Vpc.Upa.Expressions.ExpressionFilter {
+    public class TypeExpressionFilter : Net.TheVpc.Upa.Expressions.ExpressionFilter {
 
         private System.Type type;
 
@@ -28,7 +28,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Filters
         }
 
 
-        public virtual bool Accept(Net.Vpc.Upa.Expressions.Expression e) {
+        public virtual bool Accept(Net.TheVpc.Upa.Expressions.Expression e) {
             return e != null && type.IsInstanceOfType(e);
         }
     }

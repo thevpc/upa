@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 11/3/12 11:07 PM
      */
-    public class DefaultUConnection : Net.Vpc.Upa.Persistence.UConnection {
+    public class DefaultUConnection : Net.TheVpc.Upa.Persistence.UConnection {
 
         private static System.Collections.Generic.ISet<string> _conn_attr_based_wrappers = new System.Collections.Generic.HashSet<string>(new System.Collections.Generic.List<string>(new[]{"org.apache.tomcat.dbcp.dbcp.PoolableConnection", "org.apache.tomcat.dbcp.dbcp.PoolingDataSource$PoolGuardConnectionWrapper", "org.apache.commons.dbcp.PoolableConnection", "org.apache.commons.dbcp.PoolingDataSource$PoolGuardConnectionWrapper"}));
 
@@ -31,25 +31,25 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
         private System.Data.IDbConnection metadataAccessibleConnection;
 
-        private Net.Vpc.Upa.Impl.Persistence.MarshallManager marshallManager;
+        private Net.TheVpc.Upa.Impl.Persistence.MarshallManager marshallManager;
 
-        private Net.Vpc.Upa.Impl.Persistence.Connection.CloseListenerSupport support;
+        private Net.TheVpc.Upa.Impl.Persistence.Connection.CloseListenerSupport support;
 
         private System.Collections.Generic.IDictionary<string , object> properties;
 
         private bool closed = false;
 
-        private static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.Vpc.Upa.Impl.Persistence.DefaultUConnection)).FullName);
+        private static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.TheVpc.Upa.Impl.Persistence.DefaultUConnection)).FullName);
 
-        public DefaultUConnection(string name, System.Data.IDbConnection connection, Net.Vpc.Upa.Impl.Persistence.MarshallManager marshallManager) {
+        public DefaultUConnection(string name, System.Data.IDbConnection connection, Net.TheVpc.Upa.Impl.Persistence.MarshallManager marshallManager) {
             this.name = name;
             this.connection = connection;
             this.marshallManager = marshallManager;
-            this.support = new Net.Vpc.Upa.Impl.Persistence.Connection.CloseListenerSupport();
-            nameDebugString = Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(name) ? "[]" : ("[" + name + "]");
+            this.support = new Net.TheVpc.Upa.Impl.Persistence.Connection.CloseListenerSupport();
+            nameDebugString = Net.TheVpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(name) ? "[]" : ("[" + name + "]");
         }
 
-        public virtual Net.Vpc.Upa.Persistence.QueryResult ExecuteQuery(string query, Net.Vpc.Upa.Types.DataTypeTransform[] types, System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.Parameter> queryParameters, bool updatable) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual Net.TheVpc.Upa.Persistence.QueryResult ExecuteQuery(string query, Net.TheVpc.Upa.Types.DataTypeTransform[] types, System.Collections.Generic.IList<Net.TheVpc.Upa.Persistence.Parameter> queryParameters, bool updatable) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             if (closed) {
                 throw new System.ArgumentException ("Connection closed");
             }
@@ -64,9 +64,9 @@ namespace Net.Vpc.Upa.Impl.Persistence
                     int mi = 0;
                     int index = 1;
                     if (queryParameters != null) {
-                        foreach (Net.Vpc.Upa.Persistence.Parameter @value in queryParameters) {
-                            Net.Vpc.Upa.Types.DataTypeTransform transform = @value.GetTypeTransform();
-                            Net.Vpc.Upa.Impl.Persistence.TypeMarshaller marshaller = marshallManager.GetTypeMarshaller(transform);
+                        foreach (Net.TheVpc.Upa.Persistence.Parameter @value in queryParameters) {
+                            Net.TheVpc.Upa.Types.DataTypeTransform transform = @value.GetTypeTransform();
+                            Net.TheVpc.Upa.Impl.Persistence.TypeMarshaller marshaller = marshallManager.GetTypeMarshaller(transform);
                             marshaller.Write(@value.GetValue(), index, s);
                             index += marshaller.GetSize();
                             mi++;
@@ -81,26 +81,26 @@ namespace Net.Vpc.Upa.Impl.Persistence
                         for (int i = 0; i < columnCount; i++) {
                         colTypes[i] = resultSet.GetFieldType(i);
                         }
-                        types = new Net.Vpc.Upa.Types.DataTypeTransform[columnCount];
+                        types = new Net.TheVpc.Upa.Types.DataTypeTransform[columnCount];
                         for (int i = 0; i < types.Length; i++) {
-                            types[i] = new Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform(Net.Vpc.Upa.Types.TypesFactory.ForPlatformType(colTypes[i]));
+                            types[i] = new Net.TheVpc.Upa.Impl.Transform.IdentityDataTypeTransform(Net.TheVpc.Upa.Types.TypesFactory.ForPlatformType(colTypes[i]));
                         }
                     }
-                    Net.Vpc.Upa.Impl.Persistence.TypeMarshaller[] marshallers = new Net.Vpc.Upa.Impl.Persistence.TypeMarshaller[types.Length];
+                    Net.TheVpc.Upa.Impl.Persistence.TypeMarshaller[] marshallers = new Net.TheVpc.Upa.Impl.Persistence.TypeMarshaller[types.Length];
                     for (int i = 0; i < marshallers.Length; i++) {
                         marshallers[i] = marshallManager.GetTypeMarshaller(types[i]);
                     }
                     //        Log.log(PersistenceUnitManager.DB_PRE_NATIVE_QUERY_LOG,"[BEFORE] "+currentQueryInfo+" :=" + currentQuery);
-                    return new Net.Vpc.Upa.Impl.Persistence.DefaultQueryResult(resultSet, s, marshallers, types);
+                    return new Net.TheVpc.Upa.Impl.Persistence.DefaultQueryResult(resultSet, s, marshallers, types);
                 } catch (System.Exception ee) {
                     error = ee;
                     throw ee;
                 } finally {
                     if (/*IsLoggable=*/true) {
                         if (error != null) {
-                            log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter(nameDebugString + " [Error] executeQuery " + query + " :: parameters = " + queryParameters,error));
+                            log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter(nameDebugString + " [Error] executeQuery " + query + " :: parameters = " + queryParameters,error));
                         } else {
-                            log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("{0}   executeQuery    {1} ;; parameters = {2} ;; time = {3}",null,new object[] { nameDebugString, query, queryParameters, (System.DateTime.Now.Ticks - startTime) }));
+                            log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("{0}   executeQuery    {1} ;; parameters = {2} ;; time = {3}",null,new object[] { nameDebugString, query, queryParameters, (System.DateTime.Now.Ticks - startTime) }));
                         }
                     }
                 }
@@ -109,7 +109,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
             }
         }
 
-        public virtual int ExecuteNonQuery(string query, System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.Parameter> queryParameters, System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.Parameter> generatedKeys) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual int ExecuteNonQuery(string query, System.Collections.Generic.IList<Net.TheVpc.Upa.Persistence.Parameter> queryParameters, System.Collections.Generic.IList<Net.TheVpc.Upa.Persistence.Parameter> generatedKeys) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             if (closed) {
                 throw new System.ArgumentException ("Connection closed");
             }
@@ -124,9 +124,9 @@ namespace Net.Vpc.Upa.Impl.Persistence
                 s.CommandType=System.Data.CommandType.Text;
                 int index = 1;
                 if (queryParameters != null) {
-                    foreach (Net.Vpc.Upa.Persistence.Parameter @value in queryParameters) {
-                        Net.Vpc.Upa.Types.DataTypeTransform chain = @value.GetTypeTransform();
-                        Net.Vpc.Upa.Impl.Persistence.TypeMarshaller typeMarshaller = marshallManager.GetTypeMarshaller(chain);
+                    foreach (Net.TheVpc.Upa.Persistence.Parameter @value in queryParameters) {
+                        Net.TheVpc.Upa.Types.DataTypeTransform chain = @value.GetTypeTransform();
+                        Net.TheVpc.Upa.Impl.Persistence.TypeMarshaller typeMarshaller = marshallManager.GetTypeMarshaller(chain);
                         typeMarshaller.Write(@value.GetValue(), index, s);
                         index += typeMarshaller.GetSize();
                     }
@@ -140,9 +140,9 @@ namespace Net.Vpc.Upa.Impl.Persistence
             } finally {
                 if (/*IsLoggable=*/true) {
                     if (error != null) {
-                        log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter(nameDebugString + " [Error] executeNonQuery " + query + " :: parameters = " + queryParameters,error));
+                        log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter(nameDebugString + " [Error] executeNonQuery " + query + " :: parameters = " + queryParameters,error));
                     } else {
-                        log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("{0} executeNonQuery {1}" + ((queryParameters != null && !(queryParameters.Count==0)) ? "\n\tqueryParameters={2}" : "") + " ;; time = {3}",null,new object[] { nameDebugString, query, queryParameters, (System.DateTime.Now.Ticks - startTime) }));
+                        log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("{0} executeNonQuery {1}" + ((queryParameters != null && !(queryParameters.Count==0)) ? "\n\tqueryParameters={2}" : "") + " ;; time = {3}",null,new object[] { nameDebugString, query, queryParameters, (System.DateTime.Now.Ticks - startTime) }));
                     }
                 }
             }
@@ -150,7 +150,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
             return count;
         }
 
-        public virtual int ExecuteScript(Net.Vpc.Upa.Expressions.QueryScript script, bool exitOnError) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual int ExecuteScript(Net.TheVpc.Upa.Expressions.QueryScript script, bool exitOnError) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             if (closed) {
                 throw new System.ArgumentException ("Connection closed");
             }
@@ -163,11 +163,11 @@ namespace Net.Vpc.Upa.Impl.Persistence
                 for (int i = 0; i < max; i++) {
                     try {
                         ExecuteNonQuery(script.GetStatement(i), null, null);
-                    } catch (Net.Vpc.Upa.Exceptions.UPAException sqle) {
+                    } catch (Net.TheVpc.Upa.Exceptions.UPAException sqle) {
                         errorsCount++;
-                        log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter(nameDebugString + " [Error] executeNonQuery @" + i + " : " + script.GetStatement(i),sqle));
+                        log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter(nameDebugString + " [Error] executeNonQuery @" + i + " : " + script.GetStatement(i),sqle));
                         //                    log.log(Level.SEVERE,"Error @" + i + " : " + script.getStatement(i));
-                        log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("{0} Error @{1} : {2}",null,new object[] { nameDebugString, i, script.GetStatement(i) }));
+                        log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("{0} Error @{1} : {2}",null,new object[] { nameDebugString, i, script.GetStatement(i) }));
                         if (exitOnError) {
                             throw sqle;
                         }
@@ -182,8 +182,8 @@ namespace Net.Vpc.Upa.Impl.Persistence
             }
         }
 
-        private Net.Vpc.Upa.Exceptions.UPAException CreateUPAException(System.Exception ex, string mgId, params object [] parameters) {
-            return new Net.Vpc.Upa.Exceptions.UPAException(ex, new Net.Vpc.Upa.Types.I18NString(mgId), parameters);
+        private Net.TheVpc.Upa.Exceptions.UPAException CreateUPAException(System.Exception ex, string mgId, params object [] parameters) {
+            return new Net.TheVpc.Upa.Exceptions.UPAException(ex, new Net.TheVpc.Upa.Types.I18NString(mgId), parameters);
         }
 
         public virtual System.Data.IDbConnection GetPlatformConnection() {
@@ -191,17 +191,17 @@ namespace Net.Vpc.Upa.Impl.Persistence
         }
 
 
-        public virtual void AddCloseListener(Net.Vpc.Upa.CloseListener closeListener) {
+        public virtual void AddCloseListener(Net.TheVpc.Upa.CloseListener closeListener) {
             support.AddCloseListener(closeListener);
         }
 
 
-        public virtual void RemoveCloseListener(Net.Vpc.Upa.CloseListener closeListener) {
+        public virtual void RemoveCloseListener(Net.TheVpc.Upa.CloseListener closeListener) {
             support.RemoveCloseListener(closeListener);
         }
 
 
-        public virtual void Close() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void Close() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             //        try {
             //            connection.rollback();
             //        } catch (SQLException e) {
@@ -219,7 +219,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
         }
 
 
-        public virtual System.Data.IDbConnection GetMetadataAccessibleConnection() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual System.Data.IDbConnection GetMetadataAccessibleConnection() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             if (metadataAccessibleConnection == null) {
                 System.Data.IDbConnection retConn = connection;
                 while (true) {
@@ -231,7 +231,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
                             //f.SetAccessible(true);
                             retConn = (System.Data.IDbConnection) f.GetValue(retConn);
                         } catch (System.Exception ex) {
-                            log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Unable to retrieve MetadataAccessibleConnection from Pool Type " + connClassName + "",ex));
+                            log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Unable to retrieve MetadataAccessibleConnection from Pool Type " + connClassName + "",ex));
                             retConn = connection;
                             break;
                         }
@@ -245,15 +245,15 @@ namespace Net.Vpc.Upa.Impl.Persistence
         }
 
 
-        public virtual object GetProperty(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual object GetProperty(string name) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             if (properties == null) {
                 return null;
             }
-            return Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(properties,name);
+            return Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(properties,name);
         }
 
 
-        public virtual System.Collections.Generic.IDictionary<string , object> GetProperties() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual System.Collections.Generic.IDictionary<string , object> GetProperties() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             if (properties == null) {
                 return new System.Collections.Generic.Dictionary<string,object>();
             }
@@ -261,7 +261,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
         }
 
 
-        public virtual void SetProperty(string name, object @value) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void SetProperty(string name, object @value) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             if (@value == null) {
                 if (properties != null) {
                     properties.Remove(name);

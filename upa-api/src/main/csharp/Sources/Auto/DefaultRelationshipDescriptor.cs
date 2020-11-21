@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
     /**
      * Created by vpc on 7/20/15.
      */
-    public class DefaultRelationshipDescriptor : Net.Vpc.Upa.RelationshipDescriptor {
+    public class DefaultRelationshipDescriptor : Net.TheVpc.Upa.RelationshipDescriptor {
 
         public int hierarchyConfigOrder;
 
@@ -38,7 +38,7 @@ namespace Net.Vpc.Upa
 
         public System.Type targetEntityType;
 
-        public Net.Vpc.Upa.Expressions.Expression filter;
+        public Net.TheVpc.Upa.Expressions.Expression filter;
 
         public string baseField;
 
@@ -48,13 +48,13 @@ namespace Net.Vpc.Upa
 
         public string name;
 
-        public Net.Vpc.Upa.RelationshipType relationshipType;
+        public Net.TheVpc.Upa.RelationshipType relationshipType;
 
         public virtual int GetHierarchyConfigOrder() {
             return hierarchyConfigOrder;
         }
 
-        public virtual Net.Vpc.Upa.DefaultRelationshipDescriptor SetHierarchyConfigOrder(int hierarchyConfigOrder) {
+        public virtual Net.TheVpc.Upa.DefaultRelationshipDescriptor SetHierarchyConfigOrder(int hierarchyConfigOrder) {
             this.hierarchyConfigOrder = hierarchyConfigOrder;
             return this;
         }
@@ -63,7 +63,7 @@ namespace Net.Vpc.Upa
             return hierarchyPathSeparator;
         }
 
-        public virtual Net.Vpc.Upa.DefaultRelationshipDescriptor SetHierarchyPathSeparator(string hierarchyPathSeparator) {
+        public virtual Net.TheVpc.Upa.DefaultRelationshipDescriptor SetHierarchyPathSeparator(string hierarchyPathSeparator) {
             this.hierarchyPathSeparator = hierarchyPathSeparator;
             return this;
         }
@@ -72,7 +72,7 @@ namespace Net.Vpc.Upa
             return hierarchy;
         }
 
-        public virtual Net.Vpc.Upa.DefaultRelationshipDescriptor SetHierarchy(bool isHierarchy) {
+        public virtual Net.TheVpc.Upa.DefaultRelationshipDescriptor SetHierarchy(bool isHierarchy) {
             this.hierarchy = isHierarchy;
             return this;
         }
@@ -81,7 +81,7 @@ namespace Net.Vpc.Upa
             return hierarchyPathField;
         }
 
-        public virtual Net.Vpc.Upa.DefaultRelationshipDescriptor SetHierarchyPathField(string hierarchyPathField) {
+        public virtual Net.TheVpc.Upa.DefaultRelationshipDescriptor SetHierarchyPathField(string hierarchyPathField) {
             this.hierarchyPathField = hierarchyPathField;
             return this;
         }
@@ -90,7 +90,7 @@ namespace Net.Vpc.Upa
             return sourceEntity;
         }
 
-        public virtual Net.Vpc.Upa.DefaultRelationshipDescriptor SetSourceEntity(string sourceEntity) {
+        public virtual Net.TheVpc.Upa.DefaultRelationshipDescriptor SetSourceEntity(string sourceEntity) {
             this.sourceEntity = sourceEntity;
             return this;
         }
@@ -99,7 +99,7 @@ namespace Net.Vpc.Upa
             return sourceEntityType;
         }
 
-        public virtual Net.Vpc.Upa.DefaultRelationshipDescriptor SetSourceEntityType(System.Type sourceEntityType) {
+        public virtual Net.TheVpc.Upa.DefaultRelationshipDescriptor SetSourceEntityType(System.Type sourceEntityType) {
             this.sourceEntityType = sourceEntityType;
             return this;
         }
@@ -108,7 +108,7 @@ namespace Net.Vpc.Upa
             return targetEntity;
         }
 
-        public virtual Net.Vpc.Upa.DefaultRelationshipDescriptor SetTargetEntity(string targetEntity) {
+        public virtual Net.TheVpc.Upa.DefaultRelationshipDescriptor SetTargetEntity(string targetEntity) {
             this.targetEntity = targetEntity;
             return this;
         }
@@ -117,16 +117,16 @@ namespace Net.Vpc.Upa
             return targetEntityType;
         }
 
-        public virtual Net.Vpc.Upa.DefaultRelationshipDescriptor SetTargetEntityType(System.Type targetEntityType) {
+        public virtual Net.TheVpc.Upa.DefaultRelationshipDescriptor SetTargetEntityType(System.Type targetEntityType) {
             this.targetEntityType = targetEntityType;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Expression GetFilter() {
+        public virtual Net.TheVpc.Upa.Expressions.Expression GetFilter() {
             return filter;
         }
 
-        public virtual Net.Vpc.Upa.DefaultRelationshipDescriptor SetFilter(Net.Vpc.Upa.Expressions.Expression filter) {
+        public virtual Net.TheVpc.Upa.DefaultRelationshipDescriptor SetFilter(Net.TheVpc.Upa.Expressions.Expression filter) {
             this.filter = filter;
             return this;
         }
@@ -135,7 +135,7 @@ namespace Net.Vpc.Upa
             return baseField;
         }
 
-        public virtual Net.Vpc.Upa.DefaultRelationshipDescriptor SetBaseField(string baseField) {
+        public virtual Net.TheVpc.Upa.DefaultRelationshipDescriptor SetBaseField(string baseField) {
             this.baseField = baseField;
             return this;
         }
@@ -144,7 +144,7 @@ namespace Net.Vpc.Upa
             return mappedTo;
         }
 
-        public virtual Net.Vpc.Upa.DefaultRelationshipDescriptor SetMappedTo(string[] mappedTo) {
+        public virtual Net.TheVpc.Upa.DefaultRelationshipDescriptor SetMappedTo(string[] mappedTo) {
             this.mappedTo = mappedTo;
             return this;
         }
@@ -153,7 +153,7 @@ namespace Net.Vpc.Upa
             return sourceFields;
         }
 
-        public virtual Net.Vpc.Upa.DefaultRelationshipDescriptor SetSourceFields(string[] sourceFields) {
+        public virtual Net.TheVpc.Upa.DefaultRelationshipDescriptor SetSourceFields(string[] sourceFields) {
             this.sourceFields = sourceFields;
             return this;
         }
@@ -162,16 +162,16 @@ namespace Net.Vpc.Upa
             return name;
         }
 
-        public virtual Net.Vpc.Upa.DefaultRelationshipDescriptor SetName(string name) {
+        public virtual Net.TheVpc.Upa.DefaultRelationshipDescriptor SetName(string name) {
             this.name = name;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.RelationshipType GetRelationshipType() {
+        public virtual Net.TheVpc.Upa.RelationshipType GetRelationshipType() {
             return relationshipType;
         }
 
-        public virtual Net.Vpc.Upa.DefaultRelationshipDescriptor SetRelationshipType(Net.Vpc.Upa.RelationshipType relationshipType) {
+        public virtual Net.TheVpc.Upa.DefaultRelationshipDescriptor SetRelationshipType(Net.TheVpc.Upa.RelationshipType relationshipType) {
             this.relationshipType = relationshipType;
             return this;
         }
@@ -180,7 +180,7 @@ namespace Net.Vpc.Upa
             return nullable;
         }
 
-        public virtual Net.Vpc.Upa.DefaultRelationshipDescriptor SetNullable(bool nullable) {
+        public virtual Net.TheVpc.Upa.DefaultRelationshipDescriptor SetNullable(bool nullable) {
             this.nullable = nullable;
             return this;
         }

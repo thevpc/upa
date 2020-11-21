@@ -6,7 +6,7 @@ using System.Net;
  * SPECIFIC
  */
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
     public class URL
     {

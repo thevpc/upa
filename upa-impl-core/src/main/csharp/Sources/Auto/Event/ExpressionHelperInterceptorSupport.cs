@@ -11,32 +11,32 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Event
+namespace Net.TheVpc.Upa.Impl.Event
 {
 
 
-    public abstract class ExpressionHelperInterceptorSupport : Net.Vpc.Upa.Callbacks.EntityListenerAdapter {
+    public abstract class ExpressionHelperInterceptorSupport : Net.TheVpc.Upa.Callbacks.EntityListenerAdapter {
 
         public ExpressionHelperInterceptorSupport() {
         }
 
-        public abstract Net.Vpc.Upa.Expressions.Expression TranslateExpression(Net.Vpc.Upa.Expressions.Expression e) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+        public abstract Net.TheVpc.Upa.Expressions.Expression TranslateExpression(Net.TheVpc.Upa.Expressions.Expression e) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-        public abstract void AfterDeleteHelper(Net.Vpc.Upa.Callbacks.RemoveEvent @event, Net.Vpc.Upa.Expressions.Expression updatedExpression) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+        public abstract void AfterDeleteHelper(Net.TheVpc.Upa.Callbacks.RemoveEvent @event, Net.TheVpc.Upa.Expressions.Expression updatedExpression) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-        public abstract void AfterUpdateHelper(Net.Vpc.Upa.Callbacks.UpdateEvent @event, Net.Vpc.Upa.Expressions.Expression updatedExpression) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+        public abstract void AfterUpdateHelper(Net.TheVpc.Upa.Callbacks.UpdateEvent @event, Net.TheVpc.Upa.Expressions.Expression updatedExpression) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-        public abstract void AfterPersistHelper(Net.Vpc.Upa.Callbacks.PersistEvent @event, Net.Vpc.Upa.Expressions.Expression translatedExpression) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+        public abstract void AfterPersistHelper(Net.TheVpc.Upa.Callbacks.PersistEvent @event, Net.TheVpc.Upa.Expressions.Expression translatedExpression) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-        public virtual bool AcceptDeleteTableHelper(Net.Vpc.Upa.Callbacks.RemoveEvent @event) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual bool AcceptDeleteTableHelper(Net.TheVpc.Upa.Callbacks.RemoveEvent @event) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return true;
         }
 
-        public virtual bool AcceptUpdateTableHelper(Net.Vpc.Upa.Callbacks.UpdateEvent @event) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual bool AcceptUpdateTableHelper(Net.TheVpc.Upa.Callbacks.UpdateEvent @event) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return true;
         }
 
-        public virtual bool AcceptUpdateTableOlderValuesHelper(Net.Vpc.Upa.Callbacks.UpdateEvent @event) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual bool AcceptUpdateTableOlderValuesHelper(Net.TheVpc.Upa.Callbacks.UpdateEvent @event) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return false;
         }
 
@@ -46,23 +46,23 @@ namespace Net.Vpc.Upa.Impl.Event
              * @return
              * @throws UPAException
              */
-        public virtual bool AcceptPersistRecordHelper(Net.Vpc.Upa.Callbacks.PersistEvent @event) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual bool AcceptPersistRecordHelper(Net.TheVpc.Upa.Callbacks.PersistEvent @event) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return true;
         }
 
 
-        public override sealed void OnPreRemove(Net.Vpc.Upa.Callbacks.RemoveEvent @event) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext = @event.GetContext();
+        public override sealed void OnPreRemove(Net.TheVpc.Upa.Callbacks.RemoveEvent @event) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Persistence.EntityExecutionContext executionContext = @event.GetContext();
             if (AcceptDeleteTableHelper(@event)) {
                 executionContext.SetObject(@event.GetTrigger().GetName() + ":toDelete", CreateUpdatedCollection(@event.GetEntity(), @event.GetFilterExpression()));
             }
         }
 
 
-        public override sealed void OnRemove(Net.Vpc.Upa.Callbacks.RemoveEvent @event) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext = @event.GetContext();
+        public override sealed void OnRemove(Net.TheVpc.Upa.Callbacks.RemoveEvent @event) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Persistence.EntityExecutionContext executionContext = @event.GetContext();
             string name = @event.GetTrigger().GetName();
-            System.Collections.Generic.ICollection<Net.Vpc.Upa.Key> collection = (System.Collections.Generic.ICollection<Net.Vpc.Upa.Key>) executionContext.GetObject<T>(name + ":toDelete");
+            System.Collections.Generic.ICollection<Net.TheVpc.Upa.Key> collection = (System.Collections.Generic.ICollection<Net.TheVpc.Upa.Key>) executionContext.GetObject<T>(name + ":toDelete");
             if (collection == null) {
                 return;
             }
@@ -73,11 +73,11 @@ namespace Net.Vpc.Upa.Impl.Event
         }
 
 
-        public override sealed void OnPreUpdate(Net.Vpc.Upa.Callbacks.UpdateEvent @event) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public override sealed void OnPreUpdate(Net.TheVpc.Upa.Callbacks.UpdateEvent @event) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             string name = @event.GetTrigger().GetName();
-            Net.Vpc.Upa.Persistence.EntityExecutionContext executioncontext = @event.GetContext();
+            Net.TheVpc.Upa.Persistence.EntityExecutionContext executioncontext = @event.GetContext();
             if (AcceptUpdateTableHelper(@event)) {
-                System.Collections.Generic.ICollection<Net.Vpc.Upa.Key> v = CreateUpdatedCollection(@event.GetEntity(), @event.GetFilterExpression());
+                System.Collections.Generic.ICollection<Net.TheVpc.Upa.Key> v = CreateUpdatedCollection(@event.GetEntity(), @event.GetFilterExpression());
                 if (!(v.Count==0)) {
                     executioncontext.SetObject(name + ":toUpdate", v);
                 }
@@ -85,29 +85,29 @@ namespace Net.Vpc.Upa.Impl.Event
         }
 
 
-        public override sealed void OnUpdate(Net.Vpc.Upa.Callbacks.UpdateEvent @event) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public override sealed void OnUpdate(Net.TheVpc.Upa.Callbacks.UpdateEvent @event) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             // validate old references
-            Net.Vpc.Upa.Persistence.EntityExecutionContext executioncontext = @event.GetContext();
+            Net.TheVpc.Upa.Persistence.EntityExecutionContext executioncontext = @event.GetContext();
             string name = @event.GetTrigger().GetName();
-            System.Collections.Generic.ICollection<Net.Vpc.Upa.Key> collection = executioncontext.GetObject<T>(name + ":toUpdate");
+            System.Collections.Generic.ICollection<Net.TheVpc.Upa.Key> collection = executioncontext.GetObject<T>(name + ":toUpdate");
             if (collection == null) {
                 return;
             }
             executioncontext.Remove(name + ":toUpdate");
-            Net.Vpc.Upa.Expressions.IdCollectionExpression inColl = null;
+            Net.TheVpc.Upa.Expressions.IdCollectionExpression inColl = null;
             if (!(collection.Count==0)) {
                 inColl = CreateInCollection(@event.GetEntity(), collection);
                 AfterUpdateHelper(@event, inColl);
             }
             // validate old references
             if (AcceptUpdateTableOlderValuesHelper(@event)) {
-                Net.Vpc.Upa.Expressions.Expression newUpdates = null;
+                Net.TheVpc.Upa.Expressions.Expression newUpdates = null;
                 if (inColl != null) {
-                    Net.Vpc.Upa.Expressions.Expression translated = TranslateExpression(@event.GetFilterExpression());
+                    Net.TheVpc.Upa.Expressions.Expression translated = TranslateExpression(@event.GetFilterExpression());
                     if (translated != null) {
-                        newUpdates = new Net.Vpc.Upa.Expressions.And(new Net.Vpc.Upa.Expressions.Not(inColl), translated);
+                        newUpdates = new Net.TheVpc.Upa.Expressions.And(new Net.TheVpc.Upa.Expressions.Not(inColl), translated);
                     } else {
-                        newUpdates = new Net.Vpc.Upa.Expressions.Not(inColl);
+                        newUpdates = new Net.TheVpc.Upa.Expressions.Not(inColl);
                     }
                 } else {
                     newUpdates = TranslateExpression(@event.GetFilterExpression());
@@ -116,30 +116,30 @@ namespace Net.Vpc.Upa.Impl.Event
             }
         }
 
-        private System.Collections.Generic.ICollection<Net.Vpc.Upa.Key> CreateUpdatedCollection(Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.Expressions.Expression expression) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        private System.Collections.Generic.ICollection<Net.TheVpc.Upa.Key> CreateUpdatedCollection(Net.TheVpc.Upa.Entity entity, Net.TheVpc.Upa.Expressions.Expression expression) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return entity.CreateQueryBuilder().ByExpression(TranslateExpression(expression)).GetKeyList();
         }
 
-        private Net.Vpc.Upa.Expressions.IdCollectionExpression CreateInCollection(Net.Vpc.Upa.Entity entity, System.Collections.Generic.ICollection<Net.Vpc.Upa.Key> collection) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Field> pfs = entity.GetPrimaryFields();
-            Net.Vpc.Upa.Expressions.Var[] v = new Net.Vpc.Upa.Expressions.Var[(pfs).Count];
+        private Net.TheVpc.Upa.Expressions.IdCollectionExpression CreateInCollection(Net.TheVpc.Upa.Entity entity, System.Collections.Generic.ICollection<Net.TheVpc.Upa.Key> collection) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Field> pfs = entity.GetPrimaryFields();
+            Net.TheVpc.Upa.Expressions.Var[] v = new Net.TheVpc.Upa.Expressions.Var[(pfs).Count];
             for (int i = 0; i < (pfs).Count; i++) {
-                v[i] = new Net.Vpc.Upa.Expressions.Var(new Net.Vpc.Upa.Expressions.Var(pfs[i].GetEntity().GetName()), pfs[i].GetName());
+                v[i] = new Net.TheVpc.Upa.Expressions.Var(new Net.TheVpc.Upa.Expressions.Var(pfs[i].GetEntity().GetName()), pfs[i].GetName());
             }
             if ((pfs).Count == 1) {
-                Net.Vpc.Upa.Expressions.IdCollectionExpression inColl = new Net.Vpc.Upa.Expressions.IdCollectionExpression(v[0]);
+                Net.TheVpc.Upa.Expressions.IdCollectionExpression inColl = new Net.TheVpc.Upa.Expressions.IdCollectionExpression(v[0]);
                 //inColl.setClientProperty(DefaultEntity.EXPRESSION_SURELY_EXISTS, true);
-                foreach (Net.Vpc.Upa.Key k in collection) {
-                    inColl.Add(new Net.Vpc.Upa.Expressions.Literal(k.GetObject(), pfs[0].GetDataType()));
+                foreach (Net.TheVpc.Upa.Key k in collection) {
+                    inColl.Add(new Net.TheVpc.Upa.Expressions.Literal(k.GetObject(), pfs[0].GetDataType()));
                 }
                 return inColl;
             } else {
-                Net.Vpc.Upa.Expressions.IdCollectionExpression inColl = new Net.Vpc.Upa.Expressions.IdCollectionExpression(v);
+                Net.TheVpc.Upa.Expressions.IdCollectionExpression inColl = new Net.TheVpc.Upa.Expressions.IdCollectionExpression(v);
                 //inColl.setClientProperty(DefaultEntity.EXPRESSION_SURELY_EXISTS, true);
-                foreach (Net.Vpc.Upa.Key k in collection) {
-                    Net.Vpc.Upa.Expressions.Literal[] l = new Net.Vpc.Upa.Expressions.Literal[(pfs).Count];
+                foreach (Net.TheVpc.Upa.Key k in collection) {
+                    Net.TheVpc.Upa.Expressions.Literal[] l = new Net.TheVpc.Upa.Expressions.Literal[(pfs).Count];
                     for (int j = 0; j < (pfs).Count; j++) {
-                        l[j] = new Net.Vpc.Upa.Expressions.Literal(k.GetObjectAt(j), pfs[j].GetDataType());
+                        l[j] = new Net.TheVpc.Upa.Expressions.Literal(k.GetObjectAt(j), pfs[j].GetDataType());
                     }
                     inColl.Add(l);
                 }
@@ -148,7 +148,7 @@ namespace Net.Vpc.Upa.Impl.Event
         }
 
 
-        public override sealed void OnPersist(Net.Vpc.Upa.Callbacks.PersistEvent @event) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public override sealed void OnPersist(Net.TheVpc.Upa.Callbacks.PersistEvent @event) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             if (AcceptPersistRecordHelper(@event)) {
                 AfterPersistHelper(@event, TranslateExpression(@event.GetEntity().GetBuilder().IdToExpression(@event.GetPersistedId(), null)));
             }

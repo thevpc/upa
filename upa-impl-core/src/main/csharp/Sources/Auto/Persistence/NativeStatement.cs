@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
     public interface NativeStatement {
 
-         void Execute(Net.Vpc.Upa.Impl.Persistence.QueryExecutor queryExecutor) /* throws System.Exception, Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void Execute(Net.TheVpc.Upa.Impl.Persistence.QueryExecutor queryExecutor) /* throws System.Exception, Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void Dispose() /* throws System.Exception, Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void Dispose() /* throws System.Exception, Net.TheVpc.Upa.Exceptions.UPAException */ ;
     }
 }

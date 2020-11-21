@@ -26,10 +26,10 @@
             </connectionString>
             <rootConnectionString>
             </rootConnectionString>
-            <scan types="net.vpc.app.**" libs="" propagate="true"/>
+            <scan types="net.thevpc.app.**" libs="" propagate="true"/>
             <property name="persistenceName">upa_{object_name}</property>
         </persistenceUnit>
-        <scan types="net.vpc.app.**" libs=""/>
+        <scan types="net.thevpc.app.**" libs=""/>
         <property name="persistenceName">upa_{object_name}</property>
     </persistenceGroup>
 
@@ -58,7 +58,7 @@
         </connectionString>
         <rootConnectionString>
         </rootConnectionString>
-        <scan types="net.vpc.app.**" libs="" propagate="true"/>
+        <scan types="net.thevpc.app.**" libs="" propagate="true"/>
         <property name="persistenceName">upa_{objectname}</property>
     </persistenceUnit>
 
@@ -119,6 +119,6 @@
             </persistenceGroup>
         </default>
     </include>
-    <scan types="net.vpc.app.**" libs="" propagate="true"/>
+    <scan types="net.thevpc.app.**" libs="" propagate="true"/>
 
 </upa>

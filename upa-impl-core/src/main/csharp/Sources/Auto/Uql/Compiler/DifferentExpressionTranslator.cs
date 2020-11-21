@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiler
+namespace Net.TheVpc.Upa.Impl.Uql.Compiler
 {
 
 
@@ -19,19 +19,19 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiler
      *
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class DifferentExpressionTranslator : Net.Vpc.Upa.Impl.Uql.ExpressionTranslator {
+    public class DifferentExpressionTranslator : Net.TheVpc.Upa.Impl.Uql.ExpressionTranslator {
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TranslateExpression(object o, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
-            return CompileDifferent((Net.Vpc.Upa.Expressions.Different) o, manager, declarations);
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TranslateExpression(object o, Net.TheVpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.TheVpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
+            return CompileDifferent((Net.TheVpc.Upa.Expressions.Different) o, manager, declarations);
         }
 
-        protected internal virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDifferent CompileDifferent(Net.Vpc.Upa.Expressions.Different v, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
+        protected internal virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledDifferent CompileDifferent(Net.TheVpc.Upa.Expressions.Different v, Net.TheVpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.TheVpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
             if (v == null) {
                 return null;
             }
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression left = manager.TranslateAny(v.GetLeft(), declarations);
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression right = manager.TranslateAny(v.GetRight(), declarations);
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDifferent s = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDifferent(left, right);
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression left = manager.TranslateAny(v.GetLeft(), declarations);
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression right = manager.TranslateAny(v.GetRight(), declarations);
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledDifferent s = new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledDifferent(left, right);
             //        s.setDeclarationList(new ExpressionDeclarationList(declarations));
             return s;
         }

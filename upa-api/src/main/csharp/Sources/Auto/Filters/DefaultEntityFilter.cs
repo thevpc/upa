@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Filters
+namespace Net.TheVpc.Upa.Filters
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class DefaultEntityFilter : Net.Vpc.Upa.Filters.AbstractRichEntityFilter {
+    public class DefaultEntityFilter : Net.TheVpc.Upa.Filters.AbstractRichEntityFilter {
 
         private int acceptCloneable = 0;
 
@@ -57,7 +57,7 @@ namespace Net.Vpc.Upa.Filters
         public DefaultEntityFilter() {
         }
 
-        public virtual Net.Vpc.Upa.Filters.DefaultEntityFilter SetAcceptName(string name) {
+        public virtual Net.TheVpc.Upa.Filters.DefaultEntityFilter SetAcceptName(string name) {
             if (acceptedNames == null) {
                 acceptedNames = new System.Collections.Generic.HashSet<string>();
             }
@@ -65,14 +65,14 @@ namespace Net.Vpc.Upa.Filters
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Filters.DefaultEntityFilter UnsetAcceptName(string name) {
+        public virtual Net.TheVpc.Upa.Filters.DefaultEntityFilter UnsetAcceptName(string name) {
             if (acceptedNames != null) {
                 acceptedNames.Remove(name);
             }
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Filters.DefaultEntityFilter SetRejectName(string name) {
+        public virtual Net.TheVpc.Upa.Filters.DefaultEntityFilter SetRejectName(string name) {
             if (rejectedNames == null) {
                 rejectedNames = new System.Collections.Generic.HashSet<string>();
             }
@@ -80,7 +80,7 @@ namespace Net.Vpc.Upa.Filters
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Filters.DefaultEntityFilter UnsetRejectName(string name) {
+        public virtual Net.TheVpc.Upa.Filters.DefaultEntityFilter UnsetRejectName(string name) {
             if (rejectedNames != null) {
                 rejectedNames.Remove(name);
             }
@@ -91,7 +91,7 @@ namespace Net.Vpc.Upa.Filters
             return rootClass;
         }
 
-        public virtual Net.Vpc.Upa.Filters.DefaultEntityFilter SetAcceptRootEntityClass(System.Type entity) {
+        public virtual Net.TheVpc.Upa.Filters.DefaultEntityFilter SetAcceptRootEntityClass(System.Type entity) {
             rootClass = entity;
             return this;
         }
@@ -100,7 +100,7 @@ namespace Net.Vpc.Upa.Filters
             return acceptCloneable == 1;
         }
 
-        public virtual Net.Vpc.Upa.Filters.DefaultEntityFilter SetAcceptCloneable(bool acceptCloneable) {
+        public virtual Net.TheVpc.Upa.Filters.DefaultEntityFilter SetAcceptCloneable(bool acceptCloneable) {
             this.acceptCloneable = acceptCloneable ? 1 : -1;
             return this;
         }
@@ -113,7 +113,7 @@ namespace Net.Vpc.Upa.Filters
             return acceptValidatable == 1;
         }
 
-        public virtual Net.Vpc.Upa.Filters.DefaultEntityFilter SetAcceptValidatable(bool acceptValidatable) {
+        public virtual Net.TheVpc.Upa.Filters.DefaultEntityFilter SetAcceptValidatable(bool acceptValidatable) {
             this.acceptValidatable = acceptValidatable ? 1 : -1;
             return this;
         }
@@ -126,7 +126,7 @@ namespace Net.Vpc.Upa.Filters
             return acceptUpdatable == 1;
         }
 
-        public virtual Net.Vpc.Upa.Filters.DefaultEntityFilter SetAcceptUpdatable(bool acceptUpdatable) {
+        public virtual Net.TheVpc.Upa.Filters.DefaultEntityFilter SetAcceptUpdatable(bool acceptUpdatable) {
             this.acceptUpdatable = acceptUpdatable ? 1 : -1;
             return this;
         }
@@ -139,7 +139,7 @@ namespace Net.Vpc.Upa.Filters
             return acceptTransient == 1;
         }
 
-        public virtual Net.Vpc.Upa.Filters.DefaultEntityFilter SetAcceptTransient(bool acceptTransient) {
+        public virtual Net.TheVpc.Upa.Filters.DefaultEntityFilter SetAcceptTransient(bool acceptTransient) {
             this.acceptTransient = acceptTransient ? 1 : -1;
             return this;
         }
@@ -152,7 +152,7 @@ namespace Net.Vpc.Upa.Filters
             return acceptSystem == 1;
         }
 
-        public virtual Net.Vpc.Upa.Filters.DefaultEntityFilter SetAcceptSystem(bool acceptSystem) {
+        public virtual Net.TheVpc.Upa.Filters.DefaultEntityFilter SetAcceptSystem(bool acceptSystem) {
             this.acceptSystem = acceptSystem ? 1 : -1;
             return this;
         }
@@ -165,7 +165,7 @@ namespace Net.Vpc.Upa.Filters
             return acceptPrivate == 1;
         }
 
-        public virtual Net.Vpc.Upa.Filters.DefaultEntityFilter SetAcceptPrivate(bool acceptPrivate) {
+        public virtual Net.TheVpc.Upa.Filters.DefaultEntityFilter SetAcceptPrivate(bool acceptPrivate) {
             this.acceptPrivate = acceptPrivate ? 1 : -1;
             return this;
         }
@@ -178,7 +178,7 @@ namespace Net.Vpc.Upa.Filters
             return acceptDeletable == 1;
         }
 
-        public virtual Net.Vpc.Upa.Filters.DefaultEntityFilter SetAcceptDeletable(bool acceptDeletable) {
+        public virtual Net.TheVpc.Upa.Filters.DefaultEntityFilter SetAcceptDeletable(bool acceptDeletable) {
             this.acceptDeletable = acceptDeletable ? 1 : -1;
             return this;
         }
@@ -191,7 +191,7 @@ namespace Net.Vpc.Upa.Filters
             return acceptEmpty == 1;
         }
 
-        public virtual Net.Vpc.Upa.Filters.DefaultEntityFilter SetAcceptEmpty(bool acceptEmpty) {
+        public virtual Net.TheVpc.Upa.Filters.DefaultEntityFilter SetAcceptEmpty(bool acceptEmpty) {
             this.acceptEmpty = acceptEmpty ? 1 : -1;
             return this;
         }
@@ -204,7 +204,7 @@ namespace Net.Vpc.Upa.Filters
             return acceptPersistable == 1;
         }
 
-        public virtual Net.Vpc.Upa.Filters.DefaultEntityFilter SetAcceptPersistable(bool acceptPersistable) {
+        public virtual Net.TheVpc.Upa.Filters.DefaultEntityFilter SetAcceptPersistable(bool acceptPersistable) {
             this.acceptPersistable = acceptPersistable ? 1 : -1;
             return this;
         }
@@ -217,7 +217,7 @@ namespace Net.Vpc.Upa.Filters
             return acceptNavigatable == 1;
         }
 
-        public virtual Net.Vpc.Upa.Filters.DefaultEntityFilter SetAcceptNavigatable(bool acceptNavigatable) {
+        public virtual Net.TheVpc.Upa.Filters.DefaultEntityFilter SetAcceptNavigatable(bool acceptNavigatable) {
             this.acceptNavigatable = acceptNavigatable ? 1 : -1;
             return this;
         }
@@ -230,7 +230,7 @@ namespace Net.Vpc.Upa.Filters
             return acceptKeyGeneratable == 1;
         }
 
-        public virtual Net.Vpc.Upa.Filters.DefaultEntityFilter SetAcceptKeyGeneratable(bool acceptKeyGeneratable) {
+        public virtual Net.TheVpc.Upa.Filters.DefaultEntityFilter SetAcceptKeyGeneratable(bool acceptKeyGeneratable) {
             this.acceptKeyGeneratable = acceptKeyGeneratable ? 1 : -1;
             return this;
         }
@@ -243,7 +243,7 @@ namespace Net.Vpc.Upa.Filters
             return acceptKeyEditable == 1;
         }
 
-        public virtual Net.Vpc.Upa.Filters.DefaultEntityFilter SetAcceptKeyEditable(bool acceptKeyEditable) {
+        public virtual Net.TheVpc.Upa.Filters.DefaultEntityFilter SetAcceptKeyEditable(bool acceptKeyEditable) {
             this.acceptKeyEditable = acceptKeyEditable ? 1 : -1;
             return this;
         }
@@ -256,7 +256,7 @@ namespace Net.Vpc.Upa.Filters
             return acceptRenamable == 1;
         }
 
-        public virtual Net.Vpc.Upa.Filters.DefaultEntityFilter SetAcceptRenamable(bool acceptRenamable) {
+        public virtual Net.TheVpc.Upa.Filters.DefaultEntityFilter SetAcceptRenamable(bool acceptRenamable) {
             this.acceptRenamable = acceptRenamable ? 1 : -1;
             return this;
         }
@@ -269,7 +269,7 @@ namespace Net.Vpc.Upa.Filters
             return acceptClear == 1;
         }
 
-        public virtual Net.Vpc.Upa.Filters.DefaultEntityFilter SetAcceptClear(bool acceptClear) {
+        public virtual Net.TheVpc.Upa.Filters.DefaultEntityFilter SetAcceptClear(bool acceptClear) {
             this.acceptClear = acceptClear ? 1 : -1;
             return this;
         }
@@ -278,7 +278,7 @@ namespace Net.Vpc.Upa.Filters
             return acceptClear == -1;
         }
 
-        public override bool Accept(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public override bool Accept(Net.TheVpc.Upa.Entity entity) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             object source = entity.GetEntityDescriptor().GetSource();
             if (rootClass != null && (source == null || !rootClass.IsAssignableFrom(source.GetType()))) {
                 return false;
@@ -289,7 +289,7 @@ namespace Net.Vpc.Upa.Filters
             if (rejectedNames != null && (rejectedNames).Count > 0 && rejectedNames.Contains(entity.GetName())) {
                 return false;
             }
-            Net.Vpc.Upa.EntityShield v = entity.GetShield();
+            Net.TheVpc.Upa.EntityShield v = entity.GetShield();
             if (IsAcceptCloneable() && !v.IsCloneSupported()) {
                 return false;
             }
@@ -324,14 +324,14 @@ namespace Net.Vpc.Upa.Filters
                 if (IsAcceptEmpty() && !entity.IsEmpty()) {
                     return false;
                 }
-            } catch (Net.Vpc.Upa.Exceptions.UPAException e) {
+            } catch (Net.TheVpc.Upa.Exceptions.UPAException e) {
                 return false;
             }
             try {
                 if (IsRejectEmpty() && entity.IsEmpty()) {
                     return false;
                 }
-            } catch (Net.Vpc.Upa.Exceptions.UPAException e) {
+            } catch (Net.TheVpc.Upa.Exceptions.UPAException e) {
                 return false;
             }
             if (IsAcceptPersistable() && !v.IsPersistSupported()) {

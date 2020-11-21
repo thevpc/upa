@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Extensions
+namespace Net.TheVpc.Upa.Extensions
 {
 
 

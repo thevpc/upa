@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -24,25 +24,25 @@ namespace Net.Vpc.Upa
 
         private System.Reflection.MethodInfo method;
 
-        private Net.Vpc.Upa.ObjectType objectType;
+        private Net.TheVpc.Upa.ObjectType objectType;
 
-        private Net.Vpc.Upa.CallbackType callbackType;
+        private Net.TheVpc.Upa.CallbackType callbackType;
 
-        private Net.Vpc.Upa.EventPhase phase;
+        private Net.TheVpc.Upa.EventPhase phase;
 
         private System.Collections.Generic.IDictionary<string , object> configuration;
 
         public MethodCallback() {
         }
 
-        public MethodCallback(object instance, System.Reflection.MethodInfo method, Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.EventPhase phase) {
+        public MethodCallback(object instance, System.Reflection.MethodInfo method, Net.TheVpc.Upa.CallbackType callbackType, Net.TheVpc.Upa.EventPhase phase) {
             this.instance = instance;
             this.method = method;
             this.phase = phase;
             this.callbackType = callbackType;
         }
 
-        public MethodCallback(object instance, System.Reflection.MethodInfo method, Net.Vpc.Upa.ObjectType objectType, Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.EventPhase phase, System.Collections.Generic.IDictionary<string , object> configuration) {
+        public MethodCallback(object instance, System.Reflection.MethodInfo method, Net.TheVpc.Upa.ObjectType objectType, Net.TheVpc.Upa.CallbackType callbackType, Net.TheVpc.Upa.EventPhase phase, System.Collections.Generic.IDictionary<string , object> configuration) {
             this.instance = instance;
             this.objectType = objectType;
             this.method = method;
@@ -51,11 +51,11 @@ namespace Net.Vpc.Upa
             this.configuration = configuration;
         }
 
-        public virtual Net.Vpc.Upa.ObjectType GetObjectType() {
+        public virtual Net.TheVpc.Upa.ObjectType GetObjectType() {
             return objectType;
         }
 
-        public virtual Net.Vpc.Upa.EventPhase GetPhase() {
+        public virtual Net.TheVpc.Upa.EventPhase GetPhase() {
             return phase;
         }
 
@@ -63,7 +63,7 @@ namespace Net.Vpc.Upa
             return instance;
         }
 
-        public virtual Net.Vpc.Upa.MethodCallback SetInstance(object instance) {
+        public virtual Net.TheVpc.Upa.MethodCallback SetInstance(object instance) {
             this.instance = instance;
             return this;
         }
@@ -72,16 +72,16 @@ namespace Net.Vpc.Upa
             return method;
         }
 
-        public virtual Net.Vpc.Upa.MethodCallback SetMethod(System.Reflection.MethodInfo method) {
+        public virtual Net.TheVpc.Upa.MethodCallback SetMethod(System.Reflection.MethodInfo method) {
             this.method = method;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.CallbackType GetCallbackType() {
+        public virtual Net.TheVpc.Upa.CallbackType GetCallbackType() {
             return callbackType;
         }
 
-        public virtual Net.Vpc.Upa.MethodCallback SetCallbackType(Net.Vpc.Upa.CallbackType callbackType) {
+        public virtual Net.TheVpc.Upa.MethodCallback SetCallbackType(Net.TheVpc.Upa.CallbackType callbackType) {
             this.callbackType = callbackType;
             return this;
         }
@@ -90,12 +90,12 @@ namespace Net.Vpc.Upa
             return configuration;
         }
 
-        public virtual Net.Vpc.Upa.MethodCallback SetConfiguration(System.Collections.Generic.IDictionary<string , object> configuration) {
+        public virtual Net.TheVpc.Upa.MethodCallback SetConfiguration(System.Collections.Generic.IDictionary<string , object> configuration) {
             this.configuration = configuration;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.MethodCallback PutConfig(string name, object @value) {
+        public virtual Net.TheVpc.Upa.MethodCallback PutConfig(string name, object @value) {
             if (configuration == null) {
                 configuration = new System.Collections.Generic.Dictionary<string , object>();
             }

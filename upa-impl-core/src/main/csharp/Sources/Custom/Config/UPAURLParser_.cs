@@ -4,7 +4,7 @@
 //using System.Linq;
 //using System.Text;
 //
-//namespace Net.Vpc.Upa.Impl.Config
+//namespace Net.TheVpc.Upa.Impl.Config
 //{
 //    internal partial class UPAURLParser
 //    {

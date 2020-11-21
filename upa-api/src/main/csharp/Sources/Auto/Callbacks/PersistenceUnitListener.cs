@@ -11,37 +11,37 @@
 
 
 
-namespace Net.Vpc.Upa.Callbacks
+namespace Net.TheVpc.Upa.Callbacks
 {
 
     public interface PersistenceUnitListener {
 
-         void OnPreModelChanged(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event);
+         void OnPreModelChanged(Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent @event);
 
-         void OnModelChanged(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event);
+         void OnModelChanged(Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent @event);
 
-         void OnPreStorageChanged(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event);
+         void OnPreStorageChanged(Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent @event);
 
-         void OnStorageChanged(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event);
+         void OnStorageChanged(Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent @event);
 
-         void OnPreStart(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event);
+         void OnPreStart(Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent @event);
 
-         void OnStart(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event);
+         void OnStart(Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent @event);
 
-         void OnPreClear(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event);
+         void OnPreClear(Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent @event);
 
-         void OnClear(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event);
+         void OnClear(Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent @event);
 
-         void OnPreReset(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event);
+         void OnPreReset(Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent @event);
 
-         void OnReset(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event);
+         void OnReset(Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent @event);
 
-         void OnPreClose(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event);
+         void OnPreClose(Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent @event);
 
-         void OnClose(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event);
+         void OnClose(Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent @event);
 
-         void OnPreUpdateFormulas(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event);
+         void OnPreUpdateFormulas(Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent @event);
 
-         void OnUpdateFormulas(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event);
+         void OnUpdateFormulas(Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent @event);
     }
 }

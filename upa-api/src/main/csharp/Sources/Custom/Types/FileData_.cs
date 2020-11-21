@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Runtime.CompilerServices;
 
-namespace Net.Vpc.Upa.Types{
+namespace Net.TheVpc.Upa.Types{
     public partial class FileData {
 
         /*

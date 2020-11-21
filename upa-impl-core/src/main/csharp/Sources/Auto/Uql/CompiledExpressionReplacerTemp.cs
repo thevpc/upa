@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql
+namespace Net.TheVpc.Upa.Impl.Uql
 {
 
 
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Impl.Uql
      *
      * @author taha.bensalah@gmail.com
      */
-    public class CompiledExpressionReplacerTemp : Net.Vpc.Upa.Impl.Uql.CompiledExpressionReplacer {
+    public class CompiledExpressionReplacerTemp : Net.TheVpc.Upa.Impl.Uql.CompiledExpressionReplacer {
 
         private string thisAlias;
 
@@ -27,10 +27,10 @@ namespace Net.Vpc.Upa.Impl.Uql
             this.thisAlias = thisAlias;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.CompiledExpression Update(Net.Vpc.Upa.Expressions.CompiledExpression e) {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar implicitParent = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar(thisAlias);
+        public virtual Net.TheVpc.Upa.Expressions.CompiledExpression Update(Net.TheVpc.Upa.Expressions.CompiledExpression e) {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar implicitParent = new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar(thisAlias);
             //                        e2 = (CompiledVar) ((CompiledVar) e).copy();
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar e2 = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) e;
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar e2 = (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) e;
             e2.UnsetParent();
             implicitParent.SetChild(e2);
             return implicitParent;

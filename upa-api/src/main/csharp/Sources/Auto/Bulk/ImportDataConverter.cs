@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Bulk
+namespace Net.TheVpc.Upa.Bulk
 {
 
     /**
@@ -19,6 +19,6 @@ namespace Net.Vpc.Upa.Bulk
      */
     public interface ImportDataConverter {
 
-         object ConvertEntity(Net.Vpc.Upa.Bulk.DataRow row, object oldValue);
+         object ConvertEntity(Net.TheVpc.Upa.Bulk.DataRow row, object oldValue);
     }
 }

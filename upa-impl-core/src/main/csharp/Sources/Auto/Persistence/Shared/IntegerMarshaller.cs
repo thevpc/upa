@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Shared
+namespace Net.TheVpc.Upa.Impl.Persistence.Shared
 {
 
 
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 12/20/12 2:47 AM
      */
-    public class IntegerMarshaller : Net.Vpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
+    public class IntegerMarshaller : Net.TheVpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
 
         public override object Read(int index, System.Data.IDataReader resultSet) /* throws System.Exception */  {
             return null;

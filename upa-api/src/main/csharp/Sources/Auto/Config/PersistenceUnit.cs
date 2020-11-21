@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Config
+namespace Net.TheVpc.Upa.Config
 {
 
 
@@ -23,14 +23,14 @@ namespace Net.Vpc.Upa.Config
 
     public class PersistenceUnit : System.Attribute {
 
-        private string _Name = Net.Vpc.Upa.UPA.UNDEFINED_STRING;
+        private string _Name = Net.TheVpc.Upa.UPA.UNDEFINED_STRING;
         public  string Name{
             get {return _Name;}
             set {_Name=value;}
         }
 
 
-        private string _PersistenceGroup = Net.Vpc.Upa.UPA.UNDEFINED_STRING;
+        private string _PersistenceGroup = Net.TheVpc.Upa.UPA.UNDEFINED_STRING;
         public  string PersistenceGroup{
             get {return _PersistenceGroup;}
             set {_PersistenceGroup=value;}
@@ -44,8 +44,8 @@ namespace Net.Vpc.Upa.Config
         }
 
 
-        private Net.Vpc.Upa.Config.Property[] _Properties = {  };
-        public  Net.Vpc.Upa.Config.Property[] Properties{
+        private Net.TheVpc.Upa.Config.Property[] _Properties = {  };
+        public  Net.TheVpc.Upa.Config.Property[] Properties{
             get {return _Properties;}
             set {_Properties=value;}
         }

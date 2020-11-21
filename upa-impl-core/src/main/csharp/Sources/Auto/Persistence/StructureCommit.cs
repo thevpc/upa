@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -21,50 +21,50 @@ namespace Net.Vpc.Upa.Impl.Persistence
      */
     public abstract class StructureCommit {
 
-        protected internal Net.Vpc.Upa.UPAObject @object;
+        protected internal Net.TheVpc.Upa.UPAObject @object;
 
-        protected internal Net.Vpc.Upa.Impl.Persistence.ObjectAndType typedObject;
+        protected internal Net.TheVpc.Upa.Impl.Persistence.ObjectAndType typedObject;
 
-        private Net.Vpc.Upa.Impl.Persistence.DefaultPersistenceUnitCommitManager persistenceUnitCommitManager;
+        private Net.TheVpc.Upa.Impl.Persistence.DefaultPersistenceUnitCommitManager persistenceUnitCommitManager;
 
-        public StructureCommit(Net.Vpc.Upa.Impl.Persistence.DefaultPersistenceUnitCommitManager defaultPersistenceUnitCommitManager, Net.Vpc.Upa.UPAObject @object, System.Type cls, Net.Vpc.Upa.Persistence.PersistenceNameType spec) {
+        public StructureCommit(Net.TheVpc.Upa.Impl.Persistence.DefaultPersistenceUnitCommitManager defaultPersistenceUnitCommitManager, Net.TheVpc.Upa.UPAObject @object, System.Type cls, Net.TheVpc.Upa.Persistence.PersistenceNameType spec) {
             this.persistenceUnitCommitManager = defaultPersistenceUnitCommitManager;
             this.@object = @object;
-            this.typedObject = new Net.Vpc.Upa.Impl.Persistence.ObjectAndType(cls, spec);
+            this.typedObject = new Net.TheVpc.Upa.Impl.Persistence.ObjectAndType(cls, spec);
         }
 
-        protected internal virtual Net.Vpc.Upa.PersistenceState GetObjectStatus(Net.Vpc.Upa.Persistence.EntityExecutionContext entityExecutionContext) {
+        protected internal virtual Net.TheVpc.Upa.PersistenceState GetObjectStatus(Net.TheVpc.Upa.Persistence.EntityExecutionContext entityExecutionContext) {
             return persistenceUnitCommitManager.persistenceStore.GetPersistenceState(@object, typedObject.GetSpec(), entityExecutionContext);
         }
 
-        public virtual bool Commit(Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Persistence.StructureStrategy option = persistenceUnitCommitManager.persistenceStore.GetConnectionProfile().GetStructureStrategy();
-            Net.Vpc.Upa.PersistenceState status = GetObjectStatus(executionContext);
+        public virtual bool Commit(Net.TheVpc.Upa.Persistence.EntityExecutionContext executionContext) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Persistence.StructureStrategy option = persistenceUnitCommitManager.persistenceStore.GetConnectionProfile().GetStructureStrategy();
+            Net.TheVpc.Upa.PersistenceState status = GetObjectStatus(executionContext);
             switch(option) {
-                case Net.Vpc.Upa.Persistence.StructureStrategy.DROP:
-                case Net.Vpc.Upa.Persistence.StructureStrategy.CREATE:
-                case Net.Vpc.Upa.Persistence.StructureStrategy.SYNCHRONIZE:
+                case Net.TheVpc.Upa.Persistence.StructureStrategy.DROP:
+                case Net.TheVpc.Upa.Persistence.StructureStrategy.CREATE:
+                case Net.TheVpc.Upa.Persistence.StructureStrategy.SYNCHRONIZE:
                     {
                         switch(status) {
-                            case Net.Vpc.Upa.PersistenceState.VALID:
+                            case Net.TheVpc.Upa.PersistenceState.VALID:
                                 {
                                     //do nothing
                                     break;
                                 }
-                            case Net.Vpc.Upa.PersistenceState.UNKNOWN:
-                            case Net.Vpc.Upa.PersistenceState.DIRTY:
+                            case Net.TheVpc.Upa.PersistenceState.UNKNOWN:
+                            case Net.TheVpc.Upa.PersistenceState.DIRTY:
                                 {
                                     //throw new UPAException(new I18NString("DirtyObject"),object);
                                     try {
                                         Persist(executionContext, status);
                                     } catch (System.Exception e) {
-                                        throw new Net.Vpc.Upa.Exceptions.UPAException(e, new Net.Vpc.Upa.Types.I18NString("CommitFailed"));
+                                        throw new Net.TheVpc.Upa.Exceptions.UPAException(e, new Net.TheVpc.Upa.Types.I18NString("CommitFailed"));
                                     }
                                     @object.GetProperties().SetString("persistence.PersistenceAction", "ADD");
                                     //info.setPersistenceState(PersistenceState.VALID);
                                     return true;
                                 }
-                            case Net.Vpc.Upa.PersistenceState.TRANSIENT:
+                            case Net.TheVpc.Upa.PersistenceState.TRANSIENT:
                                 {
                                     // do nothing
                                     break;
@@ -72,23 +72,23 @@ namespace Net.Vpc.Upa.Impl.Persistence
                         }
                         break;
                     }
-                case Net.Vpc.Upa.Persistence.StructureStrategy.MANDATORY:
+                case Net.TheVpc.Upa.Persistence.StructureStrategy.MANDATORY:
                     {
                         switch(status) {
-                            case Net.Vpc.Upa.PersistenceState.UNKNOWN:
+                            case Net.TheVpc.Upa.PersistenceState.UNKNOWN:
                                 {
-                                    throw new Net.Vpc.Upa.Exceptions.UPAException(new Net.Vpc.Upa.Types.I18NString("MandatoryObject"), @object);
+                                    throw new Net.TheVpc.Upa.Exceptions.UPAException(new Net.TheVpc.Upa.Types.I18NString("MandatoryObject"), @object);
                                 }
-                            case Net.Vpc.Upa.PersistenceState.VALID:
+                            case Net.TheVpc.Upa.PersistenceState.VALID:
                                 {
                                     //do nothing
                                     break;
                                 }
-                            case Net.Vpc.Upa.PersistenceState.DIRTY:
+                            case Net.TheVpc.Upa.PersistenceState.DIRTY:
                                 {
-                                    throw new Net.Vpc.Upa.Exceptions.UPAException(new Net.Vpc.Upa.Types.I18NString("DirtyObject"), @object);
+                                    throw new Net.TheVpc.Upa.Exceptions.UPAException(new Net.TheVpc.Upa.Types.I18NString("DirtyObject"), @object);
                                 }
-                            case Net.Vpc.Upa.PersistenceState.TRANSIENT:
+                            case Net.TheVpc.Upa.PersistenceState.TRANSIENT:
                                 {
                                     // do nothing
                                     break;
@@ -96,7 +96,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
                         }
                         break;
                     }
-                case Net.Vpc.Upa.Persistence.StructureStrategy.IGNORE:
+                case Net.TheVpc.Upa.Persistence.StructureStrategy.IGNORE:
                     {
                         //do nothing
                         break;
@@ -105,19 +105,19 @@ namespace Net.Vpc.Upa.Impl.Persistence
             return false;
         }
 
-        public virtual Net.Vpc.Upa.UPAObject GetObject() {
+        public virtual Net.TheVpc.Upa.UPAObject GetObject() {
             return @object;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Persistence.ObjectAndType GetTypedObject() {
+        public virtual Net.TheVpc.Upa.Impl.Persistence.ObjectAndType GetTypedObject() {
             return typedObject;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Persistence.DefaultPersistenceUnitCommitManager GetPersistenceUnitCommitManager() {
+        public virtual Net.TheVpc.Upa.Impl.Persistence.DefaultPersistenceUnitCommitManager GetPersistenceUnitCommitManager() {
             return persistenceUnitCommitManager;
         }
 
-        public abstract void Persist(Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext, Net.Vpc.Upa.PersistenceState status) /* throws System.Exception */ ;
+        public abstract void Persist(Net.TheVpc.Upa.Persistence.EntityExecutionContext executionContext, Net.TheVpc.Upa.PersistenceState status) /* throws System.Exception */ ;
 
 
         public override string ToString() {

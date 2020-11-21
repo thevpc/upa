@@ -11,20 +11,20 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
-    public sealed class Complement : Net.Vpc.Upa.Expressions.UnaryOperatorExpression {
+    public sealed class Complement : Net.TheVpc.Upa.Expressions.UnaryOperatorExpression {
 
 
 
-        public Complement(Net.Vpc.Upa.Expressions.Expression expression)  : base(Net.Vpc.Upa.Expressions.UnaryOperator.COMPLEMENT, "~", expression){
+        public Complement(Net.TheVpc.Upa.Expressions.Expression expression)  : base(Net.TheVpc.Upa.Expressions.UnaryOperator.COMPLEMENT, "~", expression){
 
         }
 
 
-        public override Net.Vpc.Upa.Expressions.Expression Copy() {
-            Net.Vpc.Upa.Expressions.Complement o = new Net.Vpc.Upa.Expressions.Complement(GetExpression().Copy());
+        public override Net.TheVpc.Upa.Expressions.Expression Copy() {
+            Net.TheVpc.Upa.Expressions.Complement o = new Net.TheVpc.Upa.Expressions.Complement(GetExpression().Copy());
             return o;
         }
     }

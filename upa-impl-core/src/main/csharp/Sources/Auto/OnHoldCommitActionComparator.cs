@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
@@ -19,13 +19,13 @@ namespace Net.Vpc.Upa.Impl
      *
      * @author taha.bensalah@gmail.com
      */
-    internal class OnHoldCommitActionComparator : System.Collections.Generic.IComparer<Net.Vpc.Upa.Impl.OnHoldCommitAction> {
+    internal class OnHoldCommitActionComparator : System.Collections.Generic.IComparer<Net.TheVpc.Upa.Impl.OnHoldCommitAction> {
 
         public OnHoldCommitActionComparator() {
         }
 
 
-        public virtual int Compare(Net.Vpc.Upa.Impl.OnHoldCommitAction o1, Net.Vpc.Upa.Impl.OnHoldCommitAction o2) {
+        public virtual int Compare(Net.TheVpc.Upa.Impl.OnHoldCommitAction o1, Net.TheVpc.Upa.Impl.OnHoldCommitAction o2) {
             return o1.GetOrder() - o2.GetOrder();
         }
     }

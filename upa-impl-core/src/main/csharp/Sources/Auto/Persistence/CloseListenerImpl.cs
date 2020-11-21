@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -19,11 +19,11 @@ namespace Net.Vpc.Upa.Impl.Persistence
      *
      * @author taha.bensalah@gmail.com
      */
-    internal class CloseListenerImpl<R> : Net.Vpc.Upa.CloseListener {
+    internal class CloseListenerImpl<R> : Net.TheVpc.Upa.CloseListener {
 
-        private readonly Net.Vpc.Upa.Impl.Persistence.QueryResultLazyList<R> outer;
+        private readonly Net.TheVpc.Upa.Impl.Persistence.QueryResultLazyList<R> outer;
 
-        public CloseListenerImpl(Net.Vpc.Upa.Impl.Persistence.QueryResultLazyList<R> outer) {
+        public CloseListenerImpl(Net.TheVpc.Upa.Impl.Persistence.QueryResultLazyList<R> outer) {
             this.outer = outer;
         }
 

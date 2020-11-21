@@ -11,12 +11,12 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql
+namespace Net.TheVpc.Upa.Impl.Uql
 {
 
 
     public interface CompiledQLParameterProcessor {
 
-         void ProcessSQLParameters(System.Collections.Generic.IList<Net.Vpc.Upa.QLParameter> parameter, System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression> output, string message);
+         void ProcessSQLParameters(System.Collections.Generic.IList<Net.TheVpc.Upa.QLParameter> parameter, System.Collections.Generic.IDictionary<string , Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression> output, string message);
     }
 }

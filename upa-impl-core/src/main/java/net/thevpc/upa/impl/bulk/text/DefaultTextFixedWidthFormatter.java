@@ -1,0 +1,88 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ *//*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.thevpc.upa.impl.bulk.text;
+
+import net.thevpc.upa.bulk.DataWriter;
+import net.thevpc.upa.bulk.TextFixedWidthFormatter;
+
+import java.io.*;
+import net.thevpc.upa.PortabilityHint;
+import net.thevpc.upa.exceptions.UPAException;
+import net.thevpc.upa.types.I18NString;
+
+/**
+ *
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+@PortabilityHint(target = "C#",name = "suppress")
+public class DefaultTextFixedWidthFormatter extends TextFixedWidthFormatter {
+
+    private Object target;
+
+    public void configure(Object target) throws IOException {
+        if (target == null) {
+            throw new UPAException("NullTarget");
+        }
+        if (target instanceof File || target instanceof OutputStream || target instanceof Writer) {
+            this.target = target;
+        } else {
+            throw new UPAException(new I18NString("InvalidTarget")
+                    .setDefaultValue("Invalid Formatter Target. Expected types are  File|OutputStream|Writer"), target.getClass().getSimpleName()
+            );
+        }
+        this.target = target;
+    }
+
+    public DataWriter createWriter() throws IOException {
+        if (target instanceof File) {
+            DefaultTextFixedWidthWriter w = new DefaultTextFixedWidthWriter(this, new FileWriter((File) target));
+            w.setDataRowConverter(getDataRowConverter());
+            return w;
+        } else if (target instanceof OutputStream) {
+            DefaultTextFixedWidthWriter w = new DefaultTextFixedWidthWriter(this, new OutputStreamWriter((OutputStream) target));
+            w.setDataRowConverter(getDataRowConverter());
+            return w;
+        } else if (target instanceof Writer) {
+            DefaultTextFixedWidthWriter w = new DefaultTextFixedWidthWriter(this, ((Writer) target));
+            w.setDataRowConverter(getDataRowConverter());
+            return w;
+        } else {
+            throw new UPAException(new I18NString("InvalidTarget")
+                    .setDefaultValue("Invalid Formatter Target. Expected types are  File|OutputStream|Writer"), target.getClass().getSimpleName()
+            );
+        }
+    }
+
+    public void close() {
+        if (target != null) {
+            try{
+                if (target instanceof OutputStream) {
+                    ((OutputStream) target).close();
+                } else if (target instanceof Writer) {
+                    ((Writer) target).close();
+                }
+            } catch (IOException e) {
+                throw new UPAException("IOException",e);
+            }
+        }
+    }
+
+    public DataWriter format(OutputStream outputStream) throws IOException {
+        return format(new OutputStreamWriter(outputStream));
+    }
+
+    public DataWriter format(File file) throws IOException {
+        return format(new FileWriter(file));
+    }
+
+    public DataWriter format(Writer writer) throws IOException {
+        DefaultTextFixedWidthWriter d = new DefaultTextFixedWidthWriter(this, writer);
+        d.setDataRowConverter(getDataRowConverter());
+        return d;
+    }
+}

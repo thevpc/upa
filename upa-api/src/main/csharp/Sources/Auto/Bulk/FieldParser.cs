@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Bulk
+namespace Net.TheVpc.Upa.Bulk
 {
 
 
@@ -20,6 +20,6 @@ namespace Net.Vpc.Upa.Bulk
      */
     public interface FieldParser {
 
-         object ParseFieldValue(string fieldName, object fieldValue, Net.Vpc.Upa.Document recod, Net.Vpc.Upa.Bulk.ImportDataManager importer);
+         object ParseFieldValue(string fieldName, object fieldValue, Net.TheVpc.Upa.Document recod, Net.TheVpc.Upa.Bulk.ImportDataManager importer);
     }
 }

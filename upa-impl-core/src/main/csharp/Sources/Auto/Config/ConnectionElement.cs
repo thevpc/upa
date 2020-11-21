@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config
+namespace Net.TheVpc.Upa.Impl.Config
 {
 
 

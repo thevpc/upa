@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Filters
+namespace Net.TheVpc.Upa.Filters
 {
 
 
@@ -20,27 +20,27 @@ namespace Net.Vpc.Upa.Filters
      */
     public class EntityFilters {
 
-        private static Net.Vpc.Upa.Filters.RichEntityFilter ALL = new Net.Vpc.Upa.Filters.EntityAnyFilter();
+        private static Net.TheVpc.Upa.Filters.RichEntityFilter ALL = new Net.TheVpc.Upa.Filters.EntityAnyFilter();
 
-        private static readonly Net.Vpc.Upa.Filters.RichEntityFilter NONE = ALL.Negate();
+        private static readonly Net.TheVpc.Upa.Filters.RichEntityFilter NONE = ALL.Negate();
 
-        public static Net.Vpc.Upa.Filters.RichEntityFilter ByName(params string [] names) {
-            return new Net.Vpc.Upa.Filters.EntityNameFilter(new System.Collections.Generic.List<string>(names));
+        public static Net.TheVpc.Upa.Filters.RichEntityFilter ByName(params string [] names) {
+            return new Net.TheVpc.Upa.Filters.EntityNameFilter(new System.Collections.Generic.List<string>(names));
         }
 
-        public static Net.Vpc.Upa.Filters.RichEntityFilter Not(Net.Vpc.Upa.Filters.EntityFilter filter) {
+        public static Net.TheVpc.Upa.Filters.RichEntityFilter Not(Net.TheVpc.Upa.Filters.EntityFilter filter) {
             return Of(filter).Negate();
         }
 
-        public static Net.Vpc.Upa.Filters.RichEntityFilter All() {
+        public static Net.TheVpc.Upa.Filters.RichEntityFilter All() {
             return ALL;
         }
 
-        public static Net.Vpc.Upa.Filters.RichEntityFilter Of(Net.Vpc.Upa.Filters.EntityFilter filter) {
-            if (filter is Net.Vpc.Upa.Filters.RichEntityFilter) {
-                return (Net.Vpc.Upa.Filters.RichEntityFilter) filter;
+        public static Net.TheVpc.Upa.Filters.RichEntityFilter Of(Net.TheVpc.Upa.Filters.EntityFilter filter) {
+            if (filter is Net.TheVpc.Upa.Filters.RichEntityFilter) {
+                return (Net.TheVpc.Upa.Filters.RichEntityFilter) filter;
             }
-            return new Net.Vpc.Upa.Filters.RichEntityFilterAdapter(filter);
+            return new Net.TheVpc.Upa.Filters.RichEntityFilterAdapter(filter);
         }
     }
 }

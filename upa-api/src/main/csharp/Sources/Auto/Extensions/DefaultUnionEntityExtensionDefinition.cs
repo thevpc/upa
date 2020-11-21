@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Extensions
+namespace Net.TheVpc.Upa.Extensions
 {
 
 
@@ -19,16 +19,16 @@ namespace Net.Vpc.Upa.Extensions
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 8/31/12 1:24 PM
      */
-    public class DefaultUnionEntityExtensionDefinition : Net.Vpc.Upa.Extensions.UnionEntityExtensionDefinition {
+    public class DefaultUnionEntityExtensionDefinition : Net.TheVpc.Upa.Extensions.UnionEntityExtensionDefinition {
 
-        private Net.Vpc.Upa.Extensions.UnionQueryInfo info;
+        private Net.TheVpc.Upa.Extensions.UnionQueryInfo info;
 
-        public DefaultUnionEntityExtensionDefinition(Net.Vpc.Upa.Extensions.UnionQueryInfo info) {
+        public DefaultUnionEntityExtensionDefinition(Net.TheVpc.Upa.Extensions.UnionQueryInfo info) {
             this.info = info;
         }
 
 
-        public virtual Net.Vpc.Upa.Extensions.UnionQueryInfo GetQueryInfo(Net.Vpc.Upa.Entity entity) {
+        public virtual Net.TheVpc.Upa.Extensions.UnionQueryInfo GetQueryInfo(Net.TheVpc.Upa.Entity entity) {
             return info;
         }
     }

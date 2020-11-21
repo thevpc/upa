@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config.Annotationparser
+namespace Net.TheVpc.Upa.Impl.Config.Annotationparser
 {
 
 
@@ -19,24 +19,24 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
      *
      * @author taha.bensalah@gmail.com
      */
-    internal class ClassIndexedComparator : Net.Vpc.Upa.Impl.Util.IndexedComparator<System.Type> {
+    internal class ClassIndexedComparator : Net.TheVpc.Upa.Impl.Util.IndexedComparator<System.Type> {
 
-        private Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository repo;
+        private Net.TheVpc.Upa.Impl.Config.Decorations.DecorationRepository repo;
 
-        public ClassIndexedComparator(Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository repo) {
+        public ClassIndexedComparator(Net.TheVpc.Upa.Impl.Config.Decorations.DecorationRepository repo) {
             this.repo = repo;
         }
 
 
         public virtual int Compare(System.Type o1, System.Type o2, int i1, int i2) {
-            Net.Vpc.Upa.Config.Decoration e1 = (Net.Vpc.Upa.Config.Decoration) repo.GetTypeDecoration(o1, typeof(Net.Vpc.Upa.Config.Entity));
-            Net.Vpc.Upa.Config.Decoration e2 = (Net.Vpc.Upa.Config.Decoration) repo.GetTypeDecoration(o1, typeof(Net.Vpc.Upa.Config.Entity));
+            Net.TheVpc.Upa.Config.Decoration e1 = (Net.TheVpc.Upa.Config.Decoration) repo.GetTypeDecoration(o1, typeof(Net.TheVpc.Upa.Config.Entity));
+            Net.TheVpc.Upa.Config.Decoration e2 = (Net.TheVpc.Upa.Config.Decoration) repo.GetTypeDecoration(o1, typeof(Net.TheVpc.Upa.Config.Entity));
             int x = e1.GetDecoration("config").GetInt("order") - e2.GetDecoration("config").GetInt("order");
             if (x != 0) {
                 return x;
             }
-            Net.Vpc.Upa.Config.Decoration p1 = (Net.Vpc.Upa.Config.Decoration) repo.GetTypeDecoration(o1, typeof(Net.Vpc.Upa.Config.Partial));
-            Net.Vpc.Upa.Config.Decoration p2 = (Net.Vpc.Upa.Config.Decoration) repo.GetTypeDecoration(o1, typeof(Net.Vpc.Upa.Config.Partial));
+            Net.TheVpc.Upa.Config.Decoration p1 = (Net.TheVpc.Upa.Config.Decoration) repo.GetTypeDecoration(o1, typeof(Net.TheVpc.Upa.Config.Partial));
+            Net.TheVpc.Upa.Config.Decoration p2 = (Net.TheVpc.Upa.Config.Decoration) repo.GetTypeDecoration(o1, typeof(Net.TheVpc.Upa.Config.Partial));
             if (p1 != null && p2 == null) {
                 return 1;
             }

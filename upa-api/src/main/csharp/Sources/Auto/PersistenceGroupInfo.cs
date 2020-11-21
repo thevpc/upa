@@ -11,23 +11,23 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
-    public class PersistenceGroupInfo : Net.Vpc.Upa.UPAObjectInfo {
+    public class PersistenceGroupInfo : Net.TheVpc.Upa.UPAObjectInfo {
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.PersistenceUnitInfo> persistenceUnits;
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.PersistenceUnitInfo> persistenceUnits;
 
         public PersistenceGroupInfo()  : base("persistenceGroup"){
 
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.PersistenceUnitInfo> GetPersistenceUnits() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.PersistenceUnitInfo> GetPersistenceUnits() {
             return persistenceUnits;
         }
 
-        public virtual void SetPersistenceUnits(System.Collections.Generic.IList<Net.Vpc.Upa.PersistenceUnitInfo> persistenceUnits) {
+        public virtual void SetPersistenceUnits(System.Collections.Generic.IList<Net.TheVpc.Upa.PersistenceUnitInfo> persistenceUnits) {
             this.persistenceUnits = persistenceUnits;
         }
     }

@@ -11,30 +11,30 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
     /**
      * Created by vpc on 6/27/16.
      */
-    public class DefaultResultField : Net.Vpc.Upa.Persistence.ResultField {
+    public class DefaultResultField : Net.TheVpc.Upa.Persistence.ResultField {
 
-        public Net.Vpc.Upa.Expressions.Expression expression;
+        public Net.TheVpc.Upa.Expressions.Expression expression;
 
         public string alias;
 
-        public Net.Vpc.Upa.Types.DataType dataType;
+        public Net.TheVpc.Upa.Types.DataType dataType;
 
-        public Net.Vpc.Upa.Field field;
+        public Net.TheVpc.Upa.Field field;
 
-        public Net.Vpc.Upa.Entity entity;
+        public Net.TheVpc.Upa.Entity entity;
 
-        public DefaultResultField(Net.Vpc.Upa.Expressions.Expression expression, string alias, Net.Vpc.Upa.Types.DataType dataType, Net.Vpc.Upa.Field field, Net.Vpc.Upa.Entity entity) {
+        public DefaultResultField(Net.TheVpc.Upa.Expressions.Expression expression, string alias, Net.TheVpc.Upa.Types.DataType dataType, Net.TheVpc.Upa.Field field, Net.TheVpc.Upa.Entity entity) {
             this.expression = expression;
             if (alias == null) {
-                if (expression is Net.Vpc.Upa.Expressions.Var) {
-                    alias = ((Net.Vpc.Upa.Expressions.Var) expression).GetName();
+                if (expression is Net.TheVpc.Upa.Expressions.Var) {
+                    alias = ((Net.TheVpc.Upa.Expressions.Var) expression).GetName();
                 } else {
                     alias = expression.ToString();
                 }
@@ -46,7 +46,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
         }
 
 
-        public virtual Net.Vpc.Upa.Expressions.Expression GetExpression() {
+        public virtual Net.TheVpc.Upa.Expressions.Expression GetExpression() {
             return expression;
         }
 
@@ -56,17 +56,17 @@ namespace Net.Vpc.Upa.Impl.Persistence
         }
 
 
-        public virtual Net.Vpc.Upa.Types.DataType GetDataType() {
+        public virtual Net.TheVpc.Upa.Types.DataType GetDataType() {
             return dataType;
         }
 
 
-        public virtual Net.Vpc.Upa.Field GetField() {
+        public virtual Net.TheVpc.Upa.Field GetField() {
             return field;
         }
 
 
-        public virtual Net.Vpc.Upa.Entity GetEntity() {
+        public virtual Net.TheVpc.Upa.Entity GetEntity() {
             return entity;
         }
     }

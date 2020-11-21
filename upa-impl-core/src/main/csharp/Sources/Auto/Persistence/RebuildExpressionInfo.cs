@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -21,12 +21,12 @@ namespace Net.Vpc.Upa.Impl.Persistence
      */
     public class RebuildExpressionInfo {
 
-        internal Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression compiledExpression;
+        internal Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression compiledExpression;
 
-        internal Net.Vpc.Upa.ExpressionFormula initialFormula;
+        internal Net.TheVpc.Upa.ExpressionFormula initialFormula;
 
-        internal Net.Vpc.Upa.ExpressionFormula rebuiltFormula;
+        internal Net.TheVpc.Upa.ExpressionFormula rebuiltFormula;
 
-        internal Net.Vpc.Upa.Expressions.Expression expression;
+        internal Net.TheVpc.Upa.Expressions.Expression expression;
     }
 }

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
 
@@ -19,34 +19,34 @@ namespace Net.Vpc.Upa.Expressions
      * Created with IntelliJ IDEA. User: vpc Date: 8/19/12 Time: 12:34 AM To change
      * this template use File | Settings | File Templates.
      */
-    public class Union : Net.Vpc.Upa.Expressions.DefaultEntityStatement, Net.Vpc.Upa.Expressions.QueryStatement {
+    public class Union : Net.TheVpc.Upa.Expressions.DefaultEntityStatement, Net.TheVpc.Upa.Expressions.QueryStatement {
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.QueryStatement> queryStatements = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.QueryStatement>(2);
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Expressions.QueryStatement> queryStatements = new System.Collections.Generic.List<Net.TheVpc.Upa.Expressions.QueryStatement>(2);
 
 
-        public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> all = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+        public override System.Collections.Generic.IList<Net.TheVpc.Upa.Expressions.TaggedExpression> GetChildren() {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Expressions.TaggedExpression> all = new System.Collections.Generic.List<Net.TheVpc.Upa.Expressions.TaggedExpression>();
             for (int i = 0; i < (queryStatements).Count; i++) {
-                all.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(queryStatements[i], new Net.Vpc.Upa.Expressions.IndexedTag("#", i)));
+                all.Add(new Net.TheVpc.Upa.Expressions.TaggedExpression(queryStatements[i], new Net.TheVpc.Upa.Expressions.IndexedTag("#", i)));
             }
             return all;
         }
 
 
-        public override void SetChild(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.Expressions.ExpressionTag tag) {
-            queryStatements[((Net.Vpc.Upa.Expressions.IndexedTag) tag).GetIndex()]=(Net.Vpc.Upa.Expressions.QueryStatement) e;
+        public override void SetChild(Net.TheVpc.Upa.Expressions.Expression e, Net.TheVpc.Upa.Expressions.ExpressionTag tag) {
+            queryStatements[((Net.TheVpc.Upa.Expressions.IndexedTag) tag).GetIndex()]=(Net.TheVpc.Upa.Expressions.QueryStatement) e;
         }
 
-        public virtual void Add(Net.Vpc.Upa.Expressions.QueryStatement s) {
+        public virtual void Add(Net.TheVpc.Upa.Expressions.QueryStatement s) {
             queryStatements.Add(s);
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.QueryStatement> GetQueryStatements() {
-            return new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.QueryStatement>(queryStatements);
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Expressions.QueryStatement> GetQueryStatements() {
+            return new System.Collections.Generic.List<Net.TheVpc.Upa.Expressions.QueryStatement>(queryStatements);
         }
 
         public override string GetEntityName() {
-            foreach (Net.Vpc.Upa.Expressions.QueryStatement q in queryStatements) {
+            foreach (Net.TheVpc.Upa.Expressions.QueryStatement q in queryStatements) {
                 string n = q.GetEntityName();
                 if (n != null) {
                     return n;
@@ -66,12 +66,12 @@ namespace Net.Vpc.Upa.Expressions
         }
 
 
-        public virtual Net.Vpc.Upa.Expressions.QueryField GetField(int i) {
+        public virtual Net.TheVpc.Upa.Expressions.QueryField GetField(int i) {
             return queryStatements[0].GetField(i);
         }
 
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.QueryField> GetFields() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Expressions.QueryField> GetFields() {
             return queryStatements[0].GetFields();
         }
 
@@ -80,7 +80,7 @@ namespace Net.Vpc.Upa.Expressions
             if ((queryStatements.Count==0)) {
                 return false;
             }
-            foreach (Net.Vpc.Upa.Expressions.QueryStatement queryStatement in queryStatements) {
+            foreach (Net.TheVpc.Upa.Expressions.QueryStatement queryStatement in queryStatements) {
                 if (!queryStatement.IsValid()) {
                     return false;
                 }
@@ -96,7 +96,7 @@ namespace Net.Vpc.Upa.Expressions
             if (o == null || GetType() != o.GetType()) {
                 return false;
             }
-            Net.Vpc.Upa.Expressions.Union union = (Net.Vpc.Upa.Expressions.Union) o;
+            Net.TheVpc.Upa.Expressions.Union union = (Net.TheVpc.Upa.Expressions.Union) o;
             if (queryStatements != null ? !queryStatements.Equals(union.queryStatements) : union.queryStatements != null) {
                 return false;
             }
@@ -109,10 +109,10 @@ namespace Net.Vpc.Upa.Expressions
         }
 
 
-        public override Net.Vpc.Upa.Expressions.Expression Copy() {
-            Net.Vpc.Upa.Expressions.Union o = new Net.Vpc.Upa.Expressions.Union();
-            foreach (Net.Vpc.Upa.Expressions.QueryStatement queryStatement in queryStatements) {
-                o.Add((Net.Vpc.Upa.Expressions.QueryStatement) queryStatement.Copy());
+        public override Net.TheVpc.Upa.Expressions.Expression Copy() {
+            Net.TheVpc.Upa.Expressions.Union o = new Net.TheVpc.Upa.Expressions.Union();
+            foreach (Net.TheVpc.Upa.Expressions.QueryStatement queryStatement in queryStatements) {
+                o.Add((Net.TheVpc.Upa.Expressions.QueryStatement) queryStatement.Copy());
             }
             return o;
         }

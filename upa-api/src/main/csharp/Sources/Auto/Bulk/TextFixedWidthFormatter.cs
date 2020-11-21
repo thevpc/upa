@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Bulk
+namespace Net.TheVpc.Upa.Bulk
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public abstract class TextFixedWidthFormatter : Net.Vpc.Upa.Bulk.AbstractDataFormatter {
+    public abstract class TextFixedWidthFormatter : Net.TheVpc.Upa.Bulk.AbstractDataFormatter {
 
         private bool writeHeader;
 
@@ -26,9 +26,9 @@ namespace Net.Vpc.Upa.Bulk
 
         private int skipRows;
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Bulk.TextFixedWidthColumn> columns = new System.Collections.Generic.List<Net.Vpc.Upa.Bulk.TextFixedWidthColumn>();
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Bulk.TextFixedWidthColumn> columns = new System.Collections.Generic.List<Net.TheVpc.Upa.Bulk.TextFixedWidthColumn>();
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Bulk.TextFixedWidthColumn> GetColumns() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Bulk.TextFixedWidthColumn> GetColumns() {
             return columns;
         }
 
@@ -36,7 +36,7 @@ namespace Net.Vpc.Upa.Bulk
             return writeHeader;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.TextFixedWidthFormatter SetWriteHeader(bool writeHeader) {
+        public virtual Net.TheVpc.Upa.Bulk.TextFixedWidthFormatter SetWriteHeader(bool writeHeader) {
             this.writeHeader = writeHeader;
             return this;
         }
@@ -45,7 +45,7 @@ namespace Net.Vpc.Upa.Bulk
             return skipRows;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.TextFixedWidthFormatter SetSkipRows(int skipRows) {
+        public virtual Net.TheVpc.Upa.Bulk.TextFixedWidthFormatter SetSkipRows(int skipRows) {
             this.skipRows = skipRows;
             return this;
         }
@@ -54,11 +54,11 @@ namespace Net.Vpc.Upa.Bulk
             return newLine;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.TextFixedWidthFormatter SetNewLine(string newLine) {
+        public virtual Net.TheVpc.Upa.Bulk.TextFixedWidthFormatter SetNewLine(string newLine) {
             this.newLine = newLine;
             return this;
         }
 
-        public abstract Net.Vpc.Upa.Bulk.DataWriter Format(System.IO.TextWriter writer) /* throws System.IO.IOException */ ;
+        public abstract Net.TheVpc.Upa.Bulk.DataWriter Format(System.IO.TextWriter writer) /* throws System.IO.IOException */ ;
     }
 }

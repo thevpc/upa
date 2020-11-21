@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     /**
@@ -20,8 +20,8 @@ namespace Net.Vpc.Upa
      */
     public interface BeanAdapterFactory {
 
-         Net.Vpc.Upa.BeanAdapter CreateBeanAdapter(object instance);
+         Net.TheVpc.Upa.BeanAdapter CreateBeanAdapter(object instance);
 
-         Net.Vpc.Upa.BeanAdapter CreateBeanAdapter(System.Type type);
+         Net.TheVpc.Upa.BeanAdapter CreateBeanAdapter(System.Type type);
     }
 }

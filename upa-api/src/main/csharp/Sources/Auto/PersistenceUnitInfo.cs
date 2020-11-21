@@ -11,33 +11,33 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
-    public class PersistenceUnitInfo : Net.Vpc.Upa.UPAObjectInfo {
+    public class PersistenceUnitInfo : Net.TheVpc.Upa.UPAObjectInfo {
 
-        private Net.Vpc.Upa.PackageInfo root;
+        private Net.TheVpc.Upa.PackageInfo root;
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.RelationshipInfo> relationships;
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.RelationshipInfo> relationships;
 
         public PersistenceUnitInfo()  : base("persistenceUnit"){
 
         }
 
-        public virtual Net.Vpc.Upa.PackageInfo GetRoot() {
+        public virtual Net.TheVpc.Upa.PackageInfo GetRoot() {
             return root;
         }
 
-        public virtual void SetRoot(Net.Vpc.Upa.PackageInfo root) {
+        public virtual void SetRoot(Net.TheVpc.Upa.PackageInfo root) {
             this.root = root;
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.RelationshipInfo> GetRelationships() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.RelationshipInfo> GetRelationships() {
             return relationships;
         }
 
-        public virtual void SetRelationships(System.Collections.Generic.IList<Net.Vpc.Upa.RelationshipInfo> relationships) {
+        public virtual void SetRelationships(System.Collections.Generic.IList<Net.TheVpc.Upa.RelationshipInfo> relationships) {
             this.relationships = relationships;
         }
     }

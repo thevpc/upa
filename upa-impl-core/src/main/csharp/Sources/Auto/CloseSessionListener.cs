@@ -11,23 +11,23 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
     /**
     * @author Taha BEN SALAH <taha.bensalah@gmail.com>
     * @creationdate 1/8/13 2:26 PM*/
-    internal class CloseSessionListener : Net.Vpc.Upa.Callbacks.SessionListenerAdapter {
+    internal class CloseSessionListener : Net.TheVpc.Upa.Callbacks.SessionListenerAdapter {
 
-        private Net.Vpc.Upa.Impl.DefaultPersistenceGroup defaultPersistenceGroup;
+        private Net.TheVpc.Upa.Impl.DefaultPersistenceGroup defaultPersistenceGroup;
 
-        public CloseSessionListener(Net.Vpc.Upa.Impl.DefaultPersistenceGroup defaultPersistenceGroup) {
+        public CloseSessionListener(Net.TheVpc.Upa.Impl.DefaultPersistenceGroup defaultPersistenceGroup) {
             this.defaultPersistenceGroup = defaultPersistenceGroup;
         }
 
 
-        public override void CloseSession(Net.Vpc.Upa.Session session) {
+        public override void CloseSession(Net.TheVpc.Upa.Session session) {
             defaultPersistenceGroup.OnSessionClosed(session);
         }
     }

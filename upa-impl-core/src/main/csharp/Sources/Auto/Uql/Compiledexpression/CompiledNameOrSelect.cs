@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledexpression
 {
 
     /**
@@ -21,6 +21,6 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
      * Time: 10:11 PM
      * To change this template use File | Settings | File Templates.
      */
-    public interface CompiledNameOrSelect : Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression {
+    public interface CompiledNameOrSelect : Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression {
     }
 }

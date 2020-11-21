@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Callbacks
+namespace Net.TheVpc.Upa.Callbacks
 {
 
 
@@ -19,19 +19,19 @@ namespace Net.Vpc.Upa.Callbacks
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 9/10/12 1:25 AM
      */
-    public abstract class FormulaUpdaterDataInterceptorAdapter : Net.Vpc.Upa.Callbacks.UpdateFormulaInterceptor {
+    public abstract class FormulaUpdaterDataInterceptorAdapter : Net.TheVpc.Upa.Callbacks.UpdateFormulaInterceptor {
 
-        private Net.Vpc.Upa.Filters.FieldFilter formulaFields;
+        private Net.TheVpc.Upa.Filters.FieldFilter formulaFields;
 
-        public FormulaUpdaterDataInterceptorAdapter(Net.Vpc.Upa.Filters.FieldFilter formulaFields) {
+        public FormulaUpdaterDataInterceptorAdapter(Net.TheVpc.Upa.Filters.FieldFilter formulaFields) {
             this.formulaFields = formulaFields;
         }
 
 
-        public virtual Net.Vpc.Upa.Filters.FieldFilter GetFormulaFields() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual Net.TheVpc.Upa.Filters.FieldFilter GetFormulaFields() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return formulaFields;
         }
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
-        public abstract Net.Vpc.Upa.Expressions.Expression TranslateExpression(Net.Vpc.Upa.Expressions.Expression arg1);
+        public abstract Net.TheVpc.Upa.Expressions.Expression TranslateExpression(Net.TheVpc.Upa.Expressions.Expression arg1);
     }
 }

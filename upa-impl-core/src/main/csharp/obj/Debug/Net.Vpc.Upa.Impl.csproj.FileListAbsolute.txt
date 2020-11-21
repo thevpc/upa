@@ -1,10 +1,10 @@
 Z:\data\me\xprojects\net\vpc\upa\upa-impl\src\main\csharp\obj\Debug\ResolveAssemblyReference.cache
-Z:\data\me\xprojects\net\vpc\upa\upa-impl\src\main\csharp\bin\Debug\Net.Vpc.Upa.Impl.dll
-Z:\data\me\xprojects\net\vpc\upa\upa-impl\src\main\csharp\bin\Debug\Net.Vpc.Upa.Impl.pdb
+Z:\data\me\xprojects\net\vpc\upa\upa-impl\src\main\csharp\bin\Debug\Net.TheVpc.Upa.Impl.dll
+Z:\data\me\xprojects\net\vpc\upa\upa-impl\src\main\csharp\bin\Debug\Net.TheVpc.Upa.Impl.pdb
 Z:\data\me\xprojects\net\vpc\upa\upa-impl\src\main\csharp\bin\Debug\log4net.dll
 Z:\data\me\xprojects\net\vpc\upa\upa-impl\src\main\csharp\bin\Debug\net.vpc.common.types.dll
-Z:\data\me\xprojects\net\vpc\upa\upa-impl\src\main\csharp\bin\Debug\Net.Vpc.Upa.dll
+Z:\data\me\xprojects\net\vpc\upa\upa-impl\src\main\csharp\bin\Debug\Net.TheVpc.Upa.dll
 Z:\data\me\xprojects\net\vpc\upa\upa-impl\src\main\csharp\bin\Debug\net.vpc.common.types.pdb
-Z:\data\me\xprojects\net\vpc\upa\upa-impl\src\main\csharp\bin\Debug\Net.Vpc.Upa.pdb
-Z:\data\me\xprojects\net\vpc\upa\upa-impl\src\main\csharp\obj\Debug\Net.Vpc.Upa.Impl.dll
-Z:\data\me\xprojects\net\vpc\upa\upa-impl\src\main\csharp\obj\Debug\Net.Vpc.Upa.Impl.pdb
+Z:\data\me\xprojects\net\vpc\upa\upa-impl\src\main\csharp\bin\Debug\Net.TheVpc.Upa.pdb
+Z:\data\me\xprojects\net\vpc\upa\upa-impl\src\main\csharp\obj\Debug\Net.TheVpc.Upa.Impl.dll
+Z:\data\me\xprojects\net\vpc\upa\upa-impl\src\main\csharp\obj\Debug\Net.TheVpc.Upa.Impl.pdb

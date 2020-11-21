@@ -12,7 +12,7 @@
 
 
 using System.Linq;
-namespace Net.Vpc.Upa.Impl.Config.Decorations
+namespace Net.TheVpc.Upa.Impl.Config.Decorations
 {
 
 
@@ -20,13 +20,13 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
      *
      * @author taha.bensalah@gmail.com
      */
-    public class DefaultDecorationRepository : Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository {
+    public class DefaultDecorationRepository : Net.TheVpc.Upa.Impl.Config.Decorations.DecorationRepository {
 
-        private System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo> decorationsByType = new System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo>();
+        private System.Collections.Generic.IDictionary<string , Net.TheVpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo> decorationsByType = new System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo>();
 
         private System.Collections.Generic.IDictionary<string , System.Collections.Generic.ISet<string>> typesByDecoration = new System.Collections.Generic.Dictionary<string , System.Collections.Generic.ISet<string>>();
 
-        private static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.Vpc.Upa.Impl.Config.Decorations.DefaultDecorationRepository)).FullName);
+        private static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.TheVpc.Upa.Impl.Config.Decorations.DefaultDecorationRepository)).FullName);
 
         private string name;
 
@@ -37,33 +37,33 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
             this.enableLog = enableLog;
         }
 
-        public virtual Net.Vpc.Upa.Config.Decoration[] GetMethodDecorations(System.Reflection.MethodInfo method) {
-            return GetMethodDecorations(((method).DeclaringType).FullName, Net.Vpc.Upa.Impl.Util.PlatformUtils.GetMethodSignature(method));
+        public virtual Net.TheVpc.Upa.Config.Decoration[] GetMethodDecorations(System.Reflection.MethodInfo method) {
+            return GetMethodDecorations(((method).DeclaringType).FullName, Net.TheVpc.Upa.Impl.Util.PlatformUtils.GetMethodSignature(method));
         }
 
-        public virtual Net.Vpc.Upa.Config.Decoration[] GetFieldDecorations(System.Reflection.FieldInfo field) {
+        public virtual Net.TheVpc.Upa.Config.Decoration[] GetFieldDecorations(System.Reflection.FieldInfo field) {
             return GetFieldDecorations(((field).DeclaringType).FullName, (field).Name);
         }
 
-        public virtual Net.Vpc.Upa.Config.Decoration[] GetTypeDecorations(System.Type type) {
+        public virtual Net.TheVpc.Upa.Config.Decoration[] GetTypeDecorations(System.Type type) {
             return GetTypeDecorations((type).FullName);
         }
 
-        public virtual Net.Vpc.Upa.Config.Decoration GetTypeDecoration(System.Type type, string annType) {
+        public virtual Net.TheVpc.Upa.Config.Decoration GetTypeDecoration(System.Type type, string annType) {
             return GetTypeDecoration((type).FullName, annType);
         }
 
-        public virtual Net.Vpc.Upa.Config.Decoration GetTypeDecoration(System.Type type, System.Type annType) {
+        public virtual Net.TheVpc.Upa.Config.Decoration GetTypeDecoration(System.Type type, System.Type annType) {
             return GetTypeDecoration((type).FullName, (annType).FullName);
         }
 
-        public virtual Net.Vpc.Upa.Config.Decoration[] GetTypeDecorations(System.Type type, string annType) {
+        public virtual Net.TheVpc.Upa.Config.Decoration[] GetTypeDecorations(System.Type type, string annType) {
             return GetTypeDecorations((type).FullName, annType);
         }
 
-        public virtual Net.Vpc.Upa.Config.Decoration[] GetTypeDecorations(string type, string annType) {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Config.Decoration> found = new System.Collections.Generic.List<Net.Vpc.Upa.Config.Decoration>();
-            foreach (Net.Vpc.Upa.Config.Decoration decoration in GetTypeDecorations(type)) {
+        public virtual Net.TheVpc.Upa.Config.Decoration[] GetTypeDecorations(string type, string annType) {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Config.Decoration> found = new System.Collections.Generic.List<Net.TheVpc.Upa.Config.Decoration>();
+            foreach (Net.TheVpc.Upa.Config.Decoration decoration in GetTypeDecorations(type)) {
                 if (decoration.GetName().Equals(annType)) {
                     found.Add(decoration);
                 }
@@ -71,18 +71,18 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
             return found.ToArray();
         }
 
-        public virtual Net.Vpc.Upa.Config.Decoration GetTypeDecoration(string type, string annType) {
-            Net.Vpc.Upa.Config.Decoration[] found = GetTypeDecorations(type, annType);
+        public virtual Net.TheVpc.Upa.Config.Decoration GetTypeDecoration(string type, string annType) {
+            Net.TheVpc.Upa.Config.Decoration[] found = GetTypeDecorations(type, annType);
             return found.Length == 0 ? null : found[0];
         }
 
-        public virtual Net.Vpc.Upa.Config.Decoration[] GetMethodDecorations(System.Reflection.MethodInfo method, string annType) {
-            return GetMethodDecorations(((method).DeclaringType).FullName, Net.Vpc.Upa.Impl.Util.PlatformUtils.GetMethodSignature(method), annType);
+        public virtual Net.TheVpc.Upa.Config.Decoration[] GetMethodDecorations(System.Reflection.MethodInfo method, string annType) {
+            return GetMethodDecorations(((method).DeclaringType).FullName, Net.TheVpc.Upa.Impl.Util.PlatformUtils.GetMethodSignature(method), annType);
         }
 
-        public virtual Net.Vpc.Upa.Config.Decoration[] GetMethodDecorations(string type, string method, string annType) {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Config.Decoration> found = new System.Collections.Generic.List<Net.Vpc.Upa.Config.Decoration>();
-            foreach (Net.Vpc.Upa.Config.Decoration decoration in GetMethodDecorations(type, method)) {
+        public virtual Net.TheVpc.Upa.Config.Decoration[] GetMethodDecorations(string type, string method, string annType) {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Config.Decoration> found = new System.Collections.Generic.List<Net.TheVpc.Upa.Config.Decoration>();
+            foreach (Net.TheVpc.Upa.Config.Decoration decoration in GetMethodDecorations(type, method)) {
                 if (decoration.GetName().Equals(annType)) {
                     found.Add(decoration);
                 }
@@ -90,17 +90,17 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
             return found.ToArray();
         }
 
-        public virtual Net.Vpc.Upa.Config.Decoration GetMethodDecoration(string type, string method, string annType) {
-            Net.Vpc.Upa.Config.Decoration[] found = GetMethodDecorations(type, method, annType);
+        public virtual Net.TheVpc.Upa.Config.Decoration GetMethodDecoration(string type, string method, string annType) {
+            Net.TheVpc.Upa.Config.Decoration[] found = GetMethodDecorations(type, method, annType);
             return found.Length == 0 ? null : found[0];
         }
 
-        public virtual Net.Vpc.Upa.Config.Decoration GetMethodDecoration(System.Reflection.MethodInfo method, System.Type annType) {
+        public virtual Net.TheVpc.Upa.Config.Decoration GetMethodDecoration(System.Reflection.MethodInfo method, System.Type annType) {
             return GetMethodDecoration(method, (annType).FullName);
         }
 
-        public virtual Net.Vpc.Upa.Config.Decoration GetMethodDecoration(System.Reflection.MethodInfo method, string annType) {
-            foreach (Net.Vpc.Upa.Config.Decoration decoration in GetMethodDecorations(method)) {
+        public virtual Net.TheVpc.Upa.Config.Decoration GetMethodDecoration(System.Reflection.MethodInfo method, string annType) {
+            foreach (Net.TheVpc.Upa.Config.Decoration decoration in GetMethodDecorations(method)) {
                 if (decoration.GetName().Equals(annType)) {
                     return decoration;
                 }
@@ -108,12 +108,12 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
             return null;
         }
 
-        public virtual Net.Vpc.Upa.Config.Decoration GetFieldDecoration(string type, string field, System.Type annType) {
+        public virtual Net.TheVpc.Upa.Config.Decoration GetFieldDecoration(string type, string field, System.Type annType) {
             return GetFieldDecoration(type, field, (annType).FullName);
         }
 
-        public virtual Net.Vpc.Upa.Config.Decoration GetFieldDecoration(string type, string field, string annType) {
-            foreach (Net.Vpc.Upa.Config.Decoration decoration in GetFieldDecorations(type, field)) {
+        public virtual Net.TheVpc.Upa.Config.Decoration GetFieldDecoration(string type, string field, string annType) {
+            foreach (Net.TheVpc.Upa.Config.Decoration decoration in GetFieldDecorations(type, field)) {
                 if (decoration.GetName().Equals(annType)) {
                     return decoration;
                 }
@@ -121,12 +121,12 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
             return null;
         }
 
-        public virtual Net.Vpc.Upa.Config.Decoration GetFieldDecoration(System.Reflection.FieldInfo field, System.Type annType) {
+        public virtual Net.TheVpc.Upa.Config.Decoration GetFieldDecoration(System.Reflection.FieldInfo field, System.Type annType) {
             return GetFieldDecoration(field, (annType).FullName);
         }
 
-        public virtual Net.Vpc.Upa.Config.Decoration GetFieldDecoration(System.Reflection.FieldInfo field, string annType) {
-            foreach (Net.Vpc.Upa.Config.Decoration decoration in GetFieldDecorations(field)) {
+        public virtual Net.TheVpc.Upa.Config.Decoration GetFieldDecoration(System.Reflection.FieldInfo field, string annType) {
+            foreach (Net.TheVpc.Upa.Config.Decoration decoration in GetFieldDecorations(field)) {
                 if (decoration.GetName().Equals(annType)) {
                     return decoration;
                 }
@@ -134,37 +134,37 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
             return null;
         }
 
-        public virtual void Visit(Net.Vpc.Upa.Config.Decoration d) {
+        public virtual void Visit(Net.TheVpc.Upa.Config.Decoration d) {
             string typeName = d.GetLocationType();
             try {
                 if (enableLog && typeName.ToLower().Contains("upalock")) {
-                    log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("\t[{0}] unexpected registration of {1}",null,new object[] { name, typeName }));
+                    log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("\t[{0}] unexpected registration of {1}",null,new object[] { name, typeName }));
                 }
             } catch (System.Exception e) {
                 System.Console.WriteLine(e);
             }
             string methodOrFieldName = d.GetLocation();
-            Net.Vpc.Upa.Config.DecorationTarget targetType = d.GetTarget();
+            Net.TheVpc.Upa.Config.DecorationTarget targetType = d.GetTarget();
             if (enableLog && /*IsLoggable=*/true) {
-                log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,40,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("\t[{0}] register Decoration {1}",null,new object[] { name, d }));
+                log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,40,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("\t[{0}] register Decoration {1}",null,new object[] { name, d }));
             }
-            Net.Vpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo typeInfo = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.Vpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo>(decorationsByType,typeName);
+            Net.TheVpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo typeInfo = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.TheVpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo>(decorationsByType,typeName);
             if (typeInfo == null) {
-                typeInfo = new Net.Vpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo();
+                typeInfo = new Net.TheVpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo();
                 typeInfo.typeName = typeName;
                 decorationsByType[typeName]=typeInfo;
             }
-            if (targetType != default(Net.Vpc.Upa.Config.DecorationTarget)) {
+            if (targetType != default(Net.TheVpc.Upa.Config.DecorationTarget)) {
                 switch(targetType) {
-                    case Net.Vpc.Upa.Config.DecorationTarget.TYPE:
+                    case Net.TheVpc.Upa.Config.DecorationTarget.TYPE:
                         {
                             if (typeInfo.decorations == null) {
-                                typeInfo.decorations = new System.Collections.Generic.List<Net.Vpc.Upa.Config.Decoration>(3);
+                                typeInfo.decorations = new System.Collections.Generic.List<Net.TheVpc.Upa.Config.Decoration>(3);
                             }
-                            System.Collections.Generic.IList<Net.Vpc.Upa.Config.Decoration> m = typeInfo.decorations;
+                            System.Collections.Generic.IList<Net.TheVpc.Upa.Config.Decoration> m = typeInfo.decorations;
                             int found = -1;
                             for (int i = 0; i < (m).Count; i++) {
-                                Net.Vpc.Upa.Config.Decoration m1 = m[i];
+                                Net.TheVpc.Upa.Config.Decoration m1 = m[i];
                                 if (m1.GetName().Equals(d.GetName()) && m1.GetPosition() == d.GetPosition()) {
                                     found = i;
                                     break;
@@ -175,22 +175,22 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
                             }
                             break;
                         }
-                    case Net.Vpc.Upa.Config.DecorationTarget.METHOD:
+                    case Net.TheVpc.Upa.Config.DecorationTarget.METHOD:
                         {
                             if (typeInfo.methods == null) {
-                                typeInfo.methods = new System.Collections.Generic.Dictionary<string , System.Collections.Generic.IList<Net.Vpc.Upa.Config.Decoration>>();
-                                System.Collections.Generic.IList<Net.Vpc.Upa.Config.Decoration> m = new System.Collections.Generic.List<Net.Vpc.Upa.Config.Decoration>();
+                                typeInfo.methods = new System.Collections.Generic.Dictionary<string , System.Collections.Generic.IList<Net.TheVpc.Upa.Config.Decoration>>();
+                                System.Collections.Generic.IList<Net.TheVpc.Upa.Config.Decoration> m = new System.Collections.Generic.List<Net.TheVpc.Upa.Config.Decoration>();
                                 typeInfo.methods[methodOrFieldName]=m;
                                 m.Add(d);
                             } else {
-                                System.Collections.Generic.IList<Net.Vpc.Upa.Config.Decoration> m = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,System.Collections.Generic.IList<Net.Vpc.Upa.Config.Decoration>>(typeInfo.methods,methodOrFieldName);
+                                System.Collections.Generic.IList<Net.TheVpc.Upa.Config.Decoration> m = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,System.Collections.Generic.IList<Net.TheVpc.Upa.Config.Decoration>>(typeInfo.methods,methodOrFieldName);
                                 if (m == null) {
-                                    m = new System.Collections.Generic.List<Net.Vpc.Upa.Config.Decoration>();
+                                    m = new System.Collections.Generic.List<Net.TheVpc.Upa.Config.Decoration>();
                                     typeInfo.methods[methodOrFieldName]=m;
                                 }
                                 int found = -1;
                                 for (int i = 0; i < (m).Count; i++) {
-                                    Net.Vpc.Upa.Config.Decoration m1 = m[i];
+                                    Net.TheVpc.Upa.Config.Decoration m1 = m[i];
                                     if (m1.GetName().Equals(d.GetName()) && m1.GetPosition() == d.GetPosition()) {
                                         found = i;
                                         break;
@@ -202,22 +202,22 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
                             }
                             break;
                         }
-                    case Net.Vpc.Upa.Config.DecorationTarget.FIELD:
+                    case Net.TheVpc.Upa.Config.DecorationTarget.FIELD:
                         {
                             if (typeInfo.fields == null) {
-                                typeInfo.fields = new System.Collections.Generic.Dictionary<string , System.Collections.Generic.IList<Net.Vpc.Upa.Config.Decoration>>();
-                                System.Collections.Generic.IList<Net.Vpc.Upa.Config.Decoration> m = new System.Collections.Generic.List<Net.Vpc.Upa.Config.Decoration>();
+                                typeInfo.fields = new System.Collections.Generic.Dictionary<string , System.Collections.Generic.IList<Net.TheVpc.Upa.Config.Decoration>>();
+                                System.Collections.Generic.IList<Net.TheVpc.Upa.Config.Decoration> m = new System.Collections.Generic.List<Net.TheVpc.Upa.Config.Decoration>();
                                 typeInfo.fields[methodOrFieldName]=m;
                                 m.Add(d);
                             } else {
-                                System.Collections.Generic.IList<Net.Vpc.Upa.Config.Decoration> m = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,System.Collections.Generic.IList<Net.Vpc.Upa.Config.Decoration>>(typeInfo.fields,methodOrFieldName);
+                                System.Collections.Generic.IList<Net.TheVpc.Upa.Config.Decoration> m = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,System.Collections.Generic.IList<Net.TheVpc.Upa.Config.Decoration>>(typeInfo.fields,methodOrFieldName);
                                 if (m == null) {
-                                    m = new System.Collections.Generic.List<Net.Vpc.Upa.Config.Decoration>();
+                                    m = new System.Collections.Generic.List<Net.TheVpc.Upa.Config.Decoration>();
                                     typeInfo.fields[methodOrFieldName]=m;
                                 }
                                 int found = -1;
                                 for (int i = 0; i < (m).Count; i++) {
-                                    Net.Vpc.Upa.Config.Decoration m1 = m[i];
+                                    Net.TheVpc.Upa.Config.Decoration m1 = m[i];
                                     if (m1.GetName().Equals(d.GetName()) && m1.GetPosition() == d.GetPosition()) {
                                         found = i;
                                         break;
@@ -231,7 +231,7 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
                         }
                 }
             }
-            System.Collections.Generic.ISet<string> tt = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,System.Collections.Generic.ISet<string>>(typesByDecoration,d.GetName());
+            System.Collections.Generic.ISet<string> tt = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,System.Collections.Generic.ISet<string>>(typesByDecoration,d.GetName());
             if (tt == null) {
                 tt = new System.Collections.Generic.HashSet<string>();
                 typesByDecoration[d.GetName()]=tt;
@@ -240,18 +240,18 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
         }
 
         public virtual string[] GetTypesForDecoration(string decorationName) {
-            System.Collections.Generic.ISet<string> found = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,System.Collections.Generic.ISet<string>>(typesByDecoration,decorationName);
+            System.Collections.Generic.ISet<string> found = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,System.Collections.Generic.ISet<string>>(typesByDecoration,decorationName);
             return found == null ? ((string[])(new string[0])) : found.ToArray();
         }
 
-        public virtual Net.Vpc.Upa.Config.Decoration[] GetDeclaredDecorations(string decorationName) {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Config.Decoration> all = new System.Collections.Generic.List<Net.Vpc.Upa.Config.Decoration>();
-            System.Collections.Generic.ISet<string> found = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,System.Collections.Generic.ISet<string>>(typesByDecoration,decorationName);
+        public virtual Net.TheVpc.Upa.Config.Decoration[] GetDeclaredDecorations(string decorationName) {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Config.Decoration> all = new System.Collections.Generic.List<Net.TheVpc.Upa.Config.Decoration>();
+            System.Collections.Generic.ISet<string> found = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,System.Collections.Generic.ISet<string>>(typesByDecoration,decorationName);
             if (found != null) {
                 foreach (string t in found) {
-                    Net.Vpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo dd = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.Vpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo>(decorationsByType,t);
+                    Net.TheVpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo dd = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.TheVpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo>(decorationsByType,t);
                     if (dd != null) {
-                        foreach (Net.Vpc.Upa.Config.Decoration d in dd.decorations) {
+                        foreach (Net.TheVpc.Upa.Config.Decoration d in dd.decorations) {
                             if (d.GetName().Equals(decorationName)) {
                                 all.Add(d);
                             }
@@ -259,38 +259,38 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
                     }
                 }
             }
-            Net.Vpc.Upa.Impl.FwkConvertUtils.ListSort(all, null);
+            Net.TheVpc.Upa.Impl.FwkConvertUtils.ListSort(all, null);
             return all.ToArray();
         }
 
-        public virtual Net.Vpc.Upa.Config.Decoration[] GetTypeDecorations(string type) {
-            Net.Vpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo typeInf = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.Vpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo>(decorationsByType,type);
+        public virtual Net.TheVpc.Upa.Config.Decoration[] GetTypeDecorations(string type) {
+            Net.TheVpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo typeInf = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.TheVpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo>(decorationsByType,type);
             if (typeInf != null && typeInf.decorations != null) {
                 return typeInf.decorations.ToArray();
             }
-            return new Net.Vpc.Upa.Config.Decoration[0];
+            return new Net.TheVpc.Upa.Config.Decoration[0];
         }
 
-        public virtual Net.Vpc.Upa.Config.Decoration[] GetMethodDecorations(string type, string method) {
-            Net.Vpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo typeInf = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.Vpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo>(decorationsByType,type);
+        public virtual Net.TheVpc.Upa.Config.Decoration[] GetMethodDecorations(string type, string method) {
+            Net.TheVpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo typeInf = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.TheVpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo>(decorationsByType,type);
             if (typeInf != null && typeInf.methods != null) {
-                System.Collections.Generic.IList<Net.Vpc.Upa.Config.Decoration> _deco = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,System.Collections.Generic.IList<Net.Vpc.Upa.Config.Decoration>>(typeInf.methods,method);
+                System.Collections.Generic.IList<Net.TheVpc.Upa.Config.Decoration> _deco = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,System.Collections.Generic.IList<Net.TheVpc.Upa.Config.Decoration>>(typeInf.methods,method);
                 if (_deco != null) {
                     return _deco.ToArray();
                 }
             }
-            return new Net.Vpc.Upa.Config.Decoration[0];
+            return new Net.TheVpc.Upa.Config.Decoration[0];
         }
 
-        public virtual Net.Vpc.Upa.Config.Decoration[] GetFieldDecorations(string type, string field) {
-            Net.Vpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo typeInf = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.Vpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo>(decorationsByType,type);
+        public virtual Net.TheVpc.Upa.Config.Decoration[] GetFieldDecorations(string type, string field) {
+            Net.TheVpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo typeInf = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.TheVpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo>(decorationsByType,type);
             if (typeInf != null && typeInf.fields != null) {
-                System.Collections.Generic.IList<Net.Vpc.Upa.Config.Decoration> _deco = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,System.Collections.Generic.IList<Net.Vpc.Upa.Config.Decoration>>(typeInf.fields,field);
+                System.Collections.Generic.IList<Net.TheVpc.Upa.Config.Decoration> _deco = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,System.Collections.Generic.IList<Net.TheVpc.Upa.Config.Decoration>>(typeInf.fields,field);
                 if (_deco != null) {
                     return _deco.ToArray();
                 }
             }
-            return new Net.Vpc.Upa.Config.Decoration[0];
+            return new Net.TheVpc.Upa.Config.Decoration[0];
         }
     }
 }

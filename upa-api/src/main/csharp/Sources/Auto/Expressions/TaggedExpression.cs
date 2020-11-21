@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
     /**
@@ -19,20 +19,20 @@ namespace Net.Vpc.Upa.Expressions
      */
     public sealed class TaggedExpression {
 
-        private Net.Vpc.Upa.Expressions.Expression expression;
+        private Net.TheVpc.Upa.Expressions.Expression expression;
 
-        private Net.Vpc.Upa.Expressions.ExpressionTag tag;
+        private Net.TheVpc.Upa.Expressions.ExpressionTag tag;
 
-        public TaggedExpression(Net.Vpc.Upa.Expressions.Expression expression, Net.Vpc.Upa.Expressions.ExpressionTag tag) {
+        public TaggedExpression(Net.TheVpc.Upa.Expressions.Expression expression, Net.TheVpc.Upa.Expressions.ExpressionTag tag) {
             this.expression = expression;
             this.tag = tag;
         }
 
-        public Net.Vpc.Upa.Expressions.Expression GetExpression() {
+        public Net.TheVpc.Upa.Expressions.Expression GetExpression() {
             return expression;
         }
 
-        public Net.Vpc.Upa.Expressions.ExpressionTag GetTag() {
+        public Net.TheVpc.Upa.Expressions.ExpressionTag GetTag() {
             return tag;
         }
     }

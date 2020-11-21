@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
     internal partial class BootstrapObjectFactoryLazyHolder
     {
@@ -15,7 +15,7 @@ namespace Net.Vpc.Upa
             {
                 foreach (Type t in a.GetTypes())
                 {
-                    if (t.FullName.Equals("Net.Vpc.Upa.RootObjectFactory"))
+                    if (t.FullName.Equals("Net.TheVpc.Upa.RootObjectFactory"))
                     {
                         rootFactory = (ObjectFactory) Activator.CreateInstance(t);
                     }

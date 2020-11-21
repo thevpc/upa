@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class ConnectionException : Net.Vpc.Upa.Exceptions.UPAException {
+    public class ConnectionException : Net.TheVpc.Upa.Exceptions.UPAException {
 
         public ConnectionException() {
         }
@@ -27,11 +27,11 @@ namespace Net.Vpc.Upa.Exceptions
 
         }
 
-        public ConnectionException(Net.Vpc.Upa.Types.I18NString message, params object [] parameters)  : base(message, parameters){
+        public ConnectionException(Net.TheVpc.Upa.Types.I18NString message, params object [] parameters)  : base(message, parameters){
 
         }
 
-        public ConnectionException(System.Exception cause, Net.Vpc.Upa.Types.I18NString messageId, params object [] parameters)  : base(cause, messageId, parameters){
+        public ConnectionException(System.Exception cause, Net.TheVpc.Upa.Types.I18NString messageId, params object [] parameters)  : base(cause, messageId, parameters){
 
         }
     }

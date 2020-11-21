@@ -11,11 +11,11 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
 
-    public class IdExpression : Net.Vpc.Upa.Expressions.DefaultExpression {
+    public class IdExpression : Net.TheVpc.Upa.Expressions.DefaultExpression {
 
 
 
@@ -25,11 +25,11 @@ namespace Net.Vpc.Upa.Expressions
 
         private string alias;
 
-        private Net.Vpc.Upa.Entity entity;
+        private Net.TheVpc.Upa.Entity entity;
 
-        public IdExpression(Net.Vpc.Upa.Entity entity, object id, string alias) {
+        public IdExpression(Net.TheVpc.Upa.Entity entity, object id, string alias) {
             if (id == null) {
-                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("Id could not be null");
+                throw new Net.TheVpc.Upa.Exceptions.UPAIllegalArgumentException("Id could not be null");
             }
             //        entity.getIdType().cast(key);
             this.id = id;
@@ -50,26 +50,26 @@ namespace Net.Vpc.Upa.Expressions
             this.alias = alias;
         }
 
-        public virtual void SetEntity(Net.Vpc.Upa.Entity entity) {
+        public virtual void SetEntity(Net.TheVpc.Upa.Entity entity) {
             this.entity = entity;
         }
 
 
-        public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>(1);
+        public override System.Collections.Generic.IList<Net.TheVpc.Upa.Expressions.TaggedExpression> GetChildren() {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.TheVpc.Upa.Expressions.TaggedExpression>(1);
             return list;
         }
 
 
-        public override void SetChild(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.Expressions.ExpressionTag tag) {
-            throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("Insupported");
+        public override void SetChild(Net.TheVpc.Upa.Expressions.Expression e, Net.TheVpc.Upa.Expressions.ExpressionTag tag) {
+            throw new Net.TheVpc.Upa.Exceptions.UPAIllegalArgumentException("Insupported");
         }
 
         public virtual object GetId() {
             return id;
         }
 
-        public virtual Net.Vpc.Upa.Entity GetEntity() {
+        public virtual Net.TheVpc.Upa.Entity GetEntity() {
             return entity;
         }
 
@@ -82,8 +82,8 @@ namespace Net.Vpc.Upa.Expressions
         }
 
 
-        public override Net.Vpc.Upa.Expressions.Expression Copy() {
-            Net.Vpc.Upa.Expressions.IdExpression o = new Net.Vpc.Upa.Expressions.IdExpression(entity, id, alias);
+        public override Net.TheVpc.Upa.Expressions.Expression Copy() {
+            Net.TheVpc.Upa.Expressions.IdExpression o = new Net.TheVpc.Upa.Expressions.IdExpression(entity, id, alias);
             return o;
         }
 
@@ -110,7 +110,7 @@ namespace Net.Vpc.Upa.Expressions
             if (GetType() != obj.GetType()) {
                 return false;
             }
-            Net.Vpc.Upa.Expressions.IdExpression other = (Net.Vpc.Upa.Expressions.IdExpression) obj;
+            Net.TheVpc.Upa.Expressions.IdExpression other = (Net.TheVpc.Upa.Expressions.IdExpression) obj;
             if (this.id != other.id && (this.id == null || !this.id.Equals(other.id))) {
                 return false;
             }

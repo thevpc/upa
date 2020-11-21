@@ -11,24 +11,24 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
     /**
      * Created by vpc on 6/9/17.
      */
-    public abstract class AbstractCallback : Net.Vpc.Upa.Callback {
+    public abstract class AbstractCallback : Net.TheVpc.Upa.Callback {
 
-        private Net.Vpc.Upa.CallbackType callbackType;
+        private Net.TheVpc.Upa.CallbackType callbackType;
 
-        private Net.Vpc.Upa.EventPhase phase;
+        private Net.TheVpc.Upa.EventPhase phase;
 
-        private Net.Vpc.Upa.ObjectType objectType;
+        private Net.TheVpc.Upa.ObjectType objectType;
 
         private System.Collections.Generic.IDictionary<string , object> configuration;
 
-        public AbstractCallback(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.EventPhase phase, Net.Vpc.Upa.ObjectType objectType, System.Collections.Generic.IDictionary<string , object> configuration) {
+        public AbstractCallback(Net.TheVpc.Upa.CallbackType callbackType, Net.TheVpc.Upa.EventPhase phase, Net.TheVpc.Upa.ObjectType objectType, System.Collections.Generic.IDictionary<string , object> configuration) {
             this.callbackType = callbackType;
             this.phase = phase;
             this.objectType = objectType;
@@ -36,17 +36,17 @@ namespace Net.Vpc.Upa
         }
 
 
-        public virtual Net.Vpc.Upa.CallbackType GetCallbackType() {
+        public virtual Net.TheVpc.Upa.CallbackType GetCallbackType() {
             return callbackType;
         }
 
 
-        public virtual Net.Vpc.Upa.EventPhase GetPhase() {
+        public virtual Net.TheVpc.Upa.EventPhase GetPhase() {
             return phase;
         }
 
 
-        public virtual Net.Vpc.Upa.ObjectType GetObjectType() {
+        public virtual Net.TheVpc.Upa.ObjectType GetObjectType() {
             return objectType;
         }
 

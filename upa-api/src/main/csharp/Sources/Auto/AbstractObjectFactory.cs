@@ -12,7 +12,7 @@
 
 
 using System.Linq;
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -20,9 +20,9 @@ namespace Net.Vpc.Upa
      *
      * @author vpc
      */
-    public abstract class AbstractObjectFactory : Net.Vpc.Upa.ObjectFactory {
+    public abstract class AbstractObjectFactory : Net.TheVpc.Upa.ObjectFactory {
 
-        private static System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.Vpc.Upa.AbstractObjectFactory)).FullName);
+        private static System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.TheVpc.Upa.AbstractObjectFactory)).FullName);
 
         private readonly System.Collections.Generic.Dictionary<string , object> singletons = new System.Collections.Generic.Dictionary<string , object>();
 
@@ -32,11 +32,11 @@ namespace Net.Vpc.Upa
         public virtual  T GetSingleton<T>(System.Type type) {
             string typeName = (type).FullName;
             if (singletons.ContainsKey(typeName)) {
-                return (T) Net.Vpc.Upa.FwkConvertUtils.GetMapValue<K,V>(singletons,typeName);
+                return (T) Net.TheVpc.Upa.FwkConvertUtils.GetMapValue<K,V>(singletons,typeName);
             }
             lock (singletons) {
                 if (singletons.ContainsKey(typeName)) {
-                    return (T) Net.Vpc.Upa.FwkConvertUtils.GetMapValue<K,V>(singletons,typeName);
+                    return (T) Net.TheVpc.Upa.FwkConvertUtils.GetMapValue<K,V>(singletons,typeName);
                 }
                 T o = CreateObject<>(type);
                 singletons[typeName]=o;
@@ -47,11 +47,11 @@ namespace Net.Vpc.Upa
 
         public virtual  T GetSingleton<T>(string typeName) {
             if (singletons.ContainsKey(typeName)) {
-                return (T) Net.Vpc.Upa.FwkConvertUtils.GetMapValue<K,V>(singletons,typeName);
+                return (T) Net.TheVpc.Upa.FwkConvertUtils.GetMapValue<K,V>(singletons,typeName);
             }
             lock (singletons) {
                 if (singletons.ContainsKey(typeName)) {
-                    return (T) Net.Vpc.Upa.FwkConvertUtils.GetMapValue<K,V>(singletons,typeName);
+                    return (T) Net.TheVpc.Upa.FwkConvertUtils.GetMapValue<K,V>(singletons,typeName);
                 }
                 T o = CreateObject<>(typeName);
                 singletons[typeName]=o;
@@ -65,7 +65,7 @@ namespace Net.Vpc.Upa
             try {
                 c = System.Type.GetType(typeName);
             } catch (System.Exception ex) {
-                log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.Vpc.Upa.FwkConvertUtils.LogMessageExceptionFormatter(null,ex));
+                log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.TheVpc.Upa.FwkConvertUtils.LogMessageExceptionFormatter(null,ex));
                 throw new System.Exception(typeName);
             }
             return (T) CreateObject<>(c, name);
@@ -81,7 +81,7 @@ namespace Net.Vpc.Upa
             try {
                 return (T) CreateObject<>(System.Type.GetType(typeName));
             } catch (System.Exception ex) {
-                log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.Vpc.Upa.FwkConvertUtils.LogMessageExceptionFormatter(null,ex));
+                log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.TheVpc.Upa.FwkConvertUtils.LogMessageExceptionFormatter(null,ex));
                 throw new System.Exception("RuntimeException", ex);
             }
         }
@@ -89,16 +89,16 @@ namespace Net.Vpc.Upa
 
         public virtual  System.Type[] GetAlternatives<T>(System.Type type) {
             System.Collections.Generic.IList<System.Type> all = new System.Collections.Generic.List<System.Type>();
-            System.Collections.Generic.ISet<object> found = Net.Vpc.Upa.FwkConvertUtils.GetMapValue<System.Type,System.Collections.Generic.ISet<object>>(alternatives,type);
+            System.Collections.Generic.ISet<object> found = Net.TheVpc.Upa.FwkConvertUtils.GetMapValue<System.Type,System.Collections.Generic.ISet<object>>(alternatives,type);
             if (found != null) {
-                Net.Vpc.Upa.FwkConvertUtils.ListAddRange(all, found);
+                Net.TheVpc.Upa.FwkConvertUtils.ListAddRange(all, found);
             }
             return all.ToArray();
         }
 
 
         public virtual  void AddAlternative<T>(System.Type type, System.Type impl) {
-            System.Collections.Generic.ISet<object> found = Net.Vpc.Upa.FwkConvertUtils.GetMapValue<System.Type,System.Collections.Generic.ISet<object>>(alternatives,type);
+            System.Collections.Generic.ISet<object> found = Net.TheVpc.Upa.FwkConvertUtils.GetMapValue<System.Type,System.Collections.Generic.ISet<object>>(alternatives,type);
             if (found == null) {
                 found = new System.Collections.Generic.HashSet<object>();
                 alternatives[type]=found;
@@ -112,6 +112,6 @@ namespace Net.Vpc.Upa
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract void Register(System.Type arg1, System.Type arg2);
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
-        public abstract void SetParentFactory(Net.Vpc.Upa.ObjectFactory arg1);
+        public abstract void SetParentFactory(Net.TheVpc.Upa.ObjectFactory arg1);
     }
 }

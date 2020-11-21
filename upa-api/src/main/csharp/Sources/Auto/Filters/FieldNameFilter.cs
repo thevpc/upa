@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Filters
+namespace Net.TheVpc.Upa.Filters
 {
 
 
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Filters
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 8/25/12 11:54 AM
      */
-    public class FieldNameFilter : Net.Vpc.Upa.Filters.AbstractFieldFilter {
+    public class FieldNameFilter : Net.TheVpc.Upa.Filters.AbstractFieldFilter {
 
         private System.Collections.Generic.HashSet<string> acceptedFields = new System.Collections.Generic.HashSet<string>();
 
@@ -38,12 +38,12 @@ namespace Net.Vpc.Upa.Filters
         }
 
 
-        public override bool Accept(Net.Vpc.Upa.Field field) {
+        public override bool Accept(Net.TheVpc.Upa.Field field) {
             string f = GetFieldName(field);
             return !((acceptedFields != null && !acceptedFields.Contains(f)) || (nonAcceptedFields != null && nonAcceptedFields.Contains(f)));
         }
 
-        private string GetFieldName(Net.Vpc.Upa.Field field) {
+        private string GetFieldName(Net.TheVpc.Upa.Field field) {
             return (absoluteNames) ? field.GetAbsoluteName() : field.GetName();
         }
 
@@ -56,7 +56,7 @@ namespace Net.Vpc.Upa.Filters
             return acceptDynamic;
         }
 
-        public virtual Net.Vpc.Upa.Filters.FieldNameFilter SetAcceptDynamic(bool acceptDynamic) {
+        public virtual Net.TheVpc.Upa.Filters.FieldNameFilter SetAcceptDynamic(bool acceptDynamic) {
             this.acceptDynamic = acceptDynamic;
             return this;
         }
@@ -65,12 +65,12 @@ namespace Net.Vpc.Upa.Filters
             return absoluteNames;
         }
 
-        public virtual Net.Vpc.Upa.Filters.FieldNameFilter SetAbsoluteNames(bool absoluteNames) {
+        public virtual Net.TheVpc.Upa.Filters.FieldNameFilter SetAbsoluteNames(bool absoluteNames) {
             this.absoluteNames = absoluteNames;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Filters.FieldNameFilter SetAccepted(params string [] f) {
+        public virtual Net.TheVpc.Upa.Filters.FieldNameFilter SetAccepted(params string [] f) {
             if (acceptedFields == null) {
                 acceptedFields = new System.Collections.Generic.HashSet<string>();
             }
@@ -82,11 +82,11 @@ namespace Net.Vpc.Upa.Filters
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Filters.FieldNameFilter SetAccepted(params Net.Vpc.Upa.Field [] f) {
+        public virtual Net.TheVpc.Upa.Filters.FieldNameFilter SetAccepted(params Net.TheVpc.Upa.Field [] f) {
             if (acceptedFields == null) {
                 acceptedFields = new System.Collections.Generic.HashSet<string>();
             }
-            foreach (Net.Vpc.Upa.Field s in f) {
+            foreach (Net.TheVpc.Upa.Field s in f) {
                 if (s != null) {
                     acceptedFields.Add(GetFieldName(s));
                 }
@@ -94,7 +94,7 @@ namespace Net.Vpc.Upa.Filters
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Filters.FieldNameFilter SetAccepted(System.Collections.Generic.ICollection<string> f) {
+        public virtual Net.TheVpc.Upa.Filters.FieldNameFilter SetAccepted(System.Collections.Generic.ICollection<string> f) {
             if (acceptedFields == null) {
                 acceptedFields = new System.Collections.Generic.HashSet<string>();
             }
@@ -104,7 +104,7 @@ namespace Net.Vpc.Upa.Filters
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Filters.FieldNameFilter SetRejected(params string [] f) {
+        public virtual Net.TheVpc.Upa.Filters.FieldNameFilter SetRejected(params string [] f) {
             if (acceptedFields == null) {
                 nonAcceptedFields = new System.Collections.Generic.HashSet<string>();
             }
@@ -116,7 +116,7 @@ namespace Net.Vpc.Upa.Filters
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Filters.FieldNameFilter SetRejected(System.Collections.Generic.ICollection<string> f) {
+        public virtual Net.TheVpc.Upa.Filters.FieldNameFilter SetRejected(System.Collections.Generic.ICollection<string> f) {
             if (acceptedFields == null) {
                 nonAcceptedFields = new System.Collections.Generic.HashSet<string>();
             }
@@ -138,7 +138,7 @@ namespace Net.Vpc.Upa.Filters
             if (this == o) return true;
             if (o == null || GetType() != o.GetType()) return false;
             if (!base.Equals(o)) return false;
-            Net.Vpc.Upa.Filters.FieldNameFilter that = (Net.Vpc.Upa.Filters.FieldNameFilter) o;
+            Net.TheVpc.Upa.Filters.FieldNameFilter that = (Net.TheVpc.Upa.Filters.FieldNameFilter) o;
             if (absoluteNames != that.absoluteNames) return false;
             if (acceptDynamic != that.acceptDynamic) return false;
             if (acceptedFields != null ? !acceptedFields.Equals(that.acceptedFields) : that.acceptedFields != null) return false;

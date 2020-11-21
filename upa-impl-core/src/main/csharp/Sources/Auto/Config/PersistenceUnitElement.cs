@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config
+namespace Net.TheVpc.Upa.Impl.Config
 {
 
 
@@ -23,7 +23,7 @@ namespace Net.Vpc.Upa.Impl.Config
 
         internal string name;
 
-        internal Net.Vpc.Upa.Impl.Config.PersistenceGroupElement parent;
+        internal Net.TheVpc.Upa.Impl.Config.PersistenceGroupElement parent;
 
         internal bool start = true;
 
@@ -31,15 +31,15 @@ namespace Net.Vpc.Upa.Impl.Config
 
         internal bool hasConfigElement;
 
-        internal System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Config.ConnectionElement> connectionElements = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Config.ConnectionElement>();
+        internal System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Config.ConnectionElement> connectionElements = new System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Config.ConnectionElement>();
 
-        internal System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Config.ConnectionElement> rootConnectionElements = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Config.ConnectionElement>();
+        internal System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Config.ConnectionElement> rootConnectionElements = new System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Config.ConnectionElement>();
 
-        internal System.Collections.Generic.IList<Net.Vpc.Upa.Property> properties = new System.Collections.Generic.List<Net.Vpc.Upa.Property>();
+        internal System.Collections.Generic.IList<Net.TheVpc.Upa.Property> properties = new System.Collections.Generic.List<Net.TheVpc.Upa.Property>();
 
-        internal System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Config.ScanElement> scanElements = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Config.ScanElement>();
+        internal System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Config.ScanElement> scanElements = new System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Config.ScanElement>();
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Config.ScanElement> GetScanElements() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Config.ScanElement> GetScanElements() {
             return scanElements;
         }
     }

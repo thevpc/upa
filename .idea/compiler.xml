@@ -6,20 +6,21 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="j2cs" />
-        <module name="upa-android" />
-        <module name="upa-api" />
-        <module name="upa-impl" />
-        <module name="upa-impl-core" />
-        <module name="upa-portable" />
-        <module name="upa-spring" />
         <module name="upa-test" />
+        <module name="upa-box" />
         <module name="upa-tutorial-business" />
-        <module name="upa-tutorial-dal" />
+        <module name="upa-xml-config" />
         <module name="upa-tutorial-desktop" />
-        <module name="upa-tutorial-webjsf" />
-        <module name="upa-vfs" />
+        <module name="upa-portable" />
         <module name="upa-web" />
+        <module name="upa-impl-core" />
+        <module name="upa-impl" />
+        <module name="upa-tutorial-dal" />
+        <module name="upa-api" />
+        <module name="upa-vfs" />
+        <module name="upa-android" />
+        <module name="upa-spring" />
+        <module name="upa-tutorial-webjsf" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -27,6 +28,7 @@
       <module name="upa" target="1.7" />
       <module name="upa-android" target="1.7" />
       <module name="upa-api" target="1.6" />
+      <module name="upa-box" target="1.8" />
       <module name="upa-impl" target="1.7" />
       <module name="upa-impl-core" target="1.7" />
       <module name="upa-portable" target="1.8" />
@@ -39,6 +41,13 @@
       <module name="upa-tutorial-webjsf" target="1.8" />
       <module name="upa-vfs" target="1.7" />
       <module name="upa-web" target="1.7" />
+      <module name="upa-xml-config" target="1.7" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="upa-tutorial-dal" options="-endorseddirs $PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/target/endorsed" />
+      <module name="upa-tutorial-webjsf" options="-endorseddirs $PROJECT_DIR$/upa-tutorial/upa-tutorial-webjsf/target/endorsed" />
+    </option>
   </component>
 </project>

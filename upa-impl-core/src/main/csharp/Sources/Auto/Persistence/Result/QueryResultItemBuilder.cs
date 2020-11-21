@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Result
+namespace Net.TheVpc.Upa.Impl.Persistence.Result
 {
 
 
@@ -20,6 +20,6 @@ namespace Net.Vpc.Upa.Impl.Persistence.Result
      */
     public interface QueryResultItemBuilder {
 
-         object CreateResult(Net.Vpc.Upa.Impl.Persistence.Result.ResultColumn[] row, Net.Vpc.Upa.Persistence.ResultMetaData metadata);
+         object CreateResult(Net.TheVpc.Upa.Impl.Persistence.Result.ResultColumn[] row, Net.TheVpc.Upa.Persistence.ResultMetaData metadata);
     }
 }

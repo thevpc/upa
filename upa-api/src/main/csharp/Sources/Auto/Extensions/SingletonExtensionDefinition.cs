@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Extensions
+namespace Net.TheVpc.Upa.Extensions
 {
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 8/28/12 8:28 PM
      */
-    public interface SingletonExtensionDefinition : Net.Vpc.Upa.Extensions.EntityExtensionDefinition {
+    public interface SingletonExtensionDefinition : Net.TheVpc.Upa.Extensions.EntityExtensionDefinition {
 
          bool IsAutoCreate();
     }

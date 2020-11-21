@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Filters
+namespace Net.TheVpc.Upa.Filters
 {
 
 
@@ -20,122 +20,122 @@ namespace Net.Vpc.Upa.Filters
      */
     public class FieldFilters {
 
-        private static readonly Net.Vpc.Upa.Filters.RichFieldFilter DYNAMIC = As(new Net.Vpc.Upa.Filters.FieldDynamicFilter());
+        private static readonly Net.TheVpc.Upa.Filters.RichFieldFilter DYNAMIC = As(new Net.TheVpc.Upa.Filters.FieldDynamicFilter());
 
-        private static readonly Net.Vpc.Upa.Filters.RichFieldFilter REGULAR = As(new Net.Vpc.Upa.Filters.FieldRegularFilter());
+        private static readonly Net.TheVpc.Upa.Filters.RichFieldFilter REGULAR = As(new Net.TheVpc.Upa.Filters.FieldRegularFilter());
 
-        private static readonly Net.Vpc.Upa.Filters.RichFieldFilter ALL = As(new Net.Vpc.Upa.Filters.FieldAnyFilter());
+        private static readonly Net.TheVpc.Upa.Filters.RichFieldFilter ALL = As(new Net.TheVpc.Upa.Filters.FieldAnyFilter());
 
-        private static readonly Net.Vpc.Upa.Filters.RichFieldFilter NONE = As(new Net.Vpc.Upa.Filters.FieldAnyFilter()).Negate();
+        private static readonly Net.TheVpc.Upa.Filters.RichFieldFilter NONE = As(new Net.TheVpc.Upa.Filters.FieldAnyFilter()).Negate();
 
-        private static readonly Net.Vpc.Upa.Filters.RichFieldFilter PRIMITIVE = As(new Net.Vpc.Upa.Filters.FieldPrimitiveFilter(null));
+        private static readonly Net.TheVpc.Upa.Filters.RichFieldFilter PRIMITIVE = As(new Net.TheVpc.Upa.Filters.FieldPrimitiveFilter(null));
 
-        private static readonly Net.Vpc.Upa.Filters.RichFieldFilter ID = Net.Vpc.Upa.Filters.FieldFilters.Regular().And(Net.Vpc.Upa.Filters.FieldFilters.ByModifiersAnyOf(Net.Vpc.Upa.FieldModifier.ID));
+        private static readonly Net.TheVpc.Upa.Filters.RichFieldFilter ID = Net.TheVpc.Upa.Filters.FieldFilters.Regular().And(Net.TheVpc.Upa.Filters.FieldFilters.ByModifiersAnyOf(Net.TheVpc.Upa.FieldModifier.ID));
 
-        public static Net.Vpc.Upa.Filters.RichFieldFilter As(Net.Vpc.Upa.Filters.FieldFilter @base) {
+        public static Net.TheVpc.Upa.Filters.RichFieldFilter As(Net.TheVpc.Upa.Filters.FieldFilter @base) {
             if (@base == null) {
                 return All();
             }
-            if (@base is Net.Vpc.Upa.Filters.FieldFilters) {
-                return (Net.Vpc.Upa.Filters.RichFieldFilter) @base;
+            if (@base is Net.TheVpc.Upa.Filters.FieldFilters) {
+                return (Net.TheVpc.Upa.Filters.RichFieldFilter) @base;
             }
-            return new Net.Vpc.Upa.Filters.CustomFieldFilter(@base);
+            return new Net.TheVpc.Upa.Filters.CustomFieldFilter(@base);
         }
 
-        public static Net.Vpc.Upa.Filters.RichFieldFilter All() {
+        public static Net.TheVpc.Upa.Filters.RichFieldFilter All() {
             return ALL;
         }
 
-        public static Net.Vpc.Upa.Filters.RichFieldFilter Id() {
+        public static Net.TheVpc.Upa.Filters.RichFieldFilter Id() {
             return ID;
         }
 
-        public static Net.Vpc.Upa.Filters.RichFieldFilter Regular() {
+        public static Net.TheVpc.Upa.Filters.RichFieldFilter Regular() {
             return REGULAR;
         }
 
-        public static Net.Vpc.Upa.Filters.RichFieldFilter Dynamic() {
+        public static Net.TheVpc.Upa.Filters.RichFieldFilter Dynamic() {
             return DYNAMIC;
         }
 
-        public static Net.Vpc.Upa.Filters.RichFieldFilter None() {
+        public static Net.TheVpc.Upa.Filters.RichFieldFilter None() {
             return NONE;
         }
 
-        public static Net.Vpc.Upa.Filters.RichFieldFilter Primitive() {
+        public static Net.TheVpc.Upa.Filters.RichFieldFilter Primitive() {
             return PRIMITIVE;
         }
 
-        public static Net.Vpc.Upa.Filters.RichFieldFilter ByInsertAccessLevel(params Net.Vpc.Upa.AccessLevel [] accepted) {
-            return new Net.Vpc.Upa.Filters.CustomFieldFilter(Net.Vpc.Upa.Filters.FieldAccessLevelFilter.ForPersist(accepted));
+        public static Net.TheVpc.Upa.Filters.RichFieldFilter ByInsertAccessLevel(params Net.TheVpc.Upa.AccessLevel [] accepted) {
+            return new Net.TheVpc.Upa.Filters.CustomFieldFilter(Net.TheVpc.Upa.Filters.FieldAccessLevelFilter.ForPersist(accepted));
         }
 
-        public static Net.Vpc.Upa.Filters.RichFieldFilter ByUpdateAccessLevel(params Net.Vpc.Upa.AccessLevel [] accepted) {
-            return new Net.Vpc.Upa.Filters.CustomFieldFilter(Net.Vpc.Upa.Filters.FieldAccessLevelFilter.ForUpdate(accepted));
+        public static Net.TheVpc.Upa.Filters.RichFieldFilter ByUpdateAccessLevel(params Net.TheVpc.Upa.AccessLevel [] accepted) {
+            return new Net.TheVpc.Upa.Filters.CustomFieldFilter(Net.TheVpc.Upa.Filters.FieldAccessLevelFilter.ForUpdate(accepted));
         }
 
-        public static Net.Vpc.Upa.Filters.RichFieldFilter ByReadAccessLevel(params Net.Vpc.Upa.AccessLevel [] accepted) {
-            return new Net.Vpc.Upa.Filters.CustomFieldFilter(Net.Vpc.Upa.Filters.FieldAccessLevelFilter.ForFind(accepted));
+        public static Net.TheVpc.Upa.Filters.RichFieldFilter ByReadAccessLevel(params Net.TheVpc.Upa.AccessLevel [] accepted) {
+            return new Net.TheVpc.Upa.Filters.CustomFieldFilter(Net.TheVpc.Upa.Filters.FieldAccessLevelFilter.ForFind(accepted));
         }
 
-        public static Net.Vpc.Upa.Filters.RichFieldFilter ByAllAccessLevel(params Net.Vpc.Upa.AccessLevel [] accepted) {
-            return new Net.Vpc.Upa.Filters.CustomFieldFilter(Net.Vpc.Upa.Filters.FieldAccessLevelFilter.ForAll(accepted));
+        public static Net.TheVpc.Upa.Filters.RichFieldFilter ByAllAccessLevel(params Net.TheVpc.Upa.AccessLevel [] accepted) {
+            return new Net.TheVpc.Upa.Filters.CustomFieldFilter(Net.TheVpc.Upa.Filters.FieldAccessLevelFilter.ForAll(accepted));
         }
 
-        public static Net.Vpc.Upa.Filters.RichFieldFilter ByAllProtectionLevel(params Net.Vpc.Upa.ProtectionLevel [] accepted) {
-            return new Net.Vpc.Upa.Filters.CustomFieldFilter(Net.Vpc.Upa.Filters.FieldProtectionLevelFilter.ForAll(accepted));
+        public static Net.TheVpc.Upa.Filters.RichFieldFilter ByAllProtectionLevel(params Net.TheVpc.Upa.ProtectionLevel [] accepted) {
+            return new Net.TheVpc.Upa.Filters.CustomFieldFilter(Net.TheVpc.Upa.Filters.FieldProtectionLevelFilter.ForAll(accepted));
         }
 
-        public static Net.Vpc.Upa.Filters.RichFieldFilter ByModifiersAllOf(params Net.Vpc.Upa.FieldModifier [] accepted) {
-            Net.Vpc.Upa.Filters.FieldModifierFilter fieldModifierFilter = new Net.Vpc.Upa.Filters.FieldModifierFilter();
+        public static Net.TheVpc.Upa.Filters.RichFieldFilter ByModifiersAllOf(params Net.TheVpc.Upa.FieldModifier [] accepted) {
+            Net.TheVpc.Upa.Filters.FieldModifierFilter fieldModifierFilter = new Net.TheVpc.Upa.Filters.FieldModifierFilter();
             fieldModifierFilter = fieldModifierFilter.IsAllOf(accepted);
-            return new Net.Vpc.Upa.Filters.CustomFieldFilter(fieldModifierFilter);
+            return new Net.TheVpc.Upa.Filters.CustomFieldFilter(fieldModifierFilter);
         }
 
-        public static Net.Vpc.Upa.Filters.RichFieldFilter ByModifiersNotAllOf(params Net.Vpc.Upa.FieldModifier [] accepted) {
-            Net.Vpc.Upa.Filters.FieldModifierFilter fieldModifierFilter = new Net.Vpc.Upa.Filters.FieldModifierFilter();
+        public static Net.TheVpc.Upa.Filters.RichFieldFilter ByModifiersNotAllOf(params Net.TheVpc.Upa.FieldModifier [] accepted) {
+            Net.TheVpc.Upa.Filters.FieldModifierFilter fieldModifierFilter = new Net.TheVpc.Upa.Filters.FieldModifierFilter();
             fieldModifierFilter = fieldModifierFilter.IsNotAllOf(accepted);
-            return new Net.Vpc.Upa.Filters.CustomFieldFilter(fieldModifierFilter);
+            return new Net.TheVpc.Upa.Filters.CustomFieldFilter(fieldModifierFilter);
         }
 
-        public static Net.Vpc.Upa.Filters.RichFieldFilter ByModifiersNoneOf(params Net.Vpc.Upa.FieldModifier [] accepted) {
-            Net.Vpc.Upa.Filters.FieldModifierFilter fieldModifierFilter = new Net.Vpc.Upa.Filters.FieldModifierFilter();
+        public static Net.TheVpc.Upa.Filters.RichFieldFilter ByModifiersNoneOf(params Net.TheVpc.Upa.FieldModifier [] accepted) {
+            Net.TheVpc.Upa.Filters.FieldModifierFilter fieldModifierFilter = new Net.TheVpc.Upa.Filters.FieldModifierFilter();
             fieldModifierFilter = fieldModifierFilter.IsNoneOf(accepted);
-            return new Net.Vpc.Upa.Filters.CustomFieldFilter(fieldModifierFilter);
+            return new Net.TheVpc.Upa.Filters.CustomFieldFilter(fieldModifierFilter);
         }
 
-        public static Net.Vpc.Upa.Filters.RichFieldFilter ByModifiersAnyOf(params Net.Vpc.Upa.FieldModifier [] accepted) {
-            Net.Vpc.Upa.Filters.FieldModifierFilter fieldModifierFilter = new Net.Vpc.Upa.Filters.FieldModifierFilter();
+        public static Net.TheVpc.Upa.Filters.RichFieldFilter ByModifiersAnyOf(params Net.TheVpc.Upa.FieldModifier [] accepted) {
+            Net.TheVpc.Upa.Filters.FieldModifierFilter fieldModifierFilter = new Net.TheVpc.Upa.Filters.FieldModifierFilter();
             fieldModifierFilter = fieldModifierFilter.IsAnyOf(accepted);
-            return new Net.Vpc.Upa.Filters.CustomFieldFilter(fieldModifierFilter);
+            return new Net.TheVpc.Upa.Filters.CustomFieldFilter(fieldModifierFilter);
         }
 
-        public static Net.Vpc.Upa.Filters.RichFieldFilter ByName(params string [] acceptedFields) {
-            return As(new Net.Vpc.Upa.Filters.FieldNameFilter(acceptedFields));
+        public static Net.TheVpc.Upa.Filters.RichFieldFilter ByName(params string [] acceptedFields) {
+            return As(new Net.TheVpc.Upa.Filters.FieldNameFilter(acceptedFields));
         }
 
-        public static Net.Vpc.Upa.Filters.RichFieldFilter ByName(System.Collections.Generic.ICollection<string> acceptedFields) {
-            return As(new Net.Vpc.Upa.Filters.FieldNameFilter(acceptedFields));
+        public static Net.TheVpc.Upa.Filters.RichFieldFilter ByName(System.Collections.Generic.ICollection<string> acceptedFields) {
+            return As(new Net.TheVpc.Upa.Filters.FieldNameFilter(acceptedFields));
         }
 
-        public static Net.Vpc.Upa.Filters.RichFieldFilter ByList(params Net.Vpc.Upa.Field [] acceptedFields) {
-            return As(new Net.Vpc.Upa.Filters.FieldListFilter(acceptedFields));
+        public static Net.TheVpc.Upa.Filters.RichFieldFilter ByList(params Net.TheVpc.Upa.Field [] acceptedFields) {
+            return As(new Net.TheVpc.Upa.Filters.FieldListFilter(acceptedFields));
         }
 
-        public static Net.Vpc.Upa.Filters.RichFieldFilter ByList(System.Collections.Generic.IList<Net.Vpc.Upa.Field> acceptedFields) {
-            return As(new Net.Vpc.Upa.Filters.FieldListFilter(acceptedFields));
+        public static Net.TheVpc.Upa.Filters.RichFieldFilter ByList(System.Collections.Generic.IList<Net.TheVpc.Upa.Field> acceptedFields) {
+            return As(new Net.TheVpc.Upa.Filters.FieldListFilter(acceptedFields));
         }
 
-        public static Net.Vpc.Upa.Filters.RichFieldFilter ByImplType(System.Type type) {
-            return As(new Net.Vpc.Upa.Filters.FieldImplTypeFilter(type));
+        public static Net.TheVpc.Upa.Filters.RichFieldFilter ByImplType(System.Type type) {
+            return As(new Net.TheVpc.Upa.Filters.FieldImplTypeFilter(type));
         }
 
-        public static Net.Vpc.Upa.Filters.RichFieldFilter ByDataType(System.Type type) {
-            return As(new Net.Vpc.Upa.Filters.FieldDataTypeFilter(type, true));
+        public static Net.TheVpc.Upa.Filters.RichFieldFilter ByDataType(System.Type type) {
+            return As(new Net.TheVpc.Upa.Filters.FieldDataTypeFilter(type, true));
         }
 
-        public static Net.Vpc.Upa.Filters.RichFieldFilter ByEntityType() {
-            return ByDataType(typeof(Net.Vpc.Upa.Types.ManyToOneType));
+        public static Net.TheVpc.Upa.Filters.RichFieldFilter ByEntityType() {
+            return ByDataType(typeof(Net.TheVpc.Upa.Types.ManyToOneType));
         }
     }
 }

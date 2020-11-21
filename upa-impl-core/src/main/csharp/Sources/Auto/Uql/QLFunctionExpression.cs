@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql
+namespace Net.TheVpc.Upa.Impl.Uql
 {
 
 
@@ -19,13 +19,13 @@ namespace Net.Vpc.Upa.Impl.Uql
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 12/14/12 12:00 AM
      */
-    public class QLFunctionExpression : Net.Vpc.Upa.Expressions.FunctionExpression {
+    public class QLFunctionExpression : Net.TheVpc.Upa.Expressions.FunctionExpression {
 
         private string name;
 
-        private Net.Vpc.Upa.Expressions.Expression[] arguments;
+        private Net.TheVpc.Upa.Expressions.Expression[] arguments;
 
-        public QLFunctionExpression(string name, Net.Vpc.Upa.Expressions.Expression[] arguments) {
+        public QLFunctionExpression(string name, Net.TheVpc.Upa.Expressions.Expression[] arguments) {
             this.name = name;
             this.arguments = arguments;
         }
@@ -41,18 +41,18 @@ namespace Net.Vpc.Upa.Impl.Uql
         }
 
 
-        public override Net.Vpc.Upa.Expressions.Expression GetArgument(int index) {
+        public override Net.TheVpc.Upa.Expressions.Expression GetArgument(int index) {
             return arguments[index];
         }
 
 
-        public override void SetArgument(int index, Net.Vpc.Upa.Expressions.Expression e) {
+        public override void SetArgument(int index, Net.TheVpc.Upa.Expressions.Expression e) {
             arguments[index] = e;
         }
 
 
-        public override Net.Vpc.Upa.Expressions.Expression Copy() {
-            return new Net.Vpc.Upa.Impl.Uql.QLFunctionExpression(name, arguments);
+        public override Net.TheVpc.Upa.Expressions.Expression Copy() {
+            return new Net.TheVpc.Upa.Impl.Uql.QLFunctionExpression(name, arguments);
         }
     }
 }

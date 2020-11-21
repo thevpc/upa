@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 8/28/12 8:37 PM
      */
-    public interface FilterEntityExtension : Net.Vpc.Upa.Persistence.EntityExtension {
+    public interface FilterEntityExtension : Net.TheVpc.Upa.Persistence.EntityExtension {
     }
 }

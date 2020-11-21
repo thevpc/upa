@@ -11,18 +11,18 @@
 
 
 
-namespace Net.Vpc.Upa.Filters
+namespace Net.TheVpc.Upa.Filters
 {
 
     /**
      * @author taha.bensalah@gmail.com on 7/31/16.
      */
-    public interface RichEntityFilter : Net.Vpc.Upa.Filters.EntityFilter {
+    public interface RichEntityFilter : Net.TheVpc.Upa.Filters.EntityFilter {
 
-         Net.Vpc.Upa.Filters.RichEntityFilter And(Net.Vpc.Upa.Filters.EntityFilter filter);
+         Net.TheVpc.Upa.Filters.RichEntityFilter And(Net.TheVpc.Upa.Filters.EntityFilter filter);
 
-         Net.Vpc.Upa.Filters.RichEntityFilter Or(Net.Vpc.Upa.Filters.EntityFilter filter);
+         Net.TheVpc.Upa.Filters.RichEntityFilter Or(Net.TheVpc.Upa.Filters.EntityFilter filter);
 
-         Net.Vpc.Upa.Filters.RichEntityFilter Negate();
+         Net.TheVpc.Upa.Filters.RichEntityFilter Negate();
     }
 }

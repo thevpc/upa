@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
 
@@ -21,10 +21,10 @@ namespace Net.Vpc.Upa.Persistence
      */
     public interface EntityExtension {
 
-         Net.Vpc.Upa.Extensions.EntityExtensionDefinition GetDefinition();
+         Net.TheVpc.Upa.Extensions.EntityExtensionDefinition GetDefinition();
 
-         void Install(Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.Persistence.EntityOperationManager entityOperationManager, Net.Vpc.Upa.Extensions.EntityExtensionDefinition definition) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void Install(Net.TheVpc.Upa.Entity entity, Net.TheVpc.Upa.Persistence.EntityOperationManager entityOperationManager, Net.TheVpc.Upa.Extensions.EntityExtensionDefinition definition) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void CommitModelChanges() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void CommitModelChanges() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
     }
 }

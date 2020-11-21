@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
-    public class CloneDocumentNewKeyInUseException : Net.Vpc.Upa.Exceptions.EntityException {
+    public class CloneDocumentNewKeyInUseException : Net.TheVpc.Upa.Exceptions.EntityException {
 
-        public CloneDocumentNewKeyInUseException(Net.Vpc.Upa.Entity entity)  : base(entity, "cloneDocument.NewKeyInUse"){
+        public CloneDocumentNewKeyInUseException(Net.TheVpc.Upa.Entity entity)  : base(entity, "cloneDocument.NewKeyInUse"){
 
         }
     }

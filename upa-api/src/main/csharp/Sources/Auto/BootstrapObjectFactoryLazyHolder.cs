@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -19,8 +19,8 @@ namespace Net.Vpc.Upa
      * Lazy holder for ObjectFactory creation. ObjectFactory is created according to
      * the following procedure :
      * <ul>
-     * <li>Look for System.getProperty("net.vpc.upa.ObjectFactory") and create root
-     * Factory, If not Found look for net.vpc.upa.RootObjectFactory</li>
+     * <li>Look for System.getProperty("Net.TheVpc.Upa.ObjectFactory") and create root
+     * Factory, If not Found look for Net.TheVpc.Upa.RootObjectFactory</li>
      * <li>Look for ServiceLoader.load(ObjectFactory.class) to find for extension
      * Factories</li>
      * <li>Sort extensions instances according to their
@@ -37,7 +37,7 @@ namespace Net.Vpc.Upa
 
     internal partial class BootstrapObjectFactoryLazyHolder {
 
-        internal static Net.Vpc.Upa.ObjectFactory INSTANCE = Create();
+        internal static Net.TheVpc.Upa.ObjectFactory INSTANCE = Create();
 
 
     }

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql
+namespace Net.TheVpc.Upa.Impl.Uql
 {
 
 
@@ -24,18 +24,18 @@ namespace Net.Vpc.Upa.Impl.Uql
      */
     public class CompiledExpressionFactory {
 
-        public static Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression ToExpression(object e, System.Type defaultInstance) {
+        public static Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression ToExpression(object e, System.Type defaultInstance) {
             if (e == null) {
-                return new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledLiteral(null, null);
-            } else if (e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression) {
-                return (Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression) e;
+                return new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledLiteral(null, null);
+            } else if (e is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression) {
+                return (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression) e;
             } else if ((e.GetType()).IsArray) {
                 int l = ((System.Array)(e)).Length;
-                Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] eitems = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[l];
+                Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] eitems = new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[l];
                 for (int i = 0; i < eitems.Length; i++) {
                     eitems[i] = ToExpression(((System.Array)(e)).GetValue(i), defaultInstance);
                 }
-                return eitems.Length == 1 ? ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression)(eitems[0])) : new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledUplet(eitems);
+                return eitems.Length == 1 ? ((Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression)(eitems[0])) : new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledUplet(eitems);
             } else {
                 System.Reflection.ConstructorInfo c = null;
                 try {
@@ -48,19 +48,19 @@ namespace Net.Vpc.Upa.Impl.Uql
                     }
                 }
                 try {
-                    return (Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression) c.Invoke(new object[] { e });
+                    return (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression) c.Invoke(new object[] { e });
                 } catch (System.Exception e1) {
                     throw new System.ArgumentException (e1.ToString());
                 }
             }
         }
 
-        public static Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression ToLiteral(object @value) {
-            return ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression) (@value == null || !(@value is Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression) ? ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression)(new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledLiteral(@value, null))) : (Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression) @value));
+        public static Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression ToLiteral(object @value) {
+            return ((Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression) (@value == null || !(@value is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression) ? ((Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression)(new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledLiteral(@value, null))) : (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression) @value));
         }
 
-        public static Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression ToVar(object @value) {
-            return ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression) (@value == null || !(@value is Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression) ? ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression)(new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar((string) (@value)))) : (Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression) @value));
+        public static Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression ToVar(object @value) {
+            return ((Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression) (@value == null || !(@value is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression) ? ((Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression)(new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar((string) (@value)))) : (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression) @value));
         }
     }
 }

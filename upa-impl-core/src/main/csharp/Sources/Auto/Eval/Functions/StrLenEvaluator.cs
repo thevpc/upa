@@ -11,19 +11,19 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Eval.Functions
+namespace Net.TheVpc.Upa.Impl.Eval.Functions
 {
 
 
     /**
      * Created by vpc on 7/3/16.
      */
-    public class StrLenEvaluator : Net.Vpc.Upa.Function {
+    public class StrLenEvaluator : Net.TheVpc.Upa.Function {
 
-        public static readonly Net.Vpc.Upa.Function INSTANCE = new Net.Vpc.Upa.Impl.Eval.Functions.StrLenEvaluator();
+        public static readonly Net.TheVpc.Upa.Function INSTANCE = new Net.TheVpc.Upa.Impl.Eval.Functions.StrLenEvaluator();
 
 
-        public virtual object Eval(Net.Vpc.Upa.EvalContext evalContext) {
+        public virtual object Eval(Net.TheVpc.Upa.EvalContext evalContext) {
             object obj = evalContext.GetArguments()[0];
             return obj == null ? "" : System.Convert.ToString(obj);
         }

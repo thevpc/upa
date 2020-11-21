@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -19,18 +19,18 @@ namespace Net.Vpc.Upa.Impl.Persistence
      *
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class DatabaseIdentityPersister : Net.Vpc.Upa.Persistence.FieldPersister {
+    public class DatabaseIdentityPersister : Net.TheVpc.Upa.Persistence.FieldPersister {
 
-        private Net.Vpc.Upa.Field field;
+        private Net.TheVpc.Upa.Field field;
 
         internal string identityConstraintsEnabledProperty;
 
-        public DatabaseIdentityPersister(Net.Vpc.Upa.Field field) {
+        public DatabaseIdentityPersister(Net.TheVpc.Upa.Field field) {
             this.field = field;
             identityConstraintsEnabledProperty = "IdentityConstraintsEnabled." + field.GetEntity().GetName();
         }
 
-        public virtual void BeforePersist(Net.Vpc.Upa.Record record, Net.Vpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void BeforePersist(Net.TheVpc.Upa.Record record, Net.TheVpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             if (new System.Nullable<bool>(false).Equals(context.GetConnection().GetProperty(identityConstraintsEnabledProperty))) {
                 return;
             }
@@ -39,7 +39,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
             record.Remove(field.GetName());
         }
 
-        public virtual void AfterPersist(Net.Vpc.Upa.Record record, Net.Vpc.Upa.Persistence.EntityExecutionContext context) {
+        public virtual void AfterPersist(Net.TheVpc.Upa.Record record, Net.TheVpc.Upa.Persistence.EntityExecutionContext context) {
             if (new System.Nullable<bool>(false).Equals(context.GetConnection().GetProperty(identityConstraintsEnabledProperty))) {
                 return;
             }
@@ -54,7 +54,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
             if (o == null || GetType() != o.GetType()) {
                 return false;
             }
-            Net.Vpc.Upa.Impl.Persistence.DatabaseIdentityPersister that = (Net.Vpc.Upa.Impl.Persistence.DatabaseIdentityPersister) o;
+            Net.TheVpc.Upa.Impl.Persistence.DatabaseIdentityPersister that = (Net.TheVpc.Upa.Impl.Persistence.DatabaseIdentityPersister) o;
             if (!field.Equals(that.field)) {
                 return false;
             }

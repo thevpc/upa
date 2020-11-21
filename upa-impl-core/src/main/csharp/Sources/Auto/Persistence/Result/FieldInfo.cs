@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Result
+namespace Net.TheVpc.Upa.Impl.Persistence.Result
 {
 
 
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Result
     * Created by vpc on 1/4/14.*/
     internal class FieldInfo {
 
-        public Net.Vpc.Upa.Impl.Persistence.Result.TypeInfo typeInfo;
+        public Net.TheVpc.Upa.Impl.Persistence.Result.TypeInfo typeInfo;
 
         public int dbIndex;
 
@@ -29,13 +29,13 @@ namespace Net.Vpc.Upa.Impl.Persistence.Result
 
         public string name;
 
-        public Net.Vpc.Upa.Impl.Persistence.NativeField nativeField;
+        public Net.TheVpc.Upa.Impl.Persistence.NativeField nativeField;
 
         public string setterMethodName;
 
-        public Net.Vpc.Upa.Field field;
+        public Net.TheVpc.Upa.Field field;
 
-        public Net.Vpc.Upa.Entity referencedEntity;
+        public Net.TheVpc.Upa.Entity referencedEntity;
 
 
         public override string ToString() {

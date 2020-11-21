@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
@@ -19,18 +19,18 @@ namespace Net.Vpc.Upa.Impl
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 8/27/12 2:06 AM
      */
-    public class BeanAdapterKey : Net.Vpc.Upa.Impl.AbstractKey {
+    public class BeanAdapterKey : Net.TheVpc.Upa.Impl.AbstractKey {
 
         private System.Type keyType;
 
-        private Net.Vpc.Upa.BeanType nfo;
+        private Net.TheVpc.Upa.BeanType nfo;
 
         private object userObject;
 
-        public BeanAdapterKey(System.Type keyType, object userObject, Net.Vpc.Upa.Entity entity) {
+        public BeanAdapterKey(System.Type keyType, object userObject, Net.TheVpc.Upa.Entity entity) {
             this.keyType = keyType;
             this.userObject = userObject;
-            nfo = Net.Vpc.Upa.Impl.Util.PlatformBeanTypeRepository.GetInstance().GetBeanType(keyType);
+            nfo = Net.TheVpc.Upa.Impl.Util.PlatformBeanTypeRepository.GetInstance().GetBeanType(keyType);
         }
 
 

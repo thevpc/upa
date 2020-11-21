@@ -11,18 +11,18 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public interface Field : Net.Vpc.Upa.EntityPart {
+    public interface Field : Net.TheVpc.Upa.EntityPart {
 
-         Net.Vpc.Upa.PropertyAccessType GetPropertyAccessType();
+         Net.TheVpc.Upa.PropertyAccessType GetPropertyAccessType();
 
-         void SetPropertyAccessType(Net.Vpc.Upa.PropertyAccessType @value);
+         void SetPropertyAccessType(Net.TheVpc.Upa.PropertyAccessType @value);
 
          object GetUnspecifiedValue();
 
@@ -45,17 +45,17 @@ namespace Net.Vpc.Upa
 
          void SetDefaultObject(object o);
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Relationship> GetManyToOneRelationships();
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Relationship> GetManyToOneRelationships();
 
          void SetFormula(string formula);
 
-         void SetFormula(Net.Vpc.Upa.Formula formula);
+         void SetFormula(Net.TheVpc.Upa.Formula formula);
 
          void SetPersistFormula(string formula);
 
-         Net.Vpc.Upa.Formula GetPersistFormula();
+         Net.TheVpc.Upa.Formula GetPersistFormula();
 
-         void SetPersistFormula(Net.Vpc.Upa.Formula formula);
+         void SetPersistFormula(Net.TheVpc.Upa.Formula formula);
 
          int GetPersistFormulaOrder();
 
@@ -63,9 +63,9 @@ namespace Net.Vpc.Upa
 
          void SetFormulaOrder(int order);
 
-         Net.Vpc.Upa.Formula GetUpdateFormula();
+         Net.TheVpc.Upa.Formula GetUpdateFormula();
 
-         void SetUpdateFormula(Net.Vpc.Upa.Formula formula);
+         void SetUpdateFormula(Net.TheVpc.Upa.Formula formula);
 
          void SetUpdateFormula(string formula);
 
@@ -73,53 +73,53 @@ namespace Net.Vpc.Upa
 
          void SetUpdateFormulaOrder(int order);
 
-         Net.Vpc.Upa.Formula GetSelectFormula();
+         Net.TheVpc.Upa.Formula GetSelectFormula();
 
-         void SetSelectFormula(Net.Vpc.Upa.Formula formula);
+         void SetSelectFormula(Net.TheVpc.Upa.Formula formula);
 
          void SetSelectFormula(string formula);
 
-         Net.Vpc.Upa.Types.DataType GetDataType();
+         Net.TheVpc.Upa.Types.DataType GetDataType();
 
-         void SetDataType(Net.Vpc.Upa.Types.DataType datatype);
+         void SetDataType(Net.TheVpc.Upa.Types.DataType datatype);
 
-         Net.Vpc.Upa.AccessLevel GetPersistAccessLevel();
+         Net.TheVpc.Upa.AccessLevel GetPersistAccessLevel();
 
-         void SetPersistAccessLevel(Net.Vpc.Upa.AccessLevel accessLevel);
+         void SetPersistAccessLevel(Net.TheVpc.Upa.AccessLevel accessLevel);
 
-         Net.Vpc.Upa.AccessLevel GetUpdateAccessLevel();
+         Net.TheVpc.Upa.AccessLevel GetUpdateAccessLevel();
 
-         void SetUpdateAccessLevel(Net.Vpc.Upa.AccessLevel accessLevel);
+         void SetUpdateAccessLevel(Net.TheVpc.Upa.AccessLevel accessLevel);
 
-         Net.Vpc.Upa.AccessLevel GetReadAccessLevel();
+         Net.TheVpc.Upa.AccessLevel GetReadAccessLevel();
 
-         void SetReadAccessLevel(Net.Vpc.Upa.AccessLevel accessLevel);
+         void SetReadAccessLevel(Net.TheVpc.Upa.AccessLevel accessLevel);
 
-         void SetAccessLevel(Net.Vpc.Upa.AccessLevel accessLevel);
+         void SetAccessLevel(Net.TheVpc.Upa.AccessLevel accessLevel);
 
-         Net.Vpc.Upa.ProtectionLevel GetPersistProtectionLevel();
+         Net.TheVpc.Upa.ProtectionLevel GetPersistProtectionLevel();
 
-         void SetPersistProtectionLevel(Net.Vpc.Upa.ProtectionLevel protectionLevel);
+         void SetPersistProtectionLevel(Net.TheVpc.Upa.ProtectionLevel protectionLevel);
 
-         Net.Vpc.Upa.ProtectionLevel GetUpdateProtectionLevel();
+         Net.TheVpc.Upa.ProtectionLevel GetUpdateProtectionLevel();
 
-         void SetUpdateProtectionLevel(Net.Vpc.Upa.ProtectionLevel protectionLevel);
+         void SetUpdateProtectionLevel(Net.TheVpc.Upa.ProtectionLevel protectionLevel);
 
-         Net.Vpc.Upa.ProtectionLevel GetReadProtectionLevel();
+         Net.TheVpc.Upa.ProtectionLevel GetReadProtectionLevel();
 
-         void SetReadProtectionLevel(Net.Vpc.Upa.ProtectionLevel protectionLevel);
+         void SetReadProtectionLevel(Net.TheVpc.Upa.ProtectionLevel protectionLevel);
 
-         void SetProtectionLevel(Net.Vpc.Upa.ProtectionLevel protectionLevel);
+         void SetProtectionLevel(Net.TheVpc.Upa.ProtectionLevel protectionLevel);
 
-         Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> GetUserModifiers();
+         Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> GetUserModifiers();
 
-         void SetUserModifiers(Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> modifiers);
+         void SetUserModifiers(Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> modifiers);
 
-         Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> GetUserExcludeModifiers();
+         Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> GetUserExcludeModifiers();
 
-         void SetUserExcludeModifiers(Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> modifiers);
+         void SetUserExcludeModifiers(Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> modifiers);
 
-         Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.FieldModifier> GetModifiers();
+         Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.FieldModifier> GetModifiers();
 
          bool IsId();
 
@@ -131,15 +131,15 @@ namespace Net.Vpc.Upa
 
          bool IsSummary();
 
-         bool Is(Net.Vpc.Upa.Filters.FieldFilter filter);
+         bool Is(Net.TheVpc.Upa.Filters.FieldFilter filter);
 
-         Net.Vpc.Upa.SearchOperator GetSearchOperator();
+         Net.TheVpc.Upa.SearchOperator GetSearchOperator();
 
-         void SetSearchOperator(Net.Vpc.Upa.SearchOperator @operator);
+         void SetSearchOperator(Net.TheVpc.Upa.SearchOperator @operator);
 
-         Net.Vpc.Upa.Types.DataTypeTransform GetTypeTransform();
+         Net.TheVpc.Upa.Types.DataTypeTransform GetTypeTransform();
 
-         void SetTypeTransform(Net.Vpc.Upa.Types.DataTypeTransform transform);
+         void SetTypeTransform(Net.TheVpc.Upa.Types.DataTypeTransform transform);
 
         /**
              * value of the field for the given instance
@@ -167,20 +167,20 @@ namespace Net.Vpc.Upa
 
          bool IsManyToOne();
 
-         Net.Vpc.Upa.Relationship GetManyToOneRelationship();
+         Net.TheVpc.Upa.Relationship GetManyToOneRelationship();
 
-         Net.Vpc.Upa.ProtectionLevel GetProtectionLevel(Net.Vpc.Upa.AccessMode mode);
+         Net.TheVpc.Upa.ProtectionLevel GetProtectionLevel(Net.TheVpc.Upa.AccessMode mode);
 
-         Net.Vpc.Upa.AccessLevel GetAccessLevel(Net.Vpc.Upa.AccessMode mode);
+         Net.TheVpc.Upa.AccessLevel GetAccessLevel(Net.TheVpc.Upa.AccessMode mode);
 
-         Net.Vpc.Upa.AccessLevel GetEffectiveAccessLevel(Net.Vpc.Upa.AccessMode mode);
+         Net.TheVpc.Upa.AccessLevel GetEffectiveAccessLevel(Net.TheVpc.Upa.AccessMode mode);
 
-         Net.Vpc.Upa.AccessLevel GetEffectivePersistAccessLevel();
+         Net.TheVpc.Upa.AccessLevel GetEffectivePersistAccessLevel();
 
-         Net.Vpc.Upa.AccessLevel GetEffectiveUpdateAccessLevel();
+         Net.TheVpc.Upa.AccessLevel GetEffectiveUpdateAccessLevel();
 
-         Net.Vpc.Upa.AccessLevel GetEffectiveReadAccessLevel();
+         Net.TheVpc.Upa.AccessLevel GetEffectiveReadAccessLevel();
 
-         Net.Vpc.Upa.FieldInfo GetInfo();
+         Net.TheVpc.Upa.FieldInfo GetInfo();
     }
 }

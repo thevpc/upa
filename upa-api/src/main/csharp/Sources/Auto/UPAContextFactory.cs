@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -19,12 +19,12 @@ namespace Net.Vpc.Upa
      *
      * @author taha.bensalah@gmail.com
      */
-    public interface UPAContextFactory : Net.Vpc.Upa.ObjectFactory {
+    public interface UPAContextFactory : Net.TheVpc.Upa.ObjectFactory {
 
-         Net.Vpc.Upa.Config.ScanSource CreateURLScanSource(string sourceName, string[] urls, Net.Vpc.Upa.Config.ScanFilter[] filters, bool noIgnore);
+         Net.TheVpc.Upa.Config.ScanSource CreateURLScanSource(string sourceName, string[] urls, Net.TheVpc.Upa.Config.ScanFilter[] filters, bool noIgnore);
 
-         Net.Vpc.Upa.Config.ScanSource CreateContextScanSource(string sourceName, bool noIgnore);
+         Net.TheVpc.Upa.Config.ScanSource CreateContextScanSource(string sourceName, bool noIgnore);
 
-         Net.Vpc.Upa.Config.ScanSource CreateClassScanSource(string sourceName, System.Type[] classes, bool noIgnore);
+         Net.TheVpc.Upa.Config.ScanSource CreateClassScanSource(string sourceName, System.Type[] classes, bool noIgnore);
     }
 }

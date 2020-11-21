@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Config
+namespace Net.TheVpc.Upa.Config
 {
 
 
@@ -23,8 +23,8 @@ namespace Net.Vpc.Upa.Config
 
     public class Transactional : System.Attribute {
 
-        private Net.Vpc.Upa.TransactionType _Value = Net.Vpc.Upa.TransactionType.SUPPORTS;
-        public  Net.Vpc.Upa.TransactionType Value{
+        private Net.TheVpc.Upa.TransactionType _Value = Net.TheVpc.Upa.TransactionType.SUPPORTS;
+        public  Net.TheVpc.Upa.TransactionType Value{
             get {return _Value;}
             set {_Value=value;}
         }
@@ -35,8 +35,8 @@ namespace Net.Vpc.Upa.Config
              *
              * @return annotation configuration
              */
-        private Net.Vpc.Upa.Config.ItemConfig _Config = new Net.Vpc.Upa.Config.ItemConfig();
-        public  Net.Vpc.Upa.Config.ItemConfig Config{
+        private Net.TheVpc.Upa.Config.ItemConfig _Config = new Net.TheVpc.Upa.Config.ItemConfig();
+        public  Net.TheVpc.Upa.Config.ItemConfig Config{
             get {return _Config;}
             set {_Config=value;}
         }

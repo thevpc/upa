@@ -11,37 +11,37 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
-    public class DefaultPackage : Net.Vpc.Upa.Impl.AbstractUPAObject, Net.Vpc.Upa.Package {
+    public class DefaultPackage : Net.TheVpc.Upa.Impl.AbstractUPAObject, Net.TheVpc.Upa.Package {
 
-        private Net.Vpc.Upa.Package parent;
+        private Net.TheVpc.Upa.Package parent;
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.PersistenceUnitPart> parts;
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.PersistenceUnitPart> parts;
 
         private bool closed;
 
         public DefaultPackage() {
             this.parent = null;
-            this.parts = new System.Collections.Generic.List<Net.Vpc.Upa.PersistenceUnitPart>(3);
+            this.parts = new System.Collections.Generic.List<Net.TheVpc.Upa.PersistenceUnitPart>(3);
         }
 
 
         public override string GetAbsoluteName() {
-            Net.Vpc.Upa.PersistenceUnitPart parentPersistenceUnitItem = GetParent();
+            Net.TheVpc.Upa.PersistenceUnitPart parentPersistenceUnitItem = GetParent();
             if (parentPersistenceUnitItem == null) {
                 return GetName();
             }
             return parentPersistenceUnitItem.GetAbsoluteName() + "/" + GetName();
         }
 
-        public virtual void AddPart(Net.Vpc.Upa.PersistenceUnitPart child) {
+        public virtual void AddPart(Net.TheVpc.Upa.PersistenceUnitPart child) {
             AddPart(child, GetPartsCount());
         }
 
-        public virtual void AddPart(Net.Vpc.Upa.PersistenceUnitPart part, int index) {
+        public virtual void AddPart(Net.TheVpc.Upa.PersistenceUnitPart part, int index) {
             if (index < 0) {
                 index = GetPartsCount() + index + 1;
             }
@@ -51,11 +51,11 @@ namespace Net.Vpc.Upa.Impl
             if (index > (parts).Count) {
                 throw new System.IndexOutOfRangeException("Invalid Index "+(index));
             }
-            Net.Vpc.Upa.Impl.Util.ListUtils.Add<Net.Vpc.Upa.PersistenceUnitPart>(parts, part, index, this, this, new Net.Vpc.Upa.Impl.DefaultPackagePrivateAddPartInterceptor(this));
+            Net.TheVpc.Upa.Impl.Util.ListUtils.Add<Net.TheVpc.Upa.PersistenceUnitPart>(parts, part, index, this, this, new Net.TheVpc.Upa.Impl.DefaultPackagePrivateAddPartInterceptor(this));
         }
 
         public virtual void RemovePartAt(int index) {
-            Net.Vpc.Upa.Impl.Util.ListUtils.Remove<Net.Vpc.Upa.PersistenceUnitPart>(parts, index, this, new Net.Vpc.Upa.Impl.DefaultPackagePrivateRemovePartInterceptor());
+            Net.TheVpc.Upa.Impl.Util.ListUtils.Remove<Net.TheVpc.Upa.PersistenceUnitPart>(parts, index, this, new Net.TheVpc.Upa.Impl.DefaultPackagePrivateRemovePartInterceptor());
         }
 
         public virtual void MovePart(string itemName, int newIndex) {
@@ -63,55 +63,55 @@ namespace Net.Vpc.Upa.Impl
         }
 
         public virtual void MovePart(int index, int newIndex) {
-            Net.Vpc.Upa.Impl.Util.ListUtils.MoveTo<T>(parts, index, newIndex, this, null);
+            Net.TheVpc.Upa.Impl.Util.ListUtils.MoveTo<T>(parts, index, newIndex, this, null);
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.PersistenceUnitPart> GetParts() {
-            return new System.Collections.Generic.List<Net.Vpc.Upa.PersistenceUnitPart>(parts);
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.PersistenceUnitPart> GetParts() {
+            return new System.Collections.Generic.List<Net.TheVpc.Upa.PersistenceUnitPart>(parts);
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Entity> GetEntities() {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Entity> all = new System.Collections.Generic.List<Net.Vpc.Upa.Entity>();
-            foreach (Net.Vpc.Upa.PersistenceUnitPart item in parts) {
-                if (item is Net.Vpc.Upa.Entity) {
-                    all.Add((Net.Vpc.Upa.Entity) item);
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Entity> GetEntities() {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Entity> all = new System.Collections.Generic.List<Net.TheVpc.Upa.Entity>();
+            foreach (Net.TheVpc.Upa.PersistenceUnitPart item in parts) {
+                if (item is Net.TheVpc.Upa.Entity) {
+                    all.Add((Net.TheVpc.Upa.Entity) item);
                 }
             }
             return all;
         }
 
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Entity> GetEntities(bool includeSubPackages) {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Entity> all = new System.Collections.Generic.List<Net.Vpc.Upa.Entity>();
-            foreach (Net.Vpc.Upa.PersistenceUnitPart item in parts) {
-                if (item is Net.Vpc.Upa.Entity) {
-                    all.Add((Net.Vpc.Upa.Entity) item);
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Entity> GetEntities(bool includeSubPackages) {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Entity> all = new System.Collections.Generic.List<Net.TheVpc.Upa.Entity>();
+            foreach (Net.TheVpc.Upa.PersistenceUnitPart item in parts) {
+                if (item is Net.TheVpc.Upa.Entity) {
+                    all.Add((Net.TheVpc.Upa.Entity) item);
                 } else if (includeSubPackages) {
-                    if (item is Net.Vpc.Upa.Package) {
-                        Net.Vpc.Upa.Impl.FwkConvertUtils.ListAddRange(all, ((Net.Vpc.Upa.Package) item).GetEntities(includeSubPackages));
+                    if (item is Net.TheVpc.Upa.Package) {
+                        Net.TheVpc.Upa.Impl.FwkConvertUtils.ListAddRange(all, ((Net.TheVpc.Upa.Package) item).GetEntities(includeSubPackages));
                     }
                 }
             }
             return all;
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Package> GetPackages() {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Package> all = new System.Collections.Generic.List<Net.Vpc.Upa.Package>();
-            foreach (Net.Vpc.Upa.PersistenceUnitPart item in parts) {
-                if (item is Net.Vpc.Upa.Package) {
-                    all.Add((Net.Vpc.Upa.Package) item);
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Package> GetPackages() {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Package> all = new System.Collections.Generic.List<Net.TheVpc.Upa.Package>();
+            foreach (Net.TheVpc.Upa.PersistenceUnitPart item in parts) {
+                if (item is Net.TheVpc.Upa.Package) {
+                    all.Add((Net.TheVpc.Upa.Package) item);
                 }
             }
             return all;
         }
 
-        public virtual int IndexOfPart(Net.Vpc.Upa.PersistenceUnitPart child) {
+        public virtual int IndexOfPart(Net.TheVpc.Upa.PersistenceUnitPart child) {
             return parts.IndexOf(child);
         }
 
         public virtual int IndexOfPart(string childName) {
             int index = 0;
-            foreach (Net.Vpc.Upa.PersistenceUnitPart child in parts) {
+            foreach (Net.TheVpc.Upa.PersistenceUnitPart child in parts) {
                 if (childName.Equals(child.GetName())) {
                     return index;
                 }
@@ -120,11 +120,11 @@ namespace Net.Vpc.Upa.Impl
             return -1;
         }
 
-        public virtual Net.Vpc.Upa.Package GetParent() {
+        public virtual Net.TheVpc.Upa.Package GetParent() {
             return parent;
         }
 
-        public virtual void SetParent(Net.Vpc.Upa.Package parent) {
+        public virtual void SetParent(Net.TheVpc.Upa.Package parent) {
             this.parent = parent;
         }
 
@@ -136,16 +136,16 @@ namespace Net.Vpc.Upa.Impl
             return p + GetName();
         }
 
-        public virtual Net.Vpc.Upa.Package GetPart(string name) {
-            foreach (Net.Vpc.Upa.PersistenceUnitPart persistenceUnitItem in parts) {
-                if (persistenceUnitItem is Net.Vpc.Upa.Package) {
-                    Net.Vpc.Upa.Package m = (Net.Vpc.Upa.Package) persistenceUnitItem;
+        public virtual Net.TheVpc.Upa.Package GetPart(string name) {
+            foreach (Net.TheVpc.Upa.PersistenceUnitPart persistenceUnitItem in parts) {
+                if (persistenceUnitItem is Net.TheVpc.Upa.Package) {
+                    Net.TheVpc.Upa.Package m = (Net.TheVpc.Upa.Package) persistenceUnitItem;
                     if (m.GetName().Equals(name)) {
                         return m;
                     }
                 }
             }
-            throw new Net.Vpc.Upa.Exceptions.NoSuchPackageException(name, null);
+            throw new Net.TheVpc.Upa.Exceptions.NoSuchPackageException(name, null);
         }
 
 
@@ -154,8 +154,8 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
-        public override void Close() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            foreach (Net.Vpc.Upa.PersistenceUnitPart child in parts) {
+        public override void Close() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            foreach (Net.TheVpc.Upa.PersistenceUnitPart child in parts) {
                 child.Close();
             }
             this.closed = true;

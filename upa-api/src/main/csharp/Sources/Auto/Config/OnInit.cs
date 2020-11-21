@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Config
+namespace Net.TheVpc.Upa.Config
 {
 
 
@@ -36,8 +36,8 @@ namespace Net.Vpc.Upa.Config
         }
 
 
-        private Net.Vpc.Upa.Config.ItemConfig _Config = new Net.Vpc.Upa.Config.ItemConfig();
-        public  Net.Vpc.Upa.Config.ItemConfig Config{
+        private Net.TheVpc.Upa.Config.ItemConfig _Config = new Net.TheVpc.Upa.Config.ItemConfig();
+        public  Net.TheVpc.Upa.Config.ItemConfig Config{
             get {return _Config;}
             set {_Config=value;}
         }

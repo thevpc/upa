@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -21,18 +21,18 @@ namespace Net.Vpc.Upa
      */
     public interface Transaction {
 
-         Net.Vpc.Upa.TransactionStatus GetStatus();
+         Net.TheVpc.Upa.TransactionStatus GetStatus();
 
-         void Begin() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void Begin() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void Commit() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void Commit() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void Rollback() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void Rollback() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void Close() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void Close() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void AddTransactionListener(Net.Vpc.Upa.TransactionListener transactionListener);
+         void AddTransactionListener(Net.TheVpc.Upa.TransactionListener transactionListener);
 
-         void RemoveTransactionListener(Net.Vpc.Upa.TransactionListener transactionListener);
+         void RemoveTransactionListener(Net.TheVpc.Upa.TransactionListener transactionListener);
     }
 }

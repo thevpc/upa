@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -20,26 +20,26 @@ namespace Net.Vpc.Upa.Impl.Util
      */
     public sealed class CallbackInvokerKey {
 
-        private Net.Vpc.Upa.CallbackType callbackType;
+        private Net.TheVpc.Upa.CallbackType callbackType;
 
-        private Net.Vpc.Upa.ObjectType objectType;
+        private Net.TheVpc.Upa.ObjectType objectType;
 
         private bool system;
 
         private string name;
 
-        public CallbackInvokerKey(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string name, bool system) {
+        public CallbackInvokerKey(Net.TheVpc.Upa.CallbackType callbackType, Net.TheVpc.Upa.ObjectType objectType, string name, bool system) {
             this.callbackType = callbackType;
             this.objectType = objectType;
             this.system = system;
             this.name = name;
         }
 
-        public Net.Vpc.Upa.CallbackType GetCallbackType() {
+        public Net.TheVpc.Upa.CallbackType GetCallbackType() {
             return callbackType;
         }
 
-        public Net.Vpc.Upa.ObjectType GetObjectType() {
+        public Net.TheVpc.Upa.ObjectType GetObjectType() {
             return objectType;
         }
 
@@ -55,7 +55,7 @@ namespace Net.Vpc.Upa.Impl.Util
         public override bool Equals(object o) {
             if (this == o) return true;
             if (o == null || GetType() != o.GetType()) return false;
-            Net.Vpc.Upa.Impl.Util.CallbackInvokerKey that = (Net.Vpc.Upa.Impl.Util.CallbackInvokerKey) o;
+            Net.TheVpc.Upa.Impl.Util.CallbackInvokerKey that = (Net.TheVpc.Upa.Impl.Util.CallbackInvokerKey) o;
             if (system != that.system) return false;
             if (callbackType != that.callbackType) return false;
             if (objectType != that.objectType) return false;
@@ -64,8 +64,8 @@ namespace Net.Vpc.Upa.Impl.Util
 
 
         public override int GetHashCode() {
-            int result = callbackType != default(Net.Vpc.Upa.CallbackType) ? callbackType.GetHashCode() : 0;
-            result = 31 * result + (objectType != default(Net.Vpc.Upa.ObjectType) ? objectType.GetHashCode() : 0);
+            int result = callbackType != default(Net.TheVpc.Upa.CallbackType) ? callbackType.GetHashCode() : 0;
+            result = 31 * result + (objectType != default(Net.TheVpc.Upa.ObjectType) ? objectType.GetHashCode() : 0);
             result = 31 * result + (system ? 1 : 0);
             result = 31 * result + (name != null ? name.GetHashCode() : 0);
             return result;

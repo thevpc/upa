@@ -12,42 +12,42 @@
 
 
 using System.Linq;
-namespace Net.Vpc.Upa.Impl.Persistence.Result
+namespace Net.TheVpc.Upa.Impl.Persistence.Result
 {
 
 
     /**
      * Created by vpc on 6/18/16.
      */
-    public class DefaultObjectQueryResultLazyList<T> : Net.Vpc.Upa.Impl.Persistence.QueryResultLazyList<T> {
+    public class DefaultObjectQueryResultLazyList<T> : Net.TheVpc.Upa.Impl.Persistence.QueryResultLazyList<T> {
 
         protected internal bool updatable;
 
         protected internal bool loadManyToOneRelations;
 
-        internal Net.Vpc.Upa.Impl.Persistence.Result.TypeInfo[] typeInfos;
+        internal Net.TheVpc.Upa.Impl.Persistence.Result.TypeInfo[] typeInfos;
 
-        protected internal Net.Vpc.Upa.Persistence.ResultMetaData metaData;
+        protected internal Net.TheVpc.Upa.Persistence.ResultMetaData metaData;
 
-        internal System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Impl.Persistence.Result.TypeInfo> bindingToTypeInfos;
+        internal System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Impl.Persistence.Result.TypeInfo> bindingToTypeInfos;
 
-        protected internal Net.Vpc.Upa.Impl.Util.CacheMap<Net.Vpc.Upa.NamedId , object> referencesCache;
+        protected internal Net.TheVpc.Upa.Impl.Util.CacheMap<Net.TheVpc.Upa.NamedId , object> referencesCache;
 
         protected internal System.Collections.Generic.IDictionary<string , object> hints;
 
-        protected internal Net.Vpc.Upa.ObjectFactory ofactory;
+        protected internal Net.TheVpc.Upa.ObjectFactory ofactory;
 
         protected internal bool defaultsToRecord;
 
         protected internal bool relationAsRecord;
 
-        private Net.Vpc.Upa.Impl.Persistence.Result.QueryResultItemBuilder resultBuilder;
+        private Net.TheVpc.Upa.Impl.Persistence.Result.QueryResultItemBuilder resultBuilder;
 
-        private Net.Vpc.Upa.Impl.Persistence.Result.QueryResultRelationLoader loader;
+        private Net.TheVpc.Upa.Impl.Persistence.Result.QueryResultRelationLoader loader;
 
-        private Net.Vpc.Upa.Impl.Persistence.Result.LoaderContext loaderContext;
+        private Net.TheVpc.Upa.Impl.Persistence.Result.LoaderContext loaderContext;
 
-        public DefaultObjectQueryResultLazyList(Net.Vpc.Upa.Impl.Persistence.QueryExecutor queryExecutor, bool loadManyToOneRelations, bool defaultsToRecord, bool relationAsRecord, bool supportCache, bool updatable, Net.Vpc.Upa.Impl.Persistence.Result.QueryResultRelationLoader loader, Net.Vpc.Upa.Impl.Persistence.Result.QueryResultItemBuilder resultBuilder)  : base(queryExecutor){
+        public DefaultObjectQueryResultLazyList(Net.TheVpc.Upa.Impl.Persistence.QueryExecutor queryExecutor, bool loadManyToOneRelations, bool defaultsToRecord, bool relationAsRecord, bool supportCache, bool updatable, Net.TheVpc.Upa.Impl.Persistence.Result.QueryResultRelationLoader loader, Net.TheVpc.Upa.Impl.Persistence.Result.QueryResultItemBuilder resultBuilder)  : base(queryExecutor){
 
             this.resultBuilder = resultBuilder;
             this.loader = loader;
@@ -62,20 +62,20 @@ namespace Net.Vpc.Upa.Impl.Persistence.Result
                 hints = new System.Collections.Generic.Dictionary<string , object>(hints);
             }
             if (supportCache) {
-                Net.Vpc.Upa.Impl.Util.CacheMap<Net.Vpc.Upa.NamedId , object> sharedCache = (Net.Vpc.Upa.Impl.Util.CacheMap<Net.Vpc.Upa.NamedId , object>) Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(hints,"queryCache");
+                Net.TheVpc.Upa.Impl.Util.CacheMap<Net.TheVpc.Upa.NamedId , object> sharedCache = (Net.TheVpc.Upa.Impl.Util.CacheMap<Net.TheVpc.Upa.NamedId , object>) Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(hints,"queryCache");
                 if (sharedCache == null) {
-                    sharedCache = new Net.Vpc.Upa.Impl.Util.CacheMap<Net.Vpc.Upa.NamedId , object>(1000);
+                    sharedCache = new Net.TheVpc.Upa.Impl.Util.CacheMap<Net.TheVpc.Upa.NamedId , object>(1000);
                     hints["queryCache"]=sharedCache;
                 }
                 referencesCache = sharedCache;
             }
-            loaderContext = new Net.Vpc.Upa.Impl.Persistence.Result.LoaderContext(referencesCache, hints);
-            System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Impl.Persistence.Result.TypeInfo> bindingToTypeInfos0 = new System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Impl.Persistence.Result.TypeInfo>();
-            ofactory = Net.Vpc.Upa.UPA.GetPersistenceUnit().GetFactory();
-            Net.Vpc.Upa.Impl.Persistence.NativeField[] fields = queryExecutor.GetFields();
+            loaderContext = new Net.TheVpc.Upa.Impl.Persistence.Result.LoaderContext(referencesCache, hints);
+            System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Impl.Persistence.Result.TypeInfo> bindingToTypeInfos0 = new System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Impl.Persistence.Result.TypeInfo>();
+            ofactory = Net.TheVpc.Upa.UPA.GetPersistenceUnit().GetFactory();
+            Net.TheVpc.Upa.Impl.Persistence.NativeField[] fields = queryExecutor.GetFields();
             for (int i = 0; i < fields.Length; i++) {
-                Net.Vpc.Upa.Impl.Persistence.NativeField nativeField = fields[i];
-                Net.Vpc.Upa.Impl.Persistence.Result.FieldInfo f = new Net.Vpc.Upa.Impl.Persistence.Result.FieldInfo();
+                Net.TheVpc.Upa.Impl.Persistence.NativeField nativeField = fields[i];
+                Net.TheVpc.Upa.Impl.Persistence.Result.FieldInfo f = new Net.TheVpc.Upa.Impl.Persistence.Result.FieldInfo();
                 f.dbIndex = i;
                 f.nativeField = nativeField;
                 f.name = nativeField.GetName();
@@ -83,14 +83,14 @@ namespace Net.Vpc.Upa.Impl.Persistence.Result
                 if (gn == null) {
                     gn = nativeField.GetExprString();
                 }
-                Net.Vpc.Upa.Impl.Persistence.Result.TypeInfo t = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.Vpc.Upa.Impl.Persistence.Result.TypeInfo>(bindingToTypeInfos0,gn);
+                Net.TheVpc.Upa.Impl.Persistence.Result.TypeInfo t = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.TheVpc.Upa.Impl.Persistence.Result.TypeInfo>(bindingToTypeInfos0,gn);
                 if (t == null) {
                     if (nativeField.GetField() != null) {
-                        t = new Net.Vpc.Upa.Impl.Persistence.Result.TypeInfo(gn, nativeField.GetField().GetEntity());
+                        t = new Net.TheVpc.Upa.Impl.Persistence.Result.TypeInfo(gn, nativeField.GetField().GetEntity());
                         t.record = gn.Contains(".") ? relationAsRecord : defaultsToRecord;
                         bindingToTypeInfos0[gn]=t;
                     } else {
-                        t = new Net.Vpc.Upa.Impl.Persistence.Result.TypeInfo(gn, null);
+                        t = new Net.TheVpc.Upa.Impl.Persistence.Result.TypeInfo(gn, null);
                         t.record = false;
                         //n.contains(".") ? relationAsRecord : defaultsToRecord;
                         bindingToTypeInfos0[gn]=t;
@@ -104,11 +104,11 @@ namespace Net.Vpc.Upa.Impl.Persistence.Result
                 f.field = nativeField.GetField();
                 if (loadManyToOneRelations) {
                     if (f.field != null) {
-                        if (f.field.GetDataType() is Net.Vpc.Upa.Types.ManyToOneType) {
-                            Net.Vpc.Upa.Entity r = ((Net.Vpc.Upa.Types.ManyToOneType) f.field.GetDataType()).GetTargetEntity();
+                        if (f.field.GetDataType() is Net.TheVpc.Upa.Types.ManyToOneType) {
+                            Net.TheVpc.Upa.Entity r = ((Net.TheVpc.Upa.Types.ManyToOneType) f.field.GetDataType()).GetTargetEntity();
                             f.referencedEntity = r;
                         }
-                        foreach (Net.Vpc.Upa.Relationship relationship in f.field.GetManyToOneRelationships()) {
+                        foreach (Net.TheVpc.Upa.Relationship relationship in f.field.GetManyToOneRelationships()) {
                             if (relationship.GetSourceRole().GetEntityField() != null) {
                                 t.manyToOneRelations.Add(relationship);
                             }
@@ -123,7 +123,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Result
                 if (t.leadField == null) {
                     t.leadField = f;
                 }
-                f.setterMethodName = Net.Vpc.Upa.Impl.Util.PlatformUtils.SetterName(nativeField.GetName());
+                f.setterMethodName = Net.TheVpc.Upa.Impl.Util.PlatformUtils.SetterName(nativeField.GetName());
                 t.fields[f.setterMethodName]=f;
             }
             bindingToTypeInfos = bindingToTypeInfos0;
@@ -136,13 +136,13 @@ namespace Net.Vpc.Upa.Impl.Persistence.Result
             // map expression to relative TypeInfo/FieldInfo
             System.Collections.Generic.IDictionary<string , object> visitedIndexes = new System.Collections.Generic.Dictionary<string , object>();
             for (int i = 0; i < typeInfos.Length; i++) {
-                Net.Vpc.Upa.Impl.Persistence.Result.TypeInfo typeInfo = typeInfos[i];
+                Net.TheVpc.Upa.Impl.Persistence.Result.TypeInfo typeInfo = typeInfos[i];
                 //            if (aliasName.equals(typeInfo.binding)) {
                 //                entityIndex = i;
                 //            }
                 typeInfo.infosArray = typeInfo.allFields.ToArray();
                 typeInfo.update = false;
-                foreach (Net.Vpc.Upa.Impl.Persistence.Result.FieldInfo field in typeInfo.infosArray) {
+                foreach (Net.TheVpc.Upa.Impl.Persistence.Result.FieldInfo field in typeInfo.infosArray) {
                     if (!field.nativeField.IsExpanded() && field.nativeField.GetIndex() >= 0) {
                         field.update = true;
                         field.indexesToUpdate.Add(field.nativeField.GetIndex());
@@ -153,9 +153,9 @@ namespace Net.Vpc.Upa.Impl.Persistence.Result
                 if (typeInfo.entity == null) {
                     typeInfo.update = true;
                 } else {
-                    System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.ResultField> fields1 = metaData.GetFields();
+                    System.Collections.Generic.IList<Net.TheVpc.Upa.Persistence.ResultField> fields1 = metaData.GetFields();
                     for (int i1 = 0; i1 < (fields1).Count; i1++) {
-                        Net.Vpc.Upa.Persistence.ResultField resultField = fields1[i1];
+                        Net.TheVpc.Upa.Persistence.ResultField resultField = fields1[i1];
                         if (resultField.GetExpression().ToString().Equals(typeInfo.binding)) {
                             typeInfo.update = true;
                             typeInfo.indexesToUpdate.Add(i1);
@@ -170,52 +170,52 @@ namespace Net.Vpc.Upa.Impl.Persistence.Result
             // so we must find the equivalent expression index to handle
             foreach (int? remaining in allIndexes) {
                 string k = metaData.GetFields()[(remaining).Value].GetExpression().ToString();
-                object o = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(visitedIndexes,k);
-                if (o is Net.Vpc.Upa.Impl.Persistence.Result.TypeInfo) {
-                    ((Net.Vpc.Upa.Impl.Persistence.Result.TypeInfo) o).indexesToUpdate.Add(remaining);
-                } else if (o is Net.Vpc.Upa.Impl.Persistence.Result.FieldInfo) {
-                    ((Net.Vpc.Upa.Impl.Persistence.Result.FieldInfo) o).indexesToUpdate.Add(remaining);
+                object o = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(visitedIndexes,k);
+                if (o is Net.TheVpc.Upa.Impl.Persistence.Result.TypeInfo) {
+                    ((Net.TheVpc.Upa.Impl.Persistence.Result.TypeInfo) o).indexesToUpdate.Add(remaining);
+                } else if (o is Net.TheVpc.Upa.Impl.Persistence.Result.FieldInfo) {
+                    ((Net.TheVpc.Upa.Impl.Persistence.Result.FieldInfo) o).indexesToUpdate.Add(remaining);
                 } else {
-                    throw new Net.Vpc.Upa.Exceptions.UPAException("Unsupported");
+                    throw new Net.TheVpc.Upa.Exceptions.UPAException("Unsupported");
                 }
             }
             this.updatable = updatable;
         }
 
-        private void UpdateRow(Net.Vpc.Upa.Impl.Persistence.Result.ResultColumn[] columns, Net.Vpc.Upa.Impl.Persistence.Result.FieldInfo fi, string label, object @value) {
+        private void UpdateRow(Net.TheVpc.Upa.Impl.Persistence.Result.ResultColumn[] columns, Net.TheVpc.Upa.Impl.Persistence.Result.FieldInfo fi, string label, object @value) {
             if (fi.update) {
                 foreach (int? index in fi.indexesToUpdate) {
-                    Net.Vpc.Upa.Impl.Persistence.Result.ResultColumn c = columns[index];
+                    Net.TheVpc.Upa.Impl.Persistence.Result.ResultColumn c = columns[index];
                     c.SetLabel(label);
                     c.SetValue(@value);
                 }
             }
         }
 
-        private void UpdateRow(Net.Vpc.Upa.Impl.Persistence.Result.ResultColumn[] columns, Net.Vpc.Upa.Impl.Persistence.Result.TypeInfo fi, string label, object @value) {
+        private void UpdateRow(Net.TheVpc.Upa.Impl.Persistence.Result.ResultColumn[] columns, Net.TheVpc.Upa.Impl.Persistence.Result.TypeInfo fi, string label, object @value) {
             if (fi.update) {
                 foreach (int? index in fi.indexesToUpdate) {
-                    Net.Vpc.Upa.Impl.Persistence.Result.ResultColumn c = columns[index];
+                    Net.TheVpc.Upa.Impl.Persistence.Result.ResultColumn c = columns[index];
                     c.SetLabel(label);
                     c.SetValue(@value);
                 }
             }
         }
 
-        public override T Parse(Net.Vpc.Upa.Persistence.QueryResult result) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public override T Parse(Net.TheVpc.Upa.Persistence.QueryResult result) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             System.Collections.Generic.IDictionary<string , object> groupValues = new System.Collections.Generic.Dictionary<string , object>();
-            Net.Vpc.Upa.Impl.Persistence.Result.ResultColumn[] values = new Net.Vpc.Upa.Impl.Persistence.Result.ResultColumn[(metaData.GetFields()).Count];
+            Net.TheVpc.Upa.Impl.Persistence.Result.ResultColumn[] values = new Net.TheVpc.Upa.Impl.Persistence.Result.ResultColumn[(metaData.GetFields()).Count];
             for (int i = 0; i < values.Length; i++) {
-                values[i] = new Net.Vpc.Upa.Impl.Persistence.Result.ResultColumn();
+                values[i] = new Net.TheVpc.Upa.Impl.Persistence.Result.ResultColumn();
             }
-            foreach (Net.Vpc.Upa.Impl.Persistence.Result.TypeInfo typeInfo in typeInfos) {
+            foreach (Net.TheVpc.Upa.Impl.Persistence.Result.TypeInfo typeInfo in typeInfos) {
                 typeInfo.entityObject = null;
                 typeInfo.entityRecord = null;
                 typeInfo.entityResult = null;
             }
-            foreach (Net.Vpc.Upa.Impl.Persistence.Result.TypeInfo typeInfo in typeInfos) {
+            foreach (Net.TheVpc.Upa.Impl.Persistence.Result.TypeInfo typeInfo in typeInfos) {
                 if (typeInfo.entity == null) {
-                    foreach (Net.Vpc.Upa.Impl.Persistence.Result.FieldInfo f in typeInfo.allFields) {
+                    foreach (Net.TheVpc.Upa.Impl.Persistence.Result.FieldInfo f in typeInfo.allFields) {
                         object fieldValue = result.Read<T>(f.dbIndex);
                         groupValues[f.nativeField.GetFullBinding()]=fieldValue;
                         groupValues[f.nativeField.GetExprString()]=fieldValue;
@@ -224,20 +224,20 @@ namespace Net.Vpc.Upa.Impl.Persistence.Result
                 } else if (typeInfo.leadPrimaryField == null) {
                     if (typeInfo.record) {
                         object entityObject = null;
-                        Net.Vpc.Upa.Record entityRecord = typeInfo.entityFactory == null ? ((Net.Vpc.Upa.Record)(ofactory.CreateObject<Net.Vpc.Upa.Record>(typeof(Net.Vpc.Upa.Record)))) : typeInfo.entityFactory.CreateRecord();
+                        Net.TheVpc.Upa.Record entityRecord = typeInfo.entityFactory == null ? ((Net.TheVpc.Upa.Record)(ofactory.CreateObject<Net.TheVpc.Upa.Record>(typeof(Net.TheVpc.Upa.Record)))) : typeInfo.entityFactory.CreateRecord();
                         typeInfo.entityObject = entityObject;
                         typeInfo.entityRecord = entityRecord;
                         typeInfo.entityResult = entityRecord;
                     } else {
                         object entityObject = typeInfo.entityFactory.CreateObject<R>();
-                        Net.Vpc.Upa.Record entityRecord = typeInfo.entityConverter.ObjectToRecord(entityObject, true);
+                        Net.TheVpc.Upa.Record entityRecord = typeInfo.entityConverter.ObjectToRecord(entityObject, true);
                         typeInfo.entityObject = entityObject;
                         typeInfo.entityRecord = entityRecord;
                         typeInfo.entityResult = entityObject;
                     }
                     groupValues[typeInfo.binding]=typeInfo.entityResult;
                     UpdateRow(values, typeInfo, typeInfo.binding, typeInfo.entityResult);
-                    foreach (Net.Vpc.Upa.Impl.Persistence.Result.FieldInfo f in typeInfo.allFields) {
+                    foreach (Net.TheVpc.Upa.Impl.Persistence.Result.FieldInfo f in typeInfo.allFields) {
                         object fieldValue = result.Read<T>(f.dbIndex);
                         groupValues[f.nativeField.GetFullBinding()]=fieldValue;
                         typeInfo.entityRecord.SetObject(f.name, fieldValue);
@@ -248,25 +248,25 @@ namespace Net.Vpc.Upa.Impl.Persistence.Result
                     if (leadPK != null) {
                         //create new instances
                         if (typeInfo.record) {
-                            typeInfo.entityRecord = typeInfo.entityFactory == null ? ((Net.Vpc.Upa.Record)(ofactory.CreateObject<Net.Vpc.Upa.Record>(typeof(Net.Vpc.Upa.Record)))) : typeInfo.entityFactory.CreateRecord();
+                            typeInfo.entityRecord = typeInfo.entityFactory == null ? ((Net.TheVpc.Upa.Record)(ofactory.CreateObject<Net.TheVpc.Upa.Record>(typeof(Net.TheVpc.Upa.Record)))) : typeInfo.entityFactory.CreateRecord();
                             typeInfo.entityResult = typeInfo.entityRecord;
                         } else {
                             object entityObject = typeInfo.entityFactory.CreateObject<R>();
-                            Net.Vpc.Upa.Record entityRecord = typeInfo.entityConverter.ObjectToRecord(entityObject, true);
+                            Net.TheVpc.Upa.Record entityRecord = typeInfo.entityConverter.ObjectToRecord(entityObject, true);
                             typeInfo.entityObject = entityObject;
                             typeInfo.entityRecord = entityRecord;
                             typeInfo.entityResult = entityObject;
                         }
                         groupValues[typeInfo.binding]=typeInfo.entityResult;
                         UpdateRow(values, typeInfo, typeInfo.binding, typeInfo.entityResult);
-                        foreach (Net.Vpc.Upa.Impl.Persistence.Result.FieldInfo f in typeInfo.allFields) {
+                        foreach (Net.TheVpc.Upa.Impl.Persistence.Result.FieldInfo f in typeInfo.allFields) {
                             object fieldValue = result.Read<T>(f.dbIndex);
                             groupValues[f.nativeField.GetFullBinding()]=fieldValue;
                             UpdateRow(values, f, f.nativeField.GetExprString(), fieldValue);
                             typeInfo.entityRecord.SetObject(f.name, fieldValue);
                         }
                         if (loadManyToOneRelations) {
-                            foreach (Net.Vpc.Upa.Relationship relationship in typeInfo.manyToOneRelations) {
+                            foreach (Net.TheVpc.Upa.Relationship relationship in typeInfo.manyToOneRelations) {
                                 object extractedId = relationship.ExtractIdByForeignFields(typeInfo.entityRecord);
                                 if (extractedId != null) {
                                     object @value = loader.LoadObject(relationship.GetTargetEntity(), extractedId, relationAsRecord, loaderContext);
@@ -281,9 +281,9 @@ namespace Net.Vpc.Upa.Impl.Persistence.Result
                     }
                 }
             }
-            foreach (Net.Vpc.Upa.Impl.Persistence.Result.TypeInfo typeInfo in typeInfos) {
+            foreach (Net.TheVpc.Upa.Impl.Persistence.Result.TypeInfo typeInfo in typeInfos) {
                 if (typeInfo.parentBinding != null) {
-                    Net.Vpc.Upa.Impl.Persistence.Result.TypeInfo pp = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.Vpc.Upa.Impl.Persistence.Result.TypeInfo>(bindingToTypeInfos,typeInfo.parentBinding);
+                    Net.TheVpc.Upa.Impl.Persistence.Result.TypeInfo pp = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.TheVpc.Upa.Impl.Persistence.Result.TypeInfo>(bindingToTypeInfos,typeInfo.parentBinding);
                     if (pp == null) {
                     } else if (pp.entityRecord != null) {
                         pp.entityRecord.SetObject(typeInfo.bindingName, typeInfo.entityResult);
@@ -291,12 +291,12 @@ namespace Net.Vpc.Upa.Impl.Persistence.Result
                 }
             }
             if (updatable) {
-                foreach (Net.Vpc.Upa.Impl.Persistence.Result.TypeInfo typeInfo in typeInfos) {
+                foreach (Net.TheVpc.Upa.Impl.Persistence.Result.TypeInfo typeInfo in typeInfos) {
                     if (typeInfo.record) {
-                        Net.Vpc.Upa.Impl.Persistence.Result.QueryResultUpdaterPropertyChangeListener li = new Net.Vpc.Upa.Impl.Persistence.Result.QueryResultUpdaterPropertyChangeListener(typeInfo, result);
+                        Net.TheVpc.Upa.Impl.Persistence.Result.QueryResultUpdaterPropertyChangeListener li = new Net.TheVpc.Upa.Impl.Persistence.Result.QueryResultUpdaterPropertyChangeListener(typeInfo, result);
                         typeInfo.entityRecord.AddPropertyChangeListener(li);
                     } else {
-                        typeInfo.entityUpdatable = Net.Vpc.Upa.Impl.Util.PlatformUtils.CreateObjectInterceptor<object>(typeInfo.entityType, new Net.Vpc.Upa.Impl.Persistence.Result.UpdatableObjectInterceptor(typeInfo, typeInfo.entityObject, result));
+                        typeInfo.entityUpdatable = Net.TheVpc.Upa.Impl.Util.PlatformUtils.CreateObjectInterceptor<object>(typeInfo.entityType, new Net.TheVpc.Upa.Impl.Persistence.Result.UpdatableObjectInterceptor(typeInfo, typeInfo.entityObject, result));
                         groupValues[typeInfo.binding]=typeInfo.entityUpdatable;
                         int index = typeInfo.allFields[0].nativeField.GetIndex();
                         if (values[index].GetValue() == typeInfo.entityType) {

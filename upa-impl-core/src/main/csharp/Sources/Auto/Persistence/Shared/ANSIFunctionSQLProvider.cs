@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Shared
+namespace Net.TheVpc.Upa.Impl.Persistence.Shared
 {
 
 
@@ -22,7 +22,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
      * Time: 17:17:34
      * To change this template use Options | File Templates.
      */
-    public abstract class ANSIFunctionSQLProvider : Net.Vpc.Upa.Impl.Uql.Parser.FunctionSQLProvider {
+    public abstract class ANSIFunctionSQLProvider : Net.TheVpc.Upa.Impl.Uql.Parser.FunctionSQLProvider {
 
         protected internal ANSIFunctionSQLProvider(System.Type expressionType)  : base(expressionType){
 

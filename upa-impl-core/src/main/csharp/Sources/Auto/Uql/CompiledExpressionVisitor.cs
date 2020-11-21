@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql
+namespace Net.TheVpc.Upa.Impl.Uql
 {
 
 
@@ -28,6 +28,6 @@ namespace Net.Vpc.Upa.Impl.Uql
              * @param e visited expression
              * @return true to continue visiting false otherwise
              */
-         bool Visit(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e);
+         bool Visit(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e);
     }
 }

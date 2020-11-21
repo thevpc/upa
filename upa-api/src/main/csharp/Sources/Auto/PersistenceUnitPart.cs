@@ -11,11 +11,11 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
-    public interface PersistenceUnitPart : Net.Vpc.Upa.UPAObject {
+    public interface PersistenceUnitPart : Net.TheVpc.Upa.UPAObject {
 
-         Net.Vpc.Upa.Package GetParent();
+         Net.TheVpc.Upa.Package GetParent();
     }
 }

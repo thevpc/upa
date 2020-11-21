@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -19,14 +19,14 @@ namespace Net.Vpc.Upa.Impl.Util
      *
      * @author taha.bensalah@gmail.com
      */
-    public class DefaultBeanAdapterFactory : Net.Vpc.Upa.BeanAdapterFactory {
+    public class DefaultBeanAdapterFactory : Net.TheVpc.Upa.BeanAdapterFactory {
 
-        public virtual Net.Vpc.Upa.BeanAdapter CreateBeanAdapter(object instance) {
-            return new Net.Vpc.Upa.Impl.Util.DefaultBeanAdapter(instance);
+        public virtual Net.TheVpc.Upa.BeanAdapter CreateBeanAdapter(object instance) {
+            return new Net.TheVpc.Upa.Impl.Util.DefaultBeanAdapter(instance);
         }
 
-        public virtual Net.Vpc.Upa.BeanAdapter CreateBeanAdapter(System.Type type) {
-            return new Net.Vpc.Upa.Impl.Util.DefaultBeanAdapter(type);
+        public virtual Net.TheVpc.Upa.BeanAdapter CreateBeanAdapter(System.Type type) {
+            return new Net.TheVpc.Upa.Impl.Util.DefaultBeanAdapter(type);
         }
     }
 }

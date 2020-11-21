@@ -11,20 +11,20 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class MissingDefaultPersistenceUnitException : Net.Vpc.Upa.Exceptions.PersistenceUnitException {
+    public class MissingDefaultPersistenceUnitException : Net.TheVpc.Upa.Exceptions.PersistenceUnitException {
 
         public MissingDefaultPersistenceUnitException()  : this(null){
 
         }
 
-        public MissingDefaultPersistenceUnitException(System.Exception cause)  : base(cause, new Net.Vpc.Upa.Types.I18NString("MissingDefaultPersistenceUnitException")){
+        public MissingDefaultPersistenceUnitException(System.Exception cause)  : base(cause, new Net.TheVpc.Upa.Types.I18NString("MissingDefaultPersistenceUnitException")){
 
         }
     }

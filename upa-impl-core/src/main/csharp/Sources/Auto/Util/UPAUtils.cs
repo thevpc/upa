@@ -12,7 +12,7 @@
 
 
 using System.Linq;
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -24,11 +24,11 @@ namespace Net.Vpc.Upa.Impl.Util
 
         public static readonly object[] UNDEFINED_ARRAY = new object[0];
 
-        protected internal static System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.Vpc.Upa.Impl.Util.UPAUtils)).FullName);
+        protected internal static System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.TheVpc.Upa.Impl.Util.UPAUtils)).FullName);
 
         public static readonly System.Collections.Generic.HashSet<System.Type> simpleFieldTypes = new System.Collections.Generic.HashSet<System.Type>();
 
-        public static readonly System.Collections.Generic.Dictionary<System.Type , Net.Vpc.Upa.Impl.Util.Eq.EqualHelper> equalsHelpers = new System.Collections.Generic.Dictionary<System.Type , Net.Vpc.Upa.Impl.Util.Eq.EqualHelper>();
+        public static readonly System.Collections.Generic.Dictionary<System.Type , Net.TheVpc.Upa.Impl.Util.Eq.EqualHelper> equalsHelpers = new System.Collections.Generic.Dictionary<System.Type , Net.TheVpc.Upa.Impl.Util.Eq.EqualHelper>();
 
         public static readonly System.Collections.Generic.Dictionary<string , System.Type> namedTypes = new System.Collections.Generic.Dictionary<string , System.Type>();
 
@@ -79,19 +79,19 @@ namespace Net.Vpc.Upa.Impl.Util
             simpleFieldTypes.Add(typeof(char[]));
             simpleFieldTypes.Add(typeof(byte?[]));
             simpleFieldTypes.Add(typeof(char?[]));
-            simpleFieldTypes.Add(typeof(Net.Vpc.Upa.Types.FileData));
+            simpleFieldTypes.Add(typeof(Net.TheVpc.Upa.Types.FileData));
             simpleFieldTypes.Add(typeof(char?[]));
-            simpleFieldTypes.Add(typeof(Net.Vpc.Upa.Types.Temporal));
-            simpleFieldTypes.Add(typeof(Net.Vpc.Upa.Types.Date));
-            simpleFieldTypes.Add(typeof(Net.Vpc.Upa.Types.Time));
-            simpleFieldTypes.Add(typeof(Net.Vpc.Upa.Types.Timestamp));
-            simpleFieldTypes.Add(typeof(Net.Vpc.Upa.Types.Year));
-            simpleFieldTypes.Add(typeof(Net.Vpc.Upa.Types.Month));
-            simpleFieldTypes.Add(typeof(Net.Vpc.Upa.Types.Date));
-            simpleFieldTypes.Add(typeof(Net.Vpc.Upa.Types.DateTime));
-            simpleFieldTypes.Add(typeof(Net.Vpc.Upa.Types.Time));
-            simpleFieldTypes.Add(typeof(Net.Vpc.Upa.Types.Timestamp));
-            simpleFieldTypes.Add(typeof(Net.Vpc.Upa.Types.DatePeriod));
+            simpleFieldTypes.Add(typeof(Net.TheVpc.Upa.Types.Temporal));
+            simpleFieldTypes.Add(typeof(Net.TheVpc.Upa.Types.Date));
+            simpleFieldTypes.Add(typeof(Net.TheVpc.Upa.Types.Time));
+            simpleFieldTypes.Add(typeof(Net.TheVpc.Upa.Types.Timestamp));
+            simpleFieldTypes.Add(typeof(Net.TheVpc.Upa.Types.Year));
+            simpleFieldTypes.Add(typeof(Net.TheVpc.Upa.Types.Month));
+            simpleFieldTypes.Add(typeof(Net.TheVpc.Upa.Types.Date));
+            simpleFieldTypes.Add(typeof(Net.TheVpc.Upa.Types.DateTime));
+            simpleFieldTypes.Add(typeof(Net.TheVpc.Upa.Types.Time));
+            simpleFieldTypes.Add(typeof(Net.TheVpc.Upa.Types.Timestamp));
+            simpleFieldTypes.Add(typeof(Net.TheVpc.Upa.Types.DatePeriod));
             namedTypes["bool"]=typeof(bool?);
             namedTypes["boolean"]=typeof(bool?);
             namedTypes["java.lang.Boolean"]=typeof(bool?);
@@ -109,10 +109,10 @@ namespace Net.Vpc.Upa.Impl.Util
             namedTypes["double"]=typeof(double?);
             namedTypes["Double"]=typeof(double?);
             namedTypes["java.lang.Double"]=typeof(double?);
-            namedTypes["date"]=typeof(Net.Vpc.Upa.Types.Temporal);
-            namedTypes["Date"]=typeof(Net.Vpc.Upa.Types.Temporal);
-            namedTypes["java.util.Date"]=typeof(Net.Vpc.Upa.Types.Temporal);
-            equalsHelpers[typeof(byte[])]=Net.Vpc.Upa.Impl.Util.Eq.ByteArrayEq.INSTANCE;
+            namedTypes["date"]=typeof(Net.TheVpc.Upa.Types.Temporal);
+            namedTypes["Date"]=typeof(Net.TheVpc.Upa.Types.Temporal);
+            namedTypes["java.util.Date"]=typeof(Net.TheVpc.Upa.Types.Temporal);
+            equalsHelpers[typeof(byte[])]=Net.TheVpc.Upa.Impl.Util.Eq.ByteArrayEq.INSTANCE;
         }
 
         public static bool IsSimpleFieldType(System.Type clazz) {
@@ -201,7 +201,7 @@ namespace Net.Vpc.Upa.Impl.Util
             if ((clz).IsPrimitive) {
                 System.Type clz2 = o2.GetType().GetElementType();
                 if (clz.Equals(clz2)) {
-                    Net.Vpc.Upa.Impl.Util.Eq.EqualHelper h = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,Net.Vpc.Upa.Impl.Util.Eq.EqualHelper>(equalsHelpers,clz);
+                    Net.TheVpc.Upa.Impl.Util.Eq.EqualHelper h = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,Net.TheVpc.Upa.Impl.Util.Eq.EqualHelper>(equalsHelpers,clz);
                     if (h != null) {
                         return h.Equals(o1, o2);
                     }
@@ -305,64 +305,64 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public static void Close(object o) {
-            if (o is Net.Vpc.Upa.Closeable) {
+            if (o is Net.TheVpc.Upa.Closeable) {
                 try {
-                    ((Net.Vpc.Upa.Closeable) o).Close();
+                    ((Net.TheVpc.Upa.Closeable) o).Close();
                 } catch (System.Exception ex) {
-                    throw new Net.Vpc.Upa.Exceptions.UPAException(ex, new Net.Vpc.Upa.Types.I18NString("CloseFailedException"), o);
+                    throw new Net.TheVpc.Upa.Exceptions.UPAException(ex, new Net.TheVpc.Upa.Types.I18NString("CloseFailedException"), o);
                 }
             }
         }
 
-        public static Net.Vpc.Upa.Impl.Util.DefaultBeanAdapter Prepare(Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.UPAObject item, string name) {
+        public static Net.TheVpc.Upa.Impl.Util.DefaultBeanAdapter Prepare(Net.TheVpc.Upa.PersistenceUnit persistenceUnit, Net.TheVpc.Upa.UPAObject item, string name) {
             return Prepare(persistenceUnit, null, item, name);
         }
 
-        public static Net.Vpc.Upa.Impl.Util.DefaultBeanAdapter Prepare(Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.UPAObject item, string name) {
-            Net.Vpc.Upa.Impl.Util.DefaultBeanAdapter adapter = PreparePreAdd(persistenceUnit, entity, item, name);
+        public static Net.TheVpc.Upa.Impl.Util.DefaultBeanAdapter Prepare(Net.TheVpc.Upa.PersistenceUnit persistenceUnit, Net.TheVpc.Upa.Entity entity, Net.TheVpc.Upa.UPAObject item, string name) {
+            Net.TheVpc.Upa.Impl.Util.DefaultBeanAdapter adapter = PreparePreAdd(persistenceUnit, entity, item, name);
             PreparePostAdd(persistenceUnit, item);
             return adapter;
         }
 
-        public static Net.Vpc.Upa.Impl.Util.DefaultBeanAdapter PreparePreAdd(Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.UPAObject item, string name) {
-            Net.Vpc.Upa.Impl.Util.DefaultBeanAdapter adapter = new Net.Vpc.Upa.Impl.Util.DefaultBeanAdapter(item);
+        public static Net.TheVpc.Upa.Impl.Util.DefaultBeanAdapter PreparePreAdd(Net.TheVpc.Upa.PersistenceUnit persistenceUnit, Net.TheVpc.Upa.Entity entity, Net.TheVpc.Upa.UPAObject item, string name) {
+            Net.TheVpc.Upa.Impl.Util.DefaultBeanAdapter adapter = new Net.TheVpc.Upa.Impl.Util.DefaultBeanAdapter(item);
             adapter.SetProperty("persistenceUnit", persistenceUnit);
             item.SetName(name);
-            adapter.SetProperty("persistenceState", Net.Vpc.Upa.PersistenceState.DIRTY);
-            if (item is Net.Vpc.Upa.EntityPart) {
+            adapter.SetProperty("persistenceState", Net.TheVpc.Upa.PersistenceState.DIRTY);
+            if (item is Net.TheVpc.Upa.EntityPart) {
                 adapter.SetProperty("entity", entity);
             }
             return adapter;
         }
 
-        public static void PreparePostAdd(Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.UPAObject item) {
+        public static void PreparePostAdd(Net.TheVpc.Upa.PersistenceUnit persistenceUnit, Net.TheVpc.Upa.UPAObject item) {
             //        DefaultBeanAdapter adapter = new DefaultBeanAdapter(item);
-            Net.Vpc.Upa.I18NStringStrategy strategy = persistenceUnit.GetI18NStringStrategy();
-            Net.Vpc.Upa.Types.I18NString s = null;
-            Net.Vpc.Upa.Types.I18NString t = null;
-            Net.Vpc.Upa.Types.I18NString d = null;
-            if (item is Net.Vpc.Upa.Package) {
-                s = strategy.GetPackageString(((Net.Vpc.Upa.Package) item));
+            Net.TheVpc.Upa.I18NStringStrategy strategy = persistenceUnit.GetI18NStringStrategy();
+            Net.TheVpc.Upa.Types.I18NString s = null;
+            Net.TheVpc.Upa.Types.I18NString t = null;
+            Net.TheVpc.Upa.Types.I18NString d = null;
+            if (item is Net.TheVpc.Upa.Package) {
+                s = strategy.GetPackageString(((Net.TheVpc.Upa.Package) item));
                 t = s.Append("title");
                 d = s.Append("desc");
-            } else if (item is Net.Vpc.Upa.Relationship) {
-                s = strategy.GetRelationshipString((Net.Vpc.Upa.Relationship) item);
+            } else if (item is Net.TheVpc.Upa.Relationship) {
+                s = strategy.GetRelationshipString((Net.TheVpc.Upa.Relationship) item);
                 t = s.Append("title");
                 d = s.Append("desc");
-            } else if (item is Net.Vpc.Upa.Entity) {
-                s = strategy.GetEntityString((Net.Vpc.Upa.Entity) item);
+            } else if (item is Net.TheVpc.Upa.Entity) {
+                s = strategy.GetEntityString((Net.TheVpc.Upa.Entity) item);
                 t = s.Append("title");
                 d = s.Append("desc");
-            } else if (item is Net.Vpc.Upa.Section) {
-                s = strategy.GetSectionString(((Net.Vpc.Upa.Section) item).GetEntity(), item.GetName());
+            } else if (item is Net.TheVpc.Upa.Section) {
+                s = strategy.GetSectionString(((Net.TheVpc.Upa.Section) item).GetEntity(), item.GetName());
                 t = s.Append("title");
                 d = s.Append("desc");
-            } else if (item is Net.Vpc.Upa.Field) {
-                s = strategy.GetFieldString((Net.Vpc.Upa.Field) item);
+            } else if (item is Net.TheVpc.Upa.Field) {
+                s = strategy.GetFieldString((Net.TheVpc.Upa.Field) item);
                 t = s.Append("title");
                 d = s.Append("desc");
-            } else if (item is Net.Vpc.Upa.RelationshipRole) {
-                Net.Vpc.Upa.RelationshipRole r = (Net.Vpc.Upa.RelationshipRole) item;
+            } else if (item is Net.TheVpc.Upa.RelationshipRole) {
+                Net.TheVpc.Upa.RelationshipRole r = (Net.TheVpc.Upa.RelationshipRole) item;
                 s = strategy.GetRelationshipRoleString(r);
                 t = s.Append("title");
                 d = (s.Append("desc").Union(r.GetEntity().GetDescription()));
@@ -384,7 +384,7 @@ namespace Net.Vpc.Upa.Impl.Util
                 System.IO.StreamReader r = null;
                 try {
                     try {
-                        inputStream = Net.Vpc.Upa.Impl.Util.UPAUtils.LoadResourceAsStream(name);
+                        inputStream = Net.TheVpc.Upa.Impl.Util.UPAUtils.LoadResourceAsStream(name);
                         r = new System.IO.StreamReader(inputStream);
                         string line = null;
                         while ((line = r.ReadLine()) != null) {
@@ -404,73 +404,73 @@ namespace Net.Vpc.Upa.Impl.Util
                         }
                     }
                 } catch (System.Exception e) {
-                    log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Unable to load resource, ignore",e));
+                    log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Unable to load resource, ignore",e));
                 }
             }
             return set;
         }
 
-        public static bool IsSimpleDataType(Net.Vpc.Upa.Types.DataType dataType) {
-            return !(dataType is Net.Vpc.Upa.Types.ManyToOneType);
+        public static bool IsSimpleDataType(Net.TheVpc.Upa.Types.DataType dataType) {
+            return !(dataType is Net.TheVpc.Upa.Types.ManyToOneType);
         }
 
-        public static Net.Vpc.Upa.Types.DataTypeTransform ResolveDataTypeTransform(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e) {
+        public static Net.TheVpc.Upa.Types.DataTypeTransform ResolveDataTypeTransform(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e) {
             return ResolveExprTypeInfo(e).GetTypeTransform();
         }
 
-        public static Net.Vpc.Upa.Impl.Util.ExprTypeInfo ResolveExprTypeInfo(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e) {
+        public static Net.TheVpc.Upa.Impl.Util.ExprTypeInfo ResolveExprTypeInfo(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e) {
             return ResolveExprTypeInfo(e, true);
         }
 
-        public static Net.Vpc.Upa.Impl.Util.ExprTypeInfo ResolveExprTypeInfo(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e, bool byBrother) {
-            if (e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod) {
-                e = ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod) e).GetFinest();
-                object r = ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod) e).GetReferrer();
-                if (r is Net.Vpc.Upa.Field) {
-                    Net.Vpc.Upa.Types.DataTypeTransform tr = GetTypeTransformOrIdentity(((Net.Vpc.Upa.Field) r));
-                    Net.Vpc.Upa.Impl.Util.ExprTypeInfo i = new Net.Vpc.Upa.Impl.Util.ExprTypeInfo();
+        public static Net.TheVpc.Upa.Impl.Util.ExprTypeInfo ResolveExprTypeInfo(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e, bool byBrother) {
+            if (e is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod) {
+                e = ((Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod) e).GetFinest();
+                object r = ((Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod) e).GetReferrer();
+                if (r is Net.TheVpc.Upa.Field) {
+                    Net.TheVpc.Upa.Types.DataTypeTransform tr = GetTypeTransformOrIdentity(((Net.TheVpc.Upa.Field) r));
+                    Net.TheVpc.Upa.Impl.Util.ExprTypeInfo i = new Net.TheVpc.Upa.Impl.Util.ExprTypeInfo();
                     i.SetReferrer(r);
                     i.SetTransform(tr);
-                    if (e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) {
-                        Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar cv = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) e;
+                    if (e is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) {
+                        Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar cv = (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) e;
                         i.SetOldReferrer(cv.GetOldReferrer());
                     }
                     return i;
                 }
             }
-            if (e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarVal) {
-                Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod v = ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarVal) e).GetVar();
+            if (e is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVarVal) {
+                Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod v = ((Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVarVal) e).GetVar();
                 return ResolveExprTypeInfo(v);
             }
-            Net.Vpc.Upa.Types.DataTypeTransform typeTransform = e.GetTypeTransform();
-            if (e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam || e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledLiteral) {
-                Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression p = e.GetParentExpression();
-                if (p is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarVal) {
+            Net.TheVpc.Upa.Types.DataTypeTransform typeTransform = e.GetTypeTransform();
+            if (e is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledParam || e is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledLiteral) {
+                Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression p = e.GetParentExpression();
+                if (p is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVarVal) {
                     return ResolveExprTypeInfo(p);
                 } else {
-                    object @object = (e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) ? ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) e).GetValue() : ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledLiteral) e).GetValue();
-                    Net.Vpc.Upa.Types.DataType sourceType = typeTransform.GetSourceType();
-                    Net.Vpc.Upa.Types.DataTypeTransform bestType = typeTransform;
-                    if ((p is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledBinaryOperatorExpression) && (((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledBinaryOperatorExpression) p).IsSameOperandsType())) {
-                        Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression o = ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledBinaryOperatorExpression) p).GetOther(e);
+                    object @object = (e is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) ? ((Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) e).GetValue() : ((Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledLiteral) e).GetValue();
+                    Net.TheVpc.Upa.Types.DataType sourceType = typeTransform.GetSourceType();
+                    Net.TheVpc.Upa.Types.DataTypeTransform bestType = typeTransform;
+                    if ((p is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledBinaryOperatorExpression) && (((Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledBinaryOperatorExpression) p).IsSameOperandsType())) {
+                        Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression o = ((Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledBinaryOperatorExpression) p).GetOther(e);
                         if (byBrother) {
                             return ResolveExprTypeInfo(o, false);
                         }
                     }
-                    if (@object != null && (typeTransform.Equals(Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.OBJECT) || !sourceType.IsInstance(@object))) {
-                        bestType = Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.ForNativeType(@object.GetType());
+                    if (@object != null && (typeTransform.Equals(Net.TheVpc.Upa.Impl.Transform.IdentityDataTypeTransform.OBJECT) || !sourceType.IsInstance(@object))) {
+                        bestType = Net.TheVpc.Upa.Impl.Transform.IdentityDataTypeTransform.ForNativeType(@object.GetType());
                     }
-                    Net.Vpc.Upa.Impl.Util.ExprTypeInfo typeInfo1 = new Net.Vpc.Upa.Impl.Util.ExprTypeInfo();
+                    Net.TheVpc.Upa.Impl.Util.ExprTypeInfo typeInfo1 = new Net.TheVpc.Upa.Impl.Util.ExprTypeInfo();
                     typeInfo1.SetTransform(bestType);
                     return typeInfo1;
                 }
             }
-            Net.Vpc.Upa.Impl.Util.ExprTypeInfo typeInfo2 = new Net.Vpc.Upa.Impl.Util.ExprTypeInfo();
+            Net.TheVpc.Upa.Impl.Util.ExprTypeInfo typeInfo2 = new Net.TheVpc.Upa.Impl.Util.ExprTypeInfo();
             typeInfo2.SetTransform(typeTransform);
             return typeInfo2;
         }
 
-        public static object CreateValue(Net.Vpc.Upa.Property info) {
+        public static object CreateValue(Net.TheVpc.Upa.Property info) {
             string ptype = info.GetTypeName();
             string format = info.GetFormat();
             string @value = info.GetValue();
@@ -478,7 +478,7 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public static object CreateValue(string @value, string ptype, string format) {
-            System.Type type = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,System.Type>(namedTypes,ptype);
+            System.Type type = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,System.Type>(namedTypes,ptype);
             if (type == null) {
                 throw new System.ArgumentException ("Insupported Parameter type " + ptype);
             }
@@ -515,42 +515,42 @@ namespace Net.Vpc.Upa.Impl.Util
             if (type.Equals(typeof(long))) {
                 return System.Convert.ToInt64(@value);
             }
-            if (type.Equals(typeof(Net.Vpc.Upa.Types.Temporal))) {
+            if (type.Equals(typeof(Net.TheVpc.Upa.Types.Temporal))) {
                 if ((@value.Trim()).Length == 0) {
                     return null;
                 }
                 if ((format).Length > 0) {
                     try {
-                        return Net.Vpc.Upa.Impl.Util.DateUtils.ParseDateTime(@value, format);
+                        return Net.TheVpc.Upa.Impl.Util.DateUtils.ParseDateTime(@value, format);
                     } catch (System.Exception ex) {
                         throw new System.ArgumentException ("Unable to parse date " + @value);
                     }
                 }
-                return Net.Vpc.Upa.Impl.Util.DateUtils.ParseUniversalDate(@value);
+                return Net.TheVpc.Upa.Impl.Util.DateUtils.ParseUniversalDate(@value);
             }
             throw new System.ArgumentException ("Insupported Parameter type " + type);
         }
 
-        public static Net.Vpc.Upa.Impl.Config.BaseScanSource ToConfigurationStrategy(Net.Vpc.Upa.Config.ScanSource source) {
+        public static Net.TheVpc.Upa.Impl.Config.BaseScanSource ToConfigurationStrategy(Net.TheVpc.Upa.Config.ScanSource source) {
             if (source == null) {
                 throw new System.ArgumentException ("ScanSource could not be null; you may use UPAContext.getFactory().create*ScanSource(...) methods to get a valid instance.");
             }
-            if (!(source is Net.Vpc.Upa.Impl.Config.BaseScanSource)) {
+            if (!(source is Net.TheVpc.Upa.Impl.Config.BaseScanSource)) {
                 throw new System.ArgumentException ("ScanSource (" + source.GetType() + ") is of invalid or unsupported type; you may use UPAContext.getFactory().create*ScanSource(...) methods to get a valid instance.");
             }
-            return (Net.Vpc.Upa.Impl.Config.BaseScanSource) source;
+            return (Net.TheVpc.Upa.Impl.Config.BaseScanSource) source;
         }
 
-        public static Net.Vpc.Upa.Impl.Transform.PasswordDataTypeTransform FindPasswordTransform(Net.Vpc.Upa.Types.DataTypeTransform t) {
-            if (t is Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform) {
+        public static Net.TheVpc.Upa.Impl.Transform.PasswordDataTypeTransform FindPasswordTransform(Net.TheVpc.Upa.Types.DataTypeTransform t) {
+            if (t is Net.TheVpc.Upa.Impl.Transform.IdentityDataTypeTransform) {
                 return null;
             }
-            if (t is Net.Vpc.Upa.Impl.Transform.PasswordDataTypeTransform) {
-                return (Net.Vpc.Upa.Impl.Transform.PasswordDataTypeTransform) t;
+            if (t is Net.TheVpc.Upa.Impl.Transform.PasswordDataTypeTransform) {
+                return (Net.TheVpc.Upa.Impl.Transform.PasswordDataTypeTransform) t;
             }
-            if (t is Net.Vpc.Upa.Impl.Transform.DataTypeTransformList) {
-                foreach (Net.Vpc.Upa.Types.DataTypeTransform x in ((Net.Vpc.Upa.Impl.Transform.DataTypeTransformList) t)) {
-                    Net.Vpc.Upa.Impl.Transform.PasswordDataTypeTransform v = FindPasswordTransform(x);
+            if (t is Net.TheVpc.Upa.Impl.Transform.DataTypeTransformList) {
+                foreach (Net.TheVpc.Upa.Types.DataTypeTransform x in ((Net.TheVpc.Upa.Impl.Transform.DataTypeTransformList) t)) {
+                    Net.TheVpc.Upa.Impl.Transform.PasswordDataTypeTransform v = FindPasswordTransform(x);
                     if (v != null) {
                         return v;
                     }
@@ -559,18 +559,18 @@ namespace Net.Vpc.Upa.Impl.Util
             return null;
         }
 
-        public static bool IsPasswordTransform(Net.Vpc.Upa.Types.DataTypeTransform t) {
+        public static bool IsPasswordTransform(Net.TheVpc.Upa.Types.DataTypeTransform t) {
             if (t == null) {
                 return false;
             }
-            if (t is Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform) {
+            if (t is Net.TheVpc.Upa.Impl.Transform.IdentityDataTypeTransform) {
                 return false;
             }
-            if (t is Net.Vpc.Upa.Impl.Transform.PasswordDataTypeTransform) {
+            if (t is Net.TheVpc.Upa.Impl.Transform.PasswordDataTypeTransform) {
                 return true;
             }
-            if (t is Net.Vpc.Upa.Impl.Transform.DataTypeTransformList) {
-                foreach (Net.Vpc.Upa.Types.DataTypeTransform x in ((Net.Vpc.Upa.Impl.Transform.DataTypeTransformList) t)) {
+            if (t is Net.TheVpc.Upa.Impl.Transform.DataTypeTransformList) {
+                foreach (Net.TheVpc.Upa.Types.DataTypeTransform x in ((Net.TheVpc.Upa.Impl.Transform.DataTypeTransformList) t)) {
                     if (IsPasswordTransform(x)) {
                         return true;
                     }
@@ -579,10 +579,10 @@ namespace Net.Vpc.Upa.Impl.Util
             return false;
         }
 
-        public static Net.Vpc.Upa.Types.DataTypeTransform GetTypeTransformOrIdentity(Net.Vpc.Upa.Field f) {
-            Net.Vpc.Upa.Types.DataTypeTransform t = f.GetTypeTransform();
+        public static Net.TheVpc.Upa.Types.DataTypeTransform GetTypeTransformOrIdentity(Net.TheVpc.Upa.Field f) {
+            Net.TheVpc.Upa.Types.DataTypeTransform t = f.GetTypeTransform();
             if (t == null) {
-                return new Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform(f.GetDataType());
+                return new Net.TheVpc.Upa.Impl.Transform.IdentityDataTypeTransform(f.GetDataType());
             }
             return t;
         }
@@ -590,7 +590,7 @@ namespace Net.Vpc.Upa.Impl.Util
         public static string DotConcat(params string [] all) {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             foreach (string s in all) {
-                if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(s)) {
+                if (!Net.TheVpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(s)) {
                     if ((sb).Length > 0) {
                         sb.Append(".");
                     }
@@ -600,46 +600,46 @@ namespace Net.Vpc.Upa.Impl.Util
             return sb.ToString();
         }
 
-        public static string GetValidBinding(Net.Vpc.Upa.Persistence.ResultField s) {
-            if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(s.GetAlias())) {
-                Net.Vpc.Upa.Expressions.Expression ss = s.GetExpression();
+        public static string GetValidBinding(Net.TheVpc.Upa.Persistence.ResultField s) {
+            if (Net.TheVpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(s.GetAlias())) {
+                Net.TheVpc.Upa.Expressions.Expression ss = s.GetExpression();
                 return ss == null ? "" : ss.ToString();
             }
             return s.GetAlias();
         }
 
         public static object UnwrapLiteral(object o) {
-            if (o is Net.Vpc.Upa.Expressions.Literal) {
-                return ((Net.Vpc.Upa.Expressions.Literal) o).GetValue();
+            if (o is Net.TheVpc.Upa.Expressions.Literal) {
+                return ((Net.TheVpc.Upa.Expressions.Literal) o).GetValue();
             }
-            if (o is Net.Vpc.Upa.Expressions.Cst) {
-                return ((Net.Vpc.Upa.Expressions.Cst) o).GetValue();
+            if (o is Net.TheVpc.Upa.Expressions.Cst) {
+                return ((Net.TheVpc.Upa.Expressions.Cst) o).GetValue();
             }
             return o;
         }
 
-        public static Net.Vpc.Upa.Impl.Util.XNumber ToNumberOrError(object o) {
+        public static Net.TheVpc.Upa.Impl.Util.XNumber ToNumberOrError(object o) {
             if (o == null) {
                 return null;
             }
             if (o is string) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(System.Convert.ToDouble((string) o));
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(System.Convert.ToDouble((string) o));
             }
             if (o is object) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber((object) o);
+                return new Net.TheVpc.Upa.Impl.Util.XNumber((object) o);
             }
             throw new System.Exception("Not a number " + o);
         }
 
-        public static Net.Vpc.Upa.Impl.Util.XNumber ToNumber(object o) {
+        public static Net.TheVpc.Upa.Impl.Util.XNumber ToNumber(object o) {
             if (o == null) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(0);
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(0);
             }
             if (o is string) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(System.Convert.ToDouble((string) o));
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(System.Convert.ToDouble((string) o));
             }
             if (o is object) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber((object) o);
+                return new Net.TheVpc.Upa.Impl.Util.XNumber((object) o);
             }
             return null;
         }

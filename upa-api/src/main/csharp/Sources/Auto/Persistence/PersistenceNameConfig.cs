@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
 
@@ -23,7 +23,7 @@ namespace Net.Vpc.Upa.Persistence
 
         private int configOrder;
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.PersistenceName> names = new System.Collections.Generic.List<Net.Vpc.Upa.Persistence.PersistenceName>(2);
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Persistence.PersistenceName> names = new System.Collections.Generic.List<Net.TheVpc.Upa.Persistence.PersistenceName>(2);
 
         private string globalPersistenceNameFormat;
 
@@ -59,7 +59,7 @@ namespace Net.Vpc.Upa.Persistence
             this.persistenceNameEscape = persistenceNameEscape;
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.PersistenceName> GetNames() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Persistence.PersistenceName> GetNames() {
             return names;
         }
 
@@ -89,7 +89,7 @@ namespace Net.Vpc.Upa.Persistence
             if (GetType() != obj.GetType()) {
                 return false;
             }
-            Net.Vpc.Upa.Persistence.PersistenceNameConfig other = (Net.Vpc.Upa.Persistence.PersistenceNameConfig) obj;
+            Net.TheVpc.Upa.Persistence.PersistenceNameConfig other = (Net.TheVpc.Upa.Persistence.PersistenceNameConfig) obj;
             if (this.names != other.names && (this.names == null || !this.names.Equals(other.names))) {
                 return false;
             }

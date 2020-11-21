@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
-    public class UndeletableDocumentException : Net.Vpc.Upa.Exceptions.EntityException {
+    public class UndeletableDocumentException : Net.TheVpc.Upa.Exceptions.EntityException {
 
-        public UndeletableDocumentException(Net.Vpc.Upa.Entity entity)  : base(entity, "remove.Undeletable"){
+        public UndeletableDocumentException(Net.TheVpc.Upa.Entity entity)  : base(entity, "remove.Undeletable"){
 
         }
     }

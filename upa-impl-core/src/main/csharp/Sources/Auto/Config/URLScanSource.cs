@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config
+namespace Net.TheVpc.Upa.Impl.Config
 {
 
 
@@ -19,18 +19,18 @@ namespace Net.Vpc.Upa.Impl.Config
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 9/24/12 3:01 AM
      */
-    public class URLScanSource : Net.Vpc.Upa.Impl.Config.BaseScanSource {
+    public class URLScanSource : Net.TheVpc.Upa.Impl.Config.BaseScanSource {
 
-        private Net.Vpc.Upa.Config.ScanFilter[] filters;
+        private Net.TheVpc.Upa.Config.ScanFilter[] filters;
 
         private string[] urls;
 
         private bool noIgnore;
 
-        public URLScanSource(string[] urls, Net.Vpc.Upa.Config.ScanFilter[] filters, bool noIgnore) {
+        public URLScanSource(string[] urls, Net.TheVpc.Upa.Config.ScanFilter[] filters, bool noIgnore) {
             this.urls = urls;
             this.noIgnore = noIgnore;
-            this.filters = filters == null ? new Net.Vpc.Upa.Config.ScanFilter[0] : filters;
+            this.filters = filters == null ? new Net.TheVpc.Upa.Config.ScanFilter[0] : filters;
         }
 
         public override bool IsNoIgnore() {
@@ -41,7 +41,7 @@ namespace Net.Vpc.Upa.Impl.Config
             return urls;
         }
 
-        public virtual Net.Vpc.Upa.Config.ScanFilter[] GetFilters() {
+        public virtual Net.TheVpc.Upa.Config.ScanFilter[] GetFilters() {
             return filters;
         }
 
@@ -52,7 +52,7 @@ namespace Net.Vpc.Upa.Impl.Config
 
 
         public override System.Collections.Generic.IEnumerable<System.Type> ToIterable(object context) {
-            return new Net.Vpc.Upa.Impl.Util.Classpath.URLClassIterable(GetUrls(), new Net.Vpc.Upa.Impl.Util.Classpath.DefaultConfigFilter(GetFilters()), null);
+            return new Net.TheVpc.Upa.Impl.Util.Classpath.URLClassIterable(GetUrls(), new Net.TheVpc.Upa.Impl.Util.Classpath.DefaultConfigFilter(GetFilters()), null);
         }
     }
 }

@@ -11,17 +11,17 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
 
     /**
      * User: taha Date: 16 juin 2003 Time: 15:47:42
      */
-    public class FileType : Net.Vpc.Upa.Types.LOBType {
+    public class FileType : Net.TheVpc.Upa.Types.LOBType {
 
 
-        public static readonly Net.Vpc.Upa.Types.FileType DEFAULT = new Net.Vpc.Upa.Types.FileType("FILE", null, null, true);
+        public static readonly Net.TheVpc.Upa.Types.FileType DEFAULT = new Net.TheVpc.Upa.Types.FileType("FILE", null, null, true);
 
         private int? maxSize;
 
@@ -31,22 +31,22 @@ namespace Net.Vpc.Upa.Types
 
         }
 
-        public FileType(string name, int? maxSize, string[] extensions, bool nullable)  : base(name, typeof(Net.Vpc.Upa.Types.FileData), nullable){
+        public FileType(string name, int? maxSize, string[] extensions, bool nullable)  : base(name, typeof(Net.TheVpc.Upa.Types.FileData), nullable){
 
             this.maxSize = maxSize;
             this.extensions = extensions;
         }
 
 
-        public override void Check(object @value, string name, string description) /* throws Net.Vpc.Upa.Types.ConstraintsException */  {
+        public override void Check(object @value, string name, string description) /* throws Net.TheVpc.Upa.Types.ConstraintsException */  {
             base.Check(@value, name, description);
             if (@value == null) {
                 return;
             }
-            if (!(@value is Net.Vpc.Upa.Types.FileData)) {
-                throw new Net.Vpc.Upa.Types.ConstraintsException("InvalidCast", name, description, @value, maxSize);
+            if (!(@value is Net.TheVpc.Upa.Types.FileData)) {
+                throw new Net.TheVpc.Upa.Types.ConstraintsException("InvalidCast", name, description, @value, maxSize);
             }
-            Net.Vpc.Upa.Types.FileData fileData = ((Net.Vpc.Upa.Types.FileData) @value);
+            Net.TheVpc.Upa.Types.FileData fileData = ((Net.TheVpc.Upa.Types.FileData) @value);
             string fileName = fileData.GetSourceName();
             if (extensions != null && extensions.Length != 0 && fileName != null) {
                 bool ok = false;
@@ -58,11 +58,11 @@ namespace Net.Vpc.Upa.Types
                     }
                 }
                 if (!ok) {
-                    throw new Net.Vpc.Upa.Types.ConstraintsException("FileBadExtension", name, description, @value, fileExt);
+                    throw new Net.TheVpc.Upa.Types.ConstraintsException("FileBadExtension", name, description, @value, fileExt);
                 }
             }
-            if ((GetMaxSize()).Value > 0 && (GetMaxSize()).Value < ((Net.Vpc.Upa.Types.FileData) @value).Size()) {
-                throw new Net.Vpc.Upa.Types.ConstraintsException("FileSizeTooBig", name, description, @value, maxSize);
+            if ((GetMaxSize()).Value > 0 && (GetMaxSize()).Value < ((Net.TheVpc.Upa.Types.FileData) @value).Size()) {
+                throw new Net.TheVpc.Upa.Types.ConstraintsException("FileSizeTooBig", name, description, @value, maxSize);
             }
         }
 
@@ -96,8 +96,8 @@ namespace Net.Vpc.Upa.Types
         }
 
 
-        public override Net.Vpc.Upa.DataTypeInfo GetInfo() {
-            Net.Vpc.Upa.DataTypeInfo d = base.GetInfo();
+        public override Net.TheVpc.Upa.DataTypeInfo GetInfo() {
+            Net.TheVpc.Upa.DataTypeInfo d = base.GetInfo();
             if (maxSize != null) {
                 d.GetProperties()["maxSize"]=System.Convert.ToString(maxSize);
             }

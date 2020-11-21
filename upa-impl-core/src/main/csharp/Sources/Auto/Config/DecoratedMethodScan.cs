@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config
+namespace Net.TheVpc.Upa.Impl.Config
 {
 
 
@@ -21,16 +21,16 @@ namespace Net.Vpc.Upa.Impl.Config
      */
     public class DecoratedMethodScan {
 
-        private Net.Vpc.Upa.Config.Decoration decoration;
+        private Net.TheVpc.Upa.Config.Decoration decoration;
 
         private System.Reflection.MethodInfo method;
 
-        public DecoratedMethodScan(Net.Vpc.Upa.Config.Decoration decoration, System.Reflection.MethodInfo method) {
+        public DecoratedMethodScan(Net.TheVpc.Upa.Config.Decoration decoration, System.Reflection.MethodInfo method) {
             this.decoration = decoration;
             this.method = method;
         }
 
-        public virtual Net.Vpc.Upa.Config.Decoration GetDecoration() {
+        public virtual Net.TheVpc.Upa.Config.Decoration GetDecoration() {
             return decoration;
         }
 

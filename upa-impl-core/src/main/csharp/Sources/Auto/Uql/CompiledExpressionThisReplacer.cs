@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql
+namespace Net.TheVpc.Upa.Impl.Uql
 {
 
 
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Impl.Uql
      *
      * @author taha.bensalah@gmail.com
      */
-    public class CompiledExpressionThisReplacer : Net.Vpc.Upa.Impl.Uql.CompiledExpressionReplacer {
+    public class CompiledExpressionThisReplacer : Net.TheVpc.Upa.Impl.Uql.CompiledExpressionReplacer {
 
         private string thisAlias;
 
@@ -27,8 +27,8 @@ namespace Net.Vpc.Upa.Impl.Uql
             this.thisAlias = thisAlias;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.CompiledExpression Update(Net.Vpc.Upa.Expressions.CompiledExpression e) {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar t = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) e;
+        public virtual Net.TheVpc.Upa.Expressions.CompiledExpression Update(Net.TheVpc.Upa.Expressions.CompiledExpression e) {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar t = (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) e;
             t.SetName(thisAlias);
             return t;
         }

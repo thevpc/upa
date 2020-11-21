@@ -4,12 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>net.vpc.upa</groupId>
+    <groupId>net.thevpc.upa</groupId>
     <artifactId>upa-test</artifactId>
-    <name>net.vpc.upa.upa-test</name>
+    <name>net.thevpc.upa.upa-test</name>
     <version>1.2.0</version>
     <parent>
-        <groupId>net.vpc.upa</groupId>
+        <groupId>net.thevpc.upa</groupId>
         <artifactId>upa</artifactId>
         <version>1.2.0</version>
     </parent>
@@ -64,12 +64,12 @@
             <version>2.2.2</version>
         </dependency>
         <dependency>
-            <groupId>net.vpc.upa</groupId>
+            <groupId>net.thevpc.upa</groupId>
             <artifactId>upa-api</artifactId>
             <version>${upa-api-version}</version>
         </dependency>
         <dependency>
-            <groupId>net.vpc.upa</groupId>
+            <groupId>net.thevpc.upa</groupId>
             <artifactId>upa-impl</artifactId>
             <scope>runtime</scope>
             <version>${upa-impl-version}</version>

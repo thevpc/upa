@@ -11,11 +11,11 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
-    public class DefaultDynamicField : Net.Vpc.Upa.Impl.AbstractField, Net.Vpc.Upa.DynamicField {
+    public class DefaultDynamicField : Net.TheVpc.Upa.Impl.AbstractField, Net.TheVpc.Upa.DynamicField {
 
         public DefaultDynamicField()  : base(){
 

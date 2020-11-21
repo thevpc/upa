@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Callbacks
+namespace Net.TheVpc.Upa.Callbacks
 {
 
 
@@ -19,22 +19,22 @@ namespace Net.Vpc.Upa.Callbacks
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 11/27/12 9:52 PM
      */
-    public class PersistenceGroupEvent : Net.Vpc.Upa.Callbacks.UPAEvent {
+    public class PersistenceGroupEvent : Net.TheVpc.Upa.Callbacks.UPAEvent {
 
-        private Net.Vpc.Upa.UPAContext context;
+        private Net.TheVpc.Upa.UPAContext context;
 
-        private Net.Vpc.Upa.PersistenceGroup persistenceGroup;
+        private Net.TheVpc.Upa.PersistenceGroup persistenceGroup;
 
-        public PersistenceGroupEvent(Net.Vpc.Upa.PersistenceGroup persistenceGroup, Net.Vpc.Upa.UPAContext context) {
+        public PersistenceGroupEvent(Net.TheVpc.Upa.PersistenceGroup persistenceGroup, Net.TheVpc.Upa.UPAContext context) {
             this.persistenceGroup = persistenceGroup;
             this.context = context;
         }
 
-        public virtual Net.Vpc.Upa.PersistenceGroup GetPersistenceGroup() {
+        public virtual Net.TheVpc.Upa.PersistenceGroup GetPersistenceGroup() {
             return persistenceGroup;
         }
 
-        public virtual Net.Vpc.Upa.UPAContext GetContext() {
+        public virtual Net.TheVpc.Upa.UPAContext GetContext() {
             return context;
         }
     }

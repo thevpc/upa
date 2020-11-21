@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
      *
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class FixedDBConfigModel : Net.Vpc.Upa.Persistence.DBConfigModel {
+    public class FixedDBConfigModel : Net.TheVpc.Upa.Persistence.DBConfigModel {
 
         private string connectionString;
 

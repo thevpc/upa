@@ -11,10 +11,10 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
-    public abstract class EntityPartInfo : Net.Vpc.Upa.UPAObjectInfo {
+    public abstract class EntityPartInfo : Net.TheVpc.Upa.UPAObjectInfo {
 
         public EntityPartInfo(string type)  : base(type){
 

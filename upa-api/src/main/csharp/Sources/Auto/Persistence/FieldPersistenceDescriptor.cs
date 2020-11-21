@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
 
@@ -20,7 +20,7 @@ namespace Net.Vpc.Upa.Persistence
      */
     public interface FieldPersistenceDescriptor {
 
-         Net.Vpc.Upa.Field GetField();
+         Net.TheVpc.Upa.Field GetField();
 
         /**
              * @return FieldPersistenceModifier value

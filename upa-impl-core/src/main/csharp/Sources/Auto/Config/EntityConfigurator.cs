@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config
+namespace Net.TheVpc.Upa.Impl.Config
 {
 
 
@@ -21,8 +21,8 @@ namespace Net.Vpc.Upa.Impl.Config
      */
     public interface EntityConfigurator {
 
-         void Install(Net.Vpc.Upa.Entity e);
+         void Install(Net.TheVpc.Upa.Entity e);
 
-         void Uninstall(Net.Vpc.Upa.Entity e);
+         void Uninstall(Net.TheVpc.Upa.Entity e);
     }
 }

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql
+namespace Net.TheVpc.Upa.Impl.Uql
 {
 
 
@@ -21,12 +21,12 @@ namespace Net.Vpc.Upa.Impl.Uql
      */
     public interface ExpressionDeclarationList {
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration> GetExportedDeclarations();
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Uql.ExpressionDeclaration> GetExportedDeclarations();
 
-         void ExportDeclaration(string name, Net.Vpc.Upa.Impl.Uql.DecObjectType type, object referrerName, object referrerParentId);
+         void ExportDeclaration(string name, Net.TheVpc.Upa.Impl.Uql.DecObjectType type, object referrerName, object referrerParentId);
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration> GetDeclarations(string alias);
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Uql.ExpressionDeclaration> GetDeclarations(string alias);
 
-         Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration GetDeclaration(string name);
+         Net.TheVpc.Upa.Impl.Uql.ExpressionDeclaration GetDeclaration(string name);
     }
 }

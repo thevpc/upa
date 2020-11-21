@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util.Filters
+namespace Net.TheVpc.Upa.Impl.Util.Filters
 {
 
 
@@ -20,22 +20,22 @@ namespace Net.Vpc.Upa.Impl.Util.Filters
      */
     public class Fields2 {
 
-        public static readonly Net.Vpc.Upa.Filters.FieldFilter VIEW = Net.Vpc.Upa.Filters.Fields.ByModifiersAnyOf(Net.Vpc.Upa.FieldModifier.SELECT_STORED);
+        public static readonly Net.TheVpc.Upa.Filters.FieldFilter VIEW = Net.TheVpc.Upa.Filters.Fields.ByModifiersAnyOf(Net.TheVpc.Upa.FieldModifier.SELECT_STORED);
 
-        public static readonly Net.Vpc.Upa.Filters.FieldFilter PERSIST_FORMULA = Net.Vpc.Upa.Filters.Fields.ByModifiersAnyOf(Net.Vpc.Upa.FieldModifier.PERSIST_FORMULA).And(Net.Vpc.Upa.Filters.Fields.ByModifiersNotAllOf(Net.Vpc.Upa.FieldModifier.PERSIST_SEQUENCE));
+        public static readonly Net.TheVpc.Upa.Filters.FieldFilter PERSIST_FORMULA = Net.TheVpc.Upa.Filters.Fields.ByModifiersAnyOf(Net.TheVpc.Upa.FieldModifier.PERSIST_FORMULA).And(Net.TheVpc.Upa.Filters.Fields.ByModifiersNotAllOf(Net.TheVpc.Upa.FieldModifier.PERSIST_SEQUENCE));
 
-        public static readonly Net.Vpc.Upa.Filters.FieldFilter UPDATE_FORMULA = Net.Vpc.Upa.Filters.Fields.Regular().And(Net.Vpc.Upa.Filters.Fields.ByModifiersAnyOf(Net.Vpc.Upa.FieldModifier.UPDATE_FORMULA)).And(Net.Vpc.Upa.Filters.Fields.ByModifiersNoneOf(Net.Vpc.Upa.FieldModifier.UPDATE_SEQUENCE));
+        public static readonly Net.TheVpc.Upa.Filters.FieldFilter UPDATE_FORMULA = Net.TheVpc.Upa.Filters.Fields.Regular().And(Net.TheVpc.Upa.Filters.Fields.ByModifiersAnyOf(Net.TheVpc.Upa.FieldModifier.UPDATE_FORMULA)).And(Net.TheVpc.Upa.Filters.Fields.ByModifiersNoneOf(Net.TheVpc.Upa.FieldModifier.UPDATE_SEQUENCE));
 
-        public static readonly Net.Vpc.Upa.Filters.FieldFilter COPY_ON_CLONE = Net.Vpc.Upa.Filters.Fields.Regular().And(Net.Vpc.Upa.Filters.Fields.ByModifiersNoneOf(Net.Vpc.Upa.FieldModifier.PERSIST_FORMULA, Net.Vpc.Upa.FieldModifier.UPDATE_FORMULA, Net.Vpc.Upa.FieldModifier.TRANSIENT));
+        public static readonly Net.TheVpc.Upa.Filters.FieldFilter COPY_ON_CLONE = Net.TheVpc.Upa.Filters.Fields.Regular().And(Net.TheVpc.Upa.Filters.Fields.ByModifiersNoneOf(Net.TheVpc.Upa.FieldModifier.PERSIST_FORMULA, Net.TheVpc.Upa.FieldModifier.UPDATE_FORMULA, Net.TheVpc.Upa.FieldModifier.TRANSIENT));
 
-        public static readonly Net.Vpc.Upa.Filters.FieldFilter COPY_ON_RENAME = Net.Vpc.Upa.Filters.Fields.Regular().And(Net.Vpc.Upa.Filters.Fields.ByModifiersNoneOf(Net.Vpc.Upa.FieldModifier.PERSIST_FORMULA, Net.Vpc.Upa.FieldModifier.UPDATE_FORMULA, Net.Vpc.Upa.FieldModifier.TRANSIENT));
+        public static readonly Net.TheVpc.Upa.Filters.FieldFilter COPY_ON_RENAME = Net.TheVpc.Upa.Filters.Fields.Regular().And(Net.TheVpc.Upa.Filters.Fields.ByModifiersNoneOf(Net.TheVpc.Upa.FieldModifier.PERSIST_FORMULA, Net.TheVpc.Upa.FieldModifier.UPDATE_FORMULA, Net.TheVpc.Upa.FieldModifier.TRANSIENT));
 
-        public static readonly Net.Vpc.Upa.Filters.FieldFilter PERSIST = Net.Vpc.Upa.Filters.Fields.ByModifiersAllOf(Net.Vpc.Upa.FieldModifier.PERSIST);
+        public static readonly Net.TheVpc.Upa.Filters.FieldFilter PERSIST = Net.TheVpc.Upa.Filters.Fields.ByModifiersAllOf(Net.TheVpc.Upa.FieldModifier.PERSIST);
 
-        public static readonly Net.Vpc.Upa.Filters.FieldFilter PERSISTENT_NON_FORMULA = Net.Vpc.Upa.Filters.Fields.ByModifiersNoneOf(Net.Vpc.Upa.FieldModifier.PERSIST_FORMULA, Net.Vpc.Upa.FieldModifier.UPDATE_FORMULA, Net.Vpc.Upa.FieldModifier.TRANSIENT);
+        public static readonly Net.TheVpc.Upa.Filters.FieldFilter PERSISTENT_NON_FORMULA = Net.TheVpc.Upa.Filters.Fields.ByModifiersNoneOf(Net.TheVpc.Upa.FieldModifier.PERSIST_FORMULA, Net.TheVpc.Upa.FieldModifier.UPDATE_FORMULA, Net.TheVpc.Upa.FieldModifier.TRANSIENT);
 
-        public static readonly Net.Vpc.Upa.Filters.FieldFilter UPDATE = Net.Vpc.Upa.Filters.Fields.ByModifiersAllOf(Net.Vpc.Upa.FieldModifier.UPDATE);
+        public static readonly Net.TheVpc.Upa.Filters.FieldFilter UPDATE = Net.TheVpc.Upa.Filters.Fields.ByModifiersAllOf(Net.TheVpc.Upa.FieldModifier.UPDATE);
 
-        public static readonly Net.Vpc.Upa.Filters.FieldFilter READ = Net.Vpc.Upa.Filters.Fields.Regular().And(Net.Vpc.Upa.Filters.Fields.ByModifiersAnyOf(Net.Vpc.Upa.FieldModifier.SELECT_DEFAULT, Net.Vpc.Upa.FieldModifier.SELECT_STORED, Net.Vpc.Upa.FieldModifier.SELECT_LIVE)).AndNot(Net.Vpc.Upa.Filters.Fields.ByAllAccessLevel(Net.Vpc.Upa.AccessLevel.PRIVATE));
+        public static readonly Net.TheVpc.Upa.Filters.FieldFilter READ = Net.TheVpc.Upa.Filters.Fields.Regular().And(Net.TheVpc.Upa.Filters.Fields.ByModifiersAnyOf(Net.TheVpc.Upa.FieldModifier.SELECT_DEFAULT, Net.TheVpc.Upa.FieldModifier.SELECT_STORED, Net.TheVpc.Upa.FieldModifier.SELECT_LIVE)).AndNot(Net.TheVpc.Upa.Filters.Fields.ByAllAccessLevel(Net.TheVpc.Upa.AccessLevel.PRIVATE));
     }
 }

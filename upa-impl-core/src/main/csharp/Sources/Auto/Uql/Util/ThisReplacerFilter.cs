@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Util
+namespace Net.TheVpc.Upa.Impl.Uql.Util
 {
 
 
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Util
      *
      * @author taha.bensalah@gmail.com
      */
-    public class ThisReplacerFilter : Net.Vpc.Upa.Expressions.ExpressionFilter {
+    public class ThisReplacerFilter : Net.TheVpc.Upa.Expressions.ExpressionFilter {
 
         private readonly string oldAlias;
 
@@ -28,9 +28,9 @@ namespace Net.Vpc.Upa.Impl.Uql.Util
         }
 
 
-        public virtual bool Accept(Net.Vpc.Upa.Expressions.Expression expression) {
-            if (expression is Net.Vpc.Upa.Expressions.Var) {
-                Net.Vpc.Upa.Expressions.Var v = (Net.Vpc.Upa.Expressions.Var) expression;
+        public virtual bool Accept(Net.TheVpc.Upa.Expressions.Expression expression) {
+            if (expression is Net.TheVpc.Upa.Expressions.Var) {
+                Net.TheVpc.Upa.Expressions.Var v = (Net.TheVpc.Upa.Expressions.Var) expression;
                 if (v.GetApplier() == null && "this".Equals(v.GetName())) {
                     v.SetName(oldAlias);
                 }

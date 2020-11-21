@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -22,11 +22,11 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
         internal string recordName;
 
-        internal Net.Vpc.Upa.Record record;
+        internal Net.TheVpc.Upa.Record record;
 
-        internal Net.Vpc.Upa.PropertyChangeListener changeListener;
+        internal Net.TheVpc.Upa.PropertyChangeListener changeListener;
 
-        internal MultiRecordListTracker(string recordName, Net.Vpc.Upa.Record record, Net.Vpc.Upa.PropertyChangeListener changeListener) {
+        internal MultiRecordListTracker(string recordName, Net.TheVpc.Upa.Record record, Net.TheVpc.Upa.PropertyChangeListener changeListener) {
             this.recordName = recordName;
             this.record = record;
             this.changeListener = changeListener;

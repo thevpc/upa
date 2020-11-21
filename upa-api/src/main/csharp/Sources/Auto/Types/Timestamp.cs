@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
 
@@ -20,7 +20,7 @@ namespace Net.Vpc.Upa.Types
      * Date: 5 sept. 2003
      * Time: 13:02:55
      */
-    public class Timestamp : Net.Vpc.Upa.Types.Temporal {
+    public class Timestamp : Net.TheVpc.Upa.Types.Temporal {
 
 
 
@@ -30,7 +30,7 @@ namespace Net.Vpc.Upa.Types
 
         }
 
-        public Timestamp(Net.Vpc.Upa.Types.Temporal date)  : this(date.GetTime()){
+        public Timestamp(Net.TheVpc.Upa.Types.Temporal date)  : this(date.GetTime()){
 
         }
 
@@ -50,14 +50,14 @@ namespace Net.Vpc.Upa.Types
 
 
         public override string ToString() {
-            Net.Vpc.Upa.Types.Calendar c = Net.Vpc.Upa.Types.Calendar.GetInstance();
+            Net.TheVpc.Upa.Types.Calendar c = Net.TheVpc.Upa.Types.Calendar.GetInstance();
             c.SetTimeInMillis(GetTime());
-            int year = c.Get(Net.Vpc.Upa.Types.Calendar.YEAR);
-            int month = c.Get(Net.Vpc.Upa.Types.Calendar.MONTH) + 1;
-            int day = c.Get(Net.Vpc.Upa.Types.Calendar.DAY_OF_MONTH);
-            int hour = c.Get(Net.Vpc.Upa.Types.Calendar.HOUR_OF_DAY);
-            int minute = c.Get(Net.Vpc.Upa.Types.Calendar.MINUTE);
-            int second = c.Get(Net.Vpc.Upa.Types.Calendar.SECOND);
+            int year = c.Get(Net.TheVpc.Upa.Types.Calendar.YEAR);
+            int month = c.Get(Net.TheVpc.Upa.Types.Calendar.MONTH) + 1;
+            int day = c.Get(Net.TheVpc.Upa.Types.Calendar.DAY_OF_MONTH);
+            int hour = c.Get(Net.TheVpc.Upa.Types.Calendar.HOUR_OF_DAY);
+            int minute = c.Get(Net.TheVpc.Upa.Types.Calendar.MINUTE);
+            int second = c.Get(Net.TheVpc.Upa.Types.Calendar.SECOND);
             //        int year = super.getYear() + 1900;
             //        int month = super.getMonth() + 1;
             //        int day = super.getDate();

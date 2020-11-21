@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Filters
+namespace Net.TheVpc.Upa.Filters
 {
 
 
     public interface FieldFilter {
 
-         bool AcceptDynamic() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool AcceptDynamic() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         bool Accept(Net.Vpc.Upa.Field f) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool Accept(Net.TheVpc.Upa.Field f) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
     }
 }

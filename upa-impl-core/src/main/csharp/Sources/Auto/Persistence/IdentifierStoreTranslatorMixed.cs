@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
     /**
      *
      * @author taha.bensalah@gmail.com
      */
-    internal class IdentifierStoreTranslatorMixed : Net.Vpc.Upa.Impl.Persistence.IdentifierStoreTranslator {
+    internal class IdentifierStoreTranslatorMixed : Net.TheVpc.Upa.Impl.Persistence.IdentifierStoreTranslator {
 
         public IdentifierStoreTranslatorMixed() {
         }

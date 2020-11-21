@@ -11,56 +11,56 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
 
-    public class Between : Net.Vpc.Upa.Expressions.OperatorExpression {
+    public class Between : Net.TheVpc.Upa.Expressions.OperatorExpression {
 
-        private static readonly Net.Vpc.Upa.Expressions.DefaultTag LEFT = new Net.Vpc.Upa.Expressions.DefaultTag("Left");
+        private static readonly Net.TheVpc.Upa.Expressions.DefaultTag LEFT = new Net.TheVpc.Upa.Expressions.DefaultTag("Left");
 
-        private static readonly Net.Vpc.Upa.Expressions.DefaultTag MIN = new Net.Vpc.Upa.Expressions.DefaultTag("Min");
+        private static readonly Net.TheVpc.Upa.Expressions.DefaultTag MIN = new Net.TheVpc.Upa.Expressions.DefaultTag("Min");
 
-        private static readonly Net.Vpc.Upa.Expressions.DefaultTag MAX = new Net.Vpc.Upa.Expressions.DefaultTag("Max");
+        private static readonly Net.TheVpc.Upa.Expressions.DefaultTag MAX = new Net.TheVpc.Upa.Expressions.DefaultTag("Max");
 
 
 
-        private Net.Vpc.Upa.Expressions.Expression left;
+        private Net.TheVpc.Upa.Expressions.Expression left;
 
-        private Net.Vpc.Upa.Expressions.Expression min;
+        private Net.TheVpc.Upa.Expressions.Expression min;
 
-        private Net.Vpc.Upa.Expressions.Expression max;
+        private Net.TheVpc.Upa.Expressions.Expression max;
 
         private Between() {
         }
 
-        public Between(Net.Vpc.Upa.Expressions.Expression expression, object min, object max)  : this(expression, Net.Vpc.Upa.Expressions.ExpressionFactory.ToLiteral(min), Net.Vpc.Upa.Expressions.ExpressionFactory.ToLiteral(max)){
+        public Between(Net.TheVpc.Upa.Expressions.Expression expression, object min, object max)  : this(expression, Net.TheVpc.Upa.Expressions.ExpressionFactory.ToLiteral(min), Net.TheVpc.Upa.Expressions.ExpressionFactory.ToLiteral(max)){
 
         }
 
-        public Between(Net.Vpc.Upa.Expressions.Expression expression, Net.Vpc.Upa.Expressions.Expression min, Net.Vpc.Upa.Expressions.Expression max) {
+        public Between(Net.TheVpc.Upa.Expressions.Expression expression, Net.TheVpc.Upa.Expressions.Expression min, Net.TheVpc.Upa.Expressions.Expression max) {
             left = expression;
             this.min = min;
             this.max = max;
         }
 
 
-        public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>(3);
+        public override System.Collections.Generic.IList<Net.TheVpc.Upa.Expressions.TaggedExpression> GetChildren() {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.TheVpc.Upa.Expressions.TaggedExpression>(3);
             if (left != null) {
-                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(left, LEFT));
+                list.Add(new Net.TheVpc.Upa.Expressions.TaggedExpression(left, LEFT));
             }
             if (min != null) {
-                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(min, MIN));
+                list.Add(new Net.TheVpc.Upa.Expressions.TaggedExpression(min, MIN));
             }
             if (max != null) {
-                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(max, MAX));
+                list.Add(new Net.TheVpc.Upa.Expressions.TaggedExpression(max, MAX));
             }
             return list;
         }
 
 
-        public override void SetChild(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.Expressions.ExpressionTag tag) {
+        public override void SetChild(Net.TheVpc.Upa.Expressions.Expression e, Net.TheVpc.Upa.Expressions.ExpressionTag tag) {
             if (tag.Equals(LEFT)) {
                 this.left = e;
             } else if (tag.Equals(MIN)) {
@@ -68,19 +68,19 @@ namespace Net.Vpc.Upa.Expressions
             } else if (tag.Equals(MAX)) {
                 this.max = e;
             } else {
-                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("Unsupported");
+                throw new Net.TheVpc.Upa.Exceptions.UPAIllegalArgumentException("Unsupported");
             }
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Expression GetLeft() {
+        public virtual Net.TheVpc.Upa.Expressions.Expression GetLeft() {
             return left;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Expression GetMin() {
+        public virtual Net.TheVpc.Upa.Expressions.Expression GetMin() {
             return min;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Expression GetMax() {
+        public virtual Net.TheVpc.Upa.Expressions.Expression GetMax() {
             return max;
         }
 
@@ -88,8 +88,8 @@ namespace Net.Vpc.Upa.Expressions
             return (left != null && left.IsValid()) && (min != null && min.IsValid()) && (max != null && max.IsValid());
         }
 
-        public override Net.Vpc.Upa.Expressions.Expression Copy() {
-            Net.Vpc.Upa.Expressions.Between o = new Net.Vpc.Upa.Expressions.Between();
+        public override Net.TheVpc.Upa.Expressions.Expression Copy() {
+            Net.TheVpc.Upa.Expressions.Between o = new Net.TheVpc.Upa.Expressions.Between();
             o.left = left.Copy();
             o.min = min.Copy();
             o.max = max.Copy();

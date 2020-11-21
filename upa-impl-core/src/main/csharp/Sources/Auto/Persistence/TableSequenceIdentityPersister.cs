@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
      *
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public abstract class TableSequenceIdentityPersister : Net.Vpc.Upa.Persistence.FieldPersister {
+    public abstract class TableSequenceIdentityPersister : Net.TheVpc.Upa.Persistence.FieldPersister {
 
         private int initialValue = 1;
 
@@ -31,9 +31,9 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
         private string name;
 
-        private Net.Vpc.Upa.Field field;
+        private Net.TheVpc.Upa.Field field;
 
-        public TableSequenceIdentityPersister(Net.Vpc.Upa.Field field, Net.Vpc.Upa.Sequence sequence) {
+        public TableSequenceIdentityPersister(Net.TheVpc.Upa.Field field, Net.TheVpc.Upa.Sequence sequence) {
             this.initialValue = sequence == null ? 1 : sequence.GetInitialValue();
             this.allocationSize = (sequence == null) ? 50 : sequence.GetAllocationSize();
             this.name = (sequence == null) ? null : sequence.GetName();
@@ -71,22 +71,22 @@ namespace Net.Vpc.Upa.Impl.Persistence
             return name;
         }
 
-        public virtual Net.Vpc.Upa.Field GetField() {
+        public virtual Net.TheVpc.Upa.Field GetField() {
             return field;
         }
 
-        public virtual void BeforePersist(Net.Vpc.Upa.Record record, Net.Vpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void BeforePersist(Net.TheVpc.Upa.Record record, Net.TheVpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             record.Remove(field.GetName());
             record.SetObject(field.GetName(), GetNewValue(field, record, context));
         }
 
-        public virtual void AfterPersist(Net.Vpc.Upa.Record record, Net.Vpc.Upa.Persistence.EntityExecutionContext context) {
+        public virtual void AfterPersist(Net.TheVpc.Upa.Record record, Net.TheVpc.Upa.Persistence.EntityExecutionContext context) {
         }
 
-        protected internal virtual object GetNewValue(Net.Vpc.Upa.Field field, Net.Vpc.Upa.Record record, Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Entity entity = field.GetEntity();
-            Net.Vpc.Upa.Entity seq = entity.GetPersistenceUnit().GetEntity(Net.Vpc.Upa.Impl.PrivateSequence.ENTITY_NAME);
-            Net.Vpc.Upa.Impl.SequenceManager sm = new Net.Vpc.Upa.Impl.EntitySequenceManager(seq);
+        protected internal virtual object GetNewValue(Net.TheVpc.Upa.Field field, Net.TheVpc.Upa.Record record, Net.TheVpc.Upa.Persistence.EntityExecutionContext executionContext) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Entity entity = field.GetEntity();
+            Net.TheVpc.Upa.Entity seq = entity.GetPersistenceUnit().GetEntity(Net.TheVpc.Upa.Impl.PrivateSequence.ENTITY_NAME);
+            Net.TheVpc.Upa.Impl.SequenceManager sm = new Net.TheVpc.Upa.Impl.EntitySequenceManager(seq);
             string groupString = Eval(this.group, "{#}", record);
             //        String fieldName = field.getName();
             //        while (true) {
@@ -96,10 +96,10 @@ namespace Net.Vpc.Upa.Impl.Persistence
             return nextValue;
         }
 
-        protected internal abstract object GetNewValue(Net.Vpc.Upa.Impl.SequenceManager sm, string group, Net.Vpc.Upa.Record record) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+        protected internal abstract object GetNewValue(Net.TheVpc.Upa.Impl.SequenceManager sm, string group, Net.TheVpc.Upa.Record record) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-        protected internal virtual string Eval(string pattern, object replacement, Net.Vpc.Upa.Record record) {
-            return Net.Vpc.Upa.Impl.Util.PlatformUtils.ReplaceNoDollarVars(pattern, new Net.Vpc.Upa.Impl.Persistence.SequencePatternEvaluator(field, replacement, record));
+        protected internal virtual string Eval(string pattern, object replacement, Net.TheVpc.Upa.Record record) {
+            return Net.TheVpc.Upa.Impl.Util.PlatformUtils.ReplaceNoDollarVars(pattern, new Net.TheVpc.Upa.Impl.Persistence.SequencePatternEvaluator(field, replacement, record));
         }
 
 
@@ -107,10 +107,10 @@ namespace Net.Vpc.Upa.Impl.Persistence
             if (this == o) {
                 return true;
             }
-            if (!(o is Net.Vpc.Upa.Impl.Persistence.TableSequenceIdentityPersister)) {
+            if (!(o is Net.TheVpc.Upa.Impl.Persistence.TableSequenceIdentityPersister)) {
                 return false;
             }
-            Net.Vpc.Upa.Impl.Persistence.TableSequenceIdentityPersister that = (Net.Vpc.Upa.Impl.Persistence.TableSequenceIdentityPersister) o;
+            Net.TheVpc.Upa.Impl.Persistence.TableSequenceIdentityPersister that = (Net.TheVpc.Upa.Impl.Persistence.TableSequenceIdentityPersister) o;
             if (allocationSize != that.allocationSize) {
                 return false;
             }

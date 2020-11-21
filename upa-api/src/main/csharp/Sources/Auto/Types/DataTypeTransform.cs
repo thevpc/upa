@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
     /**
@@ -24,10 +24,10 @@ namespace Net.Vpc.Upa.Types
 
          object ReverseTransformValue(object @value);
 
-         Net.Vpc.Upa.Types.DataType GetSourceType();
+         Net.TheVpc.Upa.Types.DataType GetSourceType();
 
-         Net.Vpc.Upa.Types.DataType GetTargetType();
+         Net.TheVpc.Upa.Types.DataType GetTargetType();
 
-         Net.Vpc.Upa.Types.DataTypeTransform Chain(Net.Vpc.Upa.Types.DataTypeTransform other);
+         Net.TheVpc.Upa.Types.DataTypeTransform Chain(Net.TheVpc.Upa.Types.DataTypeTransform other);
     }
 }

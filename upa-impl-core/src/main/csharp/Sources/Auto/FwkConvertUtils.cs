@@ -10,7 +10,7 @@
  ********************************************************/
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
     internal sealed class FwkConvertUtils{
         private static System.Random randomNumberGenerator = null;

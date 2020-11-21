@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Bulk
+namespace Net.TheVpc.Upa.Bulk
 {
 
 
@@ -19,29 +19,29 @@ namespace Net.Vpc.Upa.Bulk
      *
      * @author taha.bensalah@gmail.com
      */
-    public abstract class AbstractDataParser : Net.Vpc.Upa.Bulk.DataParser {
+    public abstract class AbstractDataParser : Net.TheVpc.Upa.Bulk.DataParser {
 
-        private Net.Vpc.Upa.ObjectFactory factory;
+        private Net.TheVpc.Upa.ObjectFactory factory;
 
-        private Net.Vpc.Upa.Bulk.DataDeserializer dataDeserializer;
+        private Net.TheVpc.Upa.Bulk.DataDeserializer dataDeserializer;
 
-        public virtual Net.Vpc.Upa.Bulk.DataDeserializer GetDataDeserializer() {
+        public virtual Net.TheVpc.Upa.Bulk.DataDeserializer GetDataDeserializer() {
             return dataDeserializer;
         }
 
-        public virtual void SetDataDeserializer(Net.Vpc.Upa.Bulk.DataDeserializer dataDeserializer) {
+        public virtual void SetDataDeserializer(Net.TheVpc.Upa.Bulk.DataDeserializer dataDeserializer) {
             this.dataDeserializer = dataDeserializer;
         }
 
-        public virtual Net.Vpc.Upa.ObjectFactory GetFactory() {
+        public virtual Net.TheVpc.Upa.ObjectFactory GetFactory() {
             return factory;
         }
 
-        public virtual void SetFactory(Net.Vpc.Upa.ObjectFactory factory) {
+        public virtual void SetFactory(Net.TheVpc.Upa.ObjectFactory factory) {
             this.factory = factory;
         }
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
-        public abstract Net.Vpc.Upa.Bulk.DataReader Parse();
+        public abstract Net.TheVpc.Upa.Bulk.DataReader Parse();
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract void Configure(object arg1);
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit

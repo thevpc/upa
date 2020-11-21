@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -35,11 +35,11 @@ namespace Net.Vpc.Upa.Impl.Util
 
         public virtual V Remove(System.Type key) {
             cache.Clear();
-            return Net.Vpc.Upa.Impl.FwkConvertUtils.RemoveMapKey<System.Type,V>(data,key);
+            return Net.TheVpc.Upa.Impl.FwkConvertUtils.RemoveMapKey<System.Type,V>(data,key);
         }
 
         public virtual V Get(System.Type clazz) {
-            V v1 = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,V>(cache,clazz);
+            V v1 = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,V>(cache,clazz);
             if (!System.Collections.Generic.EqualityComparer<V>.Default.Equals(v1,default(V))) {
                 return v1;
             }
@@ -51,11 +51,11 @@ namespace Net.Vpc.Upa.Impl.Util
                 s.RemoveAt(0);
                 if (!visited.Contains(c)) {
                     visited.Add(c);
-                    V v = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,V>(cache,c);
+                    V v = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,V>(cache,c);
                     if (!System.Collections.Generic.EqualityComparer<V>.Default.Equals(v,default(V))) {
                         return v;
                     }
-                    v = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,V>(data,c);
+                    v = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,V>(data,c);
                     if (!System.Collections.Generic.EqualityComparer<V>.Default.Equals(v,default(V))) {
                         cache[clazz]=v;
                         return v;
@@ -71,7 +71,7 @@ namespace Net.Vpc.Upa.Impl.Util
             }
             if (!visited.Contains(typeof(object))) {
                 visited.Add(typeof(object));
-                V v = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,V>(cache,typeof(object));
+                V v = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,V>(cache,typeof(object));
                 if (!System.Collections.Generic.EqualityComparer<V>.Default.Equals(v,default(V))) {
                     cache[clazz]=v;
                     return v;

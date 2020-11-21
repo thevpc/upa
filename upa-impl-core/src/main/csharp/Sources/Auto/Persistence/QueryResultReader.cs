@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -25,11 +25,11 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
     public partial class QueryResultReader<T> : System.Collections.Generic.IEnumerator<T> {
 
-        private Net.Vpc.Upa.Persistence.QueryResult queryResult;
+        private Net.TheVpc.Upa.Persistence.QueryResult queryResult;
 
-        private Net.Vpc.Upa.Persistence.QueryResultParser<T> queryResultParser;
+        private Net.TheVpc.Upa.Persistence.QueryResultParser<T> queryResultParser;
 
-        public QueryResultReader(Net.Vpc.Upa.Persistence.QueryResult resultSet, Net.Vpc.Upa.Persistence.QueryResultParser<T> queryResultParser) {
+        public QueryResultReader(Net.TheVpc.Upa.Persistence.QueryResult resultSet, Net.TheVpc.Upa.Persistence.QueryResultParser<T> queryResultParser) {
             this.queryResult = resultSet;
             this.queryResultParser = queryResultParser;
         }

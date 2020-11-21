@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Transform
+namespace Net.TheVpc.Upa.Impl.Transform
 {
 
 
@@ -19,9 +19,9 @@ namespace Net.Vpc.Upa.Impl.Transform
      *
      * @author taha.bensalah@gmail.com
      */
-    public class DefaultSecretStrategy : Net.Vpc.Upa.SecretStrategy {
+    public class DefaultSecretStrategy : Net.TheVpc.Upa.SecretStrategy {
 
-        private static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.Vpc.Upa.Impl.Transform.DefaultSecretStrategy)).FullName);
+        private static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.TheVpc.Upa.Impl.Transform.DefaultSecretStrategy)).FullName);
 
         private Javax.Crypto.Cipher aes;
 
@@ -29,7 +29,7 @@ namespace Net.Vpc.Upa.Impl.Transform
 
         private Javax.Crypto.Spec.SecretKeySpec decodeKey;
 
-        public virtual void Init(Net.Vpc.Upa.PersistenceUnit persistenceUnit, string encodingKey, string decodingKey) {
+        public virtual void Init(Net.TheVpc.Upa.PersistenceUnit persistenceUnit, string encodingKey, string decodingKey) {
             
         }
 

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
@@ -19,19 +19,19 @@ namespace Net.Vpc.Upa.Impl
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 8/23/12 1:26 PM
      */
-    public class DefaultRecord : Net.Vpc.Upa.Impl.AbstractRecord {
+    public class DefaultRecord : Net.TheVpc.Upa.Impl.AbstractRecord {
 
         private System.Collections.Generic.IDictionary<string , object> @base = new System.Collections.Generic.Dictionary<string , object>();
 
-        private Net.Vpc.Upa.PropertyChangeSupport propertyChangeSupport;
+        private Net.TheVpc.Upa.PropertyChangeSupport propertyChangeSupport;
 
         public DefaultRecord() {
-            propertyChangeSupport = new Net.Vpc.Upa.PropertyChangeSupport(this);
+            propertyChangeSupport = new Net.TheVpc.Upa.PropertyChangeSupport(this);
         }
 
 
         public override  T GetObject<T>(string key) {
-            return (T) Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(@base,key);
+            return (T) Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(@base,key);
         }
 
 
@@ -87,22 +87,22 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
-        public override void AddPropertyChangeListener(string key, Net.Vpc.Upa.PropertyChangeListener listener) {
+        public override void AddPropertyChangeListener(string key, Net.TheVpc.Upa.PropertyChangeListener listener) {
             propertyChangeSupport.AddPropertyChangeListener(key, listener);
         }
 
 
-        public override void RemovePropertyChangeListener(string key, Net.Vpc.Upa.PropertyChangeListener listener) {
+        public override void RemovePropertyChangeListener(string key, Net.TheVpc.Upa.PropertyChangeListener listener) {
             propertyChangeSupport.RemovePropertyChangeListener(key, listener);
         }
 
 
-        public override void AddPropertyChangeListener(Net.Vpc.Upa.PropertyChangeListener listener) {
+        public override void AddPropertyChangeListener(Net.TheVpc.Upa.PropertyChangeListener listener) {
             propertyChangeSupport.AddPropertyChangeListener(listener);
         }
 
 
-        public override void RemovePropertyChangeListener(Net.Vpc.Upa.PropertyChangeListener listener) {
+        public override void RemovePropertyChangeListener(Net.TheVpc.Upa.PropertyChangeListener listener) {
             propertyChangeSupport.RemovePropertyChangeListener(listener);
         }
 

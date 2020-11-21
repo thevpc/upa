@@ -11,11 +11,11 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
 
-    public class UserExpression : Net.Vpc.Upa.Expressions.DefaultExpression {
+    public class UserExpression : Net.TheVpc.Upa.Expressions.DefaultExpression {
 
 
 
@@ -28,28 +28,28 @@ namespace Net.Vpc.Upa.Expressions
         }
 
 
-        public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
-            return new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+        public override System.Collections.Generic.IList<Net.TheVpc.Upa.Expressions.TaggedExpression> GetChildren() {
+            return new System.Collections.Generic.List<Net.TheVpc.Upa.Expressions.TaggedExpression>();
         }
 
 
-        public override void SetChild(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.Expressions.ExpressionTag tag) {
+        public override void SetChild(Net.TheVpc.Upa.Expressions.Expression e, Net.TheVpc.Upa.Expressions.ExpressionTag tag) {
             throw new System.Exception("Not supported yet.");
         }
 
-        public virtual Net.Vpc.Upa.Expressions.UserExpression SetParameters(System.Collections.Generic.IDictionary<string , object> parameters) {
+        public virtual Net.TheVpc.Upa.Expressions.UserExpression SetParameters(System.Collections.Generic.IDictionary<string , object> parameters) {
             if (parameters != null) {
                 if (this.parameters == null) {
                     this.parameters = new System.Collections.Generic.Dictionary<string , object>();
                 }
-                Net.Vpc.Upa.FwkConvertUtils.PutAllMap<string,object>(this.parameters,parameters);
+                Net.TheVpc.Upa.FwkConvertUtils.PutAllMap<string,object>(this.parameters,parameters);
             }
             return this;
         }
 
         public virtual object GetParameter(string name) {
             if (parameters != null) {
-                return Net.Vpc.Upa.FwkConvertUtils.GetMapValue<string,object>(parameters,name);
+                return Net.TheVpc.Upa.FwkConvertUtils.GetMapValue<string,object>(parameters,name);
             }
             return null;
         }
@@ -63,7 +63,7 @@ namespace Net.Vpc.Upa.Expressions
             return new System.Collections.Generic.Dictionary<string , object>(parameters);
         }
 
-        public virtual Net.Vpc.Upa.Expressions.UserExpression SetParameter(string name, object @value) {
+        public virtual Net.TheVpc.Upa.Expressions.UserExpression SetParameter(string name, object @value) {
             if (parameters == null) {
                 parameters = new System.Collections.Generic.Dictionary<string , object>();
             }
@@ -71,7 +71,7 @@ namespace Net.Vpc.Upa.Expressions
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.UserExpression RemoveParameter(string name, object @value) {
+        public virtual Net.TheVpc.Upa.Expressions.UserExpression RemoveParameter(string name, object @value) {
             if (parameters != null) {
                 parameters.Remove(name);
             }
@@ -90,8 +90,8 @@ namespace Net.Vpc.Upa.Expressions
         }
 
 
-        public override Net.Vpc.Upa.Expressions.Expression Copy() {
-            Net.Vpc.Upa.Expressions.UserExpression o = new Net.Vpc.Upa.Expressions.UserExpression(expression);
+        public override Net.TheVpc.Upa.Expressions.Expression Copy() {
+            Net.TheVpc.Upa.Expressions.UserExpression o = new Net.TheVpc.Upa.Expressions.UserExpression(expression);
             return o;
         }
 

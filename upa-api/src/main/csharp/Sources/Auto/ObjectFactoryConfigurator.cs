@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     /**
@@ -20,7 +20,7 @@ namespace Net.Vpc.Upa
      */
     public interface ObjectFactoryConfigurator {
 
-         void Configure(Net.Vpc.Upa.ObjectFactory factory);
+         void Configure(Net.TheVpc.Upa.ObjectFactory factory);
 
          int GetContextSupportLevel();
     }

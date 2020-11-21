@@ -11,25 +11,25 @@
 
 
 
-namespace Net.Vpc.Upa.Bulk
+namespace Net.TheVpc.Upa.Bulk
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public interface DataFormatter : Net.Vpc.Upa.Closeable {
+    public interface DataFormatter : Net.TheVpc.Upa.Closeable {
 
          void Configure(object target) /* throws System.IO.IOException */ ;
 
-         Net.Vpc.Upa.Bulk.DataFormatter SetDataRowConverter(Net.Vpc.Upa.Bulk.DataRowConverter dataRowConverter);
+         Net.TheVpc.Upa.Bulk.DataFormatter SetDataRowConverter(Net.TheVpc.Upa.Bulk.DataRowConverter dataRowConverter);
 
-         Net.Vpc.Upa.Bulk.DataRowConverter GetDataRowConverter();
+         Net.TheVpc.Upa.Bulk.DataRowConverter GetDataRowConverter();
 
-         Net.Vpc.Upa.Bulk.DataWriter CreateWriter() /* throws System.IO.IOException */ ;
+         Net.TheVpc.Upa.Bulk.DataWriter CreateWriter() /* throws System.IO.IOException */ ;
 
-         Net.Vpc.Upa.ObjectFactory GetFactory();
+         Net.TheVpc.Upa.ObjectFactory GetFactory();
 
-         void SetFactory(Net.Vpc.Upa.ObjectFactory factory);
+         void SetFactory(Net.TheVpc.Upa.ObjectFactory factory);
     }
 }

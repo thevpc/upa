@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Config
+namespace Net.TheVpc.Upa.Config
 {
 
     /**
      * @author taha.bensalah@gmail.com
      */
-    public interface DecorationValue : System.IComparable<Net.Vpc.Upa.Config.DecorationValue> {
+    public interface DecorationValue : System.IComparable<Net.TheVpc.Upa.Config.DecorationValue> {
 
-         Net.Vpc.Upa.Config.ConfigInfo GetConfig();
+         Net.TheVpc.Upa.Config.ConfigInfo GetConfig();
     }
 }

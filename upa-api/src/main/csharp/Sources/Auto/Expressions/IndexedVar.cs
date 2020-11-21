@@ -11,29 +11,29 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
     /**
      * Created with IntelliJ IDEA. User: vpc Date: 8/16/12 Time: 10:54 PM To change
      * this template use File | Settings | File Templates.
      */
-    public class IndexedVar : Net.Vpc.Upa.Expressions.Var {
+    public class IndexedVar : Net.TheVpc.Upa.Expressions.Var {
 
-        private Net.Vpc.Upa.Expressions.Expression[] arguments;
+        private Net.TheVpc.Upa.Expressions.Expression[] arguments;
 
-        public IndexedVar(string field, params Net.Vpc.Upa.Expressions.Expression [] arguments)  : this(null, field, arguments){
+        public IndexedVar(string field, params Net.TheVpc.Upa.Expressions.Expression [] arguments)  : this(null, field, arguments){
 
         }
 
-        public IndexedVar(Net.Vpc.Upa.Expressions.Expression parent, string name, params Net.Vpc.Upa.Expressions.Expression [] arguments)  : base(parent, name){
+        public IndexedVar(Net.TheVpc.Upa.Expressions.Expression parent, string name, params Net.TheVpc.Upa.Expressions.Expression [] arguments)  : base(parent, name){
 
             this.arguments = arguments;
         }
 
 
-        public override Net.Vpc.Upa.Expressions.Expression Copy() {
-            Net.Vpc.Upa.Expressions.IndexedVar o = new Net.Vpc.Upa.Expressions.IndexedVar(GetApplier(), GetName(), GetArguments());
+        public override Net.TheVpc.Upa.Expressions.Expression Copy() {
+            Net.TheVpc.Upa.Expressions.IndexedVar o = new Net.TheVpc.Upa.Expressions.IndexedVar(GetApplier(), GetName(), GetArguments());
             return o;
         }
 
@@ -41,13 +41,13 @@ namespace Net.Vpc.Upa.Expressions
             return arguments.Length;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Expression GetArgument(int index) {
+        public virtual Net.TheVpc.Upa.Expressions.Expression GetArgument(int index) {
             return arguments[index];
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Expression[] GetArguments() {
+        public virtual Net.TheVpc.Upa.Expressions.Expression[] GetArguments() {
             int max = GetArgumentsCount();
-            Net.Vpc.Upa.Expressions.Expression[] p = new Net.Vpc.Upa.Expressions.Expression[max];
+            Net.TheVpc.Upa.Expressions.Expression[] p = new Net.TheVpc.Upa.Expressions.Expression[max];
             for (int i = 0; i < max; i++) {
                 p[i] = GetArgument(i);
             }

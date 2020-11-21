@@ -11,16 +11,16 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class NoSuchEntityException : Net.Vpc.Upa.Exceptions.EntityException {
+    public class NoSuchEntityException : Net.TheVpc.Upa.Exceptions.EntityException {
 
-        public NoSuchEntityException(string entityName, System.Exception cause)  : base(cause, new Net.Vpc.Upa.Types.I18NString("NoSuchEntityException"), entityName){
+        public NoSuchEntityException(string entityName, System.Exception cause)  : base(cause, new Net.TheVpc.Upa.Types.I18NString("NoSuchEntityException"), entityName){
 
         }
     }

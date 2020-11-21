@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
@@ -21,7 +21,7 @@ namespace Net.Vpc.Upa.Impl
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 8/25/12 1:31 AM
      */
-    public abstract class AbstractProperties : Net.Vpc.Upa.Properties {
+    public abstract class AbstractProperties : Net.TheVpc.Upa.Properties {
 
 
         public virtual void SetAll(System.Collections.Generic.IDictionary<string , object> other, params string [] keys) {
@@ -33,7 +33,7 @@ namespace Net.Vpc.Upa.Impl
                 System.Collections.Generic.HashSet<string> accepted = new System.Collections.Generic.HashSet<string>(new System.Collections.Generic.List<string>(keys));
                 foreach (string s in accepted) {
                     if (other.ContainsKey(s)) {
-                        SetObject(s, Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(other,s));
+                        SetObject(s, Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(other,s));
                     }
                 }
             }
@@ -197,27 +197,27 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
-        public virtual Net.Vpc.Upa.Types.Temporal GetDate(string key) {
+        public virtual Net.TheVpc.Upa.Types.Temporal GetDate(string key) {
             return GetObject<T>(key);
         }
 
 
-        public virtual Net.Vpc.Upa.Types.Temporal GetDate(string key, Net.Vpc.Upa.Types.Temporal defaultValue) {
-            return GetObject<Net.Vpc.Upa.Types.Temporal>(key, defaultValue);
+        public virtual Net.TheVpc.Upa.Types.Temporal GetDate(string key, Net.TheVpc.Upa.Types.Temporal defaultValue) {
+            return GetObject<Net.TheVpc.Upa.Types.Temporal>(key, defaultValue);
         }
 
 
-        public virtual void SetDate(string key, Net.Vpc.Upa.Types.Temporal @value) {
+        public virtual void SetDate(string key, Net.TheVpc.Upa.Types.Temporal @value) {
             SetObject(key, @value);
         }
 
 
-        public virtual Net.Vpc.Upa.Types.Temporal GetSingleDate() {
+        public virtual Net.TheVpc.Upa.Types.Temporal GetSingleDate() {
             return GetSingleObject<T>();
         }
 
 
-        public virtual void SetAll(Net.Vpc.Upa.Properties other, params string [] keys) {
+        public virtual void SetAll(Net.TheVpc.Upa.Properties other, params string [] keys) {
             SetAll(other.ToMap(), keys);
         }
 
@@ -225,7 +225,7 @@ namespace Net.Vpc.Upa.Impl
             if (key == null || !(key is string)) {
                 return key;
             }
-            System.Collections.Generic.IList<string> vars = Net.Vpc.Upa.Impl.Util.StringUtils.ParseVarsList(key);
+            System.Collections.Generic.IList<string> vars = Net.TheVpc.Upa.Impl.Util.StringUtils.ParseVarsList(key);
             switch((vars).Count) {
                 case 0:
                     {
@@ -260,19 +260,19 @@ namespace Net.Vpc.Upa.Impl
             }
         }
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
-        public abstract void AddPropertyChangeListener(string arg1, Net.Vpc.Upa.PropertyChangeListener arg2);
+        public abstract void AddPropertyChangeListener(string arg1, Net.TheVpc.Upa.PropertyChangeListener arg2);
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract System.Collections.Generic.IDictionary<string , object> ToMap();
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract T GetObject<T>(string arg1, T arg2);
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
-        public abstract void AddPropertyChangeListener(Net.Vpc.Upa.PropertyChangeListener arg1);
+        public abstract void AddPropertyChangeListener(Net.TheVpc.Upa.PropertyChangeListener arg1);
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract void SetObject(string arg1, object arg2);
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
-        public abstract void RemovePropertyChangeListener(Net.Vpc.Upa.PropertyChangeListener arg1);
+        public abstract void RemovePropertyChangeListener(Net.TheVpc.Upa.PropertyChangeListener arg1);
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
-        public abstract void RemovePropertyChangeListener(string arg1, Net.Vpc.Upa.PropertyChangeListener arg2);
+        public abstract void RemovePropertyChangeListener(string arg1, Net.TheVpc.Upa.PropertyChangeListener arg2);
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract T GetObject<T>(string arg1);
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit

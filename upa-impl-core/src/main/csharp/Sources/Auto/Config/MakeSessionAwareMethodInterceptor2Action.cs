@@ -11,18 +11,18 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config
+namespace Net.TheVpc.Upa.Impl.Config
 {
 
 
     /**
      * @author taha.bensalah@gmail.com
      */
-    internal class MakeSessionAwareMethodInterceptor2Action<T> : Net.Vpc.Upa.Action<object> {
+    internal class MakeSessionAwareMethodInterceptor2Action<T> : Net.TheVpc.Upa.Action<object> {
 
-        private readonly Net.Vpc.Upa.Impl.Util.PlatformMethodProxyEvent<T> methodProxy;
+        private readonly Net.TheVpc.Upa.Impl.Util.PlatformMethodProxyEvent<T> methodProxy;
 
-        public MakeSessionAwareMethodInterceptor2Action(Net.Vpc.Upa.Impl.Util.PlatformMethodProxyEvent<T> methodProxy) {
+        public MakeSessionAwareMethodInterceptor2Action(Net.TheVpc.Upa.Impl.Util.PlatformMethodProxyEvent<T> methodProxy) {
             this.methodProxy = methodProxy;
         }
 
@@ -30,7 +30,7 @@ namespace Net.Vpc.Upa.Impl.Config
             try {
                 return methodProxy.InvokeBase(methodProxy.GetObject(), methodProxy.GetArguments());
             } catch (System.Exception ex) {
-                throw new Net.Vpc.Upa.Exceptions.UPAException(ex, new Net.Vpc.Upa.Types.I18NString("InvokeError"));
+                throw new Net.TheVpc.Upa.Exceptions.UPAException(ex, new Net.TheVpc.Upa.Types.I18NString("InvokeError"));
             }
         }
     }

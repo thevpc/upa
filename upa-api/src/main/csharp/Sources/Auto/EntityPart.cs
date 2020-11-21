@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
-    public interface EntityPart : Net.Vpc.Upa.UPAObject {
+    public interface EntityPart : Net.TheVpc.Upa.UPAObject {
 
-         Net.Vpc.Upa.Entity GetEntity();
+         Net.TheVpc.Upa.Entity GetEntity();
 
-         Net.Vpc.Upa.EntityPart GetParent();
+         Net.TheVpc.Upa.EntityPart GetParent();
 
          string GetPath();
 

@@ -2,16 +2,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>net.vpc.upa.upa-tutorial</groupId>
+    <groupId>net.thevpc.upa.upa-tutorial</groupId>
     <artifactId>upa-tutorial-desktop</artifactId>
     <version>1.2.0</version>
     <packaging>jar</packaging>
 
-    <name>net.vpc.upa.upa-tutorial.upa-tutorial-desktop</name>
+    <name>net.thevpc.upa.upa-tutorial.upa-tutorial-desktop</name>
     <url>http://maven.apache.org</url>
 
     <parent>
-        <groupId>net.vpc.upa.upa-tutorial</groupId>
+        <groupId>net.thevpc.upa.upa-tutorial</groupId>
         <artifactId>upa-tutorial</artifactId>
         <version>1.2.0</version>
     </parent>
@@ -40,12 +40,12 @@
             <version>2.2.2</version>
         </dependency>
         <dependency>
-            <groupId>net.vpc.upa.upa-tutorial</groupId>
+            <groupId>net.thevpc.upa.upa-tutorial</groupId>
             <artifactId>upa-tutorial-business</artifactId>
             <version>1.2.0</version>
         </dependency>
         <dependency>
-            <groupId>net.vpc.upa</groupId>
+            <groupId>net.thevpc.upa</groupId>
             <artifactId>upa-impl</artifactId>
             <scope>runtime</scope>
             <version>${upa-impl.version}</version>

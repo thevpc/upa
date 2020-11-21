@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -19,31 +19,31 @@ namespace Net.Vpc.Upa.Impl.Persistence
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 12/17/12 12:23 AM
      */
-    public class ExpressionFieldPersister : Net.Vpc.Upa.Persistence.FieldPersister {
+    public class ExpressionFieldPersister : Net.TheVpc.Upa.Persistence.FieldPersister {
 
         private string field;
 
-        private Net.Vpc.Upa.Expressions.Expression expression;
+        private Net.TheVpc.Upa.Expressions.Expression expression;
 
-        public ExpressionFieldPersister(string field, Net.Vpc.Upa.Expressions.Expression expression) {
+        public ExpressionFieldPersister(string field, Net.TheVpc.Upa.Expressions.Expression expression) {
             this.field = field;
             this.expression = expression;
         }
 
 
-        public virtual void BeforePersist(Net.Vpc.Upa.Record record, Net.Vpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void BeforePersist(Net.TheVpc.Upa.Record record, Net.TheVpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             record.SetObject(field, expression);
         }
 
 
-        public virtual void AfterPersist(Net.Vpc.Upa.Record record, Net.Vpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void AfterPersist(Net.TheVpc.Upa.Record record, Net.TheVpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
         }
 
 
         public override bool Equals(object o) {
             if (this == o) return true;
             if (o == null || GetType() != o.GetType()) return false;
-            Net.Vpc.Upa.Impl.Persistence.ExpressionFieldPersister that = (Net.Vpc.Upa.Impl.Persistence.ExpressionFieldPersister) o;
+            Net.TheVpc.Upa.Impl.Persistence.ExpressionFieldPersister that = (Net.TheVpc.Upa.Impl.Persistence.ExpressionFieldPersister) o;
             if (expression != null ? !expression.Equals(that.expression) : that.expression != null) return false;
             if (field != null ? !field.Equals(that.field) : that.field != null) return false;
             return true;

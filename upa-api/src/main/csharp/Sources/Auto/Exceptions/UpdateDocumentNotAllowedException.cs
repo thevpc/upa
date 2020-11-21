@@ -11,17 +11,17 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
-    public class UpdateDocumentNotAllowedException : Net.Vpc.Upa.Exceptions.EntityException {
+    public class UpdateDocumentNotAllowedException : Net.TheVpc.Upa.Exceptions.EntityException {
 
-        public UpdateDocumentNotAllowedException(Net.Vpc.Upa.Entity entity)  : base(entity, "update.NotAllowed"){
+        public UpdateDocumentNotAllowedException(Net.TheVpc.Upa.Entity entity)  : base(entity, "update.NotAllowed"){
 
         }
 
-        public UpdateDocumentNotAllowedException(Net.Vpc.Upa.Entity entity, string operationName)  : base(entity, operationName){
+        public UpdateDocumentNotAllowedException(Net.TheVpc.Upa.Entity entity, string operationName)  : base(entity, operationName){
 
         }
     }

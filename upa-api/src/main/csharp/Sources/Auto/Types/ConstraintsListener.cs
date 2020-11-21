@@ -11,11 +11,11 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
     public interface ConstraintsListener {
 
-         void UnrespectedConstraints(Net.Vpc.Upa.Types.ConstraintsEvent constraintsevent);
+         void UnrespectedConstraints(Net.TheVpc.Upa.Types.ConstraintsEvent constraintsevent);
     }
 }

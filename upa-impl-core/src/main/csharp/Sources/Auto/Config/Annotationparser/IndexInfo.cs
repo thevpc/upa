@@ -12,7 +12,7 @@
 
 
 using System.Linq;
-namespace Net.Vpc.Upa.Impl.Config.Annotationparser
+namespace Net.TheVpc.Upa.Impl.Config.Annotationparser
 {
 
 
@@ -20,13 +20,13 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
      *
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class IndexInfo : Net.Vpc.Upa.IndexDescriptor {
+    public class IndexInfo : Net.TheVpc.Upa.IndexDescriptor {
 
         private string name;
 
         private System.Collections.Generic.IList<string> fieldsNames = new System.Collections.Generic.List<string>();
 
-        private Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<bool?> unique = new Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<bool?>();
+        private Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<bool?> unique = new Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<bool?>();
 
         public virtual string GetName() {
             return name;
@@ -44,11 +44,11 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             this.fieldsNames = fieldsNames;
         }
 
-        internal virtual Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<bool?> GetUnique() {
+        internal virtual Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<bool?> GetUnique() {
             return unique;
         }
 
-        internal virtual void SetUnique(Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<bool?> unique) {
+        internal virtual void SetUnique(Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<bool?> unique) {
             this.unique = unique;
         }
 

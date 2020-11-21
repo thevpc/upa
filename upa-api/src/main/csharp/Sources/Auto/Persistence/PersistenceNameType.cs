@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
 
@@ -21,51 +21,51 @@ namespace Net.Vpc.Upa.Persistence
      */
     public sealed class PersistenceNameType {
 
-        private static readonly System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Persistence.PersistenceNameType> values = new System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Persistence.PersistenceNameType>();
+        private static readonly System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Persistence.PersistenceNameType> values = new System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Persistence.PersistenceNameType>();
 
         private readonly string name;
 
         private readonly bool global;
 
-        public static readonly Net.Vpc.Upa.Persistence.PersistenceNameType TABLE = Create("TABLE", true);
+        public static readonly Net.TheVpc.Upa.Persistence.PersistenceNameType TABLE = Create("TABLE", true);
 
-        public static readonly Net.Vpc.Upa.Persistence.PersistenceNameType UNION_TABLE = Create("UNION_TABLE", true);
+        public static readonly Net.TheVpc.Upa.Persistence.PersistenceNameType UNION_TABLE = Create("UNION_TABLE", true);
 
-        public static readonly Net.Vpc.Upa.Persistence.PersistenceNameType VIEW = Create("VIEW", true);
+        public static readonly Net.TheVpc.Upa.Persistence.PersistenceNameType VIEW = Create("VIEW", true);
 
-        public static readonly Net.Vpc.Upa.Persistence.PersistenceNameType IMPLICIT_VIEW = Create("IMPLICIT_VIEW", true);
+        public static readonly Net.TheVpc.Upa.Persistence.PersistenceNameType IMPLICIT_VIEW = Create("IMPLICIT_VIEW", true);
 
-        public static readonly Net.Vpc.Upa.Persistence.PersistenceNameType COLUMN = Create("COLUMN", false);
+        public static readonly Net.TheVpc.Upa.Persistence.PersistenceNameType COLUMN = Create("COLUMN", false);
 
-        public static readonly Net.Vpc.Upa.Persistence.PersistenceNameType FK_CONSTRAINT = Create("FK_CONSTRAINT", true);
+        public static readonly Net.TheVpc.Upa.Persistence.PersistenceNameType FK_CONSTRAINT = Create("FK_CONSTRAINT", true);
 
-        public static readonly Net.Vpc.Upa.Persistence.PersistenceNameType PK_CONSTRAINT = Create("PK_CONSTRAINT", true);
+        public static readonly Net.TheVpc.Upa.Persistence.PersistenceNameType PK_CONSTRAINT = Create("PK_CONSTRAINT", true);
 
-        public static readonly Net.Vpc.Upa.Persistence.PersistenceNameType INDEX = Create("INDEX", true);
+        public static readonly Net.TheVpc.Upa.Persistence.PersistenceNameType INDEX = Create("INDEX", true);
 
-        public static readonly Net.Vpc.Upa.Persistence.PersistenceNameType ALIAS = Create("ALIAS", false);
+        public static readonly Net.TheVpc.Upa.Persistence.PersistenceNameType ALIAS = Create("ALIAS", false);
 
         private PersistenceNameType(string name, bool global) {
             this.name = name;
             this.global = global;
         }
 
-        public static Net.Vpc.Upa.Persistence.PersistenceNameType ValueOf(string name) {
-            Net.Vpc.Upa.Persistence.PersistenceNameType f = Net.Vpc.Upa.FwkConvertUtils.GetMapValue<K,V>(values,name);
+        public static Net.TheVpc.Upa.Persistence.PersistenceNameType ValueOf(string name) {
+            Net.TheVpc.Upa.Persistence.PersistenceNameType f = Net.TheVpc.Upa.FwkConvertUtils.GetMapValue<K,V>(values,name);
             if (f == null) {
-                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("PersistenceNameType not found " + name);
+                throw new Net.TheVpc.Upa.Exceptions.UPAIllegalArgumentException("PersistenceNameType not found " + name);
             }
             return f;
         }
 
-        public static Net.Vpc.Upa.Persistence.PersistenceNameType Create(string name, bool globalScope) {
+        public static Net.TheVpc.Upa.Persistence.PersistenceNameType Create(string name, bool globalScope) {
             if (name == null || (name).Length == 0 || (name.Trim()).Length != (name).Length) {
-                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("Invalid PersistenceNameType Name " + name);
+                throw new Net.TheVpc.Upa.Exceptions.UPAIllegalArgumentException("Invalid PersistenceNameType Name " + name);
             }
             if (values.ContainsKey(name)) {
-                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("PersistenceNameType already exists " + name);
+                throw new Net.TheVpc.Upa.Exceptions.UPAIllegalArgumentException("PersistenceNameType already exists " + name);
             }
-            Net.Vpc.Upa.Persistence.PersistenceNameType t = new Net.Vpc.Upa.Persistence.PersistenceNameType(name, globalScope);
+            Net.TheVpc.Upa.Persistence.PersistenceNameType t = new Net.TheVpc.Upa.Persistence.PersistenceNameType(name, globalScope);
             values[t.Name()]=t;
             return t;
         }
@@ -93,7 +93,7 @@ namespace Net.Vpc.Upa.Persistence
             if (GetType() != obj.GetType()) {
                 return false;
             }
-            Net.Vpc.Upa.Persistence.PersistenceNameType other = (Net.Vpc.Upa.Persistence.PersistenceNameType) obj;
+            Net.TheVpc.Upa.Persistence.PersistenceNameType other = (Net.TheVpc.Upa.Persistence.PersistenceNameType) obj;
             if ((this.name == null) ? (other.name != null) : !this.name.Equals(other.name)) {
                 return false;
             }

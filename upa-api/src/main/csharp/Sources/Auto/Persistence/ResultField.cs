@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
 
@@ -21,14 +21,14 @@ namespace Net.Vpc.Upa.Persistence
      */
     public interface ResultField {
 
-         Net.Vpc.Upa.Expressions.Expression GetExpression();
+         Net.TheVpc.Upa.Expressions.Expression GetExpression();
 
          string GetAlias();
 
-         Net.Vpc.Upa.Types.DataType GetDataType();
+         Net.TheVpc.Upa.Types.DataType GetDataType();
 
-         Net.Vpc.Upa.Field GetField();
+         Net.TheVpc.Upa.Field GetField();
 
-         Net.Vpc.Upa.Entity GetEntity();
+         Net.TheVpc.Upa.Entity GetEntity();
     }
 }

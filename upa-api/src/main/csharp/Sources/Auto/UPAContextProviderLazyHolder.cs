@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     /**
@@ -20,10 +20,10 @@ namespace Net.Vpc.Upa
      */
     internal class UPAContextProviderLazyHolder {
 
-        internal static Net.Vpc.Upa.UPAContextProvider INSTANCE = Create();
+        internal static Net.TheVpc.Upa.UPAContextProvider INSTANCE = Create();
 
-        public static Net.Vpc.Upa.UPAContextProvider Create() {
-            Net.Vpc.Upa.UPAContextProvider o = Net.Vpc.Upa.UPA.GetBootstrapFactory().CreateObject<>(typeof(Net.Vpc.Upa.UPAContextProvider));
+        public static Net.TheVpc.Upa.UPAContextProvider Create() {
+            Net.TheVpc.Upa.UPAContextProvider o = Net.TheVpc.Upa.UPA.GetBootstrapFactory().CreateObject<>(typeof(Net.TheVpc.Upa.UPAContextProvider));
             return o;
         }
     }

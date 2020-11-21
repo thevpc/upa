@@ -11,22 +11,22 @@
 
 
 
-namespace Net.Vpc.Upa.Callbacks
+namespace Net.TheVpc.Upa.Callbacks
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class SessionListenerAdapter : Net.Vpc.Upa.Callbacks.SessionListener {
+    public class SessionListenerAdapter : Net.TheVpc.Upa.Callbacks.SessionListener {
 
-        public virtual void CloseSession(Net.Vpc.Upa.Session session) {
+        public virtual void CloseSession(Net.TheVpc.Upa.Session session) {
         }
 
-        public virtual void PushContext(Net.Vpc.Upa.Session session) {
+        public virtual void PushContext(Net.TheVpc.Upa.Session session) {
         }
 
-        public virtual void PopContext(Net.Vpc.Upa.Session session) {
+        public virtual void PopContext(Net.TheVpc.Upa.Session session) {
         }
     }
 }

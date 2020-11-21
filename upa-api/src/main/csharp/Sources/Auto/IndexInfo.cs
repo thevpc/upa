@@ -11,10 +11,10 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
-    public class IndexInfo : Net.Vpc.Upa.UPAObjectInfo {
+    public class IndexInfo : Net.TheVpc.Upa.UPAObjectInfo {
 
         private bool unique;
 

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -21,10 +21,10 @@ namespace Net.Vpc.Upa
      */
     public interface QLExpressionParser {
 
-         Net.Vpc.Upa.Expressions.Expression Parse(string text) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Expressions.Expression Parse(string text) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Expressions.Expression Parse(System.IO.TextReader text) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Expressions.Expression Parse(System.IO.TextReader text) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Expressions.Expression Parse(System.IO.Stream inputStream) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Expressions.Expression Parse(System.IO.Stream inputStream) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
     }
 }

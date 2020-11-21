@@ -11,37 +11,37 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Eval
+namespace Net.TheVpc.Upa.Impl.Eval
 {
 
 
     /**
      * @author taha.bensalah@gmail.com
      */
-    public class DefaultQLEvaluator : Net.Vpc.Upa.QLEvaluator {
+    public class DefaultQLEvaluator : Net.TheVpc.Upa.QLEvaluator {
 
-        private Net.Vpc.Upa.QLEvaluatorRegistry registry;
+        private Net.TheVpc.Upa.QLEvaluatorRegistry registry;
 
         public DefaultQLEvaluator() {
-            registry = new Net.Vpc.Upa.Impl.Eval.DefaultQLEvaluatorRegistry();
+            registry = new Net.TheVpc.Upa.Impl.Eval.DefaultQLEvaluatorRegistry();
         }
 
-        public DefaultQLEvaluator(Net.Vpc.Upa.QLEvaluatorRegistry registry) {
+        public DefaultQLEvaluator(Net.TheVpc.Upa.QLEvaluatorRegistry registry) {
             this.registry = registry;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Expression EvalString(string expression, object context) {
+        public virtual Net.TheVpc.Upa.Expressions.Expression EvalString(string expression, object context) {
             if (expression == null) {
                 return null;
             }
             if ((expression).Length == 0) {
-                return new Net.Vpc.Upa.Expressions.Literal("");
+                return new Net.TheVpc.Upa.Expressions.Literal("");
             }
             if (IsVarName(expression)) {
-                return GetRegistry().GetTypeEvaluator(typeof(Net.Vpc.Upa.Expressions.Var)).EvalObject(new Net.Vpc.Upa.Expressions.Var(expression), this, context);
+                return GetRegistry().GetTypeEvaluator(typeof(Net.TheVpc.Upa.Expressions.Var)).EvalObject(new Net.TheVpc.Upa.Expressions.Var(expression), this, context);
             }
-            Net.Vpc.Upa.QLExpressionParser parser = Net.Vpc.Upa.UPA.GetBootstrapFactory().CreateObject<Net.Vpc.Upa.QLExpressionParser>(typeof(Net.Vpc.Upa.QLExpressionParser));
-            Net.Vpc.Upa.Expressions.Expression exprObj = parser.Parse(expression);
+            Net.TheVpc.Upa.QLExpressionParser parser = Net.TheVpc.Upa.UPA.GetBootstrapFactory().CreateObject<Net.TheVpc.Upa.QLExpressionParser>(typeof(Net.TheVpc.Upa.QLExpressionParser));
+            Net.TheVpc.Upa.Expressions.Expression exprObj = parser.Parse(expression);
             return EvalObject(exprObj, context);
         }
 
@@ -61,25 +61,25 @@ namespace Net.Vpc.Upa.Impl.Eval
             for (int i = 0; i < chars.Length; i++) {
                 char c = chars[i];
                 if (i == 0) {
-                    if (!(Net.Vpc.Upa.Expressions.ExpressionHelper.IsIdentifierStart(c))) {
+                    if (!(Net.TheVpc.Upa.Expressions.ExpressionHelper.IsIdentifierStart(c))) {
                         return false;
                     }
-                } else if (!(Net.Vpc.Upa.Expressions.ExpressionHelper.IsIdentifierPart(c) || c == '.')) {
+                } else if (!(Net.TheVpc.Upa.Expressions.ExpressionHelper.IsIdentifierPart(c) || c == '.')) {
                     return false;
                 }
             }
             return true;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Expression EvalObject(Net.Vpc.Upa.Expressions.Expression e, object context) {
+        public virtual Net.TheVpc.Upa.Expressions.Expression EvalObject(Net.TheVpc.Upa.Expressions.Expression e, object context) {
             return GetRegistry().GetTypeEvaluator(e.GetType()).EvalObject(e, this, context);
         }
 
 
         public override bool Equals(object o) {
             if (this == o) return true;
-            if (!(o is Net.Vpc.Upa.Impl.Eval.DefaultQLEvaluator)) return false;
-            Net.Vpc.Upa.Impl.Eval.DefaultQLEvaluator that = (Net.Vpc.Upa.Impl.Eval.DefaultQLEvaluator) o;
+            if (!(o is Net.TheVpc.Upa.Impl.Eval.DefaultQLEvaluator)) return false;
+            Net.TheVpc.Upa.Impl.Eval.DefaultQLEvaluator that = (Net.TheVpc.Upa.Impl.Eval.DefaultQLEvaluator) o;
             return !(registry != null ? !registry.Equals(that.registry) : that.registry != null);
         }
 
@@ -89,7 +89,7 @@ namespace Net.Vpc.Upa.Impl.Eval
         }
 
 
-        public virtual Net.Vpc.Upa.QLEvaluatorRegistry GetRegistry() {
+        public virtual Net.TheVpc.Upa.QLEvaluatorRegistry GetRegistry() {
             return registry;
         }
     }

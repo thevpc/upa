@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Shared
+namespace Net.TheVpc.Upa.Impl.Persistence.Shared
 {
 
 
@@ -22,16 +22,16 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
      * Time: 11:46 PM
      * To change this template use File | Settings | File Templates.
      */
-    public class InCollectionSQLProvider : Net.Vpc.Upa.Impl.Persistence.Shared.AbstractSQLProvider {
+    public class InCollectionSQLProvider : Net.TheVpc.Upa.Impl.Persistence.Shared.AbstractSQLProvider {
 
-        public InCollectionSQLProvider()  : base(typeof(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledInCollection)){
+        public InCollectionSQLProvider()  : base(typeof(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledInCollection)){
 
         }
 
 
-        public override string GetSQL(object oo, Net.Vpc.Upa.Persistence.EntityExecutionContext qlContext, Net.Vpc.Upa.Impl.Persistence.SQLManager sqlManager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledInCollection o = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledInCollection) oo;
-            Net.Vpc.Upa.Persistence.PersistenceStore qlm = qlContext.GetPersistenceStore();
+        public override string GetSQL(object oo, Net.TheVpc.Upa.Persistence.EntityExecutionContext qlContext, Net.TheVpc.Upa.Impl.Persistence.SQLManager sqlManager, Net.TheVpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledInCollection o = (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledInCollection) oo;
+            Net.TheVpc.Upa.Persistence.PersistenceStore qlm = qlContext.GetPersistenceStore();
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             int mySize = o.GetRightSize();
             if (mySize == 0) {
@@ -39,8 +39,8 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
             } else {
                 if (mySize == 1) {
                     sb.Append(sqlManager.GetSQL(o.GetLeft(), qlContext, declarations));
-                    Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e = o.GetRight(0);
-                    if (e == null || (e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledLiteral && ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledLiteral) e).GetValue() == null)) {
+                    Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e = o.GetRight(0);
+                    if (e == null || (e is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledLiteral && ((Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledLiteral) e).GetValue() == null)) {
                         sb.Append(" Is Null");
                     } else {
                         sb.Append(" = ");
@@ -53,7 +53,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
                         if (i > 0) {
                             sb.Append(",");
                         }
-                        Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e = o.GetRight(i);
+                        Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e = o.GetRight(i);
                         if (e == null) {
                             sb.Append("Null");
                         } else {

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -53,7 +53,7 @@ namespace Net.Vpc.Upa
      */
     public sealed class UnspecifiedValue {
 
-        public static Net.Vpc.Upa.UnspecifiedValue DEFAULT = new Net.Vpc.Upa.UnspecifiedValue();
+        public static Net.TheVpc.Upa.UnspecifiedValue DEFAULT = new Net.TheVpc.Upa.UnspecifiedValue();
 
         private UnspecifiedValue() {
         }
@@ -75,7 +75,7 @@ namespace Net.Vpc.Upa
 
 
         public override bool Equals(object obj) {
-            return obj is Net.Vpc.Upa.UnspecifiedValue;
+            return obj is Net.TheVpc.Upa.UnspecifiedValue;
         }
     }
 }

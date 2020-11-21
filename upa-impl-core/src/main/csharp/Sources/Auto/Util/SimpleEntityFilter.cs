@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -19,19 +19,19 @@ namespace Net.Vpc.Upa.Impl.Util
      *
      * @author taha.bensalah@gmail.com
      */
-    public class SimpleEntityFilter : Net.Vpc.Upa.Filters.EntityFilter {
+    public class SimpleEntityFilter : Net.TheVpc.Upa.Filters.EntityFilter {
 
-        private Net.Vpc.Upa.Filters.ObjectFilter<string> name;
+        private Net.TheVpc.Upa.Filters.ObjectFilter<string> name;
 
         private bool includeSystem;
 
-        public SimpleEntityFilter(Net.Vpc.Upa.Filters.ObjectFilter<string> name, bool includeSystem) {
+        public SimpleEntityFilter(Net.TheVpc.Upa.Filters.ObjectFilter<string> name, bool includeSystem) {
             this.name = name;
             this.includeSystem = includeSystem;
         }
 
-        public virtual bool Accept(Net.Vpc.Upa.Entity s) {
-            if (s.GetModifiers().Contains(Net.Vpc.Upa.EntityModifier.SYSTEM)) {
+        public virtual bool Accept(Net.TheVpc.Upa.Entity s) {
+            if (s.GetModifiers().Contains(Net.TheVpc.Upa.EntityModifier.SYSTEM)) {
                 if (!includeSystem) {
                     return false;
                 }

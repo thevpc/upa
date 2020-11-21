@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Net.Vpc.Upa.Api", "upa-api\src\main\csharp\Net.Vpc.Upa.Api.csproj", "{DEFA43FF-E018-4C31-A9B1-37B1C6585375}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Net.TheVpc.Upa.Api", "upa-api\src\main\csharp\Net.TheVpc.Upa.Api.csproj", "{DEFA43FF-E018-4C31-A9B1-37B1C6585375}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +20,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = upa-impl\src\main\csharp\Net.Vpc.Upa.Impl.csproj
+		StartupItem = upa-impl\src\main\csharp\Net.TheVpc.Upa.Impl.csproj
 	EndGlobalSection
 EndGlobal

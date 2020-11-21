@@ -11,56 +11,56 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
 
-    public sealed class InSelection : Net.Vpc.Upa.Expressions.OperatorExpression {
+    public sealed class InSelection : Net.TheVpc.Upa.Expressions.OperatorExpression {
 
 
 
-        private static readonly Net.Vpc.Upa.Expressions.DefaultTag RIGHT = new Net.Vpc.Upa.Expressions.DefaultTag("RIGHT");
+        private static readonly Net.TheVpc.Upa.Expressions.DefaultTag RIGHT = new Net.TheVpc.Upa.Expressions.DefaultTag("RIGHT");
 
-        private Net.Vpc.Upa.Expressions.Expression[] left;
+        private Net.TheVpc.Upa.Expressions.Expression[] left;
 
-        private Net.Vpc.Upa.Expressions.Select query;
+        private Net.TheVpc.Upa.Expressions.Select query;
 
-        public InSelection(Net.Vpc.Upa.Expressions.Expression left, Net.Vpc.Upa.Expressions.Select query)  : this(new Net.Vpc.Upa.Expressions.Expression[] { left }, query){
+        public InSelection(Net.TheVpc.Upa.Expressions.Expression left, Net.TheVpc.Upa.Expressions.Select query)  : this(new Net.TheVpc.Upa.Expressions.Expression[] { left }, query){
 
         }
 
 
-        public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>(left.Length + 1);
+        public override System.Collections.Generic.IList<Net.TheVpc.Upa.Expressions.TaggedExpression> GetChildren() {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.TheVpc.Upa.Expressions.TaggedExpression>(left.Length + 1);
             for (int i = 0; i < left.Length; i++) {
-                Net.Vpc.Upa.Expressions.Expression expression = left[i];
-                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(expression, new Net.Vpc.Upa.Expressions.IndexedTag("LEFT", i)));
+                Net.TheVpc.Upa.Expressions.Expression expression = left[i];
+                list.Add(new Net.TheVpc.Upa.Expressions.TaggedExpression(expression, new Net.TheVpc.Upa.Expressions.IndexedTag("LEFT", i)));
             }
             if (query != null) {
-                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(query, RIGHT));
+                list.Add(new Net.TheVpc.Upa.Expressions.TaggedExpression(query, RIGHT));
             }
             return list;
         }
 
 
-        public override void SetChild(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.Expressions.ExpressionTag tag) {
-            if (tag is Net.Vpc.Upa.Expressions.IndexedTag) {
-                this.left[((Net.Vpc.Upa.Expressions.IndexedTag) tag).GetIndex()] = e;
+        public override void SetChild(Net.TheVpc.Upa.Expressions.Expression e, Net.TheVpc.Upa.Expressions.ExpressionTag tag) {
+            if (tag is Net.TheVpc.Upa.Expressions.IndexedTag) {
+                this.left[((Net.TheVpc.Upa.Expressions.IndexedTag) tag).GetIndex()] = e;
             } else {
-                this.query = (Net.Vpc.Upa.Expressions.Select) e;
+                this.query = (Net.TheVpc.Upa.Expressions.Select) e;
             }
         }
 
-        public InSelection(Net.Vpc.Upa.Expressions.Expression[] left, Net.Vpc.Upa.Expressions.Select query) {
+        public InSelection(Net.TheVpc.Upa.Expressions.Expression[] left, Net.TheVpc.Upa.Expressions.Select query) {
             this.left = left;
             this.query = query;
         }
 
-        public Net.Vpc.Upa.Expressions.Expression[] GetLeft() {
+        public Net.TheVpc.Upa.Expressions.Expression[] GetLeft() {
             return left;
         }
 
-        public Net.Vpc.Upa.Expressions.Select GetSelection() {
+        public Net.TheVpc.Upa.Expressions.Select GetSelection() {
             return query;
         }
 
@@ -69,12 +69,12 @@ namespace Net.Vpc.Upa.Expressions
         }
 
 
-        public override Net.Vpc.Upa.Expressions.Expression Copy() {
-            Net.Vpc.Upa.Expressions.Expression[] left2 = new Net.Vpc.Upa.Expressions.Expression[left.Length];
+        public override Net.TheVpc.Upa.Expressions.Expression Copy() {
+            Net.TheVpc.Upa.Expressions.Expression[] left2 = new Net.TheVpc.Upa.Expressions.Expression[left.Length];
             for (int i = 0; i < left2.Length; i++) {
                 left2[i] = left[i].Copy();
             }
-            return new Net.Vpc.Upa.Expressions.InSelection(left2, (Net.Vpc.Upa.Expressions.Select) query.Copy());
+            return new Net.TheVpc.Upa.Expressions.InSelection(left2, (Net.TheVpc.Upa.Expressions.Select) query.Copy());
         }
 
 

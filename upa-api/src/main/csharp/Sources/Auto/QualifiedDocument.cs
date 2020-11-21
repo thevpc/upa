@@ -11,24 +11,24 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 9/3/12 1:19 AM
      */
-    public interface QualifiedDocument : Net.Vpc.Upa.Document {
+    public interface QualifiedDocument : Net.TheVpc.Upa.Document {
 
-         Net.Vpc.Upa.Entity GetEntity();
+         Net.TheVpc.Upa.Entity GetEntity();
 
-         Net.Vpc.Upa.Document GetDocument();
+         Net.TheVpc.Upa.Document GetDocument();
 
          string GetDocumentName();
 
-         Net.Vpc.Upa.Key GetKey();
+         Net.TheVpc.Upa.Key GetKey();
 
-         void SetKey(Net.Vpc.Upa.Key key);
+         void SetKey(Net.TheVpc.Upa.Key key);
 
          object GetId();
 

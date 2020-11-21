@@ -11,22 +11,22 @@
 
 
 
-namespace Net.Vpc.Upa.Filters
+namespace Net.TheVpc.Upa.Filters
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class FieldReverseFilter : Net.Vpc.Upa.Filters.AbstractFieldFilter {
+    public class FieldReverseFilter : Net.TheVpc.Upa.Filters.AbstractFieldFilter {
 
-        private Net.Vpc.Upa.Filters.FieldFilter @base;
+        private Net.TheVpc.Upa.Filters.FieldFilter @base;
 
-        public FieldReverseFilter(Net.Vpc.Upa.Filters.FieldFilter @base) {
+        public FieldReverseFilter(Net.TheVpc.Upa.Filters.FieldFilter @base) {
             this.@base = @base;
         }
 
-        public override bool Accept(Net.Vpc.Upa.Field field) {
+        public override bool Accept(Net.TheVpc.Upa.Field field) {
             return !@base.Accept(field);
         }
 

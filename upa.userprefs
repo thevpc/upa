@@ -1,4 +1,4 @@
-﻿<Properties StartupItem="upa-impl/src/main/csharp/Net.Vpc.Upa.Impl.csproj">
+﻿<Properties StartupItem="upa-impl/src/main/csharp/Net.TheVpc.Upa.Impl.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="upa-impl/src/main/csharp/Sources/Auto/Config/DefaultUPAContext.cs">
     <Files>

@@ -12,7 +12,7 @@
 
 
 using System.Linq;
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
 
@@ -28,19 +28,19 @@ namespace Net.Vpc.Upa.Persistence
 
         private string persistenceGroup;
 
-        private Net.Vpc.Upa.Persistence.PersistenceNameConfig model;
+        private Net.TheVpc.Upa.Persistence.PersistenceNameConfig model;
 
         private bool? autoStart;
 
         private bool? autoScan;
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.ConnectionConfig> rootConnections = new System.Collections.Generic.List<Net.Vpc.Upa.Persistence.ConnectionConfig>(2);
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Persistence.ConnectionConfig> rootConnections = new System.Collections.Generic.List<Net.TheVpc.Upa.Persistence.ConnectionConfig>(2);
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.ConnectionConfig> connections = new System.Collections.Generic.List<Net.Vpc.Upa.Persistence.ConnectionConfig>(2);
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Persistence.ConnectionConfig> connections = new System.Collections.Generic.List<Net.TheVpc.Upa.Persistence.ConnectionConfig>(2);
 
         private System.Collections.Generic.IDictionary<string , object> properties = new System.Collections.Generic.Dictionary<string , object>(5);
 
-        private readonly System.Collections.Generic.IList<Net.Vpc.Upa.Config.ScanFilter> filters = new System.Collections.Generic.List<Net.Vpc.Upa.Config.ScanFilter>(2);
+        private readonly System.Collections.Generic.IList<Net.TheVpc.Upa.Config.ScanFilter> filters = new System.Collections.Generic.List<Net.TheVpc.Upa.Config.ScanFilter>(2);
 
         public PersistenceUnitConfig() {
         }
@@ -69,11 +69,11 @@ namespace Net.Vpc.Upa.Persistence
             this.persistenceGroup = persistenceGroup;
         }
 
-        public virtual Net.Vpc.Upa.Persistence.PersistenceNameConfig GetModel() {
+        public virtual Net.TheVpc.Upa.Persistence.PersistenceNameConfig GetModel() {
             return model;
         }
 
-        public virtual void SetModel(Net.Vpc.Upa.Persistence.PersistenceNameConfig model) {
+        public virtual void SetModel(Net.TheVpc.Upa.Persistence.PersistenceNameConfig model) {
             this.model = model;
         }
 
@@ -101,38 +101,38 @@ namespace Net.Vpc.Upa.Persistence
             this.autoScan = autoScan;
         }
 
-        public virtual void SetFilters(System.Collections.Generic.IList<Net.Vpc.Upa.Config.ScanFilter> filters) {
+        public virtual void SetFilters(System.Collections.Generic.IList<Net.TheVpc.Upa.Config.ScanFilter> filters) {
             this.filters.Clear();
             if (filters != null) {
-                Net.Vpc.Upa.FwkConvertUtils.ListAddRange(this.filters, filters);
+                Net.TheVpc.Upa.FwkConvertUtils.ListAddRange(this.filters, filters);
             }
         }
 
-        public virtual void AddFilter(Net.Vpc.Upa.Config.ScanFilter filter) {
+        public virtual void AddFilter(Net.TheVpc.Upa.Config.ScanFilter filter) {
             filters.Add(filter);
         }
 
-        public virtual void RemoveFilter(Net.Vpc.Upa.Config.ScanFilter filter) {
+        public virtual void RemoveFilter(Net.TheVpc.Upa.Config.ScanFilter filter) {
             filters.Remove(filter);
         }
 
-        public virtual Net.Vpc.Upa.Config.ScanFilter[] GetFilters() {
+        public virtual Net.TheVpc.Upa.Config.ScanFilter[] GetFilters() {
             return filters.ToArray();
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.ConnectionConfig> GetRootConnections() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Persistence.ConnectionConfig> GetRootConnections() {
             return rootConnections;
         }
 
-        public virtual void SetRootConnections(System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.ConnectionConfig> rootConnections) {
+        public virtual void SetRootConnections(System.Collections.Generic.IList<Net.TheVpc.Upa.Persistence.ConnectionConfig> rootConnections) {
             this.rootConnections = rootConnections;
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.ConnectionConfig> GetConnections() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Persistence.ConnectionConfig> GetConnections() {
             return connections;
         }
 
-        public virtual void SetConnections(System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.ConnectionConfig> connections) {
+        public virtual void SetConnections(System.Collections.Generic.IList<Net.TheVpc.Upa.Persistence.ConnectionConfig> connections) {
             this.connections = connections;
         }
 

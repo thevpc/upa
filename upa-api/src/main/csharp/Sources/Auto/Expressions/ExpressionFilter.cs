@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
     /**
@@ -19,6 +19,6 @@ namespace Net.Vpc.Upa.Expressions
      */
     public interface ExpressionFilter {
 
-         bool Accept(Net.Vpc.Upa.Expressions.Expression expression);
+         bool Accept(Net.TheVpc.Upa.Expressions.Expression expression);
     }
 }

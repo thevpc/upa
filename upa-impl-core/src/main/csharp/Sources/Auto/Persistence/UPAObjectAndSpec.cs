@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -22,9 +22,9 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
         private object @object;
 
-        private Net.Vpc.Upa.Persistence.PersistenceNameType spec;
+        private Net.TheVpc.Upa.Persistence.PersistenceNameType spec;
 
-        internal UPAObjectAndSpec(object @object, Net.Vpc.Upa.Persistence.PersistenceNameType spec) {
+        internal UPAObjectAndSpec(object @object, Net.TheVpc.Upa.Persistence.PersistenceNameType spec) {
             this.@object = @object;
             this.spec = spec;
         }
@@ -33,7 +33,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
             return @object;
         }
 
-        public virtual Net.Vpc.Upa.Persistence.PersistenceNameType GetSpec() {
+        public virtual Net.TheVpc.Upa.Persistence.PersistenceNameType GetSpec() {
             return spec;
         }
 
@@ -45,7 +45,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
             if (o == null || GetType() != o.GetType()) {
                 return false;
             }
-            Net.Vpc.Upa.Impl.Persistence.UPAObjectAndSpec that = (Net.Vpc.Upa.Impl.Persistence.UPAObjectAndSpec) o;
+            Net.TheVpc.Upa.Impl.Persistence.UPAObjectAndSpec that = (Net.TheVpc.Upa.Impl.Persistence.UPAObjectAndSpec) o;
             if (@object != null ? !@object.Equals(that.@object) : that.@object != null) {
                 return false;
             }

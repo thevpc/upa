@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
@@ -19,21 +19,21 @@ namespace Net.Vpc.Upa.Impl
      *
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    internal class CreateStorageOnHoldCommitAction : Net.Vpc.Upa.Impl.OnHoldCommitAction {
+    internal class CreateStorageOnHoldCommitAction : Net.TheVpc.Upa.Impl.OnHoldCommitAction {
 
         public CreateStorageOnHoldCommitAction() {
         }
 
 
-        public virtual void CommitModel() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void CommitModel() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
         }
 
 
-        public virtual void CommitStorage(Net.Vpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Persistence.PersistenceStore persistenceStore = context.GetPersistenceStore();
-            Net.Vpc.Upa.Persistence.StructureStrategy option = persistenceStore.GetConnectionProfile().GetStructureStrategy();
+        public virtual void CommitStorage(Net.TheVpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Persistence.PersistenceStore persistenceStore = context.GetPersistenceStore();
+            Net.TheVpc.Upa.Persistence.StructureStrategy option = persistenceStore.GetConnectionProfile().GetStructureStrategy();
             switch(option) {
-                case Net.Vpc.Upa.Persistence.StructureStrategy.DROP:
+                case Net.TheVpc.Upa.Persistence.StructureStrategy.DROP:
                     {
                         if (!persistenceStore.IsCreatedStorage()) {
                             persistenceStore.CreateStorage(context);
@@ -44,25 +44,25 @@ namespace Net.Vpc.Upa.Impl
                         }
                         break;
                     }
-                case Net.Vpc.Upa.Persistence.StructureStrategy.CREATE:
-                case Net.Vpc.Upa.Persistence.StructureStrategy.SYNCHRONIZE:
+                case Net.TheVpc.Upa.Persistence.StructureStrategy.CREATE:
+                case Net.TheVpc.Upa.Persistence.StructureStrategy.SYNCHRONIZE:
                     {
                         if (!persistenceStore.IsCreatedStorage()) {
                             persistenceStore.CreateStorage(context);
                         }
                         break;
                     }
-                case Net.Vpc.Upa.Persistence.StructureStrategy.MANDATORY:
+                case Net.TheVpc.Upa.Persistence.StructureStrategy.MANDATORY:
                     {
                         if (!persistenceStore.IsCreatedStorage()) {
-                            throw new Net.Vpc.Upa.Exceptions.NoSuchPersistenceUnitException(context.GetPersistenceUnit().GetName());
+                            throw new Net.TheVpc.Upa.Exceptions.NoSuchPersistenceUnitException(context.GetPersistenceUnit().GetName());
                         }
                         //                        if (!isValidPersistenceUnit()) {
                         //                            throw new NoSuchPersistenceUnitException(getName(), null);
                         //                        }
                         break;
                     }
-                case Net.Vpc.Upa.Persistence.StructureStrategy.IGNORE:
+                case Net.TheVpc.Upa.Persistence.StructureStrategy.IGNORE:
                     {
                         //do nothing
                         break;
@@ -76,7 +76,7 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
-        public virtual int CompareTo(Net.Vpc.Upa.Impl.OnHoldCommitAction o) {
+        public virtual int CompareTo(Net.TheVpc.Upa.Impl.OnHoldCommitAction o) {
             int i1 = GetOrder();
             int i2 = o.GetOrder();
             int i = i1 - i2;

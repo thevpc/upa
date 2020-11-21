@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     /**
@@ -20,8 +20,8 @@ namespace Net.Vpc.Upa
      */
     public interface SessionContextProvider {
 
-         Net.Vpc.Upa.Session GetSession(Net.Vpc.Upa.PersistenceGroup persistenceGroup);
+         Net.TheVpc.Upa.Session GetSession(Net.TheVpc.Upa.PersistenceGroup persistenceGroup);
 
-         void SetSession(Net.Vpc.Upa.PersistenceGroup persistenceGroup, Net.Vpc.Upa.Session session);
+         void SetSession(Net.TheVpc.Upa.PersistenceGroup persistenceGroup, Net.TheVpc.Upa.Session session);
     }
 }

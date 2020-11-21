@@ -11,18 +11,18 @@
 
 
 
-namespace Net.Vpc.Upa.Callbacks
+namespace Net.TheVpc.Upa.Callbacks
 {
 
 
-    public interface UpdateRelationshipTargetFormulaInterceptor : Net.Vpc.Upa.Callbacks.EntityInterceptor {
+    public interface UpdateRelationshipTargetFormulaInterceptor : Net.TheVpc.Upa.Callbacks.EntityInterceptor {
 
          string GetRelationshipName();
 
-         Net.Vpc.Upa.Filters.FieldFilter GetFormulaFields();
+         Net.TheVpc.Upa.Filters.FieldFilter GetFormulaFields();
 
-         Net.Vpc.Upa.Filters.FieldFilter GetConditionFields();
+         Net.TheVpc.Upa.Filters.FieldFilter GetConditionFields();
 
-         Net.Vpc.Upa.Expressions.Expression TranslateExpression(Net.Vpc.Upa.Expressions.Expression e) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Expressions.Expression TranslateExpression(Net.TheVpc.Upa.Expressions.Expression e) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
     }
 }

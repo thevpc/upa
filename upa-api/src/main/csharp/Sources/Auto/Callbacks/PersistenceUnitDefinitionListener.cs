@@ -11,21 +11,21 @@
 
 
 
-namespace Net.Vpc.Upa.Callbacks
+namespace Net.TheVpc.Upa.Callbacks
 {
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 11/27/12 8:40 PM
      */
-    public interface PersistenceUnitDefinitionListener : Net.Vpc.Upa.Callbacks.DefinitionListener {
+    public interface PersistenceUnitDefinitionListener : Net.TheVpc.Upa.Callbacks.DefinitionListener {
 
-         void OnPreCreatePersistenceUnit(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event);
+         void OnPreCreatePersistenceUnit(Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent @event);
 
-         void OnCreatePersistenceUnit(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event);
+         void OnCreatePersistenceUnit(Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent @event);
 
-         void OnPreDropPersistenceUnit(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event);
+         void OnPreDropPersistenceUnit(Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent @event);
 
-         void OnDropPersistenceUnit(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event);
+         void OnDropPersistenceUnit(Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent @event);
     }
 }

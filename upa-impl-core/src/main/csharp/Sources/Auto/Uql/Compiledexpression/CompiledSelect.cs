@@ -12,11 +12,11 @@
 
 
 using System.Linq;
-namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledexpression
 {
 
 
-    public class CompiledSelect : Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledEntityStatement, Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement, Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect {
+    public class CompiledSelect : Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledEntityStatement, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect {
 
 
 
@@ -26,19 +26,19 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
 
         private string query;
 
-        private Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression where;
+        private Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression where;
 
-        private Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression having;
+        private Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression having;
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria> joinsTables;
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria> joinsTables;
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField> fields;
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField> fields;
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression> groupByExpressions = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression>(1);
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression> groupByExpressions = new System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression>(1);
 
-        private Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledOrder order;
+        private Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledOrder order;
 
-        private Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect queryEntity;
+        private Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect queryEntity;
 
         private string queryEntityAlias;
 
@@ -46,90 +46,90 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
 
         private bool groupingEnabled;
 
-        private System.Collections.Generic.List<Net.Vpc.Upa.QLParameter> parameters;
+        private System.Collections.Generic.List<Net.TheVpc.Upa.QLParameter> parameters;
 
 
-        public override Net.Vpc.Upa.Types.DataTypeTransform GetTypeTransform() {
+        public override Net.TheVpc.Upa.Types.DataTypeTransform GetTypeTransform() {
             if ((fields).Count == 1) {
-                Net.Vpc.Upa.Types.DataTypeTransform type = fields[0].GetExpression().GetTypeTransform();
-                return type == null ? Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.VOID : type;
+                Net.TheVpc.Upa.Types.DataTypeTransform type = fields[0].GetExpression().GetTypeTransform();
+                return type == null ? Net.TheVpc.Upa.Impl.Transform.IdentityDataTypeTransform.VOID : type;
             }
-            return Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.VOID;
+            return Net.TheVpc.Upa.Impl.Transform.IdentityDataTypeTransform.VOID;
         }
 
-        public CompiledSelect(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect other)  : this(){
+        public CompiledSelect(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect other)  : this(){
 
             AddQuery(other);
         }
 
         public CompiledSelect() {
             query = null;
-            joinsTables = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria>();
-            fields = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField>(1);
+            joinsTables = new System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria>();
+            fields = new System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField>(1);
             //        groupByList = new Vector(1);
-            groupByExpressions = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression>();
-            order = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledOrder();
+            groupByExpressions = new System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression>();
+            order = new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledOrder();
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect Field(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect Field(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
             return Field(expression, null);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect Uplet(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] expression, string alias) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect Uplet(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] expression, string alias) {
             if (expression.Length == 1) {
                 return Field(expression[0], alias);
             } else {
-                return Field(new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledUplet(expression), alias);
+                return Field(new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledUplet(expression), alias);
             }
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect Uplet(params Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression [] expression) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect Uplet(params Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression [] expression) {
             if (expression.Length == 1) {
                 return Field(expression[0]);
             } else {
-                return Field(new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledUplet(expression));
+                return Field(new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledUplet(expression));
             }
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField AddField(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField compiledQueryField) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField AddField(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField compiledQueryField) {
             Invalidate();
             fields.Add(compiledQueryField);
             return compiledQueryField;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField AddField(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression, string alias) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField AddField(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression, string alias) {
             Invalidate();
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField f = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField(alias, expression);
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField f = new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField(alias, expression);
             fields.Add(f);
             PrepareChildren(f.GetExpression());
             return f;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField AddField(int index, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression, string alias) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField AddField(int index, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression, string alias) {
             Invalidate();
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField field = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField(alias, expression);
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField field = new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField(alias, expression);
             fields.Insert(index, field);
             PrepareChildren(field.GetExpression());
             return field;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect Field(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression, string alias) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect Field(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression, string alias) {
             AddField(expression, alias);
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect Field(int index, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression, string alias) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect Field(int index, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression, string alias) {
             AddField(index, expression, alias);
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect RemoveField(int index) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect RemoveField(int index) {
             Invalidate();
             fields.RemoveAt(index);
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect RemoveAllFields() {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect RemoveAllFields() {
             Invalidate();
             fields.Clear();
             return this;
@@ -139,17 +139,17 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return (fields).Count;
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField> GetFields() {
-            return Net.Vpc.Upa.Impl.Util.PlatformUtils.UnmodifiableList<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField>(fields);
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField> GetFields() {
+            return Net.TheVpc.Upa.Impl.Util.PlatformUtils.UnmodifiableList<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField>(fields);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField GetField(int i) {
-            return (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField) fields[i];
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField GetField(int i) {
+            return (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField) fields[i];
         }
 
-        public virtual int IndexOf(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression field) {
+        public virtual int IndexOf(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression field) {
             for (int i = 0; i < (fields).Count; i++) {
-                Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField info = fields[i];
+                Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField info = fields[i];
                 if (field.Equals(info.GetExpression())) {
                     return i;
                 }
@@ -157,7 +157,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return -1;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect From(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect queryEntity, string entityAlias) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect From(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect queryEntity, string entityAlias) {
             Invalidate();
             //getContext().declare(alias, queryEntity);
             this.queryEntity = queryEntity;
@@ -167,35 +167,35 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return this;
         }
 
-        protected internal virtual void ExportDeclaration(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect e, string entityAlias) {
-            if (e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName) {
-                ExportDeclaration(entityAlias, Net.Vpc.Upa.Impl.Uql.DecObjectType.ENTITY, ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName) e).GetName(), null);
+        protected internal virtual void ExportDeclaration(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect e, string entityAlias) {
+            if (e is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName) {
+                ExportDeclaration(entityAlias, Net.TheVpc.Upa.Impl.Uql.DecObjectType.ENTITY, ((Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName) e).GetName(), null);
             } else {
-                ExportDeclaration(entityAlias, Net.Vpc.Upa.Impl.Uql.DecObjectType.SELECT, e, null);
+                ExportDeclaration(entityAlias, Net.TheVpc.Upa.Impl.Uql.DecObjectType.SELECT, e, null);
             }
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect From(string entityName) {
-            return From(new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName(entityName), null);
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect From(string entityName) {
+            return From(new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName(entityName), null);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect From(string entityName, string alias) {
-            return From(new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName(entityName), alias);
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect From(string entityName, string alias) {
+            return From(new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName(entityName), alias);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect From(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect view) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect From(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect view) {
             return From(view, null);
         }
 
         public virtual string GetEntityName() {
-            if (queryEntity != null && queryEntity is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName) {
-                Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName s = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName) queryEntity;
+            if (queryEntity != null && queryEntity is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName) {
+                Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName s = (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName) queryEntity;
                 return s.GetName();
             }
             return null;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect GetEntity() {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect GetEntity() {
             return queryEntity;
         }
 
@@ -204,86 +204,86 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return queryEntityAlias;
         }
 
-        private Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect Join(Net.Vpc.Upa.Expressions.JoinType joinType, Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect entityName, string alias, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
+        private Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect Join(Net.TheVpc.Upa.Expressions.JoinType joinType, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect entityName, string alias, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
             Invalidate();
-            Join(new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria(joinType, entityName, alias, condition));
+            Join(new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria(joinType, entityName, alias, condition));
             //getContext().declare(alias, entityName);
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect Join(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria someJoin) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect Join(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria someJoin) {
             joinsTables.Add(someJoin);
             PrepareChildren(someJoin);
             ExportDeclaration(someJoin.GetEntity(), someJoin.GetEntityAlias());
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect Join(string entityName, string alias, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
-            return Join(Net.Vpc.Upa.Expressions.JoinType.INNER_JOIN, new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName(entityName), alias, condition);
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect Join(string entityName, string alias, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
+            return Join(Net.TheVpc.Upa.Expressions.JoinType.INNER_JOIN, new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName(entityName), alias, condition);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect Join(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect entityName, string alias, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
-            return Join(Net.Vpc.Upa.Expressions.JoinType.INNER_JOIN, entityName, alias, condition);
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect Join(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect entityName, string alias, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
+            return Join(Net.TheVpc.Upa.Expressions.JoinType.INNER_JOIN, entityName, alias, condition);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect InnerJoin(string entityName, string alias, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
-            return Join(Net.Vpc.Upa.Expressions.JoinType.INNER_JOIN, new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName(entityName), alias, condition);
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect InnerJoin(string entityName, string alias, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
+            return Join(Net.TheVpc.Upa.Expressions.JoinType.INNER_JOIN, new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName(entityName), alias, condition);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect InnerJoin(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect entityName, string alias, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
-            return Join(Net.Vpc.Upa.Expressions.JoinType.INNER_JOIN, entityName, alias, condition);
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect InnerJoin(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect entityName, string alias, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
+            return Join(Net.TheVpc.Upa.Expressions.JoinType.INNER_JOIN, entityName, alias, condition);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect LeftJoin(string entityName, string alias, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
-            return Join(Net.Vpc.Upa.Expressions.JoinType.LEFT_JOIN, new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName(entityName), alias, condition);
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect LeftJoin(string entityName, string alias, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
+            return Join(Net.TheVpc.Upa.Expressions.JoinType.LEFT_JOIN, new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName(entityName), alias, condition);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect LeftJoin(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect entityName, string alias, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
-            return Join(Net.Vpc.Upa.Expressions.JoinType.LEFT_JOIN, entityName, alias, condition);
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect LeftJoin(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect entityName, string alias, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
+            return Join(Net.TheVpc.Upa.Expressions.JoinType.LEFT_JOIN, entityName, alias, condition);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect RightJoin(string entityName, string alias, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
-            return Join(Net.Vpc.Upa.Expressions.JoinType.RIGHT_JOIN, new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName(entityName), alias, condition);
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect RightJoin(string entityName, string alias, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
+            return Join(Net.TheVpc.Upa.Expressions.JoinType.RIGHT_JOIN, new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName(entityName), alias, condition);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect RightJoin(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect entityName, string alias, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
-            return Join(Net.Vpc.Upa.Expressions.JoinType.RIGHT_JOIN, entityName, alias, condition);
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect RightJoin(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect entityName, string alias, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
+            return Join(Net.TheVpc.Upa.Expressions.JoinType.RIGHT_JOIN, entityName, alias, condition);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect FullJoin(string entityName, string alias, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
-            return Join(Net.Vpc.Upa.Expressions.JoinType.FULL_JOIN, new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName(entityName), alias, condition);
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect FullJoin(string entityName, string alias, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
+            return Join(Net.TheVpc.Upa.Expressions.JoinType.FULL_JOIN, new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName(entityName), alias, condition);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect FullJoin(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect entityName, string alias, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
-            return Join(Net.Vpc.Upa.Expressions.JoinType.FULL_JOIN, entityName, alias, condition);
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect FullJoin(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect entityName, string alias, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
+            return Join(Net.TheVpc.Upa.Expressions.JoinType.FULL_JOIN, entityName, alias, condition);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect CrossJoin(string entityName) {
-            return Join(Net.Vpc.Upa.Expressions.JoinType.CROSS_JOIN, new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName(entityName), null, null);
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect CrossJoin(string entityName) {
+            return Join(Net.TheVpc.Upa.Expressions.JoinType.CROSS_JOIN, new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName(entityName), null, null);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect CrossJoin(string entityName, string alias) {
-            return Join(Net.Vpc.Upa.Expressions.JoinType.CROSS_JOIN, new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName(entityName), alias, null);
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect CrossJoin(string entityName, string alias) {
+            return Join(Net.TheVpc.Upa.Expressions.JoinType.CROSS_JOIN, new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName(entityName), alias, null);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect CrossJoin(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect entityName, string alias) {
-            return Join(Net.Vpc.Upa.Expressions.JoinType.CROSS_JOIN, entityName, alias, null);
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect CrossJoin(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect entityName, string alias) {
+            return Join(Net.TheVpc.Upa.Expressions.JoinType.CROSS_JOIN, entityName, alias, null);
         }
 
         public virtual int CountJoins() {
             return (joinsTables).Count;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria[] GetJoins() {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria> values = joinsTables;
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria[] GetJoins() {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria> values = joinsTables;
             return values.ToArray();
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria GetJoin(int i) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria GetJoin(int i) {
             return joinsTables[i];
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect OrderBy(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledOrder order) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect OrderBy(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledOrder order) {
             if (order != null) {
                 Invalidate();
                 this.order.AddOrder(order);
@@ -294,42 +294,42 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect OrderAscendentBy(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression field) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect OrderAscendentBy(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression field) {
             Invalidate();
             order.Ascendent(field);
             PrepareChildren(field);
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect OrderByDesc(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression field) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect OrderByDesc(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression field) {
             Invalidate();
             order.Descendent(field);
             PrepareChildren(field);
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect OrderBy(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression field, bool isAscending) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect OrderBy(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression field, bool isAscending) {
             Invalidate();
             order.AddOrder(field, isAscending);
             PrepareChildren(field);
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect OrderBy(int position, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression field, bool isAscending) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect OrderBy(int position, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression field, bool isAscending) {
             Invalidate();
             order.InsertOrder(position, field, isAscending);
             PrepareChildren(field);
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect NoOrder() {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect NoOrder() {
             Invalidate();
             //        orderAsc = true;
             order.NoOrder();
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect RemoveOrder(int index) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect RemoveOrder(int index) {
             Invalidate();
             order.RemoveOrder(index);
             return this;
@@ -343,7 +343,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return order.IsAscendentAt(index);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetOrderBy(int index) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetOrderBy(int index) {
             return order.GetOrderAt(index);
         }
 
@@ -351,7 +351,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return order.Size();
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect GroupBy(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression field) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect GroupBy(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression field) {
             Invalidate();
             groupByExpressions.Add(field);
             PrepareChildren(field);
@@ -362,7 +362,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return (groupByExpressions).Count > 0;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetGroupBy(int i) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetGroupBy(int i) {
             return groupByExpressions[i];
         }
 
@@ -370,23 +370,23 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return (groupByExpressions).Count;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect Where(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect Where(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
             this.where = condition;
             PrepareChildren(condition);
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect Having(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression having) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect Having(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression having) {
             this.having = having;
             PrepareChildren(having);
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetWhere() {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetWhere() {
             return where;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetHaving() {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetHaving() {
             return having;
         }
 
@@ -395,8 +395,8 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return queryEntity != null && (fields).Count > 0;
         }
 
-        public override Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect o = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect();
+        public override Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect o = new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect();
             o.SetDescription(GetDescription());
             o.GetClientParameters().SetAll(GetClientParameters());
             o.AddQuery(this);
@@ -404,13 +404,13 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         }
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.Synchronized)]
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect AddWhere(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect AddWhere(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
             if (condition != null) {
                 if (this.where == null) {
                     Where(condition);
                 } else {
                     this.where.UnsetParent();
-                    Where(new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledAnd(this.where, condition));
+                    Where(new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledAnd(this.where, condition));
                 }
             }
             Invalidate();
@@ -418,13 +418,13 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         }
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.Synchronized)]
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect AddHaving(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect AddHaving(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
             if (condition != null) {
                 if (this.where == null) {
                     Having(condition);
                 } else {
                     this.where.UnsetParent();
-                    Having(new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledAnd(this.where, condition));
+                    Having(new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledAnd(this.where, condition));
                 }
             }
             Invalidate();
@@ -432,28 +432,28 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         }
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.Synchronized)]
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect AddQuery(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect other) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect AddQuery(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect other) {
             if (other == null) {
                 return this;
             }
             if (other.queryEntity != null) {
-                From((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect) (other.queryEntity.Copy()), other.queryEntityAlias);
+                From((Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect) (other.queryEntity.Copy()), other.queryEntityAlias);
             }
             for (int i = 0; i < (other.joinsTables).Count; i++) {
-                Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria j = other.GetJoin(i);
-                Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect ee = j.GetEntity();
-                Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression cc = j.GetCondition();
-                Join(j.GetJoinType(), ee == null ? null : (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect) ee.Copy(), j.GetEntityAlias(), cc == null ? null : cc.Copy());
+                Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria j = other.GetJoin(i);
+                Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect ee = j.GetEntity();
+                Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression cc = j.GetCondition();
+                Join(j.GetJoinType(), ee == null ? null : (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect) ee.Copy(), j.GetEntityAlias(), cc == null ? null : cc.Copy());
             }
-            foreach (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField field in other.fields) {
-                Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression ee = field.GetExpression();
+            foreach (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField field in other.fields) {
+                Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression ee = field.GetExpression();
                 AddField(ee == null ? null : ee.Copy(), field.GetAlias());
             }
-            foreach (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledOrderItem compiledOrderItem in other.order.GetItems()) {
-                Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression ee = compiledOrderItem.GetExpression();
+            foreach (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledOrderItem compiledOrderItem in other.order.GetItems()) {
+                Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression ee = compiledOrderItem.GetExpression();
                 OrderBy(ee == null ? null : ee.Copy(), compiledOrderItem.IsAsc());
             }
-            foreach (Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e in other.groupByExpressions) {
+            foreach (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e in other.groupByExpressions) {
                 GroupBy(e == null ? null : e.Copy());
             }
             AddWhere(other.where == null ? null : other.where.Copy());
@@ -474,27 +474,27 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             this.distinct = distinct;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect Distinct() {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect Distinct() {
             Invalidate();
             SetDistinct(true);
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect All() {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect All() {
             Invalidate();
             SetDistinct(false);
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect SelectTop(int count) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect SelectTop(int count) {
             Invalidate();
             top = count;
             return this;
         }
 
         public virtual string GetMainTableName() {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect t = GetEntity();
-            return ((GetEntity() is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName) ? ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName) (GetEntity())).GetName() : null);
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect t = GetEntity();
+            return ((GetEntity() is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName) ? ((Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName) (GetEntity())).GetName() : null);
         }
 
         public virtual string[] GetColumnTitles() {
@@ -532,26 +532,26 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             this.groupingEnabled = groupingEnabled;
         }
 
-        public virtual System.Collections.Generic.List<Net.Vpc.Upa.QLParameter> GetParameters() {
+        public virtual System.Collections.Generic.List<Net.TheVpc.Upa.QLParameter> GetParameters() {
             return parameters;
         }
 
-        public virtual void SetParameters(System.Collections.Generic.List<Net.Vpc.Upa.QLParameter> parameters) {
+        public virtual void SetParameters(System.Collections.Generic.List<Net.TheVpc.Upa.QLParameter> parameters) {
             this.parameters = parameters;
         }
 
-        public virtual void AddParameter(Net.Vpc.Upa.QLParameter p) {
+        public virtual void AddParameter(Net.TheVpc.Upa.QLParameter p) {
             if (parameters == null) {
-                parameters = new System.Collections.Generic.List<Net.Vpc.Upa.QLParameter>();
+                parameters = new System.Collections.Generic.List<Net.TheVpc.Upa.QLParameter>();
             }
             parameters.Add(p);
         }
 
 
-        public override Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetSubExpressions() {
-            System.Collections.Generic.List<Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression> sub = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression>();
+        public override Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetSubExpressions() {
+            System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression> sub = new System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression>();
             if (fields != null) {
-                foreach (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField field in fields) {
+                foreach (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField field in fields) {
                     sub.Add(field.GetExpression());
                 }
             }
@@ -559,7 +559,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
                 sub.Add(queryEntity);
             }
             if (joinsTables != null) {
-                foreach (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria joinCriteria in joinsTables) {
+                foreach (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria joinCriteria in joinsTables) {
                     sub.Add(joinCriteria);
                 }
             }
@@ -585,10 +585,10 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         }
 
 
-        public override void SetSubExpression(int index, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
+        public override void SetSubExpression(int index, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
             int i = 0;
             if (fields != null) {
-                foreach (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField field in fields) {
+                foreach (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField field in fields) {
                     if (i == index) {
                         field.SetExpression(expression);
                         if (expression != null) {
@@ -601,7 +601,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             }
             if (queryEntity != null) {
                 if (i == index) {
-                    queryEntity = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect) expression;
+                    queryEntity = (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect) expression;
                     if (expression != null) {
                         expression.SetParentExpression(this);
                     }
@@ -612,7 +612,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             if (joinsTables != null) {
                 for (int ii = 0; ii < (joinsTables).Count; ii++) {
                     if (i == index) {
-                        joinsTables[ii]=(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria) expression;
+                        joinsTables[ii]=(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria) expression;
                         if (expression != null) {
                             expression.SetParentExpression(this);
                         }
@@ -692,10 +692,10 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
                 sb.Append("...");
             } else {
                 for (int i = 0; i < CountFields(); i++) {
-                    Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField fi = GetField(i);
-                    Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e = fi.GetExpression();
+                    Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField fi = GetField(i);
+                    Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e = fi.GetExpression();
                     valueString = System.Convert.ToString(e);
-                    if (!(e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) && !(e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) && !(e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledFunction) && !(e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledLiteral)) {
+                    if (!(e is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) && !(e is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) && !(e is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledFunction) && !(e is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledLiteral)) {
                         valueString = "(" + valueString + ")";
                     }
                     aliasString = fi.GetAlias();
@@ -716,10 +716,10 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             if (GetEntity() == null) {
             } else {
                 sb.Append(" From ");
-                if (GetEntity() is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect) {
+                if (GetEntity() is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect) {
                     sb.Append(GetEntity().ToString());
                 } else {
-                    Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName entityName = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName) GetEntity();
+                    Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName entityName = (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName) GetEntity();
                     sb.Append(entityName);
                 }
             }
@@ -727,10 +727,10 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
                 sb.Append(" ").Append(GetEntityAlias());
             }
             for (int i = 0; i < CountJoins(); i++) {
-                Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria e = GetJoin(i);
+                Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria e = GetJoin(i);
                 sb.Append(" ").Append(e);
             }
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression c = GetWhere();
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression c = GetWhere();
             if (c != null && c.IsValid()) {
                 sb.Append(" Where ").Append(c);
             }
@@ -764,11 +764,11 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return sb.ToString();
         }
 
-        protected internal override System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression> FindEntityDefinitions() {
-            System.Collections.Generic.List<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression>();
-            list.Add(new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression(GetEntityAlias(), GetEntity()));
-            foreach (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria jc in GetJoins()) {
-                list.Add(new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression(jc.GetEntityAlias(), jc.GetEntity()));
+        protected internal override System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression> FindEntityDefinitions() {
+            System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression> list = new System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression>();
+            list.Add(new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression(GetEntityAlias(), GetEntity()));
+            foreach (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria jc in GetJoins()) {
+                list.Add(new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression(jc.GetEntityAlias(), jc.GetEntity()));
             }
             return list;
         }

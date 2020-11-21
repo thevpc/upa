@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     /**
      * Created by vpc on 7/26/15.
      */
-    public class DefaultIndexDescriptor : Net.Vpc.Upa.IndexDescriptor {
+    public class DefaultIndexDescriptor : Net.TheVpc.Upa.IndexDescriptor {
 
         private string name;
 
@@ -30,7 +30,7 @@ namespace Net.Vpc.Upa
             return name;
         }
 
-        public virtual Net.Vpc.Upa.DefaultIndexDescriptor SetName(string name) {
+        public virtual Net.TheVpc.Upa.DefaultIndexDescriptor SetName(string name) {
             this.name = name;
             return this;
         }
@@ -40,7 +40,7 @@ namespace Net.Vpc.Upa
             return fieldNames;
         }
 
-        public virtual Net.Vpc.Upa.DefaultIndexDescriptor SetFieldNames(params string [] fieldNames) {
+        public virtual Net.TheVpc.Upa.DefaultIndexDescriptor SetFieldNames(params string [] fieldNames) {
             this.fieldNames = fieldNames;
             return this;
         }
@@ -50,7 +50,7 @@ namespace Net.Vpc.Upa
             return unique;
         }
 
-        public virtual Net.Vpc.Upa.DefaultIndexDescriptor SetUnique(bool unique) {
+        public virtual Net.TheVpc.Upa.DefaultIndexDescriptor SetUnique(bool unique) {
             this.unique = unique;
             return this;
         }

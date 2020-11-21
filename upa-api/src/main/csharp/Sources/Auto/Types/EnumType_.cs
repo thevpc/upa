@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-namespace Net.Vpc.Upa.Types{
+namespace Net.TheVpc.Upa.Types{
 //SPECIFIC
 
 /**

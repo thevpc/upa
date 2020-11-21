@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -19,14 +19,14 @@ namespace Net.Vpc.Upa
 
         private object id;
 
-        private Net.Vpc.Upa.Entity entity;
+        private Net.TheVpc.Upa.Entity entity;
 
-        public QualifiedIdentifier(Net.Vpc.Upa.Entity entity, object id) {
+        public QualifiedIdentifier(Net.TheVpc.Upa.Entity entity, object id) {
             this.id = id;
             this.entity = entity;
         }
 
-        public virtual Net.Vpc.Upa.Key GetKey() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual Net.TheVpc.Upa.Key GetKey() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return entity.GetBuilder().IdToKey(id);
         }
 
@@ -34,19 +34,19 @@ namespace Net.Vpc.Upa
             return id;
         }
 
-        public virtual Net.Vpc.Upa.Entity GetEntity() {
+        public virtual Net.TheVpc.Upa.Entity GetEntity() {
             return entity;
         }
 
-        public virtual object GetValue(string fieldName) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Field> f = entity.GetIdFields();
-            Net.Vpc.Upa.Key uKey = GetKey();
+        public virtual object GetValue(string fieldName) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Field> f = entity.GetIdFields();
+            Net.TheVpc.Upa.Key uKey = GetKey();
             for (int i = 0; i < (f).Count; i++) {
                 if (f[i].GetName().Equals(fieldName)) {
                     return uKey.GetObjectAt(i);
                 }
             }
-            throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("Either key " + ToString() + " or fieldName " + fieldName + " does not refer to entity " + entity.GetName());
+            throw new Net.TheVpc.Upa.Exceptions.UPAIllegalArgumentException("Either key " + ToString() + " or fieldName " + fieldName + " does not refer to entity " + entity.GetName());
         }
     }
 }

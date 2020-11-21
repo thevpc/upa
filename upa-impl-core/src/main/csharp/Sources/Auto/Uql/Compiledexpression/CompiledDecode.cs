@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledexpression
 {
 
 
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
      * Created by IntelliJ IDEA. User: root Date: 22 mai 2003 Time: 10:07:06 To
      * change this template use Options | File Templates.
      */
-    public class CompiledDecode : Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledFunction {
+    public class CompiledDecode : Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledFunction {
 
 
 
@@ -33,14 +33,14 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
 
         }
 
-        public CompiledDecode(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression)  : base("Decode"){
+        public CompiledDecode(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression)  : base("Decode"){
 
             Add(expression);
             state = EXPECT_CONDITION;
             PrepareChildren(expression);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDecode Map(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression oldValue, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression newValue) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledDecode Map(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression oldValue, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression newValue) {
             if (state != VALID) {
                 Add(oldValue);
                 Add(newValue);
@@ -50,7 +50,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             }
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDecode Otherwise(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression @value) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledDecode Otherwise(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression @value) {
             if (state != VALID) {
                 Add(@value);
                 state = VALID;
@@ -60,7 +60,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             }
         }
 
-        private void Add(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
+        private void Add(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
             ProtectedAddArgument(expression);
         }
 
@@ -74,14 +74,14 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
              * @return type of first value expression
              */
 
-        public override Net.Vpc.Upa.Types.DataTypeTransform GetTypeTransform() {
+        public override Net.TheVpc.Upa.Types.DataTypeTransform GetTypeTransform() {
             return GetArgument(1).GetTypeTransform();
         }
 
 
-        public override Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDecode o = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDecode();
-            foreach (Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression param in GetArguments()) {
+        public override Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledDecode o = new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledDecode();
+            foreach (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression param in GetArguments()) {
                 o.ProtectedAddArgument(param.Copy());
             }
             o.state = state;

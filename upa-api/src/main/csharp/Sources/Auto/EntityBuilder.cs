@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -21,9 +21,9 @@ namespace Net.Vpc.Upa
      */
     public interface EntityBuilder {
 
-         Net.Vpc.Upa.Document CreateDocument();
+         Net.TheVpc.Upa.Document CreateDocument();
 
-         Net.Vpc.Upa.Document CreateInitializedDocument();
+         Net.TheVpc.Upa.Document CreateInitializedDocument();
 
           R CreateInitializedObject<R>();
 
@@ -31,25 +31,25 @@ namespace Net.Vpc.Upa
 
           R CopyObject<R>(R r);
 
-         Net.Vpc.Upa.Document CopyDocument(Net.Vpc.Upa.Document rec);
+         Net.TheVpc.Upa.Document CopyDocument(Net.TheVpc.Upa.Document rec);
 
-         Net.Vpc.Upa.Document ObjectToDocument(object entity, System.Collections.Generic.ISet<string> fields, bool ignoreUnspecified, bool ensureIncludeIds);
+         Net.TheVpc.Upa.Document ObjectToDocument(object entity, System.Collections.Generic.ISet<string> fields, bool ignoreUnspecified, bool ensureIncludeIds);
 
          void SetProperty(object entityObject, string property, object @value);
 
          object GetProperty(object entityObject, string property);
 
-         Net.Vpc.Upa.Key CreateKey(params object [] keyValues);
+         Net.TheVpc.Upa.Key CreateKey(params object [] keyValues);
 
          object CreateId(params object [] idValues);
 
-         object GetId(Net.Vpc.Upa.Key unstructuredKey);
+         object GetId(Net.TheVpc.Upa.Key unstructuredKey);
 
          object GetObject(object objectOrDocument);
 
-         Net.Vpc.Upa.Document GetDocument(object objectOrDocument);
+         Net.TheVpc.Upa.Document GetDocument(object objectOrDocument);
 
-         Net.Vpc.Upa.Key GetKey(object key);
+         Net.TheVpc.Upa.Key GetKey(object key);
 
         /**
              * transforms entity id to a Document key representation of the given entity
@@ -59,7 +59,7 @@ namespace Net.Vpc.Upa
              * @param entityId entity id
              * @return key representation
              */
-         Net.Vpc.Upa.Key IdToKey(object entityId);
+         Net.TheVpc.Upa.Key IdToKey(object entityId);
 
         /**
              * transforms Document key to a entity id representation of the given Document
@@ -69,7 +69,7 @@ namespace Net.Vpc.Upa
              * @param documentKey Document key
              * @return key representation
              */
-         object KeyToId(Net.Vpc.Upa.Key documentKey);
+         object KeyToId(Net.TheVpc.Upa.Key documentKey);
 
         /**
              * transforms entity value to a Document value representation of the given
@@ -80,7 +80,7 @@ namespace Net.Vpc.Upa
              * @return entityToDocument(r, false)
              * @
              */
-         Net.Vpc.Upa.Document ObjectToDocument(object objectValue);
+         Net.TheVpc.Upa.Document ObjectToDocument(object objectValue);
 
         /**
              * transforms id to PrimitiveId
@@ -92,11 +92,11 @@ namespace Net.Vpc.Upa
              * @return entityToDocument(r, false)
              * @
              */
-         Net.Vpc.Upa.PrimitiveId IdToPrimitiveId(object id);
+         Net.TheVpc.Upa.PrimitiveId IdToPrimitiveId(object id);
 
          object PrimitiveIdToId(object id);
 
-         Net.Vpc.Upa.PrimitiveId ObjectToPrimitiveId(object @object);
+         Net.TheVpc.Upa.PrimitiveId ObjectToPrimitiveId(object @object);
 
         /**
              * Document value representation of the given entity. updates to the Document
@@ -107,52 +107,52 @@ namespace Net.Vpc.Upa
              *                          boolean type false values are reported as null (not included in Document)
              * @return objectToDocument(r, false)
              */
-         Net.Vpc.Upa.Document ObjectToDocument(object objectValue, bool ignoreUnspecified);
+         Net.TheVpc.Upa.Document ObjectToDocument(object objectValue, bool ignoreUnspecified);
 
          string ObjectToName(object objectValue);
 
-         Net.Vpc.Upa.NamedId ObjectToNamedId(object objectValue);
+         Net.TheVpc.Upa.NamedId ObjectToNamedId(object objectValue);
 
          object GetMainValue(object objectValue);
 
-          R DocumentToObject<R>(Net.Vpc.Upa.Document document);
+          R DocumentToObject<R>(Net.TheVpc.Upa.Document document);
 
           R IdToObject<R>(object objectId);
 
-         Net.Vpc.Upa.Document IdToDocument(object objectId);
+         Net.TheVpc.Upa.Document IdToDocument(object objectId);
 
          object ObjectToId(object objectValue);
 
-         Net.Vpc.Upa.Key ObjectToKey(object objectValue);
+         Net.TheVpc.Upa.Key ObjectToKey(object objectValue);
 
-         object DocumentToId(Net.Vpc.Upa.Document document);
+         object DocumentToId(Net.TheVpc.Upa.Document document);
 
-         Net.Vpc.Upa.Key DocumentToKey(Net.Vpc.Upa.Document document);
+         Net.TheVpc.Upa.Key DocumentToKey(Net.TheVpc.Upa.Document document);
 
-         object KeyToObject(Net.Vpc.Upa.Key key);
+         object KeyToObject(Net.TheVpc.Upa.Key key);
 
-         Net.Vpc.Upa.Document KeyToDocument(Net.Vpc.Upa.Key key);
+         Net.TheVpc.Upa.Document KeyToDocument(Net.TheVpc.Upa.Key key);
 
-         void SetDocumentId(Net.Vpc.Upa.Document document, object id);
+         void SetDocumentId(Net.TheVpc.Upa.Document document, object id);
 
          void SetObjectId(object @object, object id);
 
-         Net.Vpc.Upa.Expressions.Expression DocumentToExpression(Net.Vpc.Upa.Document document, string alias);
+         Net.TheVpc.Upa.Expressions.Expression DocumentToExpression(Net.TheVpc.Upa.Document document, string alias);
 
-         Net.Vpc.Upa.Expressions.Expression ObjectToExpression(object @object, bool ignoreUnspecified, string alias);
+         Net.TheVpc.Upa.Expressions.Expression ObjectToExpression(object @object, bool ignoreUnspecified, string alias);
 
-         Net.Vpc.Upa.Expressions.Expression ObjectToIdExpression(object objectOrDocument, string alias);
+         Net.TheVpc.Upa.Expressions.Expression ObjectToIdExpression(object objectOrDocument, string alias);
 
-         Net.Vpc.Upa.Expressions.Expression IdToExpression(object id, string alias);
+         Net.TheVpc.Upa.Expressions.Expression IdToExpression(object id, string alias);
 
-         Net.Vpc.Upa.Expressions.Expression KeyToExpression(Net.Vpc.Upa.Key documentKey, string alias);
+         Net.TheVpc.Upa.Expressions.Expression KeyToExpression(Net.TheVpc.Upa.Key documentKey, string alias);
 
-          Net.Vpc.Upa.Expressions.Expression IdListToExpression<K>(System.Collections.Generic.IList<K> idList, string alias);
+          Net.TheVpc.Upa.Expressions.Expression IdListToExpression<K>(System.Collections.Generic.IList<K> idList, string alias);
 
-         Net.Vpc.Upa.Expressions.Expression KeyListToExpression(System.Collections.Generic.IList<Net.Vpc.Upa.Key> keyList, string alias);
+         Net.TheVpc.Upa.Expressions.Expression KeyListToExpression(System.Collections.Generic.IList<Net.TheVpc.Upa.Key> keyList, string alias);
 
-         Net.Vpc.Upa.QualifiedDocument CreateQualifiedDocument();
+         Net.TheVpc.Upa.QualifiedDocument CreateQualifiedDocument();
 
-         Net.Vpc.Upa.QualifiedDocument CreateQualifiedDocument(Net.Vpc.Upa.Document document);
+         Net.TheVpc.Upa.QualifiedDocument CreateQualifiedDocument(Net.TheVpc.Upa.Document document);
     }
 }

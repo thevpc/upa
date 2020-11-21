@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Shared
+namespace Net.TheVpc.Upa.Impl.Persistence.Shared
 {
 
 
@@ -19,13 +19,13 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 12/20/12 2:47 AM
      */
-    public class EnumAsNameMarshaller : Net.Vpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
+    public class EnumAsNameMarshaller : Net.TheVpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
 
         private System.Type type;
 
         private object[] values;
 
-        private Net.Vpc.Upa.Types.StringType persistentDataType;
+        private Net.TheVpc.Upa.Types.StringType persistentDataType;
 
         public EnumAsNameMarshaller() {
         }
@@ -33,7 +33,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
         public EnumAsNameMarshaller(System.Type type) {
             this.type = type;
             try {
-                values = Net.Vpc.Upa.Impl.Util.PlatformUtils.GetEnumValues(type);
+                values = Net.TheVpc.Upa.Impl.Util.PlatformUtils.GetEnumValues(type);
                 int max = 1;
                 foreach (object @object in values) {
                     int x = (System.Convert.ToString(@object)).Length;
@@ -41,7 +41,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
                         max = x;
                     }
                 }
-                persistentDataType = new Net.Vpc.Upa.Types.StringType((type).FullName, 0, max, true);
+                persistentDataType = new Net.TheVpc.Upa.Types.StringType((type).FullName, 0, max, true);
             } catch (System.Exception e) {
                 throw new System.Exception("RuntimeException", e);
             }
@@ -70,7 +70,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
         }
 
 
-        public override Net.Vpc.Upa.Types.DataType GetPersistentDataType(Net.Vpc.Upa.Types.DataType datatype) {
+        public override Net.TheVpc.Upa.Types.DataType GetPersistentDataType(Net.TheVpc.Upa.Types.DataType datatype) {
             return persistentDataType;
         }
     }

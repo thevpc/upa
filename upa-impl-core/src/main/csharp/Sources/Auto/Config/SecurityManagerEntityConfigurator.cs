@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config
+namespace Net.TheVpc.Upa.Impl.Config
 {
 
 
@@ -19,19 +19,19 @@ namespace Net.Vpc.Upa.Impl.Config
      *
      * @author taha.bensalah@gmail.com
      */
-    public class SecurityManagerEntityConfigurator : Net.Vpc.Upa.Impl.Config.EntityConfigurator {
+    public class SecurityManagerEntityConfigurator : Net.TheVpc.Upa.Impl.Config.EntityConfigurator {
 
-        private Net.Vpc.Upa.EntitySecurityManager s;
+        private Net.TheVpc.Upa.EntitySecurityManager s;
 
-        public SecurityManagerEntityConfigurator(Net.Vpc.Upa.EntitySecurityManager s) {
+        public SecurityManagerEntityConfigurator(Net.TheVpc.Upa.EntitySecurityManager s) {
             this.s = s;
         }
 
-        public virtual void Install(Net.Vpc.Upa.Entity e) {
+        public virtual void Install(Net.TheVpc.Upa.Entity e) {
             e.SetEntitySecurityManager(s);
         }
 
-        public virtual void Uninstall(Net.Vpc.Upa.Entity e) {
+        public virtual void Uninstall(Net.TheVpc.Upa.Entity e) {
         }
     }
 }

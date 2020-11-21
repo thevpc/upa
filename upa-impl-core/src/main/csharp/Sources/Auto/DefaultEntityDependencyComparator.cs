@@ -11,19 +11,19 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
     /**
      * @author taha.bensalah@gmail.com on 7/6/16.
      */
-    internal class DefaultEntityDependencyComparator : System.Collections.Generic.IComparer<Net.Vpc.Upa.Entity> {
+    internal class DefaultEntityDependencyComparator : System.Collections.Generic.IComparer<Net.TheVpc.Upa.Entity> {
 
-        public static readonly System.Collections.Generic.IComparer<Net.Vpc.Upa.Entity> INSTANCE = new Net.Vpc.Upa.Impl.DefaultEntityDependencyComparator();
+        public static readonly System.Collections.Generic.IComparer<Net.TheVpc.Upa.Entity> INSTANCE = new Net.TheVpc.Upa.Impl.DefaultEntityDependencyComparator();
 
 
-        public virtual int Compare(Net.Vpc.Upa.Entity o1, Net.Vpc.Upa.Entity o2) {
+        public virtual int Compare(Net.TheVpc.Upa.Entity o1, Net.TheVpc.Upa.Entity o2) {
             System.Collections.Generic.ISet<string> s1 = FindEntityDependencies(o1);
             System.Collections.Generic.ISet<string> s2 = FindEntityDependencies(o2);
             if (s1.Contains(o2.GetName()) && s2.Contains(o1.GetName())) {
@@ -37,13 +37,13 @@ namespace Net.Vpc.Upa.Impl
             }
         }
 
-        private System.Collections.Generic.ISet<string> FindEntityDependencies(Net.Vpc.Upa.Entity o1) {
+        private System.Collections.Generic.ISet<string> FindEntityDependencies(Net.TheVpc.Upa.Entity o1) {
             System.Collections.Generic.ISet<string> all = new System.Collections.Generic.HashSet<string>();
-            foreach (Net.Vpc.Upa.Field field in o1.GetFields()) {
-                if (!field.GetModifiers().Contains(Net.Vpc.Upa.FieldModifier.TRANSIENT)) {
-                    Net.Vpc.Upa.Types.DataType dt = field.GetDataType();
-                    if (dt is Net.Vpc.Upa.Types.ManyToOneType) {
-                        all.Add(((Net.Vpc.Upa.Types.ManyToOneType) dt).GetRelationship().GetTargetEntity().GetName());
+            foreach (Net.TheVpc.Upa.Field field in o1.GetFields()) {
+                if (!field.GetModifiers().Contains(Net.TheVpc.Upa.FieldModifier.TRANSIENT)) {
+                    Net.TheVpc.Upa.Types.DataType dt = field.GetDataType();
+                    if (dt is Net.TheVpc.Upa.Types.ManyToOneType) {
+                        all.Add(((Net.TheVpc.Upa.Types.ManyToOneType) dt).GetRelationship().GetTargetEntity().GetName());
                     }
                 }
             }

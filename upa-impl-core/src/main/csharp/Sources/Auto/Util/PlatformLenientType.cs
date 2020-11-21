@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
     /**
      * Created by vpc on 5/17/16.
      */
-    public class PlatformLenientType : Net.Vpc.Upa.Impl.Util.LenientType {
+    public class PlatformLenientType : Net.TheVpc.Upa.Impl.Util.LenientType {
 
         private string typeName;
 
@@ -59,7 +59,7 @@ namespace Net.Vpc.Upa.Impl.Util
             try {
                 return System.Activator.CreateInstance(GetValidTypeOrError());
             } catch (System.Exception e) {
-                throw Net.Vpc.Upa.Impl.Util.PlatformUtils.CreateRuntimeException(e);
+                throw Net.TheVpc.Upa.Impl.Util.PlatformUtils.CreateRuntimeException(e);
             }
         }
 
@@ -67,7 +67,7 @@ namespace Net.Vpc.Upa.Impl.Util
             try {
                 return GetValidTypeOrError().GetMethod(method, types).Invoke(instance, args);
             } catch (System.Exception e) {
-                throw Net.Vpc.Upa.Impl.Util.PlatformUtils.CreateRuntimeException(e);
+                throw Net.TheVpc.Upa.Impl.Util.PlatformUtils.CreateRuntimeException(e);
             }
         }
 
@@ -75,7 +75,7 @@ namespace Net.Vpc.Upa.Impl.Util
             try {
                 return GetValidTypeOrError().GetMethod(method, types).Invoke(null, args);
             } catch (System.Exception e) {
-                throw Net.Vpc.Upa.Impl.Util.PlatformUtils.CreateRuntimeException(e);
+                throw Net.TheVpc.Upa.Impl.Util.PlatformUtils.CreateRuntimeException(e);
             }
         }
     }

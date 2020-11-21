@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql
+namespace Net.TheVpc.Upa.Impl.Uql
 {
 
 
@@ -44,7 +44,7 @@ namespace Net.Vpc.Upa.Impl.Uql
         }
 
         public virtual int GetVisited(string entity) {
-            int? i = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,int?>(map,entity);
+            int? i = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,int?>(map,entity);
             return i == null ? ((int)(maxEntityDepth)) : i;
         }
 
@@ -56,18 +56,18 @@ namespace Net.Vpc.Upa.Impl.Uql
             map[entity]=GetVisited(entity) - 1;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.ExpansionVisitTracker Dive() {
+        public virtual Net.TheVpc.Upa.Impl.Uql.ExpansionVisitTracker Dive() {
             if (navigationDepth > 0) {
-                Net.Vpc.Upa.Impl.Uql.ExpansionVisitTracker cc = Copy();
+                Net.TheVpc.Upa.Impl.Uql.ExpansionVisitTracker cc = Copy();
                 cc.navigationDepth--;
                 return cc;
             }
             return null;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.ExpansionVisitTracker Copy() {
-            Net.Vpc.Upa.Impl.Uql.ExpansionVisitTracker r = new Net.Vpc.Upa.Impl.Uql.ExpansionVisitTracker();
-            Net.Vpc.Upa.Impl.FwkConvertUtils.PutAllMap<string,int?>(r.map,map);
+        public virtual Net.TheVpc.Upa.Impl.Uql.ExpansionVisitTracker Copy() {
+            Net.TheVpc.Upa.Impl.Uql.ExpansionVisitTracker r = new Net.TheVpc.Upa.Impl.Uql.ExpansionVisitTracker();
+            Net.TheVpc.Upa.Impl.FwkConvertUtils.PutAllMap<string,int?>(r.map,map);
             r.maxEntityDepth = maxEntityDepth;
             //        r.maxGlobalDepth = maxGlobalDepth;
             r.navigationDepth = navigationDepth;

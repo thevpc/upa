@@ -11,20 +11,20 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config
+namespace Net.TheVpc.Upa.Impl.Config
 {
 
 
     /**
      * @author taha.bensalah@gmail.com on 7/6/16.
      */
-    internal class MakeSessionAwareMethodInterceptorAction<T> : Net.Vpc.Upa.Action<object> {
+    internal class MakeSessionAwareMethodInterceptorAction<T> : Net.TheVpc.Upa.Action<object> {
 
-        private Net.Vpc.Upa.Impl.Config.MakeSessionAwareMethodInterceptor<T> makeSessionAwareMethodInterceptor;
+        private Net.TheVpc.Upa.Impl.Config.MakeSessionAwareMethodInterceptor<T> makeSessionAwareMethodInterceptor;
 
-        private readonly Net.Vpc.Upa.Impl.Util.PlatformMethodProxyEvent<T> @event;
+        private readonly Net.TheVpc.Upa.Impl.Util.PlatformMethodProxyEvent<T> @event;
 
-        public MakeSessionAwareMethodInterceptorAction(Net.Vpc.Upa.Impl.Config.MakeSessionAwareMethodInterceptor<T> makeSessionAwareMethodInterceptor, Net.Vpc.Upa.Impl.Util.PlatformMethodProxyEvent<T> @event) {
+        public MakeSessionAwareMethodInterceptorAction(Net.TheVpc.Upa.Impl.Config.MakeSessionAwareMethodInterceptor<T> makeSessionAwareMethodInterceptor, Net.TheVpc.Upa.Impl.Util.PlatformMethodProxyEvent<T> @event) {
             this.makeSessionAwareMethodInterceptor = makeSessionAwareMethodInterceptor;
             this.@event = @event;
         }
@@ -34,7 +34,7 @@ namespace Net.Vpc.Upa.Impl.Config
             try {
                 return @event.InvokeBase(makeSessionAwareMethodInterceptor.instance, @event.GetArguments());
             } catch (System.Exception ex) {
-                throw new Net.Vpc.Upa.Exceptions.ExecutionException(ex);
+                throw new Net.TheVpc.Upa.Exceptions.ExecutionException(ex);
             }
         }
     }

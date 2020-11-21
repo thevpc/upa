@@ -11,41 +11,41 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public interface RelationshipRole : Net.Vpc.Upa.UPAObject {
+    public interface RelationshipRole : Net.TheVpc.Upa.UPAObject {
 
-         Net.Vpc.Upa.Relationship GetRelationship();
+         Net.TheVpc.Upa.Relationship GetRelationship();
 
-         Net.Vpc.Upa.RelationshipUpdateType GetRelationshipUpdateType();
+         Net.TheVpc.Upa.RelationshipUpdateType GetRelationshipUpdateType();
 
-         Net.Vpc.Upa.RelationshipRoleType GetRelationshipRoleType();
+         Net.TheVpc.Upa.RelationshipRoleType GetRelationshipRoleType();
 
-         Net.Vpc.Upa.Entity GetEntity();
+         Net.TheVpc.Upa.Entity GetEntity();
 
-         void SetEntity(Net.Vpc.Upa.Entity entity);
+         void SetEntity(Net.TheVpc.Upa.Entity entity);
 
          int IndexOf(string fieldName);
 
-         Net.Vpc.Upa.Field GetField(int i);
+         Net.TheVpc.Upa.Field GetField(int i);
 
-         Net.Vpc.Upa.Field GetEntityField();
+         Net.TheVpc.Upa.Field GetEntityField();
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Field> GetFields();
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Field> GetFields();
 
-         void SetFields(Net.Vpc.Upa.Field[] fields);
+         void SetFields(Net.TheVpc.Upa.Field[] fields);
 
-         void SetEntityField(Net.Vpc.Upa.Field field);
+         void SetEntityField(Net.TheVpc.Upa.Field field);
 
-         void SetRelationship(Net.Vpc.Upa.Relationship relation);
+         void SetRelationship(Net.TheVpc.Upa.Relationship relation);
 
-         void SetRelationshipRoleType(Net.Vpc.Upa.RelationshipRoleType relationRoteType);
+         void SetRelationshipRoleType(Net.TheVpc.Upa.RelationshipRoleType relationRoteType);
 
-         void SetRelationshipUpdateType(Net.Vpc.Upa.RelationshipUpdateType relationUpdateType);
+         void SetRelationshipUpdateType(Net.TheVpc.Upa.RelationshipUpdateType relationUpdateType);
     }
 }

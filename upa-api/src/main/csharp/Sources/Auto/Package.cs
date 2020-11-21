@@ -11,19 +11,19 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
-    public interface Package : Net.Vpc.Upa.PersistenceUnitPart {
+    public interface Package : Net.TheVpc.Upa.PersistenceUnitPart {
 
-         Net.Vpc.Upa.PackageInfo GetInfo();
+         Net.TheVpc.Upa.PackageInfo GetInfo();
 
          string GetPath();
 
-         void AddPart(Net.Vpc.Upa.PersistenceUnitPart child);
+         void AddPart(Net.TheVpc.Upa.PersistenceUnitPart child);
 
-         void AddPart(Net.Vpc.Upa.PersistenceUnitPart child, int index);
+         void AddPart(Net.TheVpc.Upa.PersistenceUnitPart child, int index);
 
          void RemovePartAt(int index);
 
@@ -33,17 +33,17 @@ namespace Net.Vpc.Upa
 
          int GetPartsCount();
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.PersistenceUnitPart> GetParts();
+         System.Collections.Generic.IList<Net.TheVpc.Upa.PersistenceUnitPart> GetParts();
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Entity> GetEntities();
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Entity> GetEntities();
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Entity> GetEntities(bool includeSubPackages);
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Entity> GetEntities(bool includeSubPackages);
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Package> GetPackages();
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Package> GetPackages();
 
-         Net.Vpc.Upa.Package GetPart(string name);
+         Net.TheVpc.Upa.Package GetPart(string name);
 
-         int IndexOfPart(Net.Vpc.Upa.PersistenceUnitPart child);
+         int IndexOfPart(Net.TheVpc.Upa.PersistenceUnitPart child);
 
          int IndexOfPart(string childName);
     }

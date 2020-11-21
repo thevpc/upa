@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -21,8 +21,8 @@ namespace Net.Vpc.Upa.Impl.Persistence
      */
     public interface TypeMarshallerFactory {
 
-         void SetMarshallManager(Net.Vpc.Upa.Impl.Persistence.MarshallManager marshallManager);
+         void SetMarshallManager(Net.TheVpc.Upa.Impl.Persistence.MarshallManager marshallManager);
 
-         Net.Vpc.Upa.Impl.Persistence.TypeMarshaller CreateTypeMarshaller(Net.Vpc.Upa.Types.DataType type);
+         Net.TheVpc.Upa.Impl.Persistence.TypeMarshaller CreateTypeMarshaller(Net.TheVpc.Upa.Types.DataType type);
     }
 }

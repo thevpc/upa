@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -28,39 +28,39 @@ namespace Net.Vpc.Upa
 
          object GetUnspecifiedObject();
 
-         Net.Vpc.Upa.Types.DataType GetDataType();
+         Net.TheVpc.Upa.Types.DataType GetDataType();
 
-         Net.Vpc.Upa.Types.DataTypeTransformConfig[] GetTypeTransform();
+         Net.TheVpc.Upa.Types.DataTypeTransformConfig[] GetTypeTransform();
 
-         Net.Vpc.Upa.Formula GetPersistFormula();
+         Net.TheVpc.Upa.Formula GetPersistFormula();
 
-         Net.Vpc.Upa.Formula GetUpdateFormula();
+         Net.TheVpc.Upa.Formula GetUpdateFormula();
 
-         Net.Vpc.Upa.Formula GetSelectFormula();
+         Net.TheVpc.Upa.Formula GetSelectFormula();
 
          int GetPersistFormulaOrder();
 
          int GetUpdateFormulaOrder();
 
-         Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> GetModifiers();
+         Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> GetModifiers();
 
-         Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> GetExcludeModifiers();
+         Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> GetExcludeModifiers();
 
-         Net.Vpc.Upa.AccessLevel GetPersistAccessLevel();
+         Net.TheVpc.Upa.AccessLevel GetPersistAccessLevel();
 
-         Net.Vpc.Upa.AccessLevel GetUpdateAccessLevel();
+         Net.TheVpc.Upa.AccessLevel GetUpdateAccessLevel();
 
-         Net.Vpc.Upa.AccessLevel GetReadAccessLevel();
+         Net.TheVpc.Upa.AccessLevel GetReadAccessLevel();
 
-         Net.Vpc.Upa.ProtectionLevel GetPersistProtectionLevel();
+         Net.TheVpc.Upa.ProtectionLevel GetPersistProtectionLevel();
 
-         Net.Vpc.Upa.ProtectionLevel GetUpdateProtectionLevel();
+         Net.TheVpc.Upa.ProtectionLevel GetUpdateProtectionLevel();
 
-         Net.Vpc.Upa.ProtectionLevel GetReadProtectionLevel();
+         Net.TheVpc.Upa.ProtectionLevel GetReadProtectionLevel();
 
          System.Collections.Generic.IDictionary<string , object> GetFieldParams();
 
-         Net.Vpc.Upa.PropertyAccessType GetPropertyAccessType();
+         Net.TheVpc.Upa.PropertyAccessType GetPropertyAccessType();
 
          int GetIndex();
     }

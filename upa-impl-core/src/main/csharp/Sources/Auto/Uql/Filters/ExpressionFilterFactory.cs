@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Filters
+namespace Net.TheVpc.Upa.Impl.Uql.Filters
 {
 
 
@@ -21,21 +21,21 @@ namespace Net.Vpc.Upa.Impl.Uql.Filters
      */
     public sealed class ExpressionFilterFactory {
 
-        public static Net.Vpc.Upa.Expressions.ExpressionFilter PARAM_FILTER = new Net.Vpc.Upa.Impl.Uql.Filters.TypeExpressionFilter(typeof(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam));
+        public static Net.TheVpc.Upa.Expressions.ExpressionFilter PARAM_FILTER = new Net.TheVpc.Upa.Impl.Uql.Filters.TypeExpressionFilter(typeof(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledParam));
 
-        public static Net.Vpc.Upa.Expressions.ExpressionFilter SELECT_FILTER = new Net.Vpc.Upa.Impl.Uql.Filters.TypeExpressionFilter(typeof(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect));
+        public static Net.TheVpc.Upa.Expressions.ExpressionFilter SELECT_FILTER = new Net.TheVpc.Upa.Impl.Uql.Filters.TypeExpressionFilter(typeof(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect));
 
-        public static Net.Vpc.Upa.Expressions.ExpressionFilter QUERY_STATEMENT_FILTER = new Net.Vpc.Upa.Impl.Uql.Filters.TypeExpressionFilter(typeof(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement));
+        public static Net.TheVpc.Upa.Expressions.ExpressionFilter QUERY_STATEMENT_FILTER = new Net.TheVpc.Upa.Impl.Uql.Filters.TypeExpressionFilter(typeof(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement));
 
-        public static Net.Vpc.Upa.Expressions.ExpressionFilter QL_FUNCTION_FILTER = new Net.Vpc.Upa.Impl.Uql.Filters.TypeExpressionFilter(typeof(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQLFunctionExpression));
+        public static Net.TheVpc.Upa.Expressions.ExpressionFilter QL_FUNCTION_FILTER = new Net.TheVpc.Upa.Impl.Uql.Filters.TypeExpressionFilter(typeof(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQLFunctionExpression));
 
-        public static Net.Vpc.Upa.Expressions.ExpressionFilter DESCENDENT_FILTER = new Net.Vpc.Upa.Impl.Uql.Filters.TypeExpressionFilter(typeof(Net.Vpc.Upa.Impl.Uql.Compiledexpression.IsHierarchyDescendentCompiled));
+        public static Net.TheVpc.Upa.Expressions.ExpressionFilter DESCENDENT_FILTER = new Net.TheVpc.Upa.Impl.Uql.Filters.TypeExpressionFilter(typeof(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.IsHierarchyDescendentCompiled));
 
         private ExpressionFilterFactory() {
         }
 
-        public static Net.Vpc.Upa.Expressions.ExpressionFilter ForParam(string name) {
-            return new Net.Vpc.Upa.Impl.Uql.Filters.ParamFilter(name);
+        public static Net.TheVpc.Upa.Expressions.ExpressionFilter ForParam(string name) {
+            return new Net.TheVpc.Upa.Impl.Uql.Filters.ParamFilter(name);
         }
     }
 }

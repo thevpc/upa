@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
 
@@ -27,9 +27,9 @@ namespace Net.Vpc.Upa.Types
 
         private int count;
 
-        private Net.Vpc.Upa.Types.PeriodOption periodType;
+        private Net.TheVpc.Upa.Types.PeriodOption periodType;
 
-        public DatePeriod(int count, Net.Vpc.Upa.Types.PeriodOption type) {
+        public DatePeriod(int count, Net.TheVpc.Upa.Types.PeriodOption type) {
             this.count = count;
             this.periodType = type;
         }
@@ -38,7 +38,7 @@ namespace Net.Vpc.Upa.Types
             return count;
         }
 
-        public virtual Net.Vpc.Upa.Types.PeriodOption GetPeriodType() {
+        public virtual Net.TheVpc.Upa.Types.PeriodOption GetPeriodType() {
             return periodType;
         }
 
@@ -57,7 +57,7 @@ namespace Net.Vpc.Upa.Types
             if (obj == null) {
                 return false;
             }
-            Net.Vpc.Upa.Types.DatePeriod datePeriod = (Net.Vpc.Upa.Types.DatePeriod) obj;
+            Net.TheVpc.Upa.Types.DatePeriod datePeriod = (Net.TheVpc.Upa.Types.DatePeriod) obj;
             return (count == datePeriod.count) && (periodType == datePeriod.periodType);
         }
 

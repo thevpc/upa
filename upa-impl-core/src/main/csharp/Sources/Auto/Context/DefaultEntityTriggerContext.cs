@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Context
+namespace Net.TheVpc.Upa.Impl.Context
 {
 
 
@@ -19,29 +19,29 @@ namespace Net.Vpc.Upa.Impl.Context
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 9/10/12 12:27 AM
      */
-    public class DefaultEntityTriggerContext : Net.Vpc.Upa.Callbacks.EntityTriggerContext {
+    public class DefaultEntityTriggerContext : Net.TheVpc.Upa.Callbacks.EntityTriggerContext {
 
-        private Net.Vpc.Upa.Entity entityManager;
+        private Net.TheVpc.Upa.Entity entityManager;
 
-        private Net.Vpc.Upa.Callbacks.Trigger triggerObject;
+        private Net.TheVpc.Upa.Callbacks.Trigger triggerObject;
 
-        private Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext;
+        private Net.TheVpc.Upa.Persistence.EntityExecutionContext executionContext;
 
-        public DefaultEntityTriggerContext(Net.Vpc.Upa.Entity entityManager, Net.Vpc.Upa.Callbacks.Trigger triggerObject, Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext) {
+        public DefaultEntityTriggerContext(Net.TheVpc.Upa.Entity entityManager, Net.TheVpc.Upa.Callbacks.Trigger triggerObject, Net.TheVpc.Upa.Persistence.EntityExecutionContext executionContext) {
             this.entityManager = entityManager;
             this.triggerObject = triggerObject;
             this.executionContext = executionContext;
         }
 
-        public virtual Net.Vpc.Upa.Entity GetEntity() {
+        public virtual Net.TheVpc.Upa.Entity GetEntity() {
             return entityManager;
         }
 
-        public virtual Net.Vpc.Upa.Callbacks.Trigger GetTrigger() {
+        public virtual Net.TheVpc.Upa.Callbacks.Trigger GetTrigger() {
             return triggerObject;
         }
 
-        public virtual Net.Vpc.Upa.Persistence.EntityExecutionContext GetEntityExecutionContext() {
+        public virtual Net.TheVpc.Upa.Persistence.EntityExecutionContext GetEntityExecutionContext() {
             return executionContext;
         }
     }

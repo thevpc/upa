@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
@@ -20,9 +20,9 @@ namespace Net.Vpc.Upa.Impl
     * @creationdate 1/5/13 3:41 PM*/
     public class EntityChildComparator : System.Collections.Generic.IComparer<string> {
 
-        private Net.Vpc.Upa.Entity defaultEntity;
+        private Net.TheVpc.Upa.Entity defaultEntity;
 
-        public EntityChildComparator(Net.Vpc.Upa.Entity defaultEntity) {
+        public EntityChildComparator(Net.TheVpc.Upa.Entity defaultEntity) {
             this.defaultEntity = defaultEntity;
         }
 
@@ -31,7 +31,7 @@ namespace Net.Vpc.Upa.Impl
             string s2 = o2;
             int i1 = defaultEntity.IndexOfPart(s1, false, true, true, true);
             int i2 = defaultEntity.IndexOfPart(s2, false, true, true, true);
-            return Net.Vpc.Upa.Impl.Util.UPAUtils.Compare(i1, i2);
+            return Net.TheVpc.Upa.Impl.Util.UPAUtils.Compare(i1, i2);
         }
     }
 }

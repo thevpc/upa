@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util.Eq
+namespace Net.TheVpc.Upa.Impl.Util.Eq
 {
 
 
@@ -19,9 +19,9 @@ namespace Net.Vpc.Upa.Impl.Util.Eq
      *
      * @author taha.bensalah@gmail.com
      */
-    public class ByteArrayEq : Net.Vpc.Upa.Impl.Util.Eq.EqualHelper {
+    public class ByteArrayEq : Net.TheVpc.Upa.Impl.Util.Eq.EqualHelper {
 
-        public static readonly Net.Vpc.Upa.Impl.Util.Eq.EqualHelper INSTANCE = new Net.Vpc.Upa.Impl.Util.Eq.ByteArrayEq();
+        public static readonly Net.TheVpc.Upa.Impl.Util.Eq.EqualHelper INSTANCE = new Net.TheVpc.Upa.Impl.Util.Eq.ByteArrayEq();
 
         public virtual bool Equals(object o1, object o2) {
             byte[] a = (byte[]) o1;

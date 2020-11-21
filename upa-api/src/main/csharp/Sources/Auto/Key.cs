@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -76,7 +76,7 @@ namespace Net.Vpc.Upa
              * @return single instance as date
              * @throws RuntimeException if multi-dimensional key
              */
-         Net.Vpc.Upa.Types.Temporal GetDate();
+         Net.TheVpc.Upa.Types.Temporal GetDate();
 
         /**
              * Key portion at <code>index</code> position as string value
@@ -121,6 +121,6 @@ namespace Net.Vpc.Upa
              * @return Key portion at <code>index</code> position as date value
              * @throws RuntimeException if invalid <code>index</code>
              */
-         Net.Vpc.Upa.Types.Temporal GetDateAt(int index);
+         Net.TheVpc.Upa.Types.Temporal GetDateAt(int index);
     }
 }

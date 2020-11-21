@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Transform
+namespace Net.TheVpc.Upa.Impl.Transform
 {
 
 
@@ -19,9 +19,9 @@ namespace Net.Vpc.Upa.Impl.Transform
      *
      * @author taha.bensalah@gmail.com
      */
-    public class IdentityCharArrayEncoder : Net.Vpc.Upa.Types.CharArrayEncoder {
+    public class IdentityCharArrayEncoder : Net.TheVpc.Upa.Types.CharArrayEncoder {
 
-        public static readonly Net.Vpc.Upa.Impl.Transform.IdentityCharArrayEncoder INSTANCE = new Net.Vpc.Upa.Impl.Transform.IdentityCharArrayEncoder();
+        public static readonly Net.TheVpc.Upa.Impl.Transform.IdentityCharArrayEncoder INSTANCE = new Net.TheVpc.Upa.Impl.Transform.IdentityCharArrayEncoder();
 
         public virtual char[] Encode(object o) {
             return (char[]) o;

@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
 
-    public class DoubleType : Net.Vpc.Upa.Types.NumberType {
+    public class DoubleType : Net.TheVpc.Upa.Types.NumberType {
 
-        public static readonly Net.Vpc.Upa.Types.DoubleType DEFAULT = new Net.Vpc.Upa.Types.DoubleType(null, null, System.Int32.MaxValue, System.Int32.MaxValue, true, false);
+        public static readonly Net.TheVpc.Upa.Types.DoubleType DEFAULT = new Net.TheVpc.Upa.Types.DoubleType(null, null, System.Int32.MaxValue, System.Int32.MaxValue, true, false);
 
         protected internal double? min;
 
@@ -82,19 +82,19 @@ namespace Net.Vpc.Upa.Types
         }
 
 
-        public override void Check(object @value, string name, string description) /* throws Net.Vpc.Upa.Types.ConstraintsException */  {
+        public override void Check(object @value, string name, string description) /* throws Net.TheVpc.Upa.Types.ConstraintsException */  {
             base.Check(@value, name, description);
             if (@value == null) {
                 return;
             }
             if (!(@value is double?)) {
-                throw new Net.Vpc.Upa.Types.ConstraintsException("InvalidCast", name, description, @value);
+                throw new Net.TheVpc.Upa.Types.ConstraintsException("InvalidCast", name, description, @value);
             }
             if (GetMin() != null && (double?) @value < GetMin()) {
-                throw new Net.Vpc.Upa.Types.ConstraintsException("NumberTooLow", name, description, @value, GetMin());
+                throw new Net.TheVpc.Upa.Types.ConstraintsException("NumberTooLow", name, description, @value, GetMin());
             }
             if (GetMax() != null && (double?) @value > GetMax()) {
-                throw new Net.Vpc.Upa.Types.ConstraintsException("NumberTooHigh", name, description, @value, GetMax());
+                throw new Net.TheVpc.Upa.Types.ConstraintsException("NumberTooHigh", name, description, @value, GetMax());
             }
         }
 
@@ -147,7 +147,7 @@ namespace Net.Vpc.Upa.Types
             if (this == o) return true;
             if (o == null || GetType() != o.GetType()) return false;
             if (!base.Equals(o)) return false;
-            Net.Vpc.Upa.Types.DoubleType that = (Net.Vpc.Upa.Types.DoubleType) o;
+            Net.TheVpc.Upa.Types.DoubleType that = (Net.TheVpc.Upa.Types.DoubleType) o;
             if (fixedDigits != that.fixedDigits) return false;
             if (min != null ? !min.Equals(that.min) : that.min != null) return false;
             if (max != null ? !max.Equals(that.max) : that.max != null) return false;
@@ -165,8 +165,8 @@ namespace Net.Vpc.Upa.Types
         }
 
 
-        public override Net.Vpc.Upa.DataTypeInfo GetInfo() {
-            Net.Vpc.Upa.DataTypeInfo d = base.GetInfo();
+        public override Net.TheVpc.Upa.DataTypeInfo GetInfo() {
+            Net.TheVpc.Upa.DataTypeInfo d = base.GetInfo();
             d.GetProperties()["userFormatName"]=System.Convert.ToString(userFormatName);
             d.GetProperties()["fixedDigits"]=System.Convert.ToString(fixedDigits);
             if (min != null) {

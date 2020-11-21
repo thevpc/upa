@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Navigator
+namespace Net.TheVpc.Upa.Impl.Navigator
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class StringSequenceEntityNavigator : Net.Vpc.Upa.Impl.Navigator.DefaultEntityNavigator {
+    public class StringSequenceEntityNavigator : Net.TheVpc.Upa.Impl.Navigator.DefaultEntityNavigator {
 
         /**
              * {yy}{#}
@@ -33,7 +33,7 @@ namespace Net.Vpc.Upa.Impl.Navigator
 
         private int allocationSize;
 
-        public StringSequenceEntityNavigator(Net.Vpc.Upa.Entity entity, string name, string format, string group, int initialValue, int allocationSize)  : base(entity){
+        public StringSequenceEntityNavigator(Net.TheVpc.Upa.Entity entity, string name, string format, string group, int initialValue, int allocationSize)  : base(entity){
 
             this.format = format;
             this.group = group;
@@ -49,27 +49,27 @@ namespace Net.Vpc.Upa.Impl.Navigator
         }
 
 
-        public override object GetNewKey() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public override object GetNewKey() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return entity.CreateId(GetNewValue(entity.GetPrimaryFields()[0]));
         }
 
-        private string GetNewValue(Net.Vpc.Upa.Field field) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Entity entity = field.GetEntity();
+        private string GetNewValue(Net.TheVpc.Upa.Field field) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Entity entity = field.GetEntity();
             string idName = field.GetName();
-            Net.Vpc.Upa.Entity seq = entity.GetPersistenceUnit().GetEntity(Net.Vpc.Upa.Impl.PrivateSequence.ENTITY_NAME);
-            Net.Vpc.Upa.Impl.SequenceManager sm = new Net.Vpc.Upa.Impl.EntitySequenceManager(seq);
+            Net.TheVpc.Upa.Entity seq = entity.GetPersistenceUnit().GetEntity(Net.TheVpc.Upa.Impl.PrivateSequence.ENTITY_NAME);
+            Net.TheVpc.Upa.Impl.SequenceManager sm = new Net.TheVpc.Upa.Impl.EntitySequenceManager(seq);
             string sequenceGroup = Eval(field, this.group, "{#}");
             while (true) {
                 string nextIdString = Eval(field, this.format, sm.NextValue(name, sequenceGroup, this.initialValue, this.allocationSize));
-                long count = entity.GetEntityCount(new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var(idName), nextIdString));
+                long count = entity.GetEntityCount(new Net.TheVpc.Upa.Expressions.Equals(new Net.TheVpc.Upa.Expressions.Var(idName), nextIdString));
                 if (count == 0) {
                     return nextIdString;
                 }
             }
         }
 
-        private string Eval(Net.Vpc.Upa.Field field, string pattern, object replacement) {
-            return Net.Vpc.Upa.Impl.Util.PlatformUtils.ReplaceNoDollarVars(pattern, new Net.Vpc.Upa.Impl.Persistence.SequencePatternEvaluator(field, replacement, null));
+        private string Eval(Net.TheVpc.Upa.Field field, string pattern, object replacement) {
+            return Net.TheVpc.Upa.Impl.Util.PlatformUtils.ReplaceNoDollarVars(pattern, new Net.TheVpc.Upa.Impl.Persistence.SequencePatternEvaluator(field, replacement, null));
         }
 
         protected internal virtual void SetPattern(string pattern) {

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config.Decorations
+namespace Net.TheVpc.Upa.Impl.Config.Decorations
 {
 
 
@@ -19,15 +19,15 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
      *
      * @author taha.bensalah@gmail.com
      */
-    public abstract class AbstractDecoration : Net.Vpc.Upa.Impl.Config.Decorations.AbstractDecorationValue, Net.Vpc.Upa.Config.Decoration {
+    public abstract class AbstractDecoration : Net.TheVpc.Upa.Impl.Config.Decorations.AbstractDecorationValue, Net.TheVpc.Upa.Config.Decoration {
 
-        private Net.Vpc.Upa.Config.ConfigInfo mergedConfigInfo = null;
+        private Net.TheVpc.Upa.Config.ConfigInfo mergedConfigInfo = null;
 
-        private System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Config.DecorationValue> mergedAttributes = null;
+        private System.Collections.Generic.IDictionary<string , Net.TheVpc.Upa.Config.DecorationValue> mergedAttributes = null;
 
-        public virtual Net.Vpc.Upa.Config.DecorationValue Get(string name) {
-            System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Config.DecorationValue> a = GetAttributes();
-            Net.Vpc.Upa.Config.DecorationValue v = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.Vpc.Upa.Config.DecorationValue>(a,name);
+        public virtual Net.TheVpc.Upa.Config.DecorationValue Get(string name) {
+            System.Collections.Generic.IDictionary<string , Net.TheVpc.Upa.Config.DecorationValue> a = GetAttributes();
+            Net.TheVpc.Upa.Config.DecorationValue v = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.TheVpc.Upa.Config.DecorationValue>(a,name);
             if (v == null) {
                 throw new System.ArgumentException ("Attribute not found " + GetName() + "." + name);
             }
@@ -49,34 +49,34 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
         }
 
         public virtual object GetPrimitive(string name) {
-            return ((Net.Vpc.Upa.Impl.Config.Decorations.DecorationPrimitiveValue) Get(name)).GetValue();
+            return ((Net.TheVpc.Upa.Impl.Config.Decorations.DecorationPrimitiveValue) Get(name)).GetValue();
         }
 
-        protected internal virtual Net.Vpc.Upa.Config.DecorationValue Convert(object v, int pos) {
+        protected internal virtual Net.TheVpc.Upa.Config.DecorationValue Convert(object v, int pos) {
             if (v == null) {
-                return new Net.Vpc.Upa.Impl.Config.Decorations.DecorationPrimitiveValue(null, Net.Vpc.Upa.Config.ConfigInfo.DEFAULT);
+                return new Net.TheVpc.Upa.Impl.Config.Decorations.DecorationPrimitiveValue(null, Net.TheVpc.Upa.Config.ConfigInfo.DEFAULT);
             }
             if (v is System.Attribute) {
-                return new Net.Vpc.Upa.Impl.Config.Decorations.AnnotationDecoration((System.Attribute) v, Net.Vpc.Upa.Config.DecorationSourceType.TYPE, Net.Vpc.Upa.Impl.Util.PlatformUtils.GetUndefinedValue<Net.Vpc.Upa.Config.DecorationTarget>(typeof(Net.Vpc.Upa.Config.DecorationTarget)), null, null, pos);
+                return new Net.TheVpc.Upa.Impl.Config.Decorations.AnnotationDecoration((System.Attribute) v, Net.TheVpc.Upa.Config.DecorationSourceType.TYPE, Net.TheVpc.Upa.Impl.Util.PlatformUtils.GetUndefinedValue<Net.TheVpc.Upa.Config.DecorationTarget>(typeof(Net.TheVpc.Upa.Config.DecorationTarget)), null, null, pos);
             } else if ((v.GetType()).IsArray) {
                 int len = ((System.Array)(v)).Length;
-                Net.Vpc.Upa.Config.DecorationValue[] arr = new Net.Vpc.Upa.Config.DecorationValue[len];
+                Net.TheVpc.Upa.Config.DecorationValue[] arr = new Net.TheVpc.Upa.Config.DecorationValue[len];
                 for (int i = 0; i < arr.Length; i++) {
                     arr[i] = Convert(((System.Array)(v)).GetValue(i), i);
                 }
-                return new Net.Vpc.Upa.Impl.Config.Decorations.DecorationArray(arr, GetConfig());
-            } else if (v is Net.Vpc.Upa.Config.DecorationValue) {
-                return (Net.Vpc.Upa.Config.DecorationValue) v;
+                return new Net.TheVpc.Upa.Impl.Config.Decorations.DecorationArray(arr, GetConfig());
+            } else if (v is Net.TheVpc.Upa.Config.DecorationValue) {
+                return (Net.TheVpc.Upa.Config.DecorationValue) v;
             }
-            return new Net.Vpc.Upa.Impl.Config.Decorations.DecorationPrimitiveValue(v, GetConfig());
+            return new Net.TheVpc.Upa.Impl.Config.Decorations.DecorationPrimitiveValue(v, GetConfig());
         }
 
-        public virtual Net.Vpc.Upa.Config.Decoration GetDecoration(string name) {
-            return (Net.Vpc.Upa.Config.Decoration) Get(name);
+        public virtual Net.TheVpc.Upa.Config.Decoration GetDecoration(string name) {
+            return (Net.TheVpc.Upa.Config.Decoration) Get(name);
         }
 
-        public virtual Net.Vpc.Upa.Config.DecorationValue[] GetArray(string name) {
-            Net.Vpc.Upa.Impl.Config.Decorations.DecorationArray t = (Net.Vpc.Upa.Impl.Config.Decorations.DecorationArray) Get(name);
+        public virtual Net.TheVpc.Upa.Config.DecorationValue[] GetArray(string name) {
+            Net.TheVpc.Upa.Impl.Config.Decorations.DecorationArray t = (Net.TheVpc.Upa.Impl.Config.Decorations.DecorationArray) Get(name);
             if (t == null) {
                 return null;
             }
@@ -121,42 +121,42 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
         }
 
         public virtual  T GetEnum<T>(string name, System.Type type) {
-            return Net.Vpc.Upa.Impl.Util.PlatformUtils.Convert<T>(GetPrimitive(name), type);
+            return Net.TheVpc.Upa.Impl.Util.PlatformUtils.Convert<T>(GetPrimitive(name), type);
         }
 
         public virtual  T[] GetPrimitiveArray<T>(string name, System.Type type) {
-            Net.Vpc.Upa.Impl.Config.Decorations.DecorationArray t = (Net.Vpc.Upa.Impl.Config.Decorations.DecorationArray) Get(name);
+            Net.TheVpc.Upa.Impl.Config.Decorations.DecorationArray t = (Net.TheVpc.Upa.Impl.Config.Decorations.DecorationArray) Get(name);
             if (t == null) {
                 return default(T[]);
             }
-            Net.Vpc.Upa.Config.DecorationValue[] arr = t.GetValues();
+            Net.TheVpc.Upa.Config.DecorationValue[] arr = t.GetValues();
             T[] arr2 = (T[]) System.Array.CreateInstance(type,arr.Length);
             for (int i = 0; i < arr2.Length; i++) {
-                arr2[i] = (T) ((Net.Vpc.Upa.Impl.Config.Decorations.DecorationPrimitiveValue) arr[i]).GetValue();
+                arr2[i] = (T) ((Net.TheVpc.Upa.Impl.Config.Decorations.DecorationPrimitiveValue) arr[i]).GetValue();
             }
             return arr2;
         }
 
-        public virtual Net.Vpc.Upa.Config.Decoration CastName(string type) {
+        public virtual Net.TheVpc.Upa.Config.Decoration CastName(string type) {
             if (GetName().Equals(type)) {
                 throw new System.InvalidCastException("Expected " + type + " but got " + GetName());
             }
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Config.Decoration CastName(System.Type type) {
+        public virtual Net.TheVpc.Upa.Config.Decoration CastName(System.Type type) {
             return CastName((type).FullName);
         }
 
         public virtual void Merge() {
-            System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Config.DecorationValue> att = new System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Config.DecorationValue>();
-            Net.Vpc.Upa.Config.DecorationValue[] alternatives1 = GetAlternatives();
-            Net.Vpc.Upa.Config.DecorationValue[] alternatives = Shrink(alternatives1);
-            foreach (Net.Vpc.Upa.Config.DecorationValue alternative in alternatives) {
-                Net.Vpc.Upa.Config.Decoration d = (Net.Vpc.Upa.Config.Decoration) alternative;
-                foreach (System.Collections.Generic.KeyValuePair<string , Net.Vpc.Upa.Config.DecorationValue> e in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,Net.Vpc.Upa.Config.DecorationValue>>(d.GetAttributes())) {
-                    Net.Vpc.Upa.Impl.Config.Decorations.AbstractDecorationValue v1 = (Net.Vpc.Upa.Impl.Config.Decorations.AbstractDecorationValue) Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.Vpc.Upa.Config.DecorationValue>(att,(e).Key);
-                    Net.Vpc.Upa.Impl.Config.Decorations.AbstractDecorationValue v2 = (Net.Vpc.Upa.Impl.Config.Decorations.AbstractDecorationValue) (e).Value;
+            System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Config.DecorationValue> att = new System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Config.DecorationValue>();
+            Net.TheVpc.Upa.Config.DecorationValue[] alternatives1 = GetAlternatives();
+            Net.TheVpc.Upa.Config.DecorationValue[] alternatives = Shrink(alternatives1);
+            foreach (Net.TheVpc.Upa.Config.DecorationValue alternative in alternatives) {
+                Net.TheVpc.Upa.Config.Decoration d = (Net.TheVpc.Upa.Config.Decoration) alternative;
+                foreach (System.Collections.Generic.KeyValuePair<string , Net.TheVpc.Upa.Config.DecorationValue> e in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,Net.TheVpc.Upa.Config.DecorationValue>>(d.GetAttributes())) {
+                    Net.TheVpc.Upa.Impl.Config.Decorations.AbstractDecorationValue v1 = (Net.TheVpc.Upa.Impl.Config.Decorations.AbstractDecorationValue) Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.TheVpc.Upa.Config.DecorationValue>(att,(e).Key);
+                    Net.TheVpc.Upa.Impl.Config.Decorations.AbstractDecorationValue v2 = (Net.TheVpc.Upa.Impl.Config.Decorations.AbstractDecorationValue) (e).Value;
                     if (v1 == null) {
                         att[(e).Key]=v2;
                     } else {
@@ -165,39 +165,39 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
                 }
                 break;
             }
-            foreach (System.Collections.Generic.KeyValuePair<string , Net.Vpc.Upa.Config.DecorationValue> e in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,Net.Vpc.Upa.Config.DecorationValue>>(att)) {
-                ((Net.Vpc.Upa.Impl.Config.Decorations.AbstractDecoration) (e).Value).Merge();
+            foreach (System.Collections.Generic.KeyValuePair<string , Net.TheVpc.Upa.Config.DecorationValue> e in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,Net.TheVpc.Upa.Config.DecorationValue>>(att)) {
+                ((Net.TheVpc.Upa.Impl.Config.Decorations.AbstractDecoration) (e).Value).Merge();
             }
             if (alternatives.Length == 0) {
-                Net.Vpc.Upa.Config.DecorationValue last = alternatives1[alternatives1.Length - 1];
-                mergedAttributes = new System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Config.DecorationValue>();
-                mergedConfigInfo = new Net.Vpc.Upa.Config.ConfigInfo(last.GetConfig().GetOrder(), Net.Vpc.Upa.Config.ConfigAction.DELETE, last.GetConfig().GetPersistenceGroup(), last.GetConfig().GetPersistenceUnit());
+                Net.TheVpc.Upa.Config.DecorationValue last = alternatives1[alternatives1.Length - 1];
+                mergedAttributes = new System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Config.DecorationValue>();
+                mergedConfigInfo = new Net.TheVpc.Upa.Config.ConfigInfo(last.GetConfig().GetOrder(), Net.TheVpc.Upa.Config.ConfigAction.DELETE, last.GetConfig().GetPersistenceGroup(), last.GetConfig().GetPersistenceUnit());
             } else {
-                Net.Vpc.Upa.Config.DecorationValue last = alternatives[alternatives.Length - 1];
+                Net.TheVpc.Upa.Config.DecorationValue last = alternatives[alternatives.Length - 1];
                 mergedAttributes = att;
-                mergedConfigInfo = new Net.Vpc.Upa.Config.ConfigInfo(last.GetConfig().GetOrder(), Net.Vpc.Upa.Config.ConfigAction.MERGE, last.GetConfig().GetPersistenceGroup(), last.GetConfig().GetPersistenceUnit());
+                mergedConfigInfo = new Net.TheVpc.Upa.Config.ConfigInfo(last.GetConfig().GetOrder(), Net.TheVpc.Upa.Config.ConfigAction.MERGE, last.GetConfig().GetPersistenceGroup(), last.GetConfig().GetPersistenceUnit());
             }
         }
 
-        public override Net.Vpc.Upa.Config.ConfigInfo GetConfig() {
+        public override Net.TheVpc.Upa.Config.ConfigInfo GetConfig() {
             if (mergedConfigInfo != null) {
                 return mergedConfigInfo;
             }
             return GetConfigInfo0();
         }
 
-        protected internal abstract Net.Vpc.Upa.Config.ConfigInfo GetConfigInfo0();
+        protected internal abstract Net.TheVpc.Upa.Config.ConfigInfo GetConfigInfo0();
 
-        public virtual System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Config.DecorationValue> GetAttributes() {
+        public virtual System.Collections.Generic.IDictionary<string , Net.TheVpc.Upa.Config.DecorationValue> GetAttributes() {
             if (mergedAttributes != null) {
                 return mergedAttributes;
             }
             return GetAttributes0();
         }
 
-        protected internal abstract System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Config.DecorationValue> GetAttributes0();
+        protected internal abstract System.Collections.Generic.IDictionary<string , Net.TheVpc.Upa.Config.DecorationValue> GetAttributes0();
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
-        public abstract Net.Vpc.Upa.Config.DecorationTarget GetTarget();
+        public abstract Net.TheVpc.Upa.Config.DecorationTarget GetTarget();
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract string GetLocation();
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
@@ -207,6 +207,6 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract string GetLocationType();
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
-        public abstract Net.Vpc.Upa.Config.DecorationSourceType GetDecorationSourceType();
+        public abstract Net.TheVpc.Upa.Config.DecorationSourceType GetDecorationSourceType();
     }
 }

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config.Decorations
+namespace Net.TheVpc.Upa.Impl.Config.Decorations
 {
 
 
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
      *
      * @author taha.bensalah@gmail.com
      */
-    public class DefaultDecorationFilter : Net.Vpc.Upa.Impl.Config.Decorations.DecorationFilter {
+    public class DefaultDecorationFilter : Net.TheVpc.Upa.Impl.Config.Decorations.DecorationFilter {
 
         private System.Collections.Generic.ISet<string> typeAnnotations = new System.Collections.Generic.HashSet<string>();
 
@@ -31,16 +31,16 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
             return typeAnnotations.Contains(name);
         }
 
-        public virtual Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.Config.DecorationTarget> GetDecorationTargets() {
-            Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.Config.DecorationTarget> i = Net.Vpc.Upa.FlagSets.NoneOf<Net.Vpc.Upa.Config.DecorationTarget>();
+        public virtual Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.Config.DecorationTarget> GetDecorationTargets() {
+            Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.Config.DecorationTarget> i = Net.TheVpc.Upa.FlagSets.NoneOf<Net.TheVpc.Upa.Config.DecorationTarget>();
             if ((typeAnnotations).Count > 0) {
-                i = i.Add(Net.Vpc.Upa.Config.DecorationTarget.TYPE);
+                i = i.Add(Net.TheVpc.Upa.Config.DecorationTarget.TYPE);
             }
             if ((methodsAnnotations).Count > 0) {
-                i = i.Add(Net.Vpc.Upa.Config.DecorationTarget.METHOD);
+                i = i.Add(Net.TheVpc.Upa.Config.DecorationTarget.METHOD);
             }
             if ((fieldsAnnotations).Count > 0) {
-                i = i.Add(Net.Vpc.Upa.Config.DecorationTarget.FIELD);
+                i = i.Add(Net.TheVpc.Upa.Config.DecorationTarget.FIELD);
             }
             //        i += HIERARCHICAL;
             return i;
@@ -54,9 +54,9 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
             return fieldsAnnotations.Contains(name);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Config.Decorations.DefaultDecorationFilter AddDecorations(params System.Type [] all) {
+        public virtual Net.TheVpc.Upa.Impl.Config.Decorations.DefaultDecorationFilter AddDecorations(params System.Type [] all) {
             foreach (System.Type c in all) {
-                System.AttributeUsageAttribute t = (System.AttributeUsageAttribute) Net.Vpc.Upa.Impl.FwkConvertUtils.GetTypeCustomAttribute(c, typeof(System.AttributeUsageAttribute));
+                System.AttributeUsageAttribute t = (System.AttributeUsageAttribute) Net.TheVpc.Upa.Impl.FwkConvertUtils.GetTypeCustomAttribute(c, typeof(System.AttributeUsageAttribute));
                 if (t == null) {
                     throw new System.ArgumentException (c + " seems not to be an annotation");
                 }
@@ -73,7 +73,7 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Config.Decorations.DefaultDecorationFilter AddTypeDecorations(params string [] all) {
+        public virtual Net.TheVpc.Upa.Impl.Config.Decorations.DefaultDecorationFilter AddTypeDecorations(params string [] all) {
             foreach (string a in all) {
                 typeAnnotations.Add(a);
             }

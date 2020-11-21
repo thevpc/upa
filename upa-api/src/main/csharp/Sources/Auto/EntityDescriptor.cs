@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -29,9 +29,9 @@ namespace Net.Vpc.Upa
 
          System.Type GetEntityType();
 
-         Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.EntityModifier> GetModifiers();
+         Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.EntityModifier> GetModifiers();
 
-         Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.EntityModifier> GetExcludeModifiers();
+         Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.EntityModifier> GetExcludeModifiers();
 
          string GetPackagePath();
 
@@ -41,15 +41,15 @@ namespace Net.Vpc.Upa
 
          int GetPosition();
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Extensions.EntityExtensionDefinition> GetEntityExtensions();
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Extensions.EntityExtensionDefinition> GetEntityExtensions();
 
          object GetSource();
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.FieldDescriptor> GetFieldDescriptors();
+         System.Collections.Generic.IList<Net.TheVpc.Upa.FieldDescriptor> GetFieldDescriptors();
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.IndexDescriptor> GetIndexDescriptors();
+         System.Collections.Generic.IList<Net.TheVpc.Upa.IndexDescriptor> GetIndexDescriptors();
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.RelationshipDescriptor> GetRelationshipDescriptors();
+         System.Collections.Generic.IList<Net.TheVpc.Upa.RelationshipDescriptor> GetRelationshipDescriptors();
 
          System.Collections.Generic.IDictionary<string , object> GetProperties();
     }

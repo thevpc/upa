@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -30,55 +30,55 @@ namespace Net.Vpc.Upa.Impl.Util
             this.type = ValidateType(number.GetType());
         }
 
-        public virtual Net.Vpc.Upa.Impl.Util.XNumber Add(object other) {
-            return Add(new Net.Vpc.Upa.Impl.Util.XNumber(other));
+        public virtual Net.TheVpc.Upa.Impl.Util.XNumber Add(object other) {
+            return Add(new Net.TheVpc.Upa.Impl.Util.XNumber(other));
         }
 
-        public virtual Net.Vpc.Upa.Impl.Util.XNumber Negate() {
+        public virtual Net.TheVpc.Upa.Impl.Util.XNumber Negate() {
             if (type == typeof(byte?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(-ByteValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(-ByteValue());
             } else if (type == typeof(short?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(-ShortValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(-ShortValue());
             } else if (type == typeof(int?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(-IntValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(-IntValue());
             } else if (type == typeof(float?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(-FloatValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(-FloatValue());
             } else if (type == typeof(double?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(-DoubleValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(-DoubleValue());
             } else if (type == typeof(System.Numerics.BigInteger?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber((-(BigIntegerValue())));
+                return new Net.TheVpc.Upa.Impl.Util.XNumber((-(BigIntegerValue())));
             } else if (type == typeof(System.Decimal?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber((-(BigDecimalValue())));
+                return new Net.TheVpc.Upa.Impl.Util.XNumber((-(BigDecimalValue())));
             }
             throw new System.ArgumentException ("Invalid");
         }
 
-        public virtual Net.Vpc.Upa.Impl.Util.XNumber Inv() {
+        public virtual Net.TheVpc.Upa.Impl.Util.XNumber Inv() {
             if (type == typeof(byte?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(1.0 / ByteValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(1.0 / ByteValue());
             } else if (type == typeof(short?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(1.0 / ShortValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(1.0 / ShortValue());
             } else if (type == typeof(int?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(1.0 / IntValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(1.0 / IntValue());
             } else if (type == typeof(float?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(1.0f / FloatValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(1.0f / FloatValue());
             } else if (type == typeof(double?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(1.0 / DoubleValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(1.0 / DoubleValue());
             } else if (type == typeof(System.Numerics.BigInteger?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(((System.Convert.ToDecimal("1"))/(BigDecimalValue())));
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(((System.Convert.ToDecimal("1"))/(BigDecimalValue())));
             } else if (type == typeof(System.Decimal?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(((System.Convert.ToDecimal("1"))/(BigDecimalValue())));
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(((System.Convert.ToDecimal("1"))/(BigDecimalValue())));
             }
             throw new System.ArgumentException ("Invalid");
         }
 
-        public virtual Net.Vpc.Upa.Impl.Util.XNumber Complement() {
+        public virtual Net.TheVpc.Upa.Impl.Util.XNumber Complement() {
             if (type == typeof(byte?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(~ByteValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(~ByteValue());
             } else if (type == typeof(short?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(~ShortValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(~ShortValue());
             } else if (type == typeof(int?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(~IntValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(~IntValue());
             } else if (type == typeof(float?)) {
             } else if (type == typeof(double?)) {
             } else if (type == typeof(System.Numerics.BigInteger?)) {
@@ -87,82 +87,82 @@ namespace Net.Vpc.Upa.Impl.Util
             throw new System.ArgumentException ("Unsupported");
         }
 
-        public virtual Net.Vpc.Upa.Impl.Util.XNumber Add(Net.Vpc.Upa.Impl.Util.XNumber other) {
+        public virtual Net.TheVpc.Upa.Impl.Util.XNumber Add(Net.TheVpc.Upa.Impl.Util.XNumber other) {
             System.Type c = BestFit(type, other.type);
             if (c == typeof(byte?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(ByteValue() + other.ByteValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(ByteValue() + other.ByteValue());
             } else if (c == typeof(short?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(ShortValue() + other.ShortValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(ShortValue() + other.ShortValue());
             } else if (c == typeof(int?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(IntValue() + other.IntValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(IntValue() + other.IntValue());
             } else if (c == typeof(float?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(FloatValue() + other.FloatValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(FloatValue() + other.FloatValue());
             } else if (c == typeof(double?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(DoubleValue() + other.DoubleValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(DoubleValue() + other.DoubleValue());
             } else if (c == typeof(System.Numerics.BigInteger?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(((BigIntegerValue())+(other.BigIntegerValue())));
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(((BigIntegerValue())+(other.BigIntegerValue())));
             } else if (c == typeof(System.Decimal?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(((BigDecimalValue())+(other.BigDecimalValue())));
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(((BigDecimalValue())+(other.BigDecimalValue())));
             }
             throw new System.ArgumentException ("Invalid");
         }
 
-        public virtual Net.Vpc.Upa.Impl.Util.XNumber Subtract(Net.Vpc.Upa.Impl.Util.XNumber other) {
+        public virtual Net.TheVpc.Upa.Impl.Util.XNumber Subtract(Net.TheVpc.Upa.Impl.Util.XNumber other) {
             System.Type c = BestFit(type, other.type);
             if (c == typeof(byte?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(ByteValue() - other.ByteValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(ByteValue() - other.ByteValue());
             } else if (c == typeof(short?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(ShortValue() - other.ShortValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(ShortValue() - other.ShortValue());
             } else if (c == typeof(int?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(IntValue() - other.IntValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(IntValue() - other.IntValue());
             } else if (c == typeof(float?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(FloatValue() - other.FloatValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(FloatValue() - other.FloatValue());
             } else if (c == typeof(double?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(DoubleValue() - other.DoubleValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(DoubleValue() - other.DoubleValue());
             } else if (c == typeof(System.Numerics.BigInteger?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(((BigIntegerValue())-(other.BigIntegerValue())));
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(((BigIntegerValue())-(other.BigIntegerValue())));
             } else if (c == typeof(System.Decimal?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(((BigDecimalValue())-(other.BigDecimalValue())));
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(((BigDecimalValue())-(other.BigDecimalValue())));
             }
             throw new System.ArgumentException ("Invalid");
         }
 
-        public virtual Net.Vpc.Upa.Impl.Util.XNumber Multiply(Net.Vpc.Upa.Impl.Util.XNumber other) {
+        public virtual Net.TheVpc.Upa.Impl.Util.XNumber Multiply(Net.TheVpc.Upa.Impl.Util.XNumber other) {
             System.Type c = BestFit(type, other.type);
             if (c == typeof(byte?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(ByteValue() * other.ByteValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(ByteValue() * other.ByteValue());
             } else if (c == typeof(short?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(ShortValue() * other.ShortValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(ShortValue() * other.ShortValue());
             } else if (c == typeof(int?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(IntValue() * other.IntValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(IntValue() * other.IntValue());
             } else if (c == typeof(float?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(FloatValue() * other.FloatValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(FloatValue() * other.FloatValue());
             } else if (c == typeof(double?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(DoubleValue() * other.DoubleValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(DoubleValue() * other.DoubleValue());
             } else if (c == typeof(System.Numerics.BigInteger?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(((BigIntegerValue())*(other.BigIntegerValue())));
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(((BigIntegerValue())*(other.BigIntegerValue())));
             } else if (c == typeof(System.Decimal?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(((BigDecimalValue())*(other.BigDecimalValue())));
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(((BigDecimalValue())*(other.BigDecimalValue())));
             }
             throw new System.ArgumentException ("Invalid");
         }
 
-        public virtual Net.Vpc.Upa.Impl.Util.XNumber Divide(Net.Vpc.Upa.Impl.Util.XNumber other) {
+        public virtual Net.TheVpc.Upa.Impl.Util.XNumber Divide(Net.TheVpc.Upa.Impl.Util.XNumber other) {
             System.Type c = BestFit(type, other.type);
             if (c == typeof(byte?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(ByteValue() / other.ByteValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(ByteValue() / other.ByteValue());
             } else if (c == typeof(short?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(ShortValue() / other.ShortValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(ShortValue() / other.ShortValue());
             } else if (c == typeof(int?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(IntValue() / other.IntValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(IntValue() / other.IntValue());
             } else if (c == typeof(float?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(FloatValue() / other.FloatValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(FloatValue() / other.FloatValue());
             } else if (c == typeof(double?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(DoubleValue() / other.DoubleValue());
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(DoubleValue() / other.DoubleValue());
             } else if (c == typeof(System.Numerics.BigInteger?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(((BigIntegerValue())/(other.BigIntegerValue())));
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(((BigIntegerValue())/(other.BigIntegerValue())));
             } else if (c == typeof(System.Decimal?)) {
-                return new Net.Vpc.Upa.Impl.Util.XNumber(((BigDecimalValue())/(other.BigDecimalValue())));
+                return new Net.TheVpc.Upa.Impl.Util.XNumber(((BigDecimalValue())/(other.BigDecimalValue())));
             }
             throw new System.ArgumentException ("Invalid");
         }
@@ -189,8 +189,8 @@ namespace Net.Vpc.Upa.Impl.Util
 
         public override int GetHashCode() {
             int hash = 7;
-            hash = 67 * hash + Net.Vpc.Upa.Impl.FwkConvertUtils.ObjectHashCode(this.type);
-            hash = 67 * hash + Net.Vpc.Upa.Impl.FwkConvertUtils.ObjectHashCode(this.number);
+            hash = 67 * hash + Net.TheVpc.Upa.Impl.FwkConvertUtils.ObjectHashCode(this.type);
+            hash = 67 * hash + Net.TheVpc.Upa.Impl.FwkConvertUtils.ObjectHashCode(this.number);
             return hash;
         }
 
@@ -202,31 +202,31 @@ namespace Net.Vpc.Upa.Impl.Util
             if (GetType() != obj.GetType()) {
                 return false;
             }
-            Net.Vpc.Upa.Impl.Util.XNumber other = (Net.Vpc.Upa.Impl.Util.XNumber) obj;
+            Net.TheVpc.Upa.Impl.Util.XNumber other = (Net.TheVpc.Upa.Impl.Util.XNumber) obj;
             if (CompareTo(other) != 0) {
                 return false;
             }
             return true;
         }
 
-        public virtual bool Equals(Net.Vpc.Upa.Impl.Util.XNumber other) {
+        public virtual bool Equals(Net.TheVpc.Upa.Impl.Util.XNumber other) {
             return CompareTo(other) == 0;
         }
 
-        public static int Compare(Net.Vpc.Upa.Impl.Util.XNumber a, Net.Vpc.Upa.Impl.Util.XNumber b) {
+        public static int Compare(Net.TheVpc.Upa.Impl.Util.XNumber a, Net.TheVpc.Upa.Impl.Util.XNumber b) {
             if (a != null && b != null) {
                 return a.CompareTo(b);
             }
             if (a == null) {
-                a = new Net.Vpc.Upa.Impl.Util.XNumber(System.Double.NaN);
+                a = new Net.TheVpc.Upa.Impl.Util.XNumber(System.Double.NaN);
             }
             if (b == null) {
-                b = new Net.Vpc.Upa.Impl.Util.XNumber(System.Double.NaN);
+                b = new Net.TheVpc.Upa.Impl.Util.XNumber(System.Double.NaN);
             }
             return a.CompareTo(b);
         }
 
-        public virtual int CompareTo(Net.Vpc.Upa.Impl.Util.XNumber other) {
+        public virtual int CompareTo(Net.TheVpc.Upa.Impl.Util.XNumber other) {
             System.Type c = BestFit(type, other.type);
             if (c == typeof(byte?)) {
                 return ByteValue().CompareTo(other.ByteValue());
@@ -321,10 +321,10 @@ namespace Net.Vpc.Upa.Impl.Util
                 if (number is System.Numerics.BigInteger?) {
                     return ((System.Numerics.BigInteger?) number);
                 }
-                return Net.Vpc.Upa.Impl.FwkConvertUtils.CreateBigInteger("" + System.Convert.ToInt32(number));
+                return Net.TheVpc.Upa.Impl.FwkConvertUtils.CreateBigInteger("" + System.Convert.ToInt32(number));
             }
             if (IsFloating()) {
-                return Net.Vpc.Upa.Impl.FwkConvertUtils.CreateBigInteger("" + System.Convert.ToInt32(number));
+                return Net.TheVpc.Upa.Impl.FwkConvertUtils.CreateBigInteger("" + System.Convert.ToInt32(number));
             }
             //return new BigDecimal(number.doubleValue()).toBigInteger();
             throw new System.ArgumentException ("Invalid bigDecimaValue()");

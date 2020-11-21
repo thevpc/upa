@@ -11,20 +11,20 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledexpression
 {
 
-    public sealed class IsHierarchyDescendentCompiled : Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledFunction {
+    public sealed class IsHierarchyDescendentCompiled : Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledFunction {
 
 
 
-        private Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression ancestorExpression;
+        private Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression ancestorExpression;
 
-        private Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression childExpression;
+        private Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression childExpression;
 
-        private Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName entityName;
+        private Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName entityName;
 
-        public IsHierarchyDescendentCompiled(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression ancestorExpression, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression childExpression, Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName entityName)  : base("treeAncestor"){
+        public IsHierarchyDescendentCompiled(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression ancestorExpression, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression childExpression, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName entityName)  : base("treeAncestor"){
 
             this.ancestorExpression = ancestorExpression;
             this.childExpression = childExpression;
@@ -34,20 +34,20 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             ProtectedAddArgument(entityName);
         }
 
-        public Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetAncestorExpression() {
+        public Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetAncestorExpression() {
             return ancestorExpression;
         }
 
-        public Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetChildExpression() {
+        public Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetChildExpression() {
             return childExpression;
         }
 
-        public Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName GetEntityName() {
+        public Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName GetEntityName() {
             return entityName;
         }
 
-        public override Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
-            return new Net.Vpc.Upa.Impl.Uql.Compiledexpression.IsHierarchyDescendentCompiled(ancestorExpression.Copy(), childExpression.Copy(), (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName) entityName.Copy());
+        public override Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
+            return new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.IsHierarchyDescendentCompiled(ancestorExpression.Copy(), childExpression.Copy(), (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName) entityName.Copy());
         }
     }
 }

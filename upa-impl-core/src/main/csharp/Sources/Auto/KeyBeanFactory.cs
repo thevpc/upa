@@ -12,7 +12,7 @@
 
 
 using System.Linq;
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
@@ -20,21 +20,21 @@ namespace Net.Vpc.Upa.Impl
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 8/27/12 1:51 AM
      */
-    public class KeyBeanFactory : Net.Vpc.Upa.Impl.KeyFactory {
+    public class KeyBeanFactory : Net.TheVpc.Upa.Impl.KeyFactory {
 
         private bool isEntityKey;
 
-        private Net.Vpc.Upa.BeanType bnfo;
+        private Net.TheVpc.Upa.BeanType bnfo;
 
         private System.Type idType;
 
         private string[] fieldNames;
 
-        private Net.Vpc.Upa.Entity entity;
+        private Net.TheVpc.Upa.Entity entity;
 
-        private Net.Vpc.Upa.Entity idEntity;
+        private Net.TheVpc.Upa.Entity idEntity;
 
-        public KeyBeanFactory(System.Type keyType, Net.Vpc.Upa.Entity entity) {
+        public KeyBeanFactory(System.Type keyType, Net.TheVpc.Upa.Entity entity) {
             this.idType = keyType;
             this.entity = entity;
         }
@@ -50,7 +50,7 @@ namespace Net.Vpc.Upa.Impl
                     //                }
                     this.fieldNames = fn.ToArray();
                 } else {
-                    bnfo = Net.Vpc.Upa.Impl.Util.PlatformBeanTypeRepository.GetInstance().GetBeanType(idType);
+                    bnfo = Net.TheVpc.Upa.Impl.Util.PlatformBeanTypeRepository.GetInstance().GetBeanType(idType);
                     System.Collections.Generic.ISet<string> fn = bnfo.GetPropertyNames();
                     this.fieldNames = fn.ToArray();
                 }
@@ -63,11 +63,11 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
-        public virtual Net.Vpc.Upa.Key CreateKey(params object [] keyValues) {
+        public virtual Net.TheVpc.Upa.Key CreateKey(params object [] keyValues) {
             if (keyValues == null) {
                 return null;
             }
-            return new Net.Vpc.Upa.Impl.DefaultKey(keyValues);
+            return new Net.TheVpc.Upa.Impl.DefaultKey(keyValues);
         }
 
 
@@ -92,7 +92,7 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
-        public virtual object GetId(Net.Vpc.Upa.Key unstructuredKey) {
+        public virtual object GetId(Net.TheVpc.Upa.Key unstructuredKey) {
             if (unstructuredKey == null) {
                 return null;
             }
@@ -100,7 +100,7 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
-        public virtual Net.Vpc.Upa.Key GetKey(object id) {
+        public virtual Net.TheVpc.Upa.Key GetKey(object id) {
             if (id == null) {
                 return null;
             }
@@ -111,7 +111,7 @@ namespace Net.Vpc.Upa.Impl
                 //                value[i] = entityFactory.getProperty(key, fieldNames[i]);
                 //            }
                 if (!idType.IsInstanceOfType(id)) {
-                    Net.Vpc.Upa.Entity ee = entity.GetPersistenceUnit().FindEntity(idType);
+                    Net.TheVpc.Upa.Entity ee = entity.GetPersistenceUnit().FindEntity(idType);
                     if (ee != null) {
                         //check assume this is the id of the entity ee
                         id = ee.GetBuilder().IdToObject<R>(id);

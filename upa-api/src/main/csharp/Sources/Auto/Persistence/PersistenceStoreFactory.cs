@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
 
@@ -20,8 +20,8 @@ namespace Net.Vpc.Upa.Persistence
      */
     public interface PersistenceStoreFactory {
 
-         Net.Vpc.Upa.Persistence.PersistenceStore CreatePersistenceStore(Net.Vpc.Upa.Persistence.ConnectionProfile connectionProfile, Net.Vpc.Upa.ObjectFactory factory, Net.Vpc.Upa.Properties parameters);
+         Net.TheVpc.Upa.Persistence.PersistenceStore CreatePersistenceStore(Net.TheVpc.Upa.Persistence.ConnectionProfile connectionProfile, Net.TheVpc.Upa.ObjectFactory factory, Net.TheVpc.Upa.Properties parameters);
 
-         void Configure(Net.Vpc.Upa.ObjectFactory factory);
+         void Configure(Net.TheVpc.Upa.ObjectFactory factory);
     }
 }

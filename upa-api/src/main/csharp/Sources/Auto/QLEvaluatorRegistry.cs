@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     /**
@@ -20,16 +20,16 @@ namespace Net.Vpc.Upa
      */
     public interface QLEvaluatorRegistry {
 
-         void RegisterTypeEvaluator(System.Type type, Net.Vpc.Upa.QLTypeEvaluator t);
+         void RegisterTypeEvaluator(System.Type type, Net.TheVpc.Upa.QLTypeEvaluator t);
 
-         void RegisterFunctionEvaluator(string name, Net.Vpc.Upa.QLTypeEvaluator t);
+         void RegisterFunctionEvaluator(string name, Net.TheVpc.Upa.QLTypeEvaluator t);
 
-         void RegisterFunctionEvaluator(string name, Net.Vpc.Upa.Function t);
+         void RegisterFunctionEvaluator(string name, Net.TheVpc.Upa.Function t);
 
          void UnregisterFunctionEvaluator(string name);
 
          void UnregisterTypeEvaluator(System.Type type);
 
-         Net.Vpc.Upa.QLTypeEvaluator GetTypeEvaluator(System.Type type);
+         Net.TheVpc.Upa.QLTypeEvaluator GetTypeEvaluator(System.Type type);
     }
 }

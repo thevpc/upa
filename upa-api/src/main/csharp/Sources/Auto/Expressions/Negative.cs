@@ -11,20 +11,20 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
-    public sealed class Negative : Net.Vpc.Upa.Expressions.UnaryOperatorExpression {
+    public sealed class Negative : Net.TheVpc.Upa.Expressions.UnaryOperatorExpression {
 
 
 
-        public Negative(Net.Vpc.Upa.Expressions.Expression expression)  : base(Net.Vpc.Upa.Expressions.UnaryOperator.NEGATIVE, "-", expression){
+        public Negative(Net.TheVpc.Upa.Expressions.Expression expression)  : base(Net.TheVpc.Upa.Expressions.UnaryOperator.NEGATIVE, "-", expression){
 
         }
 
 
-        public override Net.Vpc.Upa.Expressions.Expression Copy() {
-            Net.Vpc.Upa.Expressions.Negative o = new Net.Vpc.Upa.Expressions.Negative(GetExpression().Copy());
+        public override Net.TheVpc.Upa.Expressions.Expression Copy() {
+            Net.TheVpc.Upa.Expressions.Negative o = new Net.TheVpc.Upa.Expressions.Negative(GetExpression().Copy());
             return o;
         }
     }

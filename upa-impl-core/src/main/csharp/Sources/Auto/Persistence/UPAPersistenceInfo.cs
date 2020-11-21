@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -20,11 +20,11 @@ namespace Net.Vpc.Upa.Impl.Persistence
     * @creationdate 1/8/13 1:53 AM*/
     internal class UPAPersistenceInfo {
 
-        internal Net.Vpc.Upa.UPAObject @object;
+        internal Net.TheVpc.Upa.UPAObject @object;
 
-        internal System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Impl.Persistence.PersistentObjectInfo> persistentObjects = new System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Impl.Persistence.PersistentObjectInfo>();
+        internal System.Collections.Generic.IDictionary<string , Net.TheVpc.Upa.Impl.Persistence.PersistentObjectInfo> persistentObjects = new System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Impl.Persistence.PersistentObjectInfo>();
 
-        internal UPAPersistenceInfo(Net.Vpc.Upa.UPAObject @object) {
+        internal UPAPersistenceInfo(Net.TheVpc.Upa.UPAObject @object) {
             this.@object = @object;
         }
     }

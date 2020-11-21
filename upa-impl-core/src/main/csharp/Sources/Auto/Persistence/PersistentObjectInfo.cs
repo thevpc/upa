@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -20,24 +20,24 @@ namespace Net.Vpc.Upa.Impl.Persistence
     * @creationdate 1/8/13 1:54 AM*/
     public class PersistentObjectInfo {
 
-        private Net.Vpc.Upa.UPAObject @object;
+        private Net.TheVpc.Upa.UPAObject @object;
 
         private string type;
 
-        private Net.Vpc.Upa.PersistenceState persistenceState = Net.Vpc.Upa.PersistenceState.UNKNOWN;
+        private Net.TheVpc.Upa.PersistenceState persistenceState = Net.TheVpc.Upa.PersistenceState.UNKNOWN;
 
         private string persistentName;
 
-        internal PersistentObjectInfo(Net.Vpc.Upa.UPAObject @object, string type) {
+        internal PersistentObjectInfo(Net.TheVpc.Upa.UPAObject @object, string type) {
             this.@object = @object;
             this.type = type;
         }
 
-        public virtual Net.Vpc.Upa.PersistenceState GetPersistenceState() {
+        public virtual Net.TheVpc.Upa.PersistenceState GetPersistenceState() {
             return persistenceState;
         }
 
-        public virtual void SetPersistenceState(Net.Vpc.Upa.PersistenceState persistenceState) {
+        public virtual void SetPersistenceState(Net.TheVpc.Upa.PersistenceState persistenceState) {
             this.persistenceState = persistenceState;
         }
 

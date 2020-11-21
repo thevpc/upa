@@ -12,7 +12,7 @@
 
 
 using System.Linq;
-namespace Net.Vpc.Upa.Impl.Config
+namespace Net.TheVpc.Upa.Impl.Config
 {
 
 
@@ -22,9 +22,9 @@ namespace Net.Vpc.Upa.Impl.Config
      */
     public class URLAnnotationStrategySupport {
 
-        private static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.Vpc.Upa.Impl.Config.URLAnnotationStrategySupport)).FullName);
+        private static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.TheVpc.Upa.Impl.Config.URLAnnotationStrategySupport)).FullName);
 
-        private static readonly System.Type[] persistenceUnitItemDefinitionListenerTypes = new System.Type[] { typeof(Net.Vpc.Upa.Callbacks.PackageDefinitionListener), typeof(Net.Vpc.Upa.Callbacks.SectionDefinitionListener), typeof(Net.Vpc.Upa.Callbacks.EntityDefinitionListener), typeof(Net.Vpc.Upa.Callbacks.FieldDefinitionListener), typeof(Net.Vpc.Upa.Callbacks.IndexDefinitionListener), typeof(Net.Vpc.Upa.Callbacks.TriggerDefinitionListener), typeof(Net.Vpc.Upa.Callbacks.RelationshipDefinitionListener) };
+        private static readonly System.Type[] persistenceUnitItemDefinitionListenerTypes = new System.Type[] { typeof(Net.TheVpc.Upa.Callbacks.PackageDefinitionListener), typeof(Net.TheVpc.Upa.Callbacks.SectionDefinitionListener), typeof(Net.TheVpc.Upa.Callbacks.EntityDefinitionListener), typeof(Net.TheVpc.Upa.Callbacks.FieldDefinitionListener), typeof(Net.TheVpc.Upa.Callbacks.IndexDefinitionListener), typeof(Net.TheVpc.Upa.Callbacks.TriggerDefinitionListener), typeof(Net.TheVpc.Upa.Callbacks.RelationshipDefinitionListener) };
 
         public static bool IsPersistenceUnitItemDefinitionListener(System.Type c) {
             foreach (System.Type p in persistenceUnitItemDefinitionListenerTypes) {
@@ -45,13 +45,13 @@ namespace Net.Vpc.Upa.Impl.Config
             return all.ToArray();
         }
 
-        public virtual void Scan(Net.Vpc.Upa.UPAContext context, Net.Vpc.Upa.Config.ScanSource source, Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository decorationRepository, Net.Vpc.Upa.ScanListener listener) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void Scan(Net.TheVpc.Upa.UPAContext context, Net.TheVpc.Upa.Config.ScanSource source, Net.TheVpc.Upa.Impl.Config.Decorations.DecorationRepository decorationRepository, Net.TheVpc.Upa.ScanListener listener) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             try {
-                Net.Vpc.Upa.Impl.Util.Classpath.DecorationParser parser = new Net.Vpc.Upa.Impl.Util.Classpath.DecorationParser(Net.Vpc.Upa.Impl.Util.UPAUtils.ToConfigurationStrategy(source).ToIterable(context), new Net.Vpc.Upa.Impl.Config.Decorations.DefaultDecorationFilter().AddDecorations(typeof(Net.Vpc.Upa.Config.Callback), typeof(Net.Vpc.Upa.Config.OnAlter), typeof(Net.Vpc.Upa.Config.OnCreate), typeof(Net.Vpc.Upa.Config.OnDrop), typeof(Net.Vpc.Upa.Config.OnRemove), typeof(Net.Vpc.Upa.Config.OnPersist), typeof(Net.Vpc.Upa.Config.OnRemove), typeof(Net.Vpc.Upa.Config.OnUpdate), typeof(Net.Vpc.Upa.Config.OnUpdateFormula), typeof(Net.Vpc.Upa.Config.OnInitialize), typeof(Net.Vpc.Upa.Config.OnReset), typeof(Net.Vpc.Upa.Config.SecurityContext), typeof(Net.Vpc.Upa.Config.PersistenceUnit), typeof(Net.Vpc.Upa.Config.PersistenceNameStrategy), typeof(Net.Vpc.Upa.Config.Properties), typeof(Net.Vpc.Upa.Config.Property)).AddTypeDecorations("javax.annotation.PostConstruct"), null, null, decorationRepository);
+                Net.TheVpc.Upa.Impl.Util.Classpath.DecorationParser parser = new Net.TheVpc.Upa.Impl.Util.Classpath.DecorationParser(Net.TheVpc.Upa.Impl.Util.UPAUtils.ToConfigurationStrategy(source).ToIterable(context), new Net.TheVpc.Upa.Impl.Config.Decorations.DefaultDecorationFilter().AddDecorations(typeof(Net.TheVpc.Upa.Config.Callback), typeof(Net.TheVpc.Upa.Config.OnAlter), typeof(Net.TheVpc.Upa.Config.OnCreate), typeof(Net.TheVpc.Upa.Config.OnDrop), typeof(Net.TheVpc.Upa.Config.OnRemove), typeof(Net.TheVpc.Upa.Config.OnPersist), typeof(Net.TheVpc.Upa.Config.OnRemove), typeof(Net.TheVpc.Upa.Config.OnUpdate), typeof(Net.TheVpc.Upa.Config.OnUpdateFormula), typeof(Net.TheVpc.Upa.Config.OnInitialize), typeof(Net.TheVpc.Upa.Config.OnReset), typeof(Net.TheVpc.Upa.Config.SecurityContext), typeof(Net.TheVpc.Upa.Config.PersistenceUnit), typeof(Net.TheVpc.Upa.Config.PersistenceNameStrategy), typeof(Net.TheVpc.Upa.Config.Properties), typeof(Net.TheVpc.Upa.Config.Property)).AddTypeDecorations("javax.annotation.PostConstruct"), null, null, decorationRepository);
                 parser.Parse();
                 //repository that contains just the scanned classes
                 //older classes
-                Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository newDecorationRepository = parser.GetNewDecorationRepository();
+                Net.TheVpc.Upa.Impl.Config.Decorations.DecorationRepository newDecorationRepository = parser.GetNewDecorationRepository();
                 ProcessJAVAXAnnotations(decorationRepository, newDecorationRepository, source.IsNoIgnore());
                 //            Map<Class, Object> instances = new HashMap<Class, Object>();
                 //            for (PersistenceGroupDefinitionListener old : context.getPersistenceGroupDefinitionListeners()) {
@@ -59,276 +59,276 @@ namespace Net.Vpc.Upa.Impl.Config
                 //                    instances.put(old.getClass(), old);
                 //                }
                 //            }
-                foreach (Net.Vpc.Upa.Config.Decoration dec in newDecorationRepository.GetDeclaredDecorations((typeof(Net.Vpc.Upa.Config.Callback)).FullName)) {
-                    System.Type tt = Net.Vpc.Upa.Impl.Util.PlatformUtils.ForName(dec.GetLocationType());
-                    Net.Vpc.Upa.Config.Decoration ignored = source.IsNoIgnore() ? null : newDecorationRepository.GetTypeDecoration(dec.GetLocationType(), (typeof(Net.Vpc.Upa.Config.Ignore)).FullName);
+                foreach (Net.TheVpc.Upa.Config.Decoration dec in newDecorationRepository.GetDeclaredDecorations((typeof(Net.TheVpc.Upa.Config.Callback)).FullName)) {
+                    System.Type tt = Net.TheVpc.Upa.Impl.Util.PlatformUtils.ForName(dec.GetLocationType());
+                    Net.TheVpc.Upa.Config.Decoration ignored = source.IsNoIgnore() ? null : newDecorationRepository.GetTypeDecoration(dec.GetLocationType(), (typeof(Net.TheVpc.Upa.Config.Ignore)).FullName);
                     if (ignored == null) {
-                        if (typeof(Net.Vpc.Upa.Callbacks.PersistenceGroupDefinitionListener).IsAssignableFrom(tt)) {
+                        if (typeof(Net.TheVpc.Upa.Callbacks.PersistenceGroupDefinitionListener).IsAssignableFrom(tt)) {
                             if (listener != null) {
-                                listener.ContextItemScanned(new Net.Vpc.Upa.ScanEvent(context, null, null, typeof(Net.Vpc.Upa.Callbacks.PersistenceGroupDefinitionListener), tt, null, null, dec, null));
+                                listener.ContextItemScanned(new Net.TheVpc.Upa.ScanEvent(context, null, null, typeof(Net.TheVpc.Upa.Callbacks.PersistenceGroupDefinitionListener), tt, null, null, dec, null));
                             }
                         }
                     }
                 }
-                System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Util.OrderedIem<Net.Vpc.Upa.Persistence.PersistenceUnitConfig>> persistenceUnitConfigs = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Util.OrderedIem<Net.Vpc.Upa.Persistence.PersistenceUnitConfig>>();
-                foreach (Net.Vpc.Upa.Persistence.PersistenceGroupConfig persistenceGroupConfig in context.GetBootstrapContextConfig().GetPersistenceGroups()) {
-                    foreach (Net.Vpc.Upa.Persistence.PersistenceUnitConfig persistenceUnitConfig in persistenceGroupConfig.GetPersistenceUnits()) {
-                        persistenceUnitConfigs.Add(new Net.Vpc.Upa.Impl.Util.OrderedIem<Net.Vpc.Upa.Persistence.PersistenceUnitConfig>(System.Int32.MaxValue, persistenceUnitConfig));
+                System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Util.OrderedIem<Net.TheVpc.Upa.Persistence.PersistenceUnitConfig>> persistenceUnitConfigs = new System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Util.OrderedIem<Net.TheVpc.Upa.Persistence.PersistenceUnitConfig>>();
+                foreach (Net.TheVpc.Upa.Persistence.PersistenceGroupConfig persistenceGroupConfig in context.GetBootstrapContextConfig().GetPersistenceGroups()) {
+                    foreach (Net.TheVpc.Upa.Persistence.PersistenceUnitConfig persistenceUnitConfig in persistenceGroupConfig.GetPersistenceUnits()) {
+                        persistenceUnitConfigs.Add(new Net.TheVpc.Upa.Impl.Util.OrderedIem<Net.TheVpc.Upa.Persistence.PersistenceUnitConfig>(System.Int32.MaxValue, persistenceUnitConfig));
                     }
                 }
-                foreach (Net.Vpc.Upa.Config.Decoration configPersistenceUnit in newDecorationRepository.GetDeclaredDecorations((typeof(Net.Vpc.Upa.Config.PersistenceUnit)).FullName)) {
-                    Net.Vpc.Upa.Config.Decoration ignored = source.IsNoIgnore() ? null : newDecorationRepository.GetTypeDecoration(configPersistenceUnit.GetLocationType(), (typeof(Net.Vpc.Upa.Config.Ignore)).FullName);
+                foreach (Net.TheVpc.Upa.Config.Decoration configPersistenceUnit in newDecorationRepository.GetDeclaredDecorations((typeof(Net.TheVpc.Upa.Config.PersistenceUnit)).FullName)) {
+                    Net.TheVpc.Upa.Config.Decoration ignored = source.IsNoIgnore() ? null : newDecorationRepository.GetTypeDecoration(configPersistenceUnit.GetLocationType(), (typeof(Net.TheVpc.Upa.Config.Ignore)).FullName);
                     if (ignored == null) {
-                        Net.Vpc.Upa.Persistence.PersistenceUnitConfig c = new Net.Vpc.Upa.Persistence.PersistenceUnitConfig();
-                        c.SetName(Net.Vpc.Upa.Impl.Util.StringUtils.Trim(configPersistenceUnit.GetString("name")));
-                        c.SetPersistenceGroup(Net.Vpc.Upa.Impl.Util.StringUtils.Trim(configPersistenceUnit.GetString("persistenceGroup")));
+                        Net.TheVpc.Upa.Persistence.PersistenceUnitConfig c = new Net.TheVpc.Upa.Persistence.PersistenceUnitConfig();
+                        c.SetName(Net.TheVpc.Upa.Impl.Util.StringUtils.Trim(configPersistenceUnit.GetString("name")));
+                        c.SetPersistenceGroup(Net.TheVpc.Upa.Impl.Util.StringUtils.Trim(configPersistenceUnit.GetString("persistenceGroup")));
                         foreach (object configPropertyObj in configPersistenceUnit.GetArray("properties")) {
-                            Net.Vpc.Upa.Config.Decoration configProperty = (Net.Vpc.Upa.Config.Decoration) configPropertyObj;
-                            object v = Net.Vpc.Upa.Impl.Util.UPAUtils.CreateValue(new Net.Vpc.Upa.Property(configProperty.GetString("name"), configProperty.GetString("value"), configProperty.GetString("type"), configProperty.GetString("format")));
+                            Net.TheVpc.Upa.Config.Decoration configProperty = (Net.TheVpc.Upa.Config.Decoration) configPropertyObj;
+                            object v = Net.TheVpc.Upa.Impl.Util.UPAUtils.CreateValue(new Net.TheVpc.Upa.Property(configProperty.GetString("name"), configProperty.GetString("value"), configProperty.GetString("type"), configProperty.GetString("format")));
                             c.GetProperties()[configProperty.GetString("name")]=v;
                         }
-                        persistenceUnitConfigs.Add(new Net.Vpc.Upa.Impl.Util.OrderedIem<Net.Vpc.Upa.Persistence.PersistenceUnitConfig>(configPersistenceUnit.GetInt("order"), c));
+                        persistenceUnitConfigs.Add(new Net.TheVpc.Upa.Impl.Util.OrderedIem<Net.TheVpc.Upa.Persistence.PersistenceUnitConfig>(configPersistenceUnit.GetInt("order"), c));
                     }
                 }
-                System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Persistence.PersistenceUnitConfig> partialPersistenceUnitConfig = new System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Persistence.PersistenceUnitConfig>();
-                foreach (Net.Vpc.Upa.Config.Decoration a in newDecorationRepository.GetDeclaredDecorations((typeof(Net.Vpc.Upa.Config.PersistenceNameStrategy)).FullName)) {
-                    Net.Vpc.Upa.Config.Decoration ignored = newDecorationRepository.GetTypeDecoration(a.GetLocationType(), (typeof(Net.Vpc.Upa.Config.Ignore)).FullName);
+                System.Collections.Generic.IDictionary<string , Net.TheVpc.Upa.Persistence.PersistenceUnitConfig> partialPersistenceUnitConfig = new System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Persistence.PersistenceUnitConfig>();
+                foreach (Net.TheVpc.Upa.Config.Decoration a in newDecorationRepository.GetDeclaredDecorations((typeof(Net.TheVpc.Upa.Config.PersistenceNameStrategy)).FullName)) {
+                    Net.TheVpc.Upa.Config.Decoration ignored = newDecorationRepository.GetTypeDecoration(a.GetLocationType(), (typeof(Net.TheVpc.Upa.Config.Ignore)).FullName);
                     if (ignored == null) {
-                        Net.Vpc.Upa.Config.Decoration config = a.GetDecoration("config");
+                        Net.TheVpc.Upa.Config.Decoration config = a.GetDecoration("config");
                         int configOrder = config.GetInt("order");
-                        string key = Net.Vpc.Upa.Impl.Util.StringUtils.Trim(config.GetString("persistenceGroup")) + "/" + Net.Vpc.Upa.Impl.Util.StringUtils.Trim(config.GetString("persistenceUnit")) + "/" + configOrder;
-                        Net.Vpc.Upa.Persistence.PersistenceUnitConfig puc = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.Vpc.Upa.Persistence.PersistenceUnitConfig>(partialPersistenceUnitConfig,key);
+                        string key = Net.TheVpc.Upa.Impl.Util.StringUtils.Trim(config.GetString("persistenceGroup")) + "/" + Net.TheVpc.Upa.Impl.Util.StringUtils.Trim(config.GetString("persistenceUnit")) + "/" + configOrder;
+                        Net.TheVpc.Upa.Persistence.PersistenceUnitConfig puc = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.TheVpc.Upa.Persistence.PersistenceUnitConfig>(partialPersistenceUnitConfig,key);
                         if (puc == null) {
-                            puc = new Net.Vpc.Upa.Persistence.PersistenceUnitConfig();
+                            puc = new Net.TheVpc.Upa.Persistence.PersistenceUnitConfig();
                             partialPersistenceUnitConfig[key]=puc;
-                            persistenceUnitConfigs.Add(new Net.Vpc.Upa.Impl.Util.OrderedIem<Net.Vpc.Upa.Persistence.PersistenceUnitConfig>(configOrder, puc));
+                            persistenceUnitConfigs.Add(new Net.TheVpc.Upa.Impl.Util.OrderedIem<Net.TheVpc.Upa.Persistence.PersistenceUnitConfig>(configOrder, puc));
                         }
-                        Net.Vpc.Upa.Persistence.PersistenceNameConfig target = puc.GetModel();
+                        Net.TheVpc.Upa.Persistence.PersistenceNameConfig target = puc.GetModel();
                         if (target == null) {
-                            target = new Net.Vpc.Upa.Persistence.PersistenceNameConfig(Net.Vpc.Upa.Persistence.UPAContextConfig.XML_ORDER);
+                            target = new Net.TheVpc.Upa.Persistence.PersistenceNameConfig(Net.TheVpc.Upa.Persistence.UPAContextConfig.XML_ORDER);
                             puc.SetModel(target);
                         }
                         Merge(a, target);
                     }
                 }
                 //persistence groups
-                System.Collections.Generic.IList<Net.Vpc.Upa.PersistenceGroup> createdPersistenceGroups = new System.Collections.Generic.List<Net.Vpc.Upa.PersistenceGroup>();
-                System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.PersistenceUnitConfig> buildPersistenceUnitConfigs = BuildPersistenceUnitConfigs(persistenceUnitConfigs);
-                foreach (Net.Vpc.Upa.Persistence.PersistenceUnitConfig c in buildPersistenceUnitConfigs) {
-                    if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsSimpleExpression(c.GetPersistenceGroup())) {
+                System.Collections.Generic.IList<Net.TheVpc.Upa.PersistenceGroup> createdPersistenceGroups = new System.Collections.Generic.List<Net.TheVpc.Upa.PersistenceGroup>();
+                System.Collections.Generic.IList<Net.TheVpc.Upa.Persistence.PersistenceUnitConfig> buildPersistenceUnitConfigs = BuildPersistenceUnitConfigs(persistenceUnitConfigs);
+                foreach (Net.TheVpc.Upa.Persistence.PersistenceUnitConfig c in buildPersistenceUnitConfigs) {
+                    if (!Net.TheVpc.Upa.Impl.Util.StringUtils.IsSimpleExpression(c.GetPersistenceGroup())) {
                         if (listener != null) {
-                            listener.ContextItemScanned(new Net.Vpc.Upa.ScanEvent(context, null, null, typeof(Net.Vpc.Upa.Persistence.PersistenceUnitConfig), null, c));
+                            listener.ContextItemScanned(new Net.TheVpc.Upa.ScanEvent(context, null, null, typeof(Net.TheVpc.Upa.Persistence.PersistenceUnitConfig), null, c));
                         }
                         if (!context.ContainsPersistenceGroup(c.GetPersistenceGroup())) {
-                            Net.Vpc.Upa.PersistenceGroup pg = context.AddPersistenceGroup(c.GetPersistenceGroup());
+                            Net.TheVpc.Upa.PersistenceGroup pg = context.AddPersistenceGroup(c.GetPersistenceGroup());
                             createdPersistenceGroups.Add(pg);
                         }
                     }
                 }
                 if ((context.GetPersistenceGroups().Count==0)) {
                     createdPersistenceGroups.Add(context.AddPersistenceGroup(null));
-                    log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("No PersistenceGroup found, create default one",null));
+                    log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("No PersistenceGroup found, create default one",null));
                 }
-                foreach (Net.Vpc.Upa.PersistenceGroup g in createdPersistenceGroups) {
+                foreach (Net.TheVpc.Upa.PersistenceGroup g in createdPersistenceGroups) {
                     //                int count = 0;
-                    foreach (Net.Vpc.Upa.Persistence.PersistenceGroupConfig pgc in context.GetBootstrapContextConfig().GetPersistenceGroups()) {
-                        if (Net.Vpc.Upa.Impl.Util.StringUtils.MatchesSimpleExpression(g.GetName(), pgc.GetName(), Net.Vpc.Upa.Impl.Util.PatternType.DOT_PATH)) {
+                    foreach (Net.TheVpc.Upa.Persistence.PersistenceGroupConfig pgc in context.GetBootstrapContextConfig().GetPersistenceGroups()) {
+                        if (Net.TheVpc.Upa.Impl.Util.StringUtils.MatchesSimpleExpression(g.GetName(), pgc.GetName(), Net.TheVpc.Upa.Impl.Util.PatternType.DOT_PATH)) {
                             if (pgc.GetAutoScan() != null) {
                                 g.SetAutoScan((pgc.GetAutoScan()).Value);
                             }
-                            foreach (Net.Vpc.Upa.Config.ScanFilter a in pgc.GetContextAnnotationStrategyFilters()) {
+                            foreach (Net.TheVpc.Upa.Config.ScanFilter a in pgc.GetContextAnnotationStrategyFilters()) {
                                 g.AddContextAnnotationStrategyFilter(a);
                             }
                         }
                     }
                     if (listener != null) {
-                        listener.ContextItemScanned(new Net.Vpc.Upa.ScanEvent(context, null, null, typeof(Net.Vpc.Upa.PersistenceGroup), null, g));
+                        listener.ContextItemScanned(new Net.TheVpc.Upa.ScanEvent(context, null, null, typeof(Net.TheVpc.Upa.PersistenceGroup), null, g));
                     }
                     g.Scan(source, listener, false);
                 }
                 //persistence units
-                System.Collections.Generic.IList<Net.Vpc.Upa.PersistenceUnit> createdPersistenceUnits = new System.Collections.Generic.List<Net.Vpc.Upa.PersistenceUnit>();
-                foreach (Net.Vpc.Upa.Persistence.PersistenceUnitConfig c in buildPersistenceUnitConfigs) {
-                    if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsSimpleExpression(c.GetName())) {
-                        foreach (Net.Vpc.Upa.PersistenceGroup persistenceGroup in context.GetPersistenceGroups()) {
-                            if (Net.Vpc.Upa.Impl.Util.StringUtils.MatchesSimpleExpression(persistenceGroup.GetName(), c.GetPersistenceGroup(), Net.Vpc.Upa.Impl.Util.PatternType.DOT_PATH)) {
+                System.Collections.Generic.IList<Net.TheVpc.Upa.PersistenceUnit> createdPersistenceUnits = new System.Collections.Generic.List<Net.TheVpc.Upa.PersistenceUnit>();
+                foreach (Net.TheVpc.Upa.Persistence.PersistenceUnitConfig c in buildPersistenceUnitConfigs) {
+                    if (!Net.TheVpc.Upa.Impl.Util.StringUtils.IsSimpleExpression(c.GetName())) {
+                        foreach (Net.TheVpc.Upa.PersistenceGroup persistenceGroup in context.GetPersistenceGroups()) {
+                            if (Net.TheVpc.Upa.Impl.Util.StringUtils.MatchesSimpleExpression(persistenceGroup.GetName(), c.GetPersistenceGroup(), Net.TheVpc.Upa.Impl.Util.PatternType.DOT_PATH)) {
                                 if (!persistenceGroup.ContainsPersistenceUnit(c.GetName())) {
-                                    Net.Vpc.Upa.PersistenceUnit pu = persistenceGroup.AddPersistenceUnit(c.GetName());
+                                    Net.TheVpc.Upa.PersistenceUnit pu = persistenceGroup.AddPersistenceUnit(c.GetName());
                                     createdPersistenceUnits.Add(pu);
                                 }
                             }
                         }
                     }
                 }
-                foreach (Net.Vpc.Upa.PersistenceUnit pu in createdPersistenceUnits) {
+                foreach (Net.TheVpc.Upa.PersistenceUnit pu in createdPersistenceUnits) {
                     bool autoScan = false;
-                    foreach (Net.Vpc.Upa.Persistence.PersistenceUnitConfig puc in buildPersistenceUnitConfigs) {
-                        if (Net.Vpc.Upa.Impl.Util.StringUtils.MatchesSimpleExpression(pu.GetPersistenceGroup().GetName(), puc.GetPersistenceGroup(), Net.Vpc.Upa.Impl.Util.PatternType.DOT_PATH) && Net.Vpc.Upa.Impl.Util.StringUtils.MatchesSimpleExpression(pu.GetName(), puc.GetName(), Net.Vpc.Upa.Impl.Util.PatternType.DOT_PATH)) {
+                    foreach (Net.TheVpc.Upa.Persistence.PersistenceUnitConfig puc in buildPersistenceUnitConfigs) {
+                        if (Net.TheVpc.Upa.Impl.Util.StringUtils.MatchesSimpleExpression(pu.GetPersistenceGroup().GetName(), puc.GetPersistenceGroup(), Net.TheVpc.Upa.Impl.Util.PatternType.DOT_PATH) && Net.TheVpc.Upa.Impl.Util.StringUtils.MatchesSimpleExpression(pu.GetName(), puc.GetName(), Net.TheVpc.Upa.Impl.Util.PatternType.DOT_PATH)) {
                             if ((puc.GetAutoScan() != null)) {
                                 pu.SetAutoScan(autoScan);
                             }
                             pu.SetAutoStart(puc.GetAutoStart() == null ? ((bool)((new System.Nullable<bool>(true)).Value)) : (puc.GetAutoStart()).Value);
-                            Net.Vpc.Upa.Persistence.PersistenceNameConfig oldPersistenceNameConfig = pu.GetPersistenceNameConfig();
+                            Net.TheVpc.Upa.Persistence.PersistenceNameConfig oldPersistenceNameConfig = pu.GetPersistenceNameConfig();
                             Merge(puc.GetModel(), oldPersistenceNameConfig);
                             pu.SetPersistenceNameConfig(oldPersistenceNameConfig);
-                            foreach (Net.Vpc.Upa.Config.ScanFilter a in puc.GetFilters()) {
+                            foreach (Net.TheVpc.Upa.Config.ScanFilter a in puc.GetFilters()) {
                                 puc.AddContextAnnotationStrategyFilter(a);
                             }
-                            foreach (Net.Vpc.Upa.Persistence.ConnectionConfig connectionConfig in puc.GetConnections()) {
+                            foreach (Net.TheVpc.Upa.Persistence.ConnectionConfig connectionConfig in puc.GetConnections()) {
                                 pu.AddConnectionConfig(connectionConfig);
                             }
-                            foreach (Net.Vpc.Upa.Persistence.ConnectionConfig connectionConfig in puc.GetRootConnections()) {
+                            foreach (Net.TheVpc.Upa.Persistence.ConnectionConfig connectionConfig in puc.GetRootConnections()) {
                                 pu.AddRootConnectionConfig(connectionConfig);
                             }
                         }
                     }
                     if (listener != null) {
-                        listener.ContextItemScanned(new Net.Vpc.Upa.ScanEvent(context, null, null, typeof(Net.Vpc.Upa.PersistenceUnit), null, pu));
+                        listener.ContextItemScanned(new Net.TheVpc.Upa.ScanEvent(context, null, null, typeof(Net.TheVpc.Upa.PersistenceUnit), null, pu));
                     }
                     pu.Scan(source, listener, false);
                 }
-            } catch (Net.Vpc.Upa.Exceptions.UPAException e) {
+            } catch (Net.TheVpc.Upa.Exceptions.UPAException e) {
                 throw e;
             } catch (System.Exception e) {
-                throw new Net.Vpc.Upa.Exceptions.UPAException(e, new Net.Vpc.Upa.Types.I18NString("URLAnnotationStrategySupportConfigureException"));
+                throw new Net.TheVpc.Upa.Exceptions.UPAException(e, new Net.TheVpc.Upa.Types.I18NString("URLAnnotationStrategySupportConfigureException"));
             }
         }
 
-        public virtual void Scan(Net.Vpc.Upa.PersistenceGroup persistenceGroup, Net.Vpc.Upa.Config.ScanSource strategy, Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository decorationRepository, Net.Vpc.Upa.ScanListener listener) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void Scan(Net.TheVpc.Upa.PersistenceGroup persistenceGroup, Net.TheVpc.Upa.Config.ScanSource strategy, Net.TheVpc.Upa.Impl.Config.Decorations.DecorationRepository decorationRepository, Net.TheVpc.Upa.ScanListener listener) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             try {
-                Net.Vpc.Upa.Impl.Util.Classpath.DecorationParser parser = new Net.Vpc.Upa.Impl.Util.Classpath.DecorationParser(Net.Vpc.Upa.Impl.Util.UPAUtils.ToConfigurationStrategy(strategy).ToIterable(persistenceGroup), new Net.Vpc.Upa.Impl.Config.Decorations.DefaultDecorationFilter().AddDecorations(typeof(Net.Vpc.Upa.Config.Callback), typeof(Net.Vpc.Upa.Config.OnAlter), typeof(Net.Vpc.Upa.Config.OnCreate), typeof(Net.Vpc.Upa.Config.OnDrop), typeof(Net.Vpc.Upa.Config.OnRemove), typeof(Net.Vpc.Upa.Config.OnPersist), typeof(Net.Vpc.Upa.Config.OnRemove), typeof(Net.Vpc.Upa.Config.OnUpdate), typeof(Net.Vpc.Upa.Config.OnUpdateFormula), typeof(Net.Vpc.Upa.Config.OnInitialize), typeof(Net.Vpc.Upa.Config.OnReset)).AddDecorations(typeof(Net.Vpc.Upa.Config.SecurityContext)).AddTypeDecorations("javax.annotation.PostConstruct"), persistenceGroup.GetName(), null, decorationRepository);
+                Net.TheVpc.Upa.Impl.Util.Classpath.DecorationParser parser = new Net.TheVpc.Upa.Impl.Util.Classpath.DecorationParser(Net.TheVpc.Upa.Impl.Util.UPAUtils.ToConfigurationStrategy(strategy).ToIterable(persistenceGroup), new Net.TheVpc.Upa.Impl.Config.Decorations.DefaultDecorationFilter().AddDecorations(typeof(Net.TheVpc.Upa.Config.Callback), typeof(Net.TheVpc.Upa.Config.OnAlter), typeof(Net.TheVpc.Upa.Config.OnCreate), typeof(Net.TheVpc.Upa.Config.OnDrop), typeof(Net.TheVpc.Upa.Config.OnRemove), typeof(Net.TheVpc.Upa.Config.OnPersist), typeof(Net.TheVpc.Upa.Config.OnRemove), typeof(Net.TheVpc.Upa.Config.OnUpdate), typeof(Net.TheVpc.Upa.Config.OnUpdateFormula), typeof(Net.TheVpc.Upa.Config.OnInitialize), typeof(Net.TheVpc.Upa.Config.OnReset)).AddDecorations(typeof(Net.TheVpc.Upa.Config.SecurityContext)).AddTypeDecorations("javax.annotation.PostConstruct"), persistenceGroup.GetName(), null, decorationRepository);
                 parser.Parse();
-                Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository repo = parser.GetDecorationRepository();
-                Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository newrepo = parser.GetNewDecorationRepository();
+                Net.TheVpc.Upa.Impl.Config.Decorations.DecorationRepository repo = parser.GetDecorationRepository();
+                Net.TheVpc.Upa.Impl.Config.Decorations.DecorationRepository newrepo = parser.GetNewDecorationRepository();
                 ProcessJAVAXAnnotations(repo, newrepo, strategy.IsNoIgnore());
-                foreach (Net.Vpc.Upa.Config.Decoration at in newrepo.GetDeclaredDecorations((typeof(Net.Vpc.Upa.Config.Callback)).FullName)) {
-                    System.Type t = Net.Vpc.Upa.Impl.Util.PlatformUtils.ForName(at.GetLocationType());
-                    Net.Vpc.Upa.Config.Decoration ignored = strategy.IsNoIgnore() ? null : newrepo.GetTypeDecoration(t, typeof(Net.Vpc.Upa.Config.Ignore));
+                foreach (Net.TheVpc.Upa.Config.Decoration at in newrepo.GetDeclaredDecorations((typeof(Net.TheVpc.Upa.Config.Callback)).FullName)) {
+                    System.Type t = Net.TheVpc.Upa.Impl.Util.PlatformUtils.ForName(at.GetLocationType());
+                    Net.TheVpc.Upa.Config.Decoration ignored = strategy.IsNoIgnore() ? null : newrepo.GetTypeDecoration(t, typeof(Net.TheVpc.Upa.Config.Ignore));
                     if (ignored == null) {
-                        if (typeof(Net.Vpc.Upa.Callbacks.PersistenceUnitDefinitionListener).IsAssignableFrom(t)) {
+                        if (typeof(Net.TheVpc.Upa.Callbacks.PersistenceUnitDefinitionListener).IsAssignableFrom(t)) {
                             if (listener != null) {
-                                listener.PersistenceGroupItemScanned(new Net.Vpc.Upa.ScanEvent(persistenceGroup.GetContext(), persistenceGroup, null, typeof(Net.Vpc.Upa.Callbacks.PersistenceUnitDefinitionListener), t, null));
+                                listener.PersistenceGroupItemScanned(new Net.TheVpc.Upa.ScanEvent(persistenceGroup.GetContext(), persistenceGroup, null, typeof(Net.TheVpc.Upa.Callbacks.PersistenceUnitDefinitionListener), t, null));
                             }
                         }
                     }
                 }
-                foreach (Net.Vpc.Upa.Config.Decoration at in newrepo.GetDeclaredDecorations((typeof(Net.Vpc.Upa.Config.SecurityContext)).FullName)) {
-                    System.Type t = Net.Vpc.Upa.Impl.Util.PlatformUtils.ForName(at.GetLocationType());
-                    Net.Vpc.Upa.Config.Decoration ignored = strategy.IsNoIgnore() ? null : newrepo.GetTypeDecoration(t, typeof(Net.Vpc.Upa.Config.Ignore));
+                foreach (Net.TheVpc.Upa.Config.Decoration at in newrepo.GetDeclaredDecorations((typeof(Net.TheVpc.Upa.Config.SecurityContext)).FullName)) {
+                    System.Type t = Net.TheVpc.Upa.Impl.Util.PlatformUtils.ForName(at.GetLocationType());
+                    Net.TheVpc.Upa.Config.Decoration ignored = strategy.IsNoIgnore() ? null : newrepo.GetTypeDecoration(t, typeof(Net.TheVpc.Upa.Config.Ignore));
                     if (ignored == null) {
                         bool ok = false;
-                        if (typeof(Net.Vpc.Upa.PersistenceGroupSecurityManager).IsAssignableFrom(t)) {
+                        if (typeof(Net.TheVpc.Upa.PersistenceGroupSecurityManager).IsAssignableFrom(t)) {
                             ok = true;
                             if (listener != null) {
-                                listener.PersistenceGroupItemScanned(new Net.Vpc.Upa.ScanEvent(persistenceGroup.GetContext(), persistenceGroup, null, typeof(Net.Vpc.Upa.PersistenceGroupSecurityManager), t, null));
+                                listener.PersistenceGroupItemScanned(new Net.TheVpc.Upa.ScanEvent(persistenceGroup.GetContext(), persistenceGroup, null, typeof(Net.TheVpc.Upa.PersistenceGroupSecurityManager), t, null));
                             }
                         }
-                        if (typeof(Net.Vpc.Upa.UPASecurityManager).IsAssignableFrom(t)) {
+                        if (typeof(Net.TheVpc.Upa.UPASecurityManager).IsAssignableFrom(t)) {
                             ok = true;
                             if (listener != null) {
-                                listener.PersistenceGroupItemScanned(new Net.Vpc.Upa.ScanEvent(persistenceGroup.GetContext(), persistenceGroup, null, typeof(Net.Vpc.Upa.UPASecurityManager), t, null));
+                                listener.PersistenceGroupItemScanned(new Net.TheVpc.Upa.ScanEvent(persistenceGroup.GetContext(), persistenceGroup, null, typeof(Net.TheVpc.Upa.UPASecurityManager), t, null));
                             }
                         }
-                        if (typeof(Net.Vpc.Upa.EntitySecurityManager).IsAssignableFrom(t)) {
+                        if (typeof(Net.TheVpc.Upa.EntitySecurityManager).IsAssignableFrom(t)) {
                             ok = true;
                         }
                         //will be processed as persistence unit listener
                         if (!ok) {
-                            log.TraceEvent(System.Diagnostics.TraceEventType.Warning,90,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("@SecurityContext ignored as annotating any of PersistenceGroupSecurityManager, UPASecurityManager",null));
+                            log.TraceEvent(System.Diagnostics.TraceEventType.Warning,90,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("@SecurityContext ignored as annotating any of PersistenceGroupSecurityManager, UPASecurityManager",null));
                         }
                     }
                 }
-            } catch (Net.Vpc.Upa.Exceptions.UPAException e) {
+            } catch (Net.TheVpc.Upa.Exceptions.UPAException e) {
                 throw e;
             } catch (System.Exception e) {
-                throw new Net.Vpc.Upa.Exceptions.UPAException(e, new Net.Vpc.Upa.Types.I18NString("URLAnnotationStrategySupportConfigureException"));
+                throw new Net.TheVpc.Upa.Exceptions.UPAException(e, new Net.TheVpc.Upa.Types.I18NString("URLAnnotationStrategySupportConfigureException"));
             }
         }
 
-        public virtual void Scan(Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.Config.ScanSource strategy, Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository decorationRepository, Net.Vpc.Upa.ScanListener listener) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void Scan(Net.TheVpc.Upa.PersistenceUnit persistenceUnit, Net.TheVpc.Upa.Config.ScanSource strategy, Net.TheVpc.Upa.Impl.Config.Decorations.DecorationRepository decorationRepository, Net.TheVpc.Upa.ScanListener listener) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             try {
-                Net.Vpc.Upa.Impl.Config.EntityDescriptorResolver r = new Net.Vpc.Upa.Impl.Config.EntityDescriptorResolver(persistenceUnit, decorationRepository);
-                Net.Vpc.Upa.Impl.Util.Classpath.DecorationParser parser = new Net.Vpc.Upa.Impl.Util.Classpath.DecorationParser(Net.Vpc.Upa.Impl.Util.UPAUtils.ToConfigurationStrategy(strategy).ToIterable(persistenceUnit), new Net.Vpc.Upa.Impl.Config.Decorations.DefaultDecorationFilter().AddDecorations(typeof(Net.Vpc.Upa.Config.SecurityContext), typeof(Net.Vpc.Upa.Config.Config), typeof(Net.Vpc.Upa.Config.Field), typeof(Net.Vpc.Upa.Config.Main), typeof(Net.Vpc.Upa.Config.Summary), typeof(Net.Vpc.Upa.Config.Unique), typeof(Net.Vpc.Upa.Config.FilterEntity), typeof(Net.Vpc.Upa.Config.Formula), typeof(Net.Vpc.Upa.Config.Formulas), typeof(Net.Vpc.Upa.Config.Id), typeof(Net.Vpc.Upa.Config.Ignore), typeof(Net.Vpc.Upa.Config.Index), typeof(Net.Vpc.Upa.Config.Indexes), typeof(Net.Vpc.Upa.Config.Init), typeof(Net.Vpc.Upa.Config.ManyToOne), typeof(Net.Vpc.Upa.Config.Partial), typeof(Net.Vpc.Upa.Config.Password), typeof(Net.Vpc.Upa.Config.ToString), typeof(Net.Vpc.Upa.Config.ToByteArray), typeof(Net.Vpc.Upa.Config.Converter), typeof(Net.Vpc.Upa.Config.Path), typeof(Net.Vpc.Upa.Config.PersistenceName), typeof(Net.Vpc.Upa.Config.PersistenceNameStrategy), typeof(Net.Vpc.Upa.Config.PersistenceUnit), typeof(Net.Vpc.Upa.Config.Properties), typeof(Net.Vpc.Upa.Config.Property), typeof(Net.Vpc.Upa.Config.Function), typeof(Net.Vpc.Upa.Config.Search), typeof(Net.Vpc.Upa.Config.Secret), typeof(Net.Vpc.Upa.Config.Sequence), typeof(Net.Vpc.Upa.Config.Singleton), typeof(Net.Vpc.Upa.Config.Temporal), typeof(Net.Vpc.Upa.Config.Transactional), typeof(Net.Vpc.Upa.Config.Hierarchy), typeof(Net.Vpc.Upa.Config.Callback), typeof(Net.Vpc.Upa.Config.OnPreAlter), typeof(Net.Vpc.Upa.Config.OnAlter), typeof(Net.Vpc.Upa.Config.OnPreCreate), typeof(Net.Vpc.Upa.Config.OnCreate), typeof(Net.Vpc.Upa.Config.OnPreDrop), typeof(Net.Vpc.Upa.Config.OnDrop), typeof(Net.Vpc.Upa.Config.OnPreRemove), typeof(Net.Vpc.Upa.Config.OnRemove), typeof(Net.Vpc.Upa.Config.OnPrePersist), typeof(Net.Vpc.Upa.Config.OnPrePersist), typeof(Net.Vpc.Upa.Config.OnPersist), typeof(Net.Vpc.Upa.Config.OnPreUpdate), typeof(Net.Vpc.Upa.Config.OnUpdate), typeof(Net.Vpc.Upa.Config.OnPreUpdateFormula), typeof(Net.Vpc.Upa.Config.OnUpdateFormula), typeof(Net.Vpc.Upa.Config.OnPreInitialize), typeof(Net.Vpc.Upa.Config.OnInitialize), typeof(Net.Vpc.Upa.Config.OnPreReset), typeof(Net.Vpc.Upa.Config.OnReset), typeof(Net.Vpc.Upa.Config.UnionEntity), typeof(Net.Vpc.Upa.Config.UnionEntityEntry), typeof(Net.Vpc.Upa.Config.View), typeof(Net.Vpc.Upa.Config.Entity), typeof(Net.Vpc.Upa.Config.Partial)).AddTypeDecorations("javax.persistence.Entity", "javax.persistence.Id", "javax.persistence.ManyToOne", "javax.annotation.PostConstruct"), persistenceUnit.GetPersistenceGroup().GetName(), persistenceUnit.GetName(), decorationRepository);
+                Net.TheVpc.Upa.Impl.Config.EntityDescriptorResolver r = new Net.TheVpc.Upa.Impl.Config.EntityDescriptorResolver(persistenceUnit, decorationRepository);
+                Net.TheVpc.Upa.Impl.Util.Classpath.DecorationParser parser = new Net.TheVpc.Upa.Impl.Util.Classpath.DecorationParser(Net.TheVpc.Upa.Impl.Util.UPAUtils.ToConfigurationStrategy(strategy).ToIterable(persistenceUnit), new Net.TheVpc.Upa.Impl.Config.Decorations.DefaultDecorationFilter().AddDecorations(typeof(Net.TheVpc.Upa.Config.SecurityContext), typeof(Net.TheVpc.Upa.Config.Config), typeof(Net.TheVpc.Upa.Config.Field), typeof(Net.TheVpc.Upa.Config.Main), typeof(Net.TheVpc.Upa.Config.Summary), typeof(Net.TheVpc.Upa.Config.Unique), typeof(Net.TheVpc.Upa.Config.FilterEntity), typeof(Net.TheVpc.Upa.Config.Formula), typeof(Net.TheVpc.Upa.Config.Formulas), typeof(Net.TheVpc.Upa.Config.Id), typeof(Net.TheVpc.Upa.Config.Ignore), typeof(Net.TheVpc.Upa.Config.Index), typeof(Net.TheVpc.Upa.Config.Indexes), typeof(Net.TheVpc.Upa.Config.Init), typeof(Net.TheVpc.Upa.Config.ManyToOne), typeof(Net.TheVpc.Upa.Config.Partial), typeof(Net.TheVpc.Upa.Config.Password), typeof(Net.TheVpc.Upa.Config.ToString), typeof(Net.TheVpc.Upa.Config.ToByteArray), typeof(Net.TheVpc.Upa.Config.Converter), typeof(Net.TheVpc.Upa.Config.Path), typeof(Net.TheVpc.Upa.Config.PersistenceName), typeof(Net.TheVpc.Upa.Config.PersistenceNameStrategy), typeof(Net.TheVpc.Upa.Config.PersistenceUnit), typeof(Net.TheVpc.Upa.Config.Properties), typeof(Net.TheVpc.Upa.Config.Property), typeof(Net.TheVpc.Upa.Config.Function), typeof(Net.TheVpc.Upa.Config.Search), typeof(Net.TheVpc.Upa.Config.Secret), typeof(Net.TheVpc.Upa.Config.Sequence), typeof(Net.TheVpc.Upa.Config.Singleton), typeof(Net.TheVpc.Upa.Config.Temporal), typeof(Net.TheVpc.Upa.Config.Transactional), typeof(Net.TheVpc.Upa.Config.Hierarchy), typeof(Net.TheVpc.Upa.Config.Callback), typeof(Net.TheVpc.Upa.Config.OnPreAlter), typeof(Net.TheVpc.Upa.Config.OnAlter), typeof(Net.TheVpc.Upa.Config.OnPreCreate), typeof(Net.TheVpc.Upa.Config.OnCreate), typeof(Net.TheVpc.Upa.Config.OnPreDrop), typeof(Net.TheVpc.Upa.Config.OnDrop), typeof(Net.TheVpc.Upa.Config.OnPreRemove), typeof(Net.TheVpc.Upa.Config.OnRemove), typeof(Net.TheVpc.Upa.Config.OnPrePersist), typeof(Net.TheVpc.Upa.Config.OnPrePersist), typeof(Net.TheVpc.Upa.Config.OnPersist), typeof(Net.TheVpc.Upa.Config.OnPreUpdate), typeof(Net.TheVpc.Upa.Config.OnUpdate), typeof(Net.TheVpc.Upa.Config.OnPreUpdateFormula), typeof(Net.TheVpc.Upa.Config.OnUpdateFormula), typeof(Net.TheVpc.Upa.Config.OnPreInitialize), typeof(Net.TheVpc.Upa.Config.OnInitialize), typeof(Net.TheVpc.Upa.Config.OnPreReset), typeof(Net.TheVpc.Upa.Config.OnReset), typeof(Net.TheVpc.Upa.Config.UnionEntity), typeof(Net.TheVpc.Upa.Config.UnionEntityEntry), typeof(Net.TheVpc.Upa.Config.View), typeof(Net.TheVpc.Upa.Config.Entity), typeof(Net.TheVpc.Upa.Config.Partial)).AddTypeDecorations("javax.persistence.Entity", "javax.persistence.Id", "javax.persistence.ManyToOne", "javax.annotation.PostConstruct"), persistenceUnit.GetPersistenceGroup().GetName(), persistenceUnit.GetName(), decorationRepository);
                 parser.Parse();
-                Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository repo = parser.GetDecorationRepository();
-                Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository newrepo = parser.GetNewDecorationRepository();
+                Net.TheVpc.Upa.Impl.Config.Decorations.DecorationRepository repo = parser.GetDecorationRepository();
+                Net.TheVpc.Upa.Impl.Config.Decorations.DecorationRepository newrepo = parser.GetNewDecorationRepository();
                 ProcessJAVAXAnnotations(repo, newrepo, strategy.IsNoIgnore());
-                foreach (Net.Vpc.Upa.Config.Decoration at in newrepo.GetDeclaredDecorations((typeof(Net.Vpc.Upa.Config.Callback)).FullName)) {
-                    System.Type t = Net.Vpc.Upa.Impl.Util.PlatformUtils.ForName(at.GetLocationType());
-                    Net.Vpc.Upa.Config.Decoration ignored = strategy.IsNoIgnore() ? null : newrepo.GetTypeDecoration(t, typeof(Net.Vpc.Upa.Config.Ignore));
+                foreach (Net.TheVpc.Upa.Config.Decoration at in newrepo.GetDeclaredDecorations((typeof(Net.TheVpc.Upa.Config.Callback)).FullName)) {
+                    System.Type t = Net.TheVpc.Upa.Impl.Util.PlatformUtils.ForName(at.GetLocationType());
+                    Net.TheVpc.Upa.Config.Decoration ignored = strategy.IsNoIgnore() ? null : newrepo.GetTypeDecoration(t, typeof(Net.TheVpc.Upa.Config.Ignore));
                     if (ignored != null) {
                         continue;
                     }
-                    foreach (System.Reflection.MethodInfo m in Net.Vpc.Upa.Impl.Util.PlatformUtils.GetAllConcreteMethods(t)) {
-                        Net.Vpc.Upa.Config.Decoration[] mdecos = newrepo.GetMethodDecorations(m);
-                        foreach (Net.Vpc.Upa.Config.Decoration mdeco in mdecos) {
+                    foreach (System.Reflection.MethodInfo m in Net.TheVpc.Upa.Impl.Util.PlatformUtils.GetAllConcreteMethods(t)) {
+                        Net.TheVpc.Upa.Config.Decoration[] mdecos = newrepo.GetMethodDecorations(m);
+                        foreach (Net.TheVpc.Upa.Config.Decoration mdeco in mdecos) {
                             if (listener != null) {
-                                listener.PersistenceUnitItemScanned(new Net.Vpc.Upa.ScanEvent(persistenceUnit.GetPersistenceGroup().GetContext(), persistenceUnit.GetPersistenceGroup(), persistenceUnit, typeof(object), t, new Net.Vpc.Upa.Impl.Config.DecoratedMethodScan(mdeco, m)));
+                                listener.PersistenceUnitItemScanned(new Net.TheVpc.Upa.ScanEvent(persistenceUnit.GetPersistenceGroup().GetContext(), persistenceUnit.GetPersistenceGroup(), persistenceUnit, typeof(object), t, new Net.TheVpc.Upa.Impl.Config.DecoratedMethodScan(mdeco, m)));
                             }
                         }
                     }
                     if (IsPersistenceUnitItemDefinitionListener(t)) {
                         if (listener != null) {
                             foreach (System.Type tt in GetPersistenceUnitItemDefinitionListener(t)) {
-                                listener.PersistenceUnitItemScanned(new Net.Vpc.Upa.ScanEvent(persistenceUnit.GetPersistenceGroup().GetContext(), persistenceUnit.GetPersistenceGroup(), persistenceUnit, tt, t, at));
+                                listener.PersistenceUnitItemScanned(new Net.TheVpc.Upa.ScanEvent(persistenceUnit.GetPersistenceGroup().GetContext(), persistenceUnit.GetPersistenceGroup(), persistenceUnit, tt, t, at));
                             }
                         }
                     }
-                    if (typeof(Net.Vpc.Upa.Callbacks.PersistenceUnitListener).IsAssignableFrom(t)) {
+                    if (typeof(Net.TheVpc.Upa.Callbacks.PersistenceUnitListener).IsAssignableFrom(t)) {
                         if (listener != null) {
-                            listener.PersistenceUnitItemScanned(new Net.Vpc.Upa.ScanEvent(persistenceUnit.GetPersistenceGroup().GetContext(), persistenceUnit.GetPersistenceGroup(), persistenceUnit, typeof(Net.Vpc.Upa.Callbacks.PersistenceUnitListener), t, null));
+                            listener.PersistenceUnitItemScanned(new Net.TheVpc.Upa.ScanEvent(persistenceUnit.GetPersistenceGroup().GetContext(), persistenceUnit.GetPersistenceGroup(), persistenceUnit, typeof(Net.TheVpc.Upa.Callbacks.PersistenceUnitListener), t, null));
                         }
                     }
-                    if (typeof(Net.Vpc.Upa.Callbacks.EntityInterceptor).IsAssignableFrom(t)) {
+                    if (typeof(Net.TheVpc.Upa.Callbacks.EntityInterceptor).IsAssignableFrom(t)) {
                         if (listener != null) {
-                            listener.PersistenceUnitItemScanned(new Net.Vpc.Upa.ScanEvent(persistenceUnit.GetPersistenceGroup().GetContext(), persistenceUnit.GetPersistenceGroup(), persistenceUnit, typeof(Net.Vpc.Upa.Callbacks.EntityInterceptor), t, at));
+                            listener.PersistenceUnitItemScanned(new Net.TheVpc.Upa.ScanEvent(persistenceUnit.GetPersistenceGroup().GetContext(), persistenceUnit.GetPersistenceGroup(), persistenceUnit, typeof(Net.TheVpc.Upa.Callbacks.EntityInterceptor), t, at));
                         }
                     }
                 }
                 System.Collections.Generic.IDictionary<System.Type , System.Collections.Generic.ISet<System.Type>> entityClasses = new System.Collections.Generic.Dictionary<System.Type , System.Collections.Generic.ISet<System.Type>>();
                 System.Collections.Generic.IDictionary<System.Type , System.Type> partialEntities = new System.Collections.Generic.Dictionary<System.Type , System.Type>();
-                foreach (Net.Vpc.Upa.Config.Decoration at in newrepo.GetDeclaredDecorations((typeof(Net.Vpc.Upa.Config.Entity)).FullName)) {
-                    System.Type tt = Net.Vpc.Upa.Impl.Util.PlatformUtils.ForName(at.GetLocationType());
-                    Net.Vpc.Upa.Config.Decoration ignored = strategy.IsNoIgnore() ? null : newrepo.GetTypeDecoration(tt, typeof(Net.Vpc.Upa.Config.Ignore));
+                foreach (Net.TheVpc.Upa.Config.Decoration at in newrepo.GetDeclaredDecorations((typeof(Net.TheVpc.Upa.Config.Entity)).FullName)) {
+                    System.Type tt = Net.TheVpc.Upa.Impl.Util.PlatformUtils.ForName(at.GetLocationType());
+                    Net.TheVpc.Upa.Config.Decoration ignored = strategy.IsNoIgnore() ? null : newrepo.GetTypeDecoration(tt, typeof(Net.TheVpc.Upa.Config.Ignore));
                     if (ignored != null) {
-                        log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("\t Ignored Entity {0}",null,tt));
+                        log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("\t Ignored Entity {0}",null,tt));
                         continue;
                     }
                     System.Type entityType = at.GetType("entityType");
                     if (entityType != null && (typeof(void).Equals(entityType) || typeof(void).Equals(entityType))) {
                         entityType = tt;
                     }
-                    System.Collections.Generic.ISet<System.Type> s = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,System.Collections.Generic.ISet<System.Type>>(entityClasses,entityType);
+                    System.Collections.Generic.ISet<System.Type> s = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,System.Collections.Generic.ISet<System.Type>>(entityClasses,entityType);
                     if (s == null) {
                         s = new System.Collections.Generic.HashSet<System.Type>();
                         entityClasses[entityType]=s;
                     }
                     if (tt.Equals(entityType)) {
-                        log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,40,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("\t Detect Entity {0}",null,tt));
+                        log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,40,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("\t Detect Entity {0}",null,tt));
                     } else {
-                        log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,40,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("\t Detect Entity {0} as {1}",null,entityType));
+                        log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,40,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("\t Detect Entity {0} as {1}",null,entityType));
                     }
                     if (listener != null) {
-                        listener.PersistenceUnitItemScanned(new Net.Vpc.Upa.ScanEvent(persistenceUnit.GetPersistenceGroup().GetContext(), persistenceUnit.GetPersistenceGroup(), persistenceUnit, typeof(Net.Vpc.Upa.Config.Entity), tt, null));
+                        listener.PersistenceUnitItemScanned(new Net.TheVpc.Upa.ScanEvent(persistenceUnit.GetPersistenceGroup().GetContext(), persistenceUnit.GetPersistenceGroup(), persistenceUnit, typeof(Net.TheVpc.Upa.Config.Entity), tt, null));
                     }
                     s.Add(tt);
                 }
-                foreach (Net.Vpc.Upa.Config.Decoration at in newrepo.GetDeclaredDecorations((typeof(Net.Vpc.Upa.Config.Partial)).FullName)) {
-                    System.Type tt = Net.Vpc.Upa.Impl.Util.PlatformUtils.ForName(at.GetLocationType());
-                    Net.Vpc.Upa.Config.Decoration ignored = newrepo.GetTypeDecoration(tt, typeof(Net.Vpc.Upa.Config.Ignore));
+                foreach (Net.TheVpc.Upa.Config.Decoration at in newrepo.GetDeclaredDecorations((typeof(Net.TheVpc.Upa.Config.Partial)).FullName)) {
+                    System.Type tt = Net.TheVpc.Upa.Impl.Util.PlatformUtils.ForName(at.GetLocationType());
+                    Net.TheVpc.Upa.Config.Decoration ignored = newrepo.GetTypeDecoration(tt, typeof(Net.TheVpc.Upa.Config.Ignore));
                     if (ignored != null) {
-                        log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("\t Ignored Entity {0}",null,tt));
+                        log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("\t Ignored Entity {0}",null,tt));
                         continue;
                     }
-                    Net.Vpc.Upa.Config.Decoration entityAnnotation = newrepo.GetTypeDecoration(tt, typeof(Net.Vpc.Upa.Config.Entity));
+                    Net.TheVpc.Upa.Config.Decoration entityAnnotation = newrepo.GetTypeDecoration(tt, typeof(Net.TheVpc.Upa.Config.Entity));
                     if (entityAnnotation == null) {
                         throw new System.ArgumentException ("Missing @Entity along with @Partial for " + tt);
                     }
                     partialEntities[tt]=at.GetType("value");
                     entityClasses.Remove(tt);
-                    log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("\t Detect Partial Entity {0} as {1}",null,new object[] { at.GetType("value"), tt }));
+                    log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("\t Detect Partial Entity {0} as {1}",null,new object[] { at.GetType("value"), tt }));
                     if (listener != null) {
-                        listener.PersistenceUnitItemScanned(new Net.Vpc.Upa.ScanEvent(persistenceUnit.GetPersistenceGroup().GetContext(), persistenceUnit.GetPersistenceGroup(), persistenceUnit, typeof(Net.Vpc.Upa.Config.Partial), tt, null));
+                        listener.PersistenceUnitItemScanned(new Net.TheVpc.Upa.ScanEvent(persistenceUnit.GetPersistenceGroup().GetContext(), persistenceUnit.GetPersistenceGroup(), persistenceUnit, typeof(Net.TheVpc.Upa.Config.Partial), tt, null));
                     }
                 }
                 foreach (System.Collections.Generic.KeyValuePair<System.Type , System.Type> entry in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<System.Type,System.Type>>(partialEntities)) {
@@ -337,99 +337,99 @@ namespace Net.Vpc.Upa.Impl.Config
                         //                    rootEntity = getRootEntity(entry.getKey(), entityClasses, partialEntities);
                         throw new System.ArgumentException ("Partial Entity " + (entry).Key + " references invalid Entity or Partial (" + (entry).Value + ")");
                     }
-                    Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,System.Collections.Generic.ISet<System.Type>>(entityClasses,rootEntity).Add((entry).Key);
+                    Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,System.Collections.Generic.ISet<System.Type>>(entityClasses,rootEntity).Add((entry).Key);
                 }
                 foreach (System.Collections.Generic.ISet<System.Type> ee in (entityClasses).Values) {
                     if (listener != null) {
-                        listener.PersistenceUnitItemScanned(new Net.Vpc.Upa.ScanEvent(persistenceUnit.GetPersistenceGroup().GetContext(), persistenceUnit.GetPersistenceGroup(), persistenceUnit, typeof(Net.Vpc.Upa.EntityDescriptor), typeof(Net.Vpc.Upa.EntityDescriptor), r.Resolve(ee.ToArray())));
+                        listener.PersistenceUnitItemScanned(new Net.TheVpc.Upa.ScanEvent(persistenceUnit.GetPersistenceGroup().GetContext(), persistenceUnit.GetPersistenceGroup(), persistenceUnit, typeof(Net.TheVpc.Upa.EntityDescriptor), typeof(Net.TheVpc.Upa.EntityDescriptor), r.Resolve(ee.ToArray())));
                     }
                 }
-                foreach (Net.Vpc.Upa.Config.Decoration d in newrepo.GetDeclaredDecorations((typeof(Net.Vpc.Upa.Config.Function)).FullName)) {
-                    System.Type tt = Net.Vpc.Upa.Impl.Util.PlatformUtils.ForName(d.GetLocationType());
-                    Net.Vpc.Upa.Config.Decoration ignored = strategy.IsNoIgnore() ? null : newrepo.GetTypeDecoration(tt, typeof(Net.Vpc.Upa.Config.Ignore));
+                foreach (Net.TheVpc.Upa.Config.Decoration d in newrepo.GetDeclaredDecorations((typeof(Net.TheVpc.Upa.Config.Function)).FullName)) {
+                    System.Type tt = Net.TheVpc.Upa.Impl.Util.PlatformUtils.ForName(d.GetLocationType());
+                    Net.TheVpc.Upa.Config.Decoration ignored = strategy.IsNoIgnore() ? null : newrepo.GetTypeDecoration(tt, typeof(Net.TheVpc.Upa.Config.Ignore));
                     if (ignored != null) {
-                        log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("\t Ignored QLFunction {0}",null,tt));
+                        log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("\t Ignored QLFunction {0}",null,tt));
                         continue;
                     }
-                    log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("\t Detect Function {0}",null,tt));
+                    log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("\t Detect Function {0}",null,tt));
                     if (listener != null) {
-                        listener.PersistenceUnitItemScanned(new Net.Vpc.Upa.ScanEvent(persistenceUnit.GetPersistenceGroup().GetContext(), persistenceUnit.GetPersistenceGroup(), persistenceUnit, typeof(Net.Vpc.Upa.Function), tt, null));
+                        listener.PersistenceUnitItemScanned(new Net.TheVpc.Upa.ScanEvent(persistenceUnit.GetPersistenceGroup().GetContext(), persistenceUnit.GetPersistenceGroup(), persistenceUnit, typeof(Net.TheVpc.Upa.Function), tt, null));
                     }
                 }
-                foreach (Net.Vpc.Upa.Config.Decoration at in newrepo.GetDeclaredDecorations((typeof(Net.Vpc.Upa.Config.SecurityContext)).FullName)) {
-                    System.Type t = Net.Vpc.Upa.Impl.Util.PlatformUtils.ForName(at.GetLocationType());
-                    Net.Vpc.Upa.Config.Decoration ignored = strategy.IsNoIgnore() ? null : newrepo.GetTypeDecoration(t, typeof(Net.Vpc.Upa.Config.Ignore));
+                foreach (Net.TheVpc.Upa.Config.Decoration at in newrepo.GetDeclaredDecorations((typeof(Net.TheVpc.Upa.Config.SecurityContext)).FullName)) {
+                    System.Type t = Net.TheVpc.Upa.Impl.Util.PlatformUtils.ForName(at.GetLocationType());
+                    Net.TheVpc.Upa.Config.Decoration ignored = strategy.IsNoIgnore() ? null : newrepo.GetTypeDecoration(t, typeof(Net.TheVpc.Upa.Config.Ignore));
                     bool ok = false;
                     if (ignored == null) {
-                        if (typeof(Net.Vpc.Upa.EntitySecurityManager).IsAssignableFrom(t)) {
+                        if (typeof(Net.TheVpc.Upa.EntitySecurityManager).IsAssignableFrom(t)) {
                             ok = true;
                             if (listener != null) {
-                                listener.PersistenceUnitItemScanned(new Net.Vpc.Upa.ScanEvent(persistenceUnit.GetPersistenceGroup().GetContext(), persistenceUnit.GetPersistenceGroup(), persistenceUnit, typeof(Net.Vpc.Upa.EntitySecurityManager), t, at));
+                                listener.PersistenceUnitItemScanned(new Net.TheVpc.Upa.ScanEvent(persistenceUnit.GetPersistenceGroup().GetContext(), persistenceUnit.GetPersistenceGroup(), persistenceUnit, typeof(Net.TheVpc.Upa.EntitySecurityManager), t, at));
                                 ok = true;
                             }
                         }
-                        if (typeof(Net.Vpc.Upa.PersistenceGroupSecurityManager).IsAssignableFrom(t) || typeof(Net.Vpc.Upa.UPASecurityManager).IsAssignableFrom(t)) {
+                        if (typeof(Net.TheVpc.Upa.PersistenceGroupSecurityManager).IsAssignableFrom(t) || typeof(Net.TheVpc.Upa.UPASecurityManager).IsAssignableFrom(t)) {
                             ok = true;
                         }
                         if (!ok) {
-                            log.TraceEvent(System.Diagnostics.TraceEventType.Warning,90,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("@SecurityContext ignored as annotating any of PersistenceGroupSecurityManager, UPASecurityManager, EntitySecurityManager",null));
+                            log.TraceEvent(System.Diagnostics.TraceEventType.Warning,90,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("@SecurityContext ignored as annotating any of PersistenceGroupSecurityManager, UPASecurityManager, EntitySecurityManager",null));
                         }
                     }
                 }
-            } catch (Net.Vpc.Upa.Exceptions.UPAException e) {
+            } catch (Net.TheVpc.Upa.Exceptions.UPAException e) {
                 throw e;
             } catch (System.Exception e) {
-                throw new Net.Vpc.Upa.Exceptions.UPAException(e, new Net.Vpc.Upa.Types.I18NString("URLAnnotationStrategySupportConfigureException"));
+                throw new Net.TheVpc.Upa.Exceptions.UPAException(e, new Net.TheVpc.Upa.Types.I18NString("URLAnnotationStrategySupportConfigureException"));
             }
         }
 
         /**
              * transform supported JPA Annotations to UPA Decorations
              */
-        private void ProcessJAVAXAnnotations(Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository readFrom, Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository writeTo, bool noIgnore) {
+        private void ProcessJAVAXAnnotations(Net.TheVpc.Upa.Impl.Config.Decorations.DecorationRepository readFrom, Net.TheVpc.Upa.Impl.Config.Decorations.DecorationRepository writeTo, bool noIgnore) {
             int pos = 0;
-            foreach (Net.Vpc.Upa.Config.Decoration at in readFrom.GetDeclaredDecorations("javax.persistence.Entity")) {
-                Net.Vpc.Upa.Config.Decoration ignored = noIgnore ? null : readFrom.GetTypeDecoration(at.GetLocationType(), (typeof(Net.Vpc.Upa.Config.Ignore)).FullName);
+            foreach (Net.TheVpc.Upa.Config.Decoration at in readFrom.GetDeclaredDecorations("javax.persistence.Entity")) {
+                Net.TheVpc.Upa.Config.Decoration ignored = noIgnore ? null : readFrom.GetTypeDecoration(at.GetLocationType(), (typeof(Net.TheVpc.Upa.Config.Ignore)).FullName);
                 if (ignored != null) {
-                    log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("\t Ignored javax.persistence.Entity {0}",null,at));
+                    log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("\t Ignored javax.persistence.Entity {0}",null,at));
                     continue;
                 }
-                System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Config.DecorationValue> v = new System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Config.DecorationValue>();
-                Net.Vpc.Upa.Impl.Config.Decorations.SimpleDecoration s = new Net.Vpc.Upa.Impl.Config.Decorations.SimpleDecoration((typeof(Net.Vpc.Upa.Config.Entity)).FullName, at.GetDecorationSourceType(), at.GetTarget(), at.GetLocationType(), at.GetLocation(), pos, Net.Vpc.Upa.Config.ConfigInfo.DEFAULT, v);
+                System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Config.DecorationValue> v = new System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Config.DecorationValue>();
+                Net.TheVpc.Upa.Impl.Config.Decorations.SimpleDecoration s = new Net.TheVpc.Upa.Impl.Config.Decorations.SimpleDecoration((typeof(Net.TheVpc.Upa.Config.Entity)).FullName, at.GetDecorationSourceType(), at.GetTarget(), at.GetLocationType(), at.GetLocation(), pos, Net.TheVpc.Upa.Config.ConfigInfo.DEFAULT, v);
                 //            readFrom.register(s);
                 writeTo.Visit(s);
                 pos++;
             }
             pos = 0;
-            foreach (Net.Vpc.Upa.Config.Decoration at in readFrom.GetDeclaredDecorations("javax.persistence.Id")) {
+            foreach (Net.TheVpc.Upa.Config.Decoration at in readFrom.GetDeclaredDecorations("javax.persistence.Id")) {
                 //            Decoration ignored = repo.getTypeDecoration(at.getType(), Ignore.class.getName());
                 //            if (ignored != null) {
                 //                log.log(Level.FINE, "\t Ignored javax.persistence.Id {0}", at);
                 //                continue;
                 //            }
-                System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Config.DecorationValue> v = new System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Config.DecorationValue>();
-                Net.Vpc.Upa.Impl.Config.Decorations.SimpleDecoration s = new Net.Vpc.Upa.Impl.Config.Decorations.SimpleDecoration((typeof(Net.Vpc.Upa.Config.Id)).FullName, at.GetDecorationSourceType(), at.GetTarget(), at.GetLocationType(), at.GetLocation(), pos, Net.Vpc.Upa.Config.ConfigInfo.DEFAULT, v);
+                System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Config.DecorationValue> v = new System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Config.DecorationValue>();
+                Net.TheVpc.Upa.Impl.Config.Decorations.SimpleDecoration s = new Net.TheVpc.Upa.Impl.Config.Decorations.SimpleDecoration((typeof(Net.TheVpc.Upa.Config.Id)).FullName, at.GetDecorationSourceType(), at.GetTarget(), at.GetLocationType(), at.GetLocation(), pos, Net.TheVpc.Upa.Config.ConfigInfo.DEFAULT, v);
                 //            readFrom.register(s);
                 writeTo.Visit(s);
                 pos++;
             }
             pos = 0;
-            foreach (Net.Vpc.Upa.Config.Decoration at in readFrom.GetDeclaredDecorations("javax.persistence.ManyToOne")) {
+            foreach (Net.TheVpc.Upa.Config.Decoration at in readFrom.GetDeclaredDecorations("javax.persistence.ManyToOne")) {
                 //            Decoration ignored = repo.getTypeDecoration(at.getType(), Ignore.class.getName());
                 //            if (ignored != null) {
                 //                log.log(Level.FINE, "\t Ignored javax.persistence.Id javax.persistence.ManyToOne", at);
                 //                continue;
                 //            }
-                System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Config.DecorationValue> v = new System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Config.DecorationValue>();
-                Net.Vpc.Upa.Impl.Config.Decorations.SimpleDecoration s = new Net.Vpc.Upa.Impl.Config.Decorations.SimpleDecoration((typeof(Net.Vpc.Upa.Config.ManyToOne)).FullName, at.GetDecorationSourceType(), at.GetTarget(), at.GetLocationType(), at.GetLocation(), pos, Net.Vpc.Upa.Config.ConfigInfo.DEFAULT, v);
+                System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Config.DecorationValue> v = new System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Config.DecorationValue>();
+                Net.TheVpc.Upa.Impl.Config.Decorations.SimpleDecoration s = new Net.TheVpc.Upa.Impl.Config.Decorations.SimpleDecoration((typeof(Net.TheVpc.Upa.Config.ManyToOne)).FullName, at.GetDecorationSourceType(), at.GetTarget(), at.GetLocationType(), at.GetLocation(), pos, Net.TheVpc.Upa.Config.ConfigInfo.DEFAULT, v);
                 //            readFrom.register(s);
                 writeTo.Visit(s);
                 pos++;
             }
             pos = 0;
-            foreach (Net.Vpc.Upa.Config.Decoration at in readFrom.GetDeclaredDecorations("javax.annotation.PostConstruct")) {
-                System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Config.DecorationValue> v = new System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Config.DecorationValue>();
-                Net.Vpc.Upa.Impl.Config.Decorations.SimpleDecoration s = new Net.Vpc.Upa.Impl.Config.Decorations.SimpleDecoration((typeof(Net.Vpc.Upa.Config.Init)).FullName, at.GetDecorationSourceType(), at.GetTarget(), at.GetLocationType(), at.GetLocation(), pos, Net.Vpc.Upa.Config.ConfigInfo.DEFAULT, v);
+            foreach (Net.TheVpc.Upa.Config.Decoration at in readFrom.GetDeclaredDecorations("javax.annotation.PostConstruct")) {
+                System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Config.DecorationValue> v = new System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Config.DecorationValue>();
+                Net.TheVpc.Upa.Impl.Config.Decorations.SimpleDecoration s = new Net.TheVpc.Upa.Impl.Config.Decorations.SimpleDecoration((typeof(Net.TheVpc.Upa.Config.Init)).FullName, at.GetDecorationSourceType(), at.GetTarget(), at.GetLocationType(), at.GetLocation(), pos, Net.TheVpc.Upa.Config.ConfigInfo.DEFAULT, v);
                 //            readFrom.register(s);
                 writeTo.Visit(s);
                 pos++;
@@ -440,25 +440,25 @@ namespace Net.Vpc.Upa.Impl.Config
             if (entityClasses.ContainsKey(c)) {
                 return c;
             }
-            System.Type r = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,System.Type>(partialEntities,c);
+            System.Type r = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,System.Type>(partialEntities,c);
             if (r == null) {
                 return null;
             }
             return GetRootEntity(r, entityClasses, partialEntities);
         }
 
-        private void Merge(Net.Vpc.Upa.Persistence.ConnectionConfig source, Net.Vpc.Upa.Persistence.ConnectionConfig target) {
+        private void Merge(Net.TheVpc.Upa.Persistence.ConnectionConfig source, Net.TheVpc.Upa.Persistence.ConnectionConfig target) {
             if (source != null) {
-                if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(source.GetConnectionString())) {
-                    target.SetConnectionString(Net.Vpc.Upa.Impl.Util.StringUtils.Trim(source.GetConnectionString()));
+                if (!Net.TheVpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(source.GetConnectionString())) {
+                    target.SetConnectionString(Net.TheVpc.Upa.Impl.Util.StringUtils.Trim(source.GetConnectionString()));
                 }
-                if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(source.GetUserName())) {
-                    target.SetUserName(Net.Vpc.Upa.Impl.Util.StringUtils.Trim(source.GetUserName()));
+                if (!Net.TheVpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(source.GetUserName())) {
+                    target.SetUserName(Net.TheVpc.Upa.Impl.Util.StringUtils.Trim(source.GetUserName()));
                 }
-                if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(source.GetPassword())) {
+                if (!Net.TheVpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(source.GetPassword())) {
                     target.SetPassword(source.GetPassword());
                 }
-                if (source.GetStructureStrategy() != default(Net.Vpc.Upa.Persistence.StructureStrategy)) {
+                if (source.GetStructureStrategy() != default(Net.TheVpc.Upa.Persistence.StructureStrategy)) {
                     target.SetStructureStrategy(source.GetStructureStrategy());
                 }
                 if (source.IsEnabled() != null) {
@@ -466,57 +466,57 @@ namespace Net.Vpc.Upa.Impl.Config
                 }
                 if (source.GetProperties() != null) {
                     foreach (System.Collections.Generic.KeyValuePair<string , string> entry in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,string>>(source.GetProperties())) {
-                        if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty((entry).Value)) {
-                            target.GetProperties()[Net.Vpc.Upa.Impl.Util.StringUtils.Trim((entry).Key)]=Net.Vpc.Upa.Impl.Util.StringUtils.Trim((entry).Value);
+                        if (Net.TheVpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty((entry).Value)) {
+                            target.GetProperties()[Net.TheVpc.Upa.Impl.Util.StringUtils.Trim((entry).Key)]=Net.TheVpc.Upa.Impl.Util.StringUtils.Trim((entry).Value);
                         }
                     }
                 }
             }
         }
 
-        private void Merge(Net.Vpc.Upa.Config.Decoration persistenceNameStrategy, Net.Vpc.Upa.Persistence.PersistenceNameConfig target) {
+        private void Merge(Net.TheVpc.Upa.Config.Decoration persistenceNameStrategy, Net.TheVpc.Upa.Persistence.PersistenceNameConfig target) {
             if (persistenceNameStrategy != null) {
-                if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsUndefined(persistenceNameStrategy.GetString("escape"))) {
+                if (!Net.TheVpc.Upa.Impl.Util.StringUtils.IsUndefined(persistenceNameStrategy.GetString("escape"))) {
                     target.SetPersistenceNameEscape(persistenceNameStrategy.GetString("escape"));
                 }
-                if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsUndefined(persistenceNameStrategy.GetString("globalPersistenceNameFormat"))) {
-                    target.SetGlobalPersistenceName(Net.Vpc.Upa.Impl.Util.StringUtils.Trim(persistenceNameStrategy.GetString("globalPersistenceNameFormat")));
+                if (!Net.TheVpc.Upa.Impl.Util.StringUtils.IsUndefined(persistenceNameStrategy.GetString("globalPersistenceNameFormat"))) {
+                    target.SetGlobalPersistenceName(Net.TheVpc.Upa.Impl.Util.StringUtils.Trim(persistenceNameStrategy.GetString("globalPersistenceNameFormat")));
                 }
-                if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsUndefined(persistenceNameStrategy.GetString("localPersistenceNameFormat"))) {
-                    target.SetLocalPersistenceName(Net.Vpc.Upa.Impl.Util.StringUtils.Trim(persistenceNameStrategy.GetString("localPersistenceNameFormat")));
+                if (!Net.TheVpc.Upa.Impl.Util.StringUtils.IsUndefined(persistenceNameStrategy.GetString("localPersistenceNameFormat"))) {
+                    target.SetLocalPersistenceName(Net.TheVpc.Upa.Impl.Util.StringUtils.Trim(persistenceNameStrategy.GetString("localPersistenceNameFormat")));
                 }
-                if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsUndefined(persistenceNameStrategy.GetString("persistenceNameFormat"))) {
+                if (!Net.TheVpc.Upa.Impl.Util.StringUtils.IsUndefined(persistenceNameStrategy.GetString("persistenceNameFormat"))) {
                     target.SetGlobalPersistenceName(persistenceNameStrategy.GetString("persistenceNameFormat"));
                 }
                 foreach (object persistenceNameObj in persistenceNameStrategy.GetArray("names")) {
-                    Net.Vpc.Upa.Config.Decoration persistenceNameFormat = (Net.Vpc.Upa.Config.Decoration) persistenceNameObj;
-                    Net.Vpc.Upa.Persistence.PersistenceNameType type2 = null;
-                    switch((Net.Vpc.Upa.Config.PersistenceNameType)(System.Enum.Parse(typeof(Net.Vpc.Upa.Config.PersistenceNameType),persistenceNameFormat.GetString("type")))) {
-                        case Net.Vpc.Upa.Config.PersistenceNameType.CUSTOM:
+                    Net.TheVpc.Upa.Config.Decoration persistenceNameFormat = (Net.TheVpc.Upa.Config.Decoration) persistenceNameObj;
+                    Net.TheVpc.Upa.Persistence.PersistenceNameType type2 = null;
+                    switch((Net.TheVpc.Upa.Config.PersistenceNameType)(System.Enum.Parse(typeof(Net.TheVpc.Upa.Config.PersistenceNameType),persistenceNameFormat.GetString("type")))) {
+                        case Net.TheVpc.Upa.Config.PersistenceNameType.CUSTOM:
                             {
-                                if (Net.Vpc.Upa.Impl.Util.StringUtils.IsUndefined(persistenceNameStrategy.GetString("custom"))) {
-                                    throw new Net.Vpc.Upa.Exceptions.UPAException("MissingCustomPersistenceNameType");
+                                if (Net.TheVpc.Upa.Impl.Util.StringUtils.IsUndefined(persistenceNameStrategy.GetString("custom"))) {
+                                    throw new Net.TheVpc.Upa.Exceptions.UPAException("MissingCustomPersistenceNameType");
                                 }
-                                type2 = Net.Vpc.Upa.Persistence.PersistenceNameType.ValueOf(persistenceNameFormat.GetString("customType"));
+                                type2 = Net.TheVpc.Upa.Persistence.PersistenceNameType.ValueOf(persistenceNameFormat.GetString("customType"));
                                 break;
                             }
                         default:
                             {
-                                type2 = Net.Vpc.Upa.Persistence.PersistenceNameType.ValueOf(persistenceNameFormat.GetString("type"));
+                                type2 = Net.TheVpc.Upa.Persistence.PersistenceNameType.ValueOf(persistenceNameFormat.GetString("type"));
                                 break;
                             }
                     }
-                    target.GetNames().Add(new Net.Vpc.Upa.Persistence.PersistenceName(Net.Vpc.Upa.Impl.Util.StringUtils.Trim(persistenceNameFormat.GetString("object")), type2, Net.Vpc.Upa.Impl.Util.StringUtils.Trim(persistenceNameFormat.GetString("value")), persistenceNameFormat.GetConfig().GetOrder()));
+                    target.GetNames().Add(new Net.TheVpc.Upa.Persistence.PersistenceName(Net.TheVpc.Upa.Impl.Util.StringUtils.Trim(persistenceNameFormat.GetString("object")), type2, Net.TheVpc.Upa.Impl.Util.StringUtils.Trim(persistenceNameFormat.GetString("value")), persistenceNameFormat.GetConfig().GetOrder()));
                 }
             }
         }
 
-        private void Merge(Net.Vpc.Upa.Persistence.PersistenceNameConfig source, Net.Vpc.Upa.Persistence.PersistenceNameConfig target) {
+        private void Merge(Net.TheVpc.Upa.Persistence.PersistenceNameConfig source, Net.TheVpc.Upa.Persistence.PersistenceNameConfig target) {
             if (source != null) {
-                if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(source.GetPersistenceNameEscape())) {
+                if (Net.TheVpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(source.GetPersistenceNameEscape())) {
                     target.SetPersistenceNameEscape(source.GetPersistenceNameEscape());
                 }
-                if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(source.GetGlobalPersistenceName())) {
+                if (Net.TheVpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(source.GetGlobalPersistenceName())) {
                     target.SetGlobalPersistenceName(source.GetGlobalPersistenceName());
                 }
                 if (source.GetGlobalPersistenceName() != null) {
@@ -525,23 +525,23 @@ namespace Net.Vpc.Upa.Impl.Config
                 if (source.GetLocalPersistenceName() != null) {
                     target.SetLocalPersistenceName(source.GetLocalPersistenceName());
                 }
-                foreach (Net.Vpc.Upa.Persistence.PersistenceName v in source.GetNames()) {
-                    target.GetNames().Add(new Net.Vpc.Upa.Persistence.PersistenceName(v.GetObject(), v.GetPersistenceNameType(), v.GetValue(), v.GetConfigOrder()));
+                foreach (Net.TheVpc.Upa.Persistence.PersistenceName v in source.GetNames()) {
+                    target.GetNames().Add(new Net.TheVpc.Upa.Persistence.PersistenceName(v.GetObject(), v.GetPersistenceNameType(), v.GetValue(), v.GetConfigOrder()));
                 }
             }
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.PersistenceUnitConfig> BuildPersistenceUnitConfigs(System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Util.OrderedIem<Net.Vpc.Upa.Persistence.PersistenceUnitConfig>> persistenceUnitConfigs) {
-            System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Persistence.PersistenceUnitConfig> t = new System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Persistence.PersistenceUnitConfig>();
-            Net.Vpc.Upa.Impl.FwkConvertUtils.ListSort(persistenceUnitConfigs, null);
-            foreach (Net.Vpc.Upa.Impl.Util.OrderedIem<Net.Vpc.Upa.Persistence.PersistenceUnitConfig> orderedIem in persistenceUnitConfigs) {
-                Net.Vpc.Upa.Persistence.PersistenceUnitConfig c = orderedIem.@value;
-                string puname = Net.Vpc.Upa.Impl.Util.StringUtils.Trim(c.GetName());
-                string pgname = Net.Vpc.Upa.Impl.Util.StringUtils.Trim(c.GetPersistenceGroup());
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Persistence.PersistenceUnitConfig> BuildPersistenceUnitConfigs(System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Util.OrderedIem<Net.TheVpc.Upa.Persistence.PersistenceUnitConfig>> persistenceUnitConfigs) {
+            System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Persistence.PersistenceUnitConfig> t = new System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Persistence.PersistenceUnitConfig>();
+            Net.TheVpc.Upa.Impl.FwkConvertUtils.ListSort(persistenceUnitConfigs, null);
+            foreach (Net.TheVpc.Upa.Impl.Util.OrderedIem<Net.TheVpc.Upa.Persistence.PersistenceUnitConfig> orderedIem in persistenceUnitConfigs) {
+                Net.TheVpc.Upa.Persistence.PersistenceUnitConfig c = orderedIem.@value;
+                string puname = Net.TheVpc.Upa.Impl.Util.StringUtils.Trim(c.GetName());
+                string pgname = Net.TheVpc.Upa.Impl.Util.StringUtils.Trim(c.GetPersistenceGroup());
                 string id = pgname + "/" + puname;
-                Net.Vpc.Upa.Persistence.PersistenceUnitConfig old = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.Vpc.Upa.Persistence.PersistenceUnitConfig>(t,id);
+                Net.TheVpc.Upa.Persistence.PersistenceUnitConfig old = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.TheVpc.Upa.Persistence.PersistenceUnitConfig>(t,id);
                 if (old == null) {
-                    old = new Net.Vpc.Upa.Persistence.PersistenceUnitConfig();
+                    old = new Net.TheVpc.Upa.Persistence.PersistenceUnitConfig();
                     old.SetName(puname);
                     old.SetPersistenceGroup(pgname);
                     t[id]=old;
@@ -550,16 +550,16 @@ namespace Net.Vpc.Upa.Impl.Config
                     old.SetAutoStart(c.GetAutoStart());
                 }
                 if (c.GetModel() != null) {
-                    Net.Vpc.Upa.Persistence.PersistenceNameConfig m0 = c.GetModel();
-                    Net.Vpc.Upa.Persistence.PersistenceNameConfig m = old.GetModel();
+                    Net.TheVpc.Upa.Persistence.PersistenceNameConfig m0 = c.GetModel();
+                    Net.TheVpc.Upa.Persistence.PersistenceNameConfig m = old.GetModel();
                     if (m == null) {
-                        m = new Net.Vpc.Upa.Persistence.PersistenceNameConfig(orderedIem.order);
+                        m = new Net.TheVpc.Upa.Persistence.PersistenceNameConfig(orderedIem.order);
                         old.SetModel(m);
                     }
-                    if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(m0.GetPersistenceNameEscape())) {
+                    if (Net.TheVpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(m0.GetPersistenceNameEscape())) {
                         m.SetPersistenceNameEscape(m0.GetPersistenceNameEscape());
                     }
-                    if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(m0.GetGlobalPersistenceName())) {
+                    if (Net.TheVpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(m0.GetGlobalPersistenceName())) {
                         m.SetGlobalPersistenceName(m0.GetGlobalPersistenceName());
                     }
                     if (m0.GetGlobalPersistenceName() != null) {
@@ -568,8 +568,8 @@ namespace Net.Vpc.Upa.Impl.Config
                     if (m0.GetLocalPersistenceName() != null) {
                         m.SetLocalPersistenceName(m0.GetLocalPersistenceName());
                     }
-                    foreach (Net.Vpc.Upa.Persistence.PersistenceName v in m0.GetNames()) {
-                        m.GetNames().Add(new Net.Vpc.Upa.Persistence.PersistenceName(v.GetObject(), v.GetPersistenceNameType(), v.GetValue(), v.GetConfigOrder()));
+                    foreach (Net.TheVpc.Upa.Persistence.PersistenceName v in m0.GetNames()) {
+                        m.GetNames().Add(new Net.TheVpc.Upa.Persistence.PersistenceName(v.GetObject(), v.GetPersistenceNameType(), v.GetValue(), v.GetConfigOrder()));
                     }
                 }
                 foreach (System.Collections.Generic.KeyValuePair<string , object> entry in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,object>>(c.GetProperties())) {
@@ -579,11 +579,11 @@ namespace Net.Vpc.Upa.Impl.Config
                         old.GetProperties()[(entry).Key]=(entry).Value;
                     }
                 }
-                foreach (Net.Vpc.Upa.Persistence.ConnectionConfig connectionConfig in c.GetConnections()) {
+                foreach (Net.TheVpc.Upa.Persistence.ConnectionConfig connectionConfig in c.GetConnections()) {
                     string s = connectionConfig.GetConnectionString();
-                    Net.Vpc.Upa.Persistence.ConnectionConfig oldConnectionConfig = null;
-                    foreach (Net.Vpc.Upa.Persistence.ConnectionConfig c0 in old.GetConnections()) {
-                        if (Net.Vpc.Upa.Impl.Util.UPAUtils.Equals(s, c0.GetConnectionString())) {
+                    Net.TheVpc.Upa.Persistence.ConnectionConfig oldConnectionConfig = null;
+                    foreach (Net.TheVpc.Upa.Persistence.ConnectionConfig c0 in old.GetConnections()) {
+                        if (Net.TheVpc.Upa.Impl.Util.UPAUtils.Equals(s, c0.GetConnectionString())) {
                             oldConnectionConfig = c0;
                             break;
                         }
@@ -594,11 +594,11 @@ namespace Net.Vpc.Upa.Impl.Config
                         Merge(connectionConfig, oldConnectionConfig);
                     }
                 }
-                foreach (Net.Vpc.Upa.Persistence.ConnectionConfig connectionConfig in c.GetRootConnections()) {
+                foreach (Net.TheVpc.Upa.Persistence.ConnectionConfig connectionConfig in c.GetRootConnections()) {
                     string s = connectionConfig.GetConnectionString();
-                    Net.Vpc.Upa.Persistence.ConnectionConfig oldConnectionConfig = null;
-                    foreach (Net.Vpc.Upa.Persistence.ConnectionConfig c0 in old.GetRootConnections()) {
-                        if (Net.Vpc.Upa.Impl.Util.UPAUtils.Equals(s, c0.GetConnectionString())) {
+                    Net.TheVpc.Upa.Persistence.ConnectionConfig oldConnectionConfig = null;
+                    foreach (Net.TheVpc.Upa.Persistence.ConnectionConfig c0 in old.GetRootConnections()) {
+                        if (Net.TheVpc.Upa.Impl.Util.UPAUtils.Equals(s, c0.GetConnectionString())) {
                             oldConnectionConfig = c0;
                             break;
                         }
@@ -610,7 +610,7 @@ namespace Net.Vpc.Upa.Impl.Config
                     }
                 }
             }
-            return new System.Collections.Generic.List<Net.Vpc.Upa.Persistence.PersistenceUnitConfig>((t).Values);
+            return new System.Collections.Generic.List<Net.TheVpc.Upa.Persistence.PersistenceUnitConfig>((t).Values);
         }
     }
 }

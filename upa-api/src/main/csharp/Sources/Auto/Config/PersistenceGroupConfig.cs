@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Config
+namespace Net.TheVpc.Upa.Config
 {
 
 
@@ -30,43 +30,43 @@ namespace Net.Vpc.Upa.Config
         }
 
 
-        private Net.Vpc.Upa.Config.BoolEnum _AutoScan = Net.Vpc.Upa.Config.BoolEnum.UNDEFINED;
-        public  Net.Vpc.Upa.Config.BoolEnum AutoScan{
+        private Net.TheVpc.Upa.Config.BoolEnum _AutoScan = Net.TheVpc.Upa.Config.BoolEnum.UNDEFINED;
+        public  Net.TheVpc.Upa.Config.BoolEnum AutoScan{
             get {return _AutoScan;}
             set {_AutoScan=value;}
         }
 
 
-        private Net.Vpc.Upa.Config.ScanConfig[] _Scan = {  };
-        public  Net.Vpc.Upa.Config.ScanConfig[] Scan{
+        private Net.TheVpc.Upa.Config.ScanConfig[] _Scan = {  };
+        public  Net.TheVpc.Upa.Config.ScanConfig[] Scan{
             get {return _Scan;}
             set {_Scan=value;}
         }
 
 
-        private Net.Vpc.Upa.Config.Property[] _Properties = {  };
-        public  Net.Vpc.Upa.Config.Property[] Properties{
+        private Net.TheVpc.Upa.Config.Property[] _Properties = {  };
+        public  Net.TheVpc.Upa.Config.Property[] Properties{
             get {return _Properties;}
             set {_Properties=value;}
         }
 
 
-        private Net.Vpc.Upa.Config.PersistenceUnitConfig[] _PersistenceUnits = {  };
-        public  Net.Vpc.Upa.Config.PersistenceUnitConfig[] PersistenceUnits{
+        private Net.TheVpc.Upa.Config.PersistenceUnitConfig[] _PersistenceUnits = {  };
+        public  Net.TheVpc.Upa.Config.PersistenceUnitConfig[] PersistenceUnits{
             get {return _PersistenceUnits;}
             set {_PersistenceUnits=value;}
         }
 
 
-        private Net.Vpc.Upa.Config.ConnectionConfig[] _Connections = {  };
-        public  Net.Vpc.Upa.Config.ConnectionConfig[] Connections{
+        private Net.TheVpc.Upa.Config.ConnectionConfig[] _Connections = {  };
+        public  Net.TheVpc.Upa.Config.ConnectionConfig[] Connections{
             get {return _Connections;}
             set {_Connections=value;}
         }
 
 
-        private Net.Vpc.Upa.Config.ConnectionConfig[] _RootConnections = {  };
-        public  Net.Vpc.Upa.Config.ConnectionConfig[] RootConnections{
+        private Net.TheVpc.Upa.Config.ConnectionConfig[] _RootConnections = {  };
+        public  Net.TheVpc.Upa.Config.ConnectionConfig[] RootConnections{
             get {return _RootConnections;}
             set {_RootConnections=value;}
         }

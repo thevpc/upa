@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Shared
+namespace Net.TheVpc.Upa.Impl.Persistence.Shared
 {
 
 
@@ -22,16 +22,16 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
      * Time: 17:17:34
      * To change this template use Options | File Templates.
      */
-    public class SignANSISQLProvider : Net.Vpc.Upa.Impl.Persistence.Shared.ANSIFunctionSQLProvider {
+    public class SignANSISQLProvider : Net.TheVpc.Upa.Impl.Persistence.Shared.ANSIFunctionSQLProvider {
 
-        public SignANSISQLProvider()  : base(typeof(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSign)){
+        public SignANSISQLProvider()  : base(typeof(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSign)){
 
         }
 
 
         public override string Simplify(string functionName, string[] @params, System.Collections.Generic.IDictionary<string , object> context) {
             if (@params.Length != 1) {
-                throw new System.ArgumentException ("function '" + functionName + "' requieres 1 argument.\n Error near " + functionName + "(" + Net.Vpc.Upa.Impl.Util.StringUtils.Format(@params) + ")");
+                throw new System.ArgumentException ("function '" + functionName + "' requieres 1 argument.\n Error near " + functionName + "(" + Net.TheVpc.Upa.Impl.Util.StringUtils.Format(@params) + ")");
             } else {
                 System.Text.StringBuilder sb = new System.Text.StringBuilder("Sign(");
                 sb.Append(@params[0]);

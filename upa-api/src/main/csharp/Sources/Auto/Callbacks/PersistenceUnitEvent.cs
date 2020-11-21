@@ -11,36 +11,36 @@
 
 
 
-namespace Net.Vpc.Upa.Callbacks
+namespace Net.TheVpc.Upa.Callbacks
 {
 
 
     /**
      * @author taha.bensalah@gmail.com
      */
-    public class PersistenceUnitEvent : Net.Vpc.Upa.Callbacks.UPAEvent {
+    public class PersistenceUnitEvent : Net.TheVpc.Upa.Callbacks.UPAEvent {
 
-        private Net.Vpc.Upa.PersistenceUnit persistenceUnit;
+        private Net.TheVpc.Upa.PersistenceUnit persistenceUnit;
 
-        private Net.Vpc.Upa.PersistenceGroup persistenceGroup;
+        private Net.TheVpc.Upa.PersistenceGroup persistenceGroup;
 
-        private Net.Vpc.Upa.EventPhase phase;
+        private Net.TheVpc.Upa.EventPhase phase;
 
-        public PersistenceUnitEvent(Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.PersistenceGroup persistenceGroup, Net.Vpc.Upa.EventPhase phase) {
+        public PersistenceUnitEvent(Net.TheVpc.Upa.PersistenceUnit persistenceUnit, Net.TheVpc.Upa.PersistenceGroup persistenceGroup, Net.TheVpc.Upa.EventPhase phase) {
             this.persistenceUnit = persistenceUnit;
             this.persistenceGroup = persistenceGroup;
             this.phase = phase;
         }
 
-        public virtual Net.Vpc.Upa.EventPhase GetPhase() {
+        public virtual Net.TheVpc.Upa.EventPhase GetPhase() {
             return phase;
         }
 
-        public virtual Net.Vpc.Upa.PersistenceUnit GetPersistenceUnit() {
+        public virtual Net.TheVpc.Upa.PersistenceUnit GetPersistenceUnit() {
             return persistenceUnit;
         }
 
-        public virtual Net.Vpc.Upa.PersistenceGroup GetPersistenceGroup() {
+        public virtual Net.TheVpc.Upa.PersistenceGroup GetPersistenceGroup() {
             return persistenceGroup;
         }
     }

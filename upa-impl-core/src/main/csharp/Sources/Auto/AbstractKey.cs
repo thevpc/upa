@@ -11,16 +11,16 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
     /**
-     * Abstract Key is an abstract implementation of the <code>net.vpc.upa.Key</code> Interface.
+     * Abstract Key is an abstract implementation of the <code>Net.TheVpc.Upa.Key</code> Interface.
      *
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public abstract class AbstractKey : Net.Vpc.Upa.Key {
+    public abstract class AbstractKey : Net.TheVpc.Upa.Key {
 
 
 
@@ -60,15 +60,15 @@ namespace Net.Vpc.Upa.Impl
              * @return value of the given <code>fieldName</code> if it is a valid identifier portion
              * @throws UPAException if <code>fieldName</code> is not a valid identifier portion of the given Entity
              */
-        public virtual object GetValue(Net.Vpc.Upa.Entity entity, string fieldName) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Field> f = entity.GetPrimaryFields();
+        public virtual object GetValue(Net.TheVpc.Upa.Entity entity, string fieldName) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Field> f = entity.GetPrimaryFields();
             object[] @value = GetValue();
             for (int i = 0; i < (f).Count; i++) {
                 if (f[i].GetName().Equals(fieldName)) {
                     return @value[i];
                 }
             }
-            throw new Net.Vpc.Upa.Exceptions.UPAException("Either key " + ToString() + " or fieldName " + fieldName + " does not refer to entity " + entity.GetName());
+            throw new Net.TheVpc.Upa.Exceptions.UPAException("Either key " + ToString() + " or fieldName " + fieldName + " does not refer to entity " + entity.GetName());
         }
 
         /**
@@ -79,11 +79,11 @@ namespace Net.Vpc.Upa.Impl
              */
 
         public override bool Equals(object @object) {
-            if (!(@object is Net.Vpc.Upa.Impl.AbstractKey)) {
+            if (!(@object is Net.TheVpc.Upa.Impl.AbstractKey)) {
                 return false;
             }
             object[] @value = GetValue();
-            Net.Vpc.Upa.Impl.AbstractKey other = (Net.Vpc.Upa.Impl.AbstractKey) @object;
+            Net.TheVpc.Upa.Impl.AbstractKey other = (Net.TheVpc.Upa.Impl.AbstractKey) @object;
             object[] value1 = other == null ? null : other.GetValue();
             if (this == other || @value == value1) {
                 return true;
@@ -183,16 +183,16 @@ namespace Net.Vpc.Upa.Impl
         /**
              * {@inheritDoc}
              */
-        public virtual Net.Vpc.Upa.Types.Temporal GetDate() {
+        public virtual Net.TheVpc.Upa.Types.Temporal GetDate() {
             object[] @value = GetValue();
             if (@value.Length == 0) {
                 ThrowMultiDimensionalValue();
             }
-            return ((Net.Vpc.Upa.Types.Temporal) @value[0]);
+            return ((Net.TheVpc.Upa.Types.Temporal) @value[0]);
         }
 
-        private void ThrowMultiDimensionalValue() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            throw new Net.Vpc.Upa.Exceptions.UPAException("Not a single value key");
+        private void ThrowMultiDimensionalValue() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            throw new Net.TheVpc.Upa.Exceptions.UPAException("Not a single value key");
         }
 
         /**
@@ -230,9 +230,9 @@ namespace Net.Vpc.Upa.Impl
         /**
              * {@inheritDoc}
              */
-        public virtual Net.Vpc.Upa.Types.Temporal GetDateAt(int index) {
+        public virtual Net.TheVpc.Upa.Types.Temporal GetDateAt(int index) {
             object[] @value = GetValue();
-            return ((Net.Vpc.Upa.Types.Temporal) @value[index]);
+            return ((Net.TheVpc.Upa.Types.Temporal) @value[index]);
         }
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract object[] GetValue();

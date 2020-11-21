@@ -11,16 +11,16 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class ObjectAlreadyExistsException : Net.Vpc.Upa.Exceptions.UPAException {
+    public class ObjectAlreadyExistsException : Net.TheVpc.Upa.Exceptions.UPAException {
 
-        public ObjectAlreadyExistsException(string message, params object [] parameters)  : base(new Net.Vpc.Upa.Types.I18NString(message == null ? "ObjectAlreadyExistsException" : message), parameters){
+        public ObjectAlreadyExistsException(string message, params object [] parameters)  : base(new Net.TheVpc.Upa.Types.I18NString(message == null ? "ObjectAlreadyExistsException" : message), parameters){
 
         }
     }

@@ -11,11 +11,11 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
-    public sealed class NamedFormula : Net.Vpc.Upa.Formula {
+    public sealed class NamedFormula : Net.TheVpc.Upa.Formula {
 
         private string name;
 
@@ -31,8 +31,8 @@ namespace Net.Vpc.Upa
         public override bool Equals(object o) {
             if (this == o) return true;
             if (o == null || GetType() != o.GetType()) return false;
-            Net.Vpc.Upa.NamedFormula that = (Net.Vpc.Upa.NamedFormula) o;
-            return Net.Vpc.Upa.FwkConvertUtils.ObjectEquals(name,that.name);
+            Net.TheVpc.Upa.NamedFormula that = (Net.TheVpc.Upa.NamedFormula) o;
+            return Net.TheVpc.Upa.FwkConvertUtils.ObjectEquals(name,that.name);
         }
 
 

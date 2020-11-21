@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Callbacks
+namespace Net.TheVpc.Upa.Callbacks
 {
 
 
@@ -19,25 +19,25 @@ namespace Net.Vpc.Upa.Callbacks
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 11/27/12 9:52 PM
      */
-    public class FieldEvent : Net.Vpc.Upa.Callbacks.UPAEvent {
+    public class FieldEvent : Net.TheVpc.Upa.Callbacks.UPAEvent {
 
-        private Net.Vpc.Upa.PersistenceUnit persistenceUnit;
+        private Net.TheVpc.Upa.PersistenceUnit persistenceUnit;
 
         private int index;
 
         private int oldIndex;
 
-        private Net.Vpc.Upa.Field field;
+        private Net.TheVpc.Upa.Field field;
 
-        private Net.Vpc.Upa.Entity entity;
+        private Net.TheVpc.Upa.Entity entity;
 
-        private Net.Vpc.Upa.EntityPart parent;
+        private Net.TheVpc.Upa.EntityPart parent;
 
-        private Net.Vpc.Upa.EntityPart oldParent;
+        private Net.TheVpc.Upa.EntityPart oldParent;
 
-        private Net.Vpc.Upa.EventPhase phase;
+        private Net.TheVpc.Upa.EventPhase phase;
 
-        public FieldEvent(Net.Vpc.Upa.Field field, Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.EntityPart parent, int index, Net.Vpc.Upa.EntityPart oldParent, int oldIndex, Net.Vpc.Upa.EventPhase phase) {
+        public FieldEvent(Net.TheVpc.Upa.Field field, Net.TheVpc.Upa.PersistenceUnit persistenceUnit, Net.TheVpc.Upa.Entity entity, Net.TheVpc.Upa.EntityPart parent, int index, Net.TheVpc.Upa.EntityPart oldParent, int oldIndex, Net.TheVpc.Upa.EventPhase phase) {
             this.persistenceUnit = persistenceUnit;
             this.field = field;
             this.parent = parent;
@@ -48,7 +48,7 @@ namespace Net.Vpc.Upa.Callbacks
             this.phase = phase;
         }
 
-        public virtual Net.Vpc.Upa.PersistenceUnit GetPersistenceUnit() {
+        public virtual Net.TheVpc.Upa.PersistenceUnit GetPersistenceUnit() {
             return persistenceUnit;
         }
 
@@ -60,23 +60,23 @@ namespace Net.Vpc.Upa.Callbacks
             return oldIndex;
         }
 
-        public virtual Net.Vpc.Upa.Field GetField() {
+        public virtual Net.TheVpc.Upa.Field GetField() {
             return field;
         }
 
-        public virtual Net.Vpc.Upa.EntityPart GetParent() {
+        public virtual Net.TheVpc.Upa.EntityPart GetParent() {
             return parent;
         }
 
-        public virtual Net.Vpc.Upa.EntityPart GetOldParent() {
+        public virtual Net.TheVpc.Upa.EntityPart GetOldParent() {
             return oldParent;
         }
 
-        public virtual Net.Vpc.Upa.Entity GetEntity() {
+        public virtual Net.TheVpc.Upa.Entity GetEntity() {
             return entity;
         }
 
-        public virtual Net.Vpc.Upa.EventPhase GetPhase() {
+        public virtual Net.TheVpc.Upa.EventPhase GetPhase() {
             return phase;
         }
     }

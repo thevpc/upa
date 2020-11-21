@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -21,9 +21,9 @@ namespace Net.Vpc.Upa.Impl.Util
      */
     public class XMLUtils {
 
-        private static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.Vpc.Upa.Impl.Util.XMLUtils)).FullName);
+        private static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.TheVpc.Upa.Impl.Util.XMLUtils)).FullName);
 
-        public static System.Collections.Generic.IDictionary<string , string> GetAttributes(System.Xml.XmlElement e, Net.Vpc.Upa.Impl.Util.XmlAttrListFilter names) {
+        public static System.Collections.Generic.IDictionary<string , string> GetAttributes(System.Xml.XmlElement e, Net.TheVpc.Upa.Impl.Util.XmlAttrListFilter names) {
             System.Collections.Generic.IDictionary<string , string> values = new System.Collections.Generic.Dictionary<string , string>();
             
             return values;

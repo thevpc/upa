@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     /**
@@ -23,7 +23,7 @@ namespace Net.Vpc.Upa
      */
     public class QLParameter {
 
-        private Net.Vpc.Upa.QLParameterType type;
+        private Net.TheVpc.Upa.QLParameterType type;
 
         private string typeName;
 
@@ -35,7 +35,7 @@ namespace Net.Vpc.Upa
 
         private string expression;
 
-        public QLParameter(Net.Vpc.Upa.QLParameterType QLParameterType, string typeName, string expression, string name, string title, string description) {
+        public QLParameter(Net.TheVpc.Upa.QLParameterType QLParameterType, string typeName, string expression, string name, string title, string description) {
             this.type = QLParameterType;
             this.typeName = typeName;
             this.expression = expression;
@@ -64,7 +64,7 @@ namespace Net.Vpc.Upa
             return title;
         }
 
-        public virtual Net.Vpc.Upa.QLParameterType GetParameterType() {
+        public virtual Net.TheVpc.Upa.QLParameterType GetParameterType() {
             return type;
         }
 
@@ -76,8 +76,8 @@ namespace Net.Vpc.Upa
             return expression;
         }
 
-        public virtual Net.Vpc.Upa.QLParameter Copy() {
-            return new Net.Vpc.Upa.QLParameter(type, typeName, expression, id, title, description);
+        public virtual Net.TheVpc.Upa.QLParameter Copy() {
+            return new Net.TheVpc.Upa.QLParameter(type, typeName, expression, id, title, description);
         }
     }
 }

@@ -11,23 +11,23 @@
 
 
 
-namespace Net.Vpc.Upa.Bulk
+namespace Net.TheVpc.Upa.Bulk
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public interface ImportExportManager : Net.Vpc.Upa.Bulk.ParseFormatManager {
+    public interface ImportExportManager : Net.TheVpc.Upa.Bulk.ParseFormatManager {
 
-         Net.Vpc.Upa.Bulk.DataRowConverter CreateEntityConverter(string entityName, Net.Vpc.Upa.Filters.FieldFilter filter);
+         Net.TheVpc.Upa.Bulk.DataRowConverter CreateEntityConverter(string entityName, Net.TheVpc.Upa.Filters.FieldFilter filter);
 
-         void ImportEntity(string entityName, Net.Vpc.Upa.Bulk.DataReader dataIterator, Net.Vpc.Upa.Bulk.ImportDataConfig config);
+         void ImportEntity(string entityName, Net.TheVpc.Upa.Bulk.DataReader dataIterator, Net.TheVpc.Upa.Bulk.ImportDataConfig config);
 
-         void ImportObjectById(string entityName, int sourceId, Net.Vpc.Upa.PersistenceUnit source, Net.Vpc.Upa.Bulk.ImportPersistenceUnitListener listener);
+         void ImportObjectById(string entityName, int sourceId, Net.TheVpc.Upa.PersistenceUnit source, Net.TheVpc.Upa.Bulk.ImportPersistenceUnitListener listener);
 
-         void ImportEntity(string entityName, Net.Vpc.Upa.PersistenceUnit source, bool deleteExisting, Net.Vpc.Upa.Bulk.ImportPersistenceUnitListener listener);
+         void ImportEntity(string entityName, Net.TheVpc.Upa.PersistenceUnit source, bool deleteExisting, Net.TheVpc.Upa.Bulk.ImportPersistenceUnitListener listener);
 
-         void ImportEntities(Net.Vpc.Upa.PersistenceUnit source, Net.Vpc.Upa.Filters.EntityFilter filter, bool deleteExisting, Net.Vpc.Upa.Bulk.ImportPersistenceUnitListener listener);
+         void ImportEntities(Net.TheVpc.Upa.PersistenceUnit source, Net.TheVpc.Upa.Filters.EntityFilter filter, bool deleteExisting, Net.TheVpc.Upa.Bulk.ImportPersistenceUnitListener listener);
     }
 }

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -32,17 +32,17 @@ namespace Net.Vpc.Upa.Impl.Util
 
         public override bool Equals(object o) {
             if (this == o) return true;
-            if (!(o is Net.Vpc.Upa.Impl.Util.MethodSignature)) return false;
-            Net.Vpc.Upa.Impl.Util.MethodSignature that = (Net.Vpc.Upa.Impl.Util.MethodSignature) o;
+            if (!(o is Net.TheVpc.Upa.Impl.Util.MethodSignature)) return false;
+            Net.TheVpc.Upa.Impl.Util.MethodSignature that = (Net.TheVpc.Upa.Impl.Util.MethodSignature) o;
             if (name != null ? !name.Equals(that.name) : that.name != null) return false;
             // Probably incorrect - comparing Object[] arrays with Arrays.equals
-            return Net.Vpc.Upa.Impl.FwkConvertUtils.ArraysEquals<System.Type>(parameterTypes,that.parameterTypes);
+            return Net.TheVpc.Upa.Impl.FwkConvertUtils.ArraysEquals<System.Type>(parameterTypes,that.parameterTypes);
         }
 
 
         public override int GetHashCode() {
             int result = name != null ? name.GetHashCode() : 0;
-            result = 31 * result + (parameterTypes != null ? Net.Vpc.Upa.Impl.FwkConvertUtils.ArraysGetHashCode<Java.Util.Arrays>(parameterTypes) : 0);
+            result = 31 * result + (parameterTypes != null ? Net.TheVpc.Upa.Impl.FwkConvertUtils.ArraysGetHashCode<Java.Util.Arrays>(parameterTypes) : 0);
             return result;
         }
     }

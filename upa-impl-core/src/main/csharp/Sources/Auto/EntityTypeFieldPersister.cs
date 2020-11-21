@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
@@ -19,20 +19,20 @@ namespace Net.Vpc.Upa.Impl
      *
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class EntityTypeFieldPersister : Net.Vpc.Upa.Impl.FieldPersister {
+    public class EntityTypeFieldPersister : Net.TheVpc.Upa.Impl.FieldPersister {
 
-        public virtual void PrepareFieldForPersist(Net.Vpc.Upa.Field field, object @value, Net.Vpc.Upa.Record userRecord, Net.Vpc.Upa.Record persistentRecord, Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext, System.Collections.Generic.ISet<Net.Vpc.Upa.Field> persistNonNullable, System.Collections.Generic.ISet<Net.Vpc.Upa.Field> persistWithDefaultValue) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Types.ManyToOneType e = (Net.Vpc.Upa.Types.ManyToOneType) field.GetDataType();
+        public virtual void PrepareFieldForPersist(Net.TheVpc.Upa.Field field, object @value, Net.TheVpc.Upa.Record userRecord, Net.TheVpc.Upa.Record persistentRecord, Net.TheVpc.Upa.Persistence.EntityExecutionContext executionContext, System.Collections.Generic.ISet<Net.TheVpc.Upa.Field> persistNonNullable, System.Collections.Generic.ISet<Net.TheVpc.Upa.Field> persistWithDefaultValue) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Types.ManyToOneType e = (Net.TheVpc.Upa.Types.ManyToOneType) field.GetDataType();
             if (e.IsUpdatable()) {
-                Net.Vpc.Upa.Entity masterEntity = executionContext.GetPersistenceUnit().GetEntity(e.GetTargetEntityName());
-                Net.Vpc.Upa.Key k = null;
-                if (@value is Net.Vpc.Upa.Record) {
-                    k = masterEntity.GetBuilder().RecordToKey((Net.Vpc.Upa.Record) @value);
+                Net.TheVpc.Upa.Entity masterEntity = executionContext.GetPersistenceUnit().GetEntity(e.GetTargetEntityName());
+                Net.TheVpc.Upa.Key k = null;
+                if (@value is Net.TheVpc.Upa.Record) {
+                    k = masterEntity.GetBuilder().RecordToKey((Net.TheVpc.Upa.Record) @value);
                 } else {
                     k = masterEntity.GetBuilder().ObjectToKey(@value);
                 }
                 int x = 0;
-                foreach (Net.Vpc.Upa.Field fk in e.GetRelationship().GetSourceRole().GetFields()) {
+                foreach (Net.TheVpc.Upa.Field fk in e.GetRelationship().GetSourceRole().GetFields()) {
                     persistNonNullable.Remove(fk);
                     persistWithDefaultValue.Remove(fk);
                     persistentRecord.SetObject(fk.GetName(), k == null ? null : k.GetObjectAt(x));
@@ -41,7 +41,7 @@ namespace Net.Vpc.Upa.Impl
             }
         }
 
-        public virtual void PrepareFieldForUpdate(Net.Vpc.Upa.Field field, object @value, Net.Vpc.Upa.Record userRecord, Net.Vpc.Upa.Record persistentRecord, Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void PrepareFieldForUpdate(Net.TheVpc.Upa.Field field, object @value, Net.TheVpc.Upa.Record userRecord, Net.TheVpc.Upa.Record persistentRecord, Net.TheVpc.Upa.Persistence.EntityExecutionContext executionContext) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             persistentRecord.SetObject(field.GetName(), @value);
         }
     }

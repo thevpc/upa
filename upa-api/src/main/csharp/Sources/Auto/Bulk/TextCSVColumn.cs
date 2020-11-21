@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Bulk
+namespace Net.TheVpc.Upa.Bulk
 {
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class TextCSVColumn : Net.Vpc.Upa.Bulk.DataColumn {
+    public class TextCSVColumn : Net.TheVpc.Upa.Bulk.DataColumn {
 
         public TextCSVColumn() {
         }

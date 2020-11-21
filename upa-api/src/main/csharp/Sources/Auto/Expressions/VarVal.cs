@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
     /**
@@ -20,28 +20,28 @@ namespace Net.Vpc.Upa.Expressions
      */
     public class VarVal {
 
-        private Net.Vpc.Upa.Expressions.Var var;
+        private Net.TheVpc.Upa.Expressions.Var var;
 
-        private Net.Vpc.Upa.Expressions.Expression val;
+        private Net.TheVpc.Upa.Expressions.Expression val;
 
-        public VarVal(Net.Vpc.Upa.Expressions.Var var, Net.Vpc.Upa.Expressions.Expression val) {
+        public VarVal(Net.TheVpc.Upa.Expressions.Var var, Net.TheVpc.Upa.Expressions.Expression val) {
             this.SetVar(var);
             this.SetVal(val);
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Var GetVar() {
+        public virtual Net.TheVpc.Upa.Expressions.Var GetVar() {
             return var;
         }
 
-        public virtual void SetVar(Net.Vpc.Upa.Expressions.Var var) {
+        public virtual void SetVar(Net.TheVpc.Upa.Expressions.Var var) {
             this.var = var;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Expression GetVal() {
+        public virtual Net.TheVpc.Upa.Expressions.Expression GetVal() {
             return val;
         }
 
-        public virtual void SetVal(Net.Vpc.Upa.Expressions.Expression val) {
+        public virtual void SetVal(Net.TheVpc.Upa.Expressions.Expression val) {
             this.val = val;
         }
 

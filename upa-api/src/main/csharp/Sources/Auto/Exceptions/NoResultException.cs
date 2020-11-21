@@ -11,16 +11,16 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class NoResultException : Net.Vpc.Upa.Exceptions.EntityException {
+    public class NoResultException : Net.TheVpc.Upa.Exceptions.EntityException {
 
-        public NoResultException()  : base(new Net.Vpc.Upa.Types.I18NString("NoResultException")){
+        public NoResultException()  : base(new Net.TheVpc.Upa.Types.I18NString("NoResultException")){
 
         }
     }

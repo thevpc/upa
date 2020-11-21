@@ -11,36 +11,36 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
-    public abstract class FieldInfo : Net.Vpc.Upa.EntityPartInfo {
+    public abstract class FieldInfo : Net.TheVpc.Upa.EntityPartInfo {
 
-        private Net.Vpc.Upa.DataTypeInfo dataType;
+        private Net.TheVpc.Upa.DataTypeInfo dataType;
 
         private string kind;
 
-        private Net.Vpc.Upa.PropertyAccessType propertyAccessType;
+        private Net.TheVpc.Upa.PropertyAccessType propertyAccessType;
 
-        private Net.Vpc.Upa.AccessLevel persistAccessLevel;
+        private Net.TheVpc.Upa.AccessLevel persistAccessLevel;
 
-        private Net.Vpc.Upa.AccessLevel updateAccessLevel;
+        private Net.TheVpc.Upa.AccessLevel updateAccessLevel;
 
-        private Net.Vpc.Upa.AccessLevel readAccessLevel;
+        private Net.TheVpc.Upa.AccessLevel readAccessLevel;
 
-        private Net.Vpc.Upa.ProtectionLevel persistProtectionLevel;
+        private Net.TheVpc.Upa.ProtectionLevel persistProtectionLevel;
 
-        private Net.Vpc.Upa.ProtectionLevel updateProtectionLevel;
+        private Net.TheVpc.Upa.ProtectionLevel updateProtectionLevel;
 
-        private Net.Vpc.Upa.ProtectionLevel readProtectionLevel;
+        private Net.TheVpc.Upa.ProtectionLevel readProtectionLevel;
 
-        private Net.Vpc.Upa.AccessLevel effectivePersistAccessLevel;
+        private Net.TheVpc.Upa.AccessLevel effectivePersistAccessLevel;
 
-        private Net.Vpc.Upa.AccessLevel effectiveUpdateAccessLevel;
+        private Net.TheVpc.Upa.AccessLevel effectiveUpdateAccessLevel;
 
-        private Net.Vpc.Upa.AccessLevel effectiveReadAccessLevel;
+        private Net.TheVpc.Upa.AccessLevel effectiveReadAccessLevel;
 
-        private Net.Vpc.Upa.FieldModifier[] modifiers;
+        private Net.TheVpc.Upa.FieldModifier[] modifiers;
 
         private bool id;
 
@@ -68,51 +68,51 @@ namespace Net.Vpc.Upa
         public virtual void SetKind(string kind) {
         }
 
-        public virtual Net.Vpc.Upa.DataTypeInfo GetDataType() {
+        public virtual Net.TheVpc.Upa.DataTypeInfo GetDataType() {
             return dataType;
         }
 
-        public virtual void SetDataType(Net.Vpc.Upa.DataTypeInfo dataType) {
+        public virtual void SetDataType(Net.TheVpc.Upa.DataTypeInfo dataType) {
             this.dataType = dataType;
         }
 
-        public virtual Net.Vpc.Upa.PropertyAccessType GetPropertyAccessType() {
+        public virtual Net.TheVpc.Upa.PropertyAccessType GetPropertyAccessType() {
             return propertyAccessType;
         }
 
-        public virtual void SetPropertyAccessType(Net.Vpc.Upa.PropertyAccessType propertyAccessType) {
+        public virtual void SetPropertyAccessType(Net.TheVpc.Upa.PropertyAccessType propertyAccessType) {
             this.propertyAccessType = propertyAccessType;
         }
 
-        public virtual Net.Vpc.Upa.AccessLevel GetPersistAccessLevel() {
+        public virtual Net.TheVpc.Upa.AccessLevel GetPersistAccessLevel() {
             return persistAccessLevel;
         }
 
-        public virtual void SetPersistAccessLevel(Net.Vpc.Upa.AccessLevel persistAccessLevel) {
+        public virtual void SetPersistAccessLevel(Net.TheVpc.Upa.AccessLevel persistAccessLevel) {
             this.persistAccessLevel = persistAccessLevel;
         }
 
-        public virtual Net.Vpc.Upa.AccessLevel GetUpdateAccessLevel() {
+        public virtual Net.TheVpc.Upa.AccessLevel GetUpdateAccessLevel() {
             return updateAccessLevel;
         }
 
-        public virtual void SetUpdateAccessLevel(Net.Vpc.Upa.AccessLevel updateAccessLevel) {
+        public virtual void SetUpdateAccessLevel(Net.TheVpc.Upa.AccessLevel updateAccessLevel) {
             this.updateAccessLevel = updateAccessLevel;
         }
 
-        public virtual Net.Vpc.Upa.AccessLevel GetReadAccessLevel() {
+        public virtual Net.TheVpc.Upa.AccessLevel GetReadAccessLevel() {
             return readAccessLevel;
         }
 
-        public virtual void SetReadAccessLevel(Net.Vpc.Upa.AccessLevel readAccessLevel) {
+        public virtual void SetReadAccessLevel(Net.TheVpc.Upa.AccessLevel readAccessLevel) {
             this.readAccessLevel = readAccessLevel;
         }
 
-        public virtual Net.Vpc.Upa.FieldModifier[] GetModifiers() {
+        public virtual Net.TheVpc.Upa.FieldModifier[] GetModifiers() {
             return modifiers;
         }
 
-        public virtual void SetModifiers(Net.Vpc.Upa.FieldModifier[] modifiers) {
+        public virtual void SetModifiers(Net.TheVpc.Upa.FieldModifier[] modifiers) {
             this.modifiers = modifiers;
         }
 
@@ -164,51 +164,51 @@ namespace Net.Vpc.Upa
             this.manyToOneRelationship = manyToOneRelationship;
         }
 
-        public virtual Net.Vpc.Upa.ProtectionLevel GetPersistProtectionLevel() {
+        public virtual Net.TheVpc.Upa.ProtectionLevel GetPersistProtectionLevel() {
             return persistProtectionLevel;
         }
 
-        public virtual void SetPersistProtectionLevel(Net.Vpc.Upa.ProtectionLevel persistProtectionLevel) {
+        public virtual void SetPersistProtectionLevel(Net.TheVpc.Upa.ProtectionLevel persistProtectionLevel) {
             this.persistProtectionLevel = persistProtectionLevel;
         }
 
-        public virtual Net.Vpc.Upa.ProtectionLevel GetUpdateProtectionLevel() {
+        public virtual Net.TheVpc.Upa.ProtectionLevel GetUpdateProtectionLevel() {
             return updateProtectionLevel;
         }
 
-        public virtual void SetUpdateProtectionLevel(Net.Vpc.Upa.ProtectionLevel updateProtectionLevel) {
+        public virtual void SetUpdateProtectionLevel(Net.TheVpc.Upa.ProtectionLevel updateProtectionLevel) {
             this.updateProtectionLevel = updateProtectionLevel;
         }
 
-        public virtual Net.Vpc.Upa.ProtectionLevel GetReadProtectionLevel() {
+        public virtual Net.TheVpc.Upa.ProtectionLevel GetReadProtectionLevel() {
             return readProtectionLevel;
         }
 
-        public virtual void SetReadProtectionLevel(Net.Vpc.Upa.ProtectionLevel readProtectionLevel) {
+        public virtual void SetReadProtectionLevel(Net.TheVpc.Upa.ProtectionLevel readProtectionLevel) {
             this.readProtectionLevel = readProtectionLevel;
         }
 
-        public virtual Net.Vpc.Upa.AccessLevel GetEffectivePersistAccessLevel() {
+        public virtual Net.TheVpc.Upa.AccessLevel GetEffectivePersistAccessLevel() {
             return effectivePersistAccessLevel;
         }
 
-        public virtual void SetEffectivePersistAccessLevel(Net.Vpc.Upa.AccessLevel effectivePersistAccessLevel) {
+        public virtual void SetEffectivePersistAccessLevel(Net.TheVpc.Upa.AccessLevel effectivePersistAccessLevel) {
             this.effectivePersistAccessLevel = effectivePersistAccessLevel;
         }
 
-        public virtual Net.Vpc.Upa.AccessLevel GetEffectiveUpdateAccessLevel() {
+        public virtual Net.TheVpc.Upa.AccessLevel GetEffectiveUpdateAccessLevel() {
             return effectiveUpdateAccessLevel;
         }
 
-        public virtual void SetEffectiveUpdateAccessLevel(Net.Vpc.Upa.AccessLevel effectiveUpdateAccessLevel) {
+        public virtual void SetEffectiveUpdateAccessLevel(Net.TheVpc.Upa.AccessLevel effectiveUpdateAccessLevel) {
             this.effectiveUpdateAccessLevel = effectiveUpdateAccessLevel;
         }
 
-        public virtual Net.Vpc.Upa.AccessLevel GetEffectiveReadAccessLevel() {
+        public virtual Net.TheVpc.Upa.AccessLevel GetEffectiveReadAccessLevel() {
             return effectiveReadAccessLevel;
         }
 
-        public virtual void SetEffectiveReadAccessLevel(Net.Vpc.Upa.AccessLevel effectiveReadAccessLevel) {
+        public virtual void SetEffectiveReadAccessLevel(Net.TheVpc.Upa.AccessLevel effectiveReadAccessLevel) {
             this.effectiveReadAccessLevel = effectiveReadAccessLevel;
         }
 

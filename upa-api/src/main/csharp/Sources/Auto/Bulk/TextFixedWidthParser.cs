@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Bulk
+namespace Net.TheVpc.Upa.Bulk
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public abstract class TextFixedWidthParser : Net.Vpc.Upa.Bulk.AbstractDataParser {
+    public abstract class TextFixedWidthParser : Net.TheVpc.Upa.Bulk.AbstractDataParser {
 
         private bool containsHeader;
 
@@ -26,9 +26,9 @@ namespace Net.Vpc.Upa.Bulk
 
         private bool trimValues = true;
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Bulk.TextFixedWidthColumn> columns = new System.Collections.Generic.List<Net.Vpc.Upa.Bulk.TextFixedWidthColumn>();
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Bulk.TextFixedWidthColumn> columns = new System.Collections.Generic.List<Net.TheVpc.Upa.Bulk.TextFixedWidthColumn>();
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Bulk.TextFixedWidthColumn> GetColumns() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Bulk.TextFixedWidthColumn> GetColumns() {
             return columns;
         }
 

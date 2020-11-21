@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
 
     public interface ConnectionProfile {
 
-         Net.Vpc.Upa.Persistence.DatabaseProduct GetDatabaseProduct();
+         Net.TheVpc.Upa.Persistence.DatabaseProduct GetDatabaseProduct();
 
          string GetDatabaseProductVersion();
 
@@ -34,7 +34,7 @@ namespace Net.Vpc.Upa.Persistence
 
          string GetConnectionDriverVersion();
 
-         Net.Vpc.Upa.Persistence.StructureStrategy GetStructureStrategy();
+         Net.TheVpc.Upa.Persistence.StructureStrategy GetStructureStrategy();
 
         /**
              *
@@ -48,6 +48,6 @@ namespace Net.Vpc.Upa.Persistence
 
          string GetProperty(string name, string defaultValue);
 
-         Net.Vpc.Upa.Persistence.ConnectionProfile Copy();
+         Net.TheVpc.Upa.Persistence.ConnectionProfile Copy();
     }
 }

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Config
+namespace Net.TheVpc.Upa.Config
 {
 
 
@@ -23,7 +23,7 @@ namespace Net.Vpc.Upa.Config
 
     public class FilterEntity : System.Attribute {
 
-        private System.Type _Extension = typeof(Net.Vpc.Upa.Extensions.FilterEntityExtensionDefinition);
+        private System.Type _Extension = typeof(Net.TheVpc.Upa.Extensions.FilterEntityExtensionDefinition);
         public  System.Type Extension{
             get {return _Extension;}
             set {_Extension=value;}
@@ -49,8 +49,8 @@ namespace Net.Vpc.Upa.Config
              *
              * @return annotation configuration
              */
-        private Net.Vpc.Upa.Config.ItemConfig _Config = new Net.Vpc.Upa.Config.ItemConfig();
-        public  Net.Vpc.Upa.Config.ItemConfig Config{
+        private Net.TheVpc.Upa.Config.ItemConfig _Config = new Net.TheVpc.Upa.Config.ItemConfig();
+        public  Net.TheVpc.Upa.Config.ItemConfig Config{
             get {return _Config;}
             set {_Config=value;}
         }

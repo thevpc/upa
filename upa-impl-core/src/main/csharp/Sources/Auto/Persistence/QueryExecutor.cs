@@ -11,24 +11,24 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
     public interface QueryExecutor {
 
-         Net.Vpc.Upa.Persistence.QueryResult GetQueryResult();
+         Net.TheVpc.Upa.Persistence.QueryResult GetQueryResult();
 
          System.Collections.Generic.IDictionary<string , object> GetHints();
 
          int GetResultCount();
 
-         Net.Vpc.Upa.Impl.Persistence.NativeField[] GetFields();
+         Net.TheVpc.Upa.Impl.Persistence.NativeField[] GetFields();
 
-         Net.Vpc.Upa.Impl.Persistence.QueryExecutor Execute() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Impl.Persistence.QueryExecutor Execute() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Persistence.ResultMetaData GetMetaData();
+         Net.TheVpc.Upa.Persistence.ResultMetaData GetMetaData();
 
-         Net.Vpc.Upa.Persistence.UConnection GetConnection();
+         Net.TheVpc.Upa.Persistence.UConnection GetConnection();
     }
 }

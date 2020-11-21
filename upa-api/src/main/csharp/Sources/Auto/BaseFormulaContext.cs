@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -25,15 +25,15 @@ namespace Net.Vpc.Upa
      */
     public interface BaseFormulaContext {
 
-         Net.Vpc.Upa.Entity GetEntity();
+         Net.TheVpc.Upa.Entity GetEntity();
 
-         Net.Vpc.Upa.PersistenceUnit GetPersistenceUnit();
+         Net.TheVpc.Upa.PersistenceUnit GetPersistenceUnit();
 
-         Net.Vpc.Upa.Persistence.UConnection GetConnection();
+         Net.TheVpc.Upa.Persistence.UConnection GetConnection();
 
-         Net.Vpc.Upa.Session GetSession();
+         Net.TheVpc.Upa.Session GetSession();
 
-         Net.Vpc.Upa.Persistence.PersistenceStore GetPersistenceStore();
+         Net.TheVpc.Upa.Persistence.PersistenceStore GetPersistenceStore();
 
          bool IsPersist();
 
@@ -42,13 +42,13 @@ namespace Net.Vpc.Upa
         /**
              * @return persist document is getOperation() is ContextOperation.PERSIST
              */
-         Net.Vpc.Upa.Document GetUpdateDocument();
+         Net.TheVpc.Upa.Document GetUpdateDocument();
 
         /**
              * @return update query is getOperation() is ContextOperation.UPDATE
              */
-         Net.Vpc.Upa.UpdateQuery GetUpdateQuery();
+         Net.TheVpc.Upa.UpdateQuery GetUpdateQuery();
 
-         Net.Vpc.Upa.Persistence.EntityExecutionContext GetExecutionContext();
+         Net.TheVpc.Upa.Persistence.EntityExecutionContext GetExecutionContext();
     }
 }

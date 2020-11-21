@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util.Classpath
+namespace Net.TheVpc.Upa.Impl.Util.Classpath
 {
 
 
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
      *
      * @author taha.bensalah@gmail.com
      */
-    public class URLClassPathRootIterator : System.Collections.Generic.IEnumerator<Net.Vpc.Upa.Impl.Util.Classpath.ClassPathResource> {
+    public class URLClassPathRootIterator : System.Collections.Generic.IEnumerator<Net.TheVpc.Upa.Impl.Util.Classpath.ClassPathResource> {
 
         private string url;
 
@@ -35,7 +35,7 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
             return false;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Util.Classpath.ClassPathResource Next() {
+        public virtual Net.TheVpc.Upa.Impl.Util.Classpath.ClassPathResource Next() {
             return null;
         }
 

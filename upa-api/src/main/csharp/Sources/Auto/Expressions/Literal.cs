@@ -11,35 +11,35 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
 
-    public sealed class Literal : Net.Vpc.Upa.Expressions.DefaultExpression {
+    public sealed class Literal : Net.TheVpc.Upa.Expressions.DefaultExpression {
 
-        public static readonly Net.Vpc.Upa.Expressions.Literal IONE = new Net.Vpc.Upa.Expressions.Literal(1);
+        public static readonly Net.TheVpc.Upa.Expressions.Literal IONE = new Net.TheVpc.Upa.Expressions.Literal(1);
 
-        public static readonly Net.Vpc.Upa.Expressions.Literal IZERO = new Net.Vpc.Upa.Expressions.Literal(0);
+        public static readonly Net.TheVpc.Upa.Expressions.Literal IZERO = new Net.TheVpc.Upa.Expressions.Literal(0);
 
-        public static readonly Net.Vpc.Upa.Expressions.Literal DZERO = new Net.Vpc.Upa.Expressions.Literal(0.0);
+        public static readonly Net.TheVpc.Upa.Expressions.Literal DZERO = new Net.TheVpc.Upa.Expressions.Literal(0.0);
 
-        public static readonly Net.Vpc.Upa.Expressions.Literal ZERO = DZERO;
+        public static readonly Net.TheVpc.Upa.Expressions.Literal ZERO = DZERO;
 
-        public static readonly Net.Vpc.Upa.Expressions.Literal NULL = new Net.Vpc.Upa.Expressions.Literal(null, null);
+        public static readonly Net.TheVpc.Upa.Expressions.Literal NULL = new Net.TheVpc.Upa.Expressions.Literal(null, null);
 
-        public static readonly Net.Vpc.Upa.Expressions.Literal TRUE = new Net.Vpc.Upa.Expressions.Literal(true);
+        public static readonly Net.TheVpc.Upa.Expressions.Literal TRUE = new Net.TheVpc.Upa.Expressions.Literal(true);
 
-        public static readonly Net.Vpc.Upa.Expressions.Literal FALSE = new Net.Vpc.Upa.Expressions.Literal(false);
+        public static readonly Net.TheVpc.Upa.Expressions.Literal FALSE = new Net.TheVpc.Upa.Expressions.Literal(false);
 
-        public static readonly Net.Vpc.Upa.Expressions.Literal EMPTY_STRING = new Net.Vpc.Upa.Expressions.Literal("");
+        public static readonly Net.TheVpc.Upa.Expressions.Literal EMPTY_STRING = new Net.TheVpc.Upa.Expressions.Literal("");
 
 
 
-        private Net.Vpc.Upa.Types.DataType type;
+        private Net.TheVpc.Upa.Types.DataType type;
 
         private object @value;
 
-        public Literal(Net.Vpc.Upa.Types.Temporal date) {
+        public Literal(Net.TheVpc.Upa.Types.Temporal date) {
             SetValue(date);
         }
 
@@ -71,7 +71,7 @@ namespace Net.Vpc.Upa.Expressions
             SetValue(@value);
         }
 
-        public Literal(object @value, Net.Vpc.Upa.Types.DataType type) {
+        public Literal(object @value, Net.TheVpc.Upa.Types.DataType type) {
             //        if (
             //                value != null
             //                && !(value instanceof String)
@@ -84,32 +84,32 @@ namespace Net.Vpc.Upa.Expressions
             this.@value = @value;
             if (type == null) {
                 if (@value == null) {
-                    type = Net.Vpc.Upa.Types.TypesFactory.OBJECT;
+                    type = Net.TheVpc.Upa.Types.TypesFactory.OBJECT;
                 } else {
-                    type = Net.Vpc.Upa.Types.TypesFactory.ForPlatformType(@value.GetType());
+                    type = Net.TheVpc.Upa.Types.TypesFactory.ForPlatformType(@value.GetType());
                 }
             }
             this.type = type;
         }
 
 
-        public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
-            return new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+        public override System.Collections.Generic.IList<Net.TheVpc.Upa.Expressions.TaggedExpression> GetChildren() {
+            return new System.Collections.Generic.List<Net.TheVpc.Upa.Expressions.TaggedExpression>();
         }
 
 
-        public override void SetChild(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.Expressions.ExpressionTag tag) {
+        public override void SetChild(Net.TheVpc.Upa.Expressions.Expression e, Net.TheVpc.Upa.Expressions.ExpressionTag tag) {
             throw new System.Exception("Not supported yet.");
         }
 
-        public static bool IsNull(Net.Vpc.Upa.Expressions.Expression e) {
-            return e == null || ((e is Net.Vpc.Upa.Expressions.Literal) && (((Net.Vpc.Upa.Expressions.Literal) e).@value == null));
+        public static bool IsNull(Net.TheVpc.Upa.Expressions.Expression e) {
+            return e == null || ((e is Net.TheVpc.Upa.Expressions.Literal) && (((Net.TheVpc.Upa.Expressions.Literal) e).@value == null));
         }
 
 
         public override string ToString() {
             if (@value is string) {
-                return Net.Vpc.Upa.Expressions.ExpressionHelper.EscapeSimpleQuoteStringLiteral((string) @value);
+                return Net.TheVpc.Upa.Expressions.ExpressionHelper.EscapeSimpleQuoteStringLiteral((string) @value);
             }
             return System.Convert.ToString(@value);
         }
@@ -121,18 +121,18 @@ namespace Net.Vpc.Upa.Expressions
         private void SetValue(object o) {
             this.@value = o;
             if (o == null) {
-                type = Net.Vpc.Upa.Types.TypesFactory.OBJECT;
+                type = Net.TheVpc.Upa.Types.TypesFactory.OBJECT;
             } else {
-                type = Net.Vpc.Upa.Types.TypesFactory.ForPlatformType(o.GetType());
+                type = Net.TheVpc.Upa.Types.TypesFactory.ForPlatformType(o.GetType());
             }
         }
 
 
-        public override Net.Vpc.Upa.Expressions.Expression Copy() {
-            return new Net.Vpc.Upa.Expressions.Literal(@value, type);
+        public override Net.TheVpc.Upa.Expressions.Expression Copy() {
+            return new Net.TheVpc.Upa.Expressions.Literal(@value, type);
         }
 
-        public static Net.Vpc.Upa.Expressions.Literal ValueOf(bool @value) {
+        public static Net.TheVpc.Upa.Expressions.Literal ValueOf(bool @value) {
             return @value ? TRUE : FALSE;
         }
     }

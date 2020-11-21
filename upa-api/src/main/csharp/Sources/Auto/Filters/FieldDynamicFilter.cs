@@ -11,26 +11,26 @@
 
 
 
-namespace Net.Vpc.Upa.Filters
+namespace Net.TheVpc.Upa.Filters
 {
 
 
     /**
      * Created by vpc on 1/4/14.
      */
-    internal class FieldDynamicFilter : Net.Vpc.Upa.Filters.AbstractFieldFilter {
+    internal class FieldDynamicFilter : Net.TheVpc.Upa.Filters.AbstractFieldFilter {
 
         public FieldDynamicFilter() {
         }
 
 
-        public override bool AcceptDynamic() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public override bool AcceptDynamic() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return true;
         }
 
 
-        public override bool Accept(Net.Vpc.Upa.Field f) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return (f is Net.Vpc.Upa.DynamicField);
+        public override bool Accept(Net.TheVpc.Upa.Field f) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            return (f is Net.TheVpc.Upa.DynamicField);
         }
 
 

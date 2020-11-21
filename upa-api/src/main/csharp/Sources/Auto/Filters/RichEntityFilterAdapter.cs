@@ -11,18 +11,18 @@
 
 
 
-namespace Net.Vpc.Upa.Filters
+namespace Net.TheVpc.Upa.Filters
 {
 
 
     /**
      * @author taha.bensalah@gmail.com on 7/31/16.
      */
-    internal class RichEntityFilterAdapter : Net.Vpc.Upa.Filters.AbstractRichEntityFilter {
+    internal class RichEntityFilterAdapter : Net.TheVpc.Upa.Filters.AbstractRichEntityFilter {
 
-        private Net.Vpc.Upa.Filters.EntityFilter other;
+        private Net.TheVpc.Upa.Filters.EntityFilter other;
 
-        public RichEntityFilterAdapter(Net.Vpc.Upa.Filters.EntityFilter other) {
+        public RichEntityFilterAdapter(Net.TheVpc.Upa.Filters.EntityFilter other) {
             if (other == null) {
                 throw new System.NullReferenceException();
             }
@@ -30,7 +30,7 @@ namespace Net.Vpc.Upa.Filters
         }
 
 
-        public override bool Accept(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public override bool Accept(Net.TheVpc.Upa.Entity entity) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return other.Accept(entity);
         }
     }

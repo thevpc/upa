@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Shared
+namespace Net.TheVpc.Upa.Impl.Persistence.Shared
 {
 
 
@@ -22,23 +22,23 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
      * Time: 11:46 PM
      * To change this template use File | Settings | File Templates.
      */
-    public class UpletSQLProvider : Net.Vpc.Upa.Impl.Persistence.Shared.AbstractSQLProvider {
+    public class UpletSQLProvider : Net.TheVpc.Upa.Impl.Persistence.Shared.AbstractSQLProvider {
 
-        public UpletSQLProvider()  : base(typeof(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledUplet)){
+        public UpletSQLProvider()  : base(typeof(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledUplet)){
 
         }
 
 
-        public override string GetSQL(object oo, Net.Vpc.Upa.Persistence.EntityExecutionContext qlContext, Net.Vpc.Upa.Impl.Persistence.SQLManager sqlManager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledUplet o = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledUplet) oo;
+        public override string GetSQL(object oo, Net.TheVpc.Upa.Persistence.EntityExecutionContext qlContext, Net.TheVpc.Upa.Impl.Persistence.SQLManager sqlManager, Net.TheVpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledUplet o = (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledUplet) oo;
             //        PersistenceUnitManager queryLanguageManager = qlContext.getPersistenceUnitManager();
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression sql;
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] expressions = o.GetExpressions();
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression sql;
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] expressions = o.GetExpressions();
             if (expressions.Length > 1) {
-                Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledConcat concat = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledConcat();
+                Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledConcat concat = new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledConcat();
                 for (int i = 0; i < expressions.Length; i++) {
                     if (i > 0) {
-                        concat.Add(new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledLiteral('~'));
+                        concat.Add(new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledLiteral('~'));
                     }
                     concat.Add(expressions[i]);
                 }

@@ -11,10 +11,10 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
-    public abstract class NumberType : Net.Vpc.Upa.Types.DefaultDataType {
+    public abstract class NumberType : Net.TheVpc.Upa.Types.DefaultDataType {
 
         protected internal NumberType(string name, System.Type platformType)  : base(name, platformType){
 

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -21,12 +21,12 @@ namespace Net.Vpc.Upa
      */
     public interface PersistenceGroupSecurityManager {
 
-         bool IsAllowedKey(string key) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsAllowedKey(string key) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.UserPrincipal GetUserPrincipal() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.UserPrincipal GetUserPrincipal() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.UserPrincipal Login(string login, string credentials) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.UserPrincipal Login(string login, string credentials) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.UserPrincipal LoginPrivileged(string login) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.UserPrincipal LoginPrivileged(string login) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
     }
 }

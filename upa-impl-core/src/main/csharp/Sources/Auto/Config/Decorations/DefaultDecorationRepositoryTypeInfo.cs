@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config.Decorations
+namespace Net.TheVpc.Upa.Impl.Config.Decorations
 {
 
 
@@ -23,10 +23,10 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
 
         internal string typeName;
 
-        internal System.Collections.Generic.IList<Net.Vpc.Upa.Config.Decoration> decorations;
+        internal System.Collections.Generic.IList<Net.TheVpc.Upa.Config.Decoration> decorations;
 
-        internal System.Collections.Generic.IDictionary<string , System.Collections.Generic.IList<Net.Vpc.Upa.Config.Decoration>> methods;
+        internal System.Collections.Generic.IDictionary<string , System.Collections.Generic.IList<Net.TheVpc.Upa.Config.Decoration>> methods;
 
-        internal System.Collections.Generic.IDictionary<string , System.Collections.Generic.IList<Net.Vpc.Upa.Config.Decoration>> fields;
+        internal System.Collections.Generic.IDictionary<string , System.Collections.Generic.IList<Net.TheVpc.Upa.Config.Decoration>> fields;
     }
 }

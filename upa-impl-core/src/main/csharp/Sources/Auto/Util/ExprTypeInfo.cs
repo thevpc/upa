@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -21,7 +21,7 @@ namespace Net.Vpc.Upa.Impl.Util
      */
     public class ExprTypeInfo {
 
-        private Net.Vpc.Upa.Types.DataTypeTransform transform;
+        private Net.TheVpc.Upa.Types.DataTypeTransform transform;
 
         private object oldReferrer;
 
@@ -30,11 +30,11 @@ namespace Net.Vpc.Upa.Impl.Util
         public ExprTypeInfo() {
         }
 
-        public virtual Net.Vpc.Upa.Types.DataTypeTransform GetTypeTransform() {
+        public virtual Net.TheVpc.Upa.Types.DataTypeTransform GetTypeTransform() {
             return transform;
         }
 
-        public virtual void SetTransform(Net.Vpc.Upa.Types.DataTypeTransform transform) {
+        public virtual void SetTransform(Net.TheVpc.Upa.Types.DataTypeTransform transform) {
             this.transform = transform;
         }
 

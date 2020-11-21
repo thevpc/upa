@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
     public interface TypeMarshaller {
 
-         void SetMarshallManager(Net.Vpc.Upa.Impl.Persistence.MarshallManager marshallManager);
+         void SetMarshallManager(Net.TheVpc.Upa.Impl.Persistence.MarshallManager marshallManager);
 
          object Read(int i, System.Data.IDataReader resultset) /* throws System.Exception */ ;
 
@@ -33,6 +33,6 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
          string GetName(string name, int i);
 
-         Net.Vpc.Upa.Types.DataType GetPersistentDataType(Net.Vpc.Upa.Types.DataType datatype);
+         Net.TheVpc.Upa.Types.DataType GetPersistentDataType(Net.TheVpc.Upa.Types.DataType datatype);
     }
 }

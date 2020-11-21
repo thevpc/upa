@@ -11,11 +11,11 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
-    public class InsertDocumentDuplicateUniqueFieldsException : Net.Vpc.Upa.Exceptions.EntityException {
+    public class InsertDocumentDuplicateUniqueFieldsException : Net.TheVpc.Upa.Exceptions.EntityException {
 
         private System.Collections.Generic.IList<string> fieldNames;
 
@@ -25,15 +25,15 @@ namespace Net.Vpc.Upa.Exceptions
 
         private readonly object @value;
 
-        public InsertDocumentDuplicateUniqueFieldsException(Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.Index index, object @value)  : base(entity, "insert.DuplicateUniqueFields", FieldTitles(index == null ? null : new System.Collections.Generic.List<Net.Vpc.Upa.Field>(index.GetFields())), @value){
+        public InsertDocumentDuplicateUniqueFieldsException(Net.TheVpc.Upa.Entity entity, Net.TheVpc.Upa.Index index, object @value)  : base(entity, "insert.DuplicateUniqueFields", FieldTitles(index == null ? null : new System.Collections.Generic.List<Net.TheVpc.Upa.Field>(index.GetFields())), @value){
 
             this.@value = @value;
             if (index != null) {
                 this.indexName = index.GetName();
                 this.entityName = index.GetEntity().GetName();
-                Net.Vpc.Upa.Field[] fields = index.GetFields();
+                Net.TheVpc.Upa.Field[] fields = index.GetFields();
                 this.fieldNames = new System.Collections.Generic.List<string>(fields.Length);
-                foreach (Net.Vpc.Upa.Field field in fields) {
+                foreach (Net.TheVpc.Upa.Field field in fields) {
                     this.fieldNames.Add(field.GetName());
                 }
             }
@@ -55,7 +55,7 @@ namespace Net.Vpc.Upa.Exceptions
             return entityName;
         }
 
-        private static string FieldTitles(System.Collections.Generic.IList<Net.Vpc.Upa.Field> fields) {
+        private static string FieldTitles(System.Collections.Generic.IList<Net.TheVpc.Upa.Field> fields) {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             if (fields != null) {
                 sb.Append(fields[0].GetI18NTitle());

@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Shared
+namespace Net.TheVpc.Upa.Impl.Persistence.Shared
 {
 
 
     /**
     * @author Taha BEN SALAH <taha.bensalah@gmail.com>
     * @creationdate 12/20/12 2:48 AM*/
-    public class SqlTimeMarshaller : Net.Vpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
+    public class SqlTimeMarshaller : Net.TheVpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
 
         public override object Read(int index, System.Data.IDataReader resultSet) /* throws System.Exception */  {
             
@@ -34,7 +34,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
             if (@object == null) {
                 return base.ToSQLLiteral(@object);
             }
-            return "{t '" + Net.Vpc.Upa.Impl.Util.DateUtils.FormatUniversalTime((Net.Vpc.Upa.Types.Temporal) @object) + "'}";
+            return "{t '" + Net.TheVpc.Upa.Impl.Util.DateUtils.FormatUniversalTime((Net.TheVpc.Upa.Types.Temporal) @object) + "'}";
         }
 
         public override void Write(object @object, int i, System.Data.IDbCommand preparedStatement) /* throws System.Exception */  {

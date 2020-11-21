@@ -11,10 +11,10 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
-    public class PersistenceUnitLockingException : Net.Vpc.Upa.Exceptions.PersistenceUnitException {
+    public class PersistenceUnitLockingException : Net.TheVpc.Upa.Exceptions.PersistenceUnitException {
 
         public PersistenceUnitLockingException()  : base("PersistenceUnitLockingException"){
 

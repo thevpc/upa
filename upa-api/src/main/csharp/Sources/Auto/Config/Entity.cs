@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Config
+namespace Net.TheVpc.Upa.Config
 {
 
 
@@ -64,7 +64,7 @@ namespace Net.Vpc.Upa.Config
 
         /**
              * Entity ID Class Type. When Not Specified will be guessed by the
-             * framework. Composite Types are resolved as net.vpc.upa.Key Type
+             * framework. Composite Types are resolved as Net.TheVpc.Upa.Key Type
              *
              * @return Entity ID Class Type
              */
@@ -80,8 +80,8 @@ namespace Net.Vpc.Upa.Config
              *
              * @return Entity Modifiers
              */
-        private Net.Vpc.Upa.EntityModifier[] _Modifiers = {  };
-        public  Net.Vpc.Upa.EntityModifier[] Modifiers{
+        private Net.TheVpc.Upa.EntityModifier[] _Modifiers = {  };
+        public  Net.TheVpc.Upa.EntityModifier[] Modifiers{
             get {return _Modifiers;}
             set {_Modifiers=value;}
         }
@@ -92,8 +92,8 @@ namespace Net.Vpc.Upa.Config
              *
              * @return Entity Modifiers
              */
-        private Net.Vpc.Upa.EntityModifier[] _ExcludeModifiers = {  };
-        public  Net.Vpc.Upa.EntityModifier[] ExcludeModifiers{
+        private Net.TheVpc.Upa.EntityModifier[] _ExcludeModifiers = {  };
+        public  Net.TheVpc.Upa.EntityModifier[] ExcludeModifiers{
             get {return _ExcludeModifiers;}
             set {_ExcludeModifiers=value;}
         }
@@ -181,8 +181,8 @@ namespace Net.Vpc.Upa.Config
              *
              * @return annotation configuration
              */
-        private Net.Vpc.Upa.Config.ItemConfig _Config = new Net.Vpc.Upa.Config.ItemConfig();
-        public  Net.Vpc.Upa.Config.ItemConfig Config{
+        private Net.TheVpc.Upa.Config.ItemConfig _Config = new Net.TheVpc.Upa.Config.ItemConfig();
+        public  Net.TheVpc.Upa.Config.ItemConfig Config{
             get {return _Config;}
             set {_Config=value;}
         }

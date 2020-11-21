@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Extensions
+namespace Net.TheVpc.Upa.Extensions
 {
 
 
@@ -19,8 +19,8 @@ namespace Net.Vpc.Upa.Extensions
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 8/29/12 12:27 AM
      */
-    public interface UnionEntityExtensionDefinition : Net.Vpc.Upa.Extensions.EntityExtensionDefinition {
+    public interface UnionEntityExtensionDefinition : Net.TheVpc.Upa.Extensions.EntityExtensionDefinition {
 
-         Net.Vpc.Upa.Extensions.UnionQueryInfo GetQueryInfo(Net.Vpc.Upa.Entity entity);
+         Net.TheVpc.Upa.Extensions.UnionQueryInfo GetQueryInfo(Net.TheVpc.Upa.Entity entity);
     }
 }

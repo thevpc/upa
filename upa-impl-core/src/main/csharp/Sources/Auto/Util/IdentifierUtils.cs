@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -38,8 +38,8 @@ namespace Net.Vpc.Upa.Impl.Util
             if (nbChar < 0) {
                 return null;
             }
-            string id = System.Convert.ToString((new Net.Vpc.Upa.Types.DateTime()).GetTime(), 16);
-            string aleat = System.Convert.ToString(Net.Vpc.Upa.Impl.FwkConvertUtils.Random());
+            string id = System.Convert.ToString((new Net.TheVpc.Upa.Types.DateTime()).GetTime(), 16);
+            string aleat = System.Convert.ToString(Net.TheVpc.Upa.Impl.FwkConvertUtils.Random());
             string ID = id + aleat.Substring(1);
             if ((ID).Length > nbChar) {
                 ID = ID.Substring(0, nbChar);
@@ -59,7 +59,7 @@ namespace Net.Vpc.Upa.Impl.Util
             }
             int nbr = minNbr;
             if (maxNbr > minNbr) {
-                nbr += (int) (System.Math.Round(Net.Vpc.Upa.Impl.FwkConvertUtils.Random() * (double) (maxNbr - minNbr)) % (long) (maxNbr - minNbr));
+                nbr += (int) (System.Math.Round(Net.TheVpc.Upa.Impl.FwkConvertUtils.Random() * (double) (maxNbr - minNbr)) % (long) (maxNbr - minNbr));
             }
             System.Text.StringBuilder s = new System.Text.StringBuilder();
             s.Append(RandomChar(startChars));
@@ -90,7 +90,7 @@ namespace Net.Vpc.Upa.Impl.Util
             if (endChars == null) {
                 endChars = ALPHA_NUM_CHARS;
             }
-            int nbr = maxNbr <= minNbr ? minNbr : (int) (System.Math.Round(Net.Vpc.Upa.Impl.FwkConvertUtils.Random() * (double) (maxNbr - minNbr)) % (long) (maxNbr - minNbr)) + minNbr;
+            int nbr = maxNbr <= minNbr ? minNbr : (int) (System.Math.Round(Net.TheVpc.Upa.Impl.FwkConvertUtils.Random() * (double) (maxNbr - minNbr)) % (long) (maxNbr - minNbr)) + minNbr;
             System.Text.StringBuilder s = new System.Text.StringBuilder();
             s.Append(RandomChar(startChars));
             for (int i = 0; i < nbr - 1; i++) {
@@ -103,7 +103,7 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public static char RandomChar(string chars) {
-            return chars[(int) (System.Math.Round(Net.Vpc.Upa.Impl.FwkConvertUtils.Random() * (double) (chars).Length) % (long) (chars).Length)];
+            return chars[(int) (System.Math.Round(Net.TheVpc.Upa.Impl.FwkConvertUtils.Random() * (double) (chars).Length) % (long) (chars).Length)];
         }
     }
 }

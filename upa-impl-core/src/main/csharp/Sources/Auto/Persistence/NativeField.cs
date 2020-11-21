@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -33,17 +33,17 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
         private string name;
 
-        private Net.Vpc.Upa.Types.DataTypeTransform typeTransform;
+        private Net.TheVpc.Upa.Types.DataTypeTransform typeTransform;
 
-        private Net.Vpc.Upa.Field field;
+        private Net.TheVpc.Upa.Field field;
 
-        public NativeField(string name, string groupName, string exprString, int index, bool expanded, Net.Vpc.Upa.Field field, Net.Vpc.Upa.Types.DataTypeTransform typeChain) {
+        public NativeField(string name, string groupName, string exprString, int index, bool expanded, Net.TheVpc.Upa.Field field, Net.TheVpc.Upa.Types.DataTypeTransform typeChain) {
             this.groupName = groupName;
             this.expanded = expanded;
             this.index = index;
             this.exprString = exprString;
             this.name = name;
-            if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(groupName)) {
+            if (Net.TheVpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(groupName)) {
                 fullBinding = name;
             } else {
                 fullBinding = groupName + "." + name;
@@ -68,7 +68,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
             return groupName;
         }
 
-        public virtual Net.Vpc.Upa.Field GetField() {
+        public virtual Net.TheVpc.Upa.Field GetField() {
             return field;
         }
 
@@ -76,7 +76,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
             return name;
         }
 
-        public virtual Net.Vpc.Upa.Types.DataTypeTransform GetTypeTransform() {
+        public virtual Net.TheVpc.Upa.Types.DataTypeTransform GetTypeTransform() {
             return typeTransform;
         }
 

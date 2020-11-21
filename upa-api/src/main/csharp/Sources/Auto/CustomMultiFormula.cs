@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     /**
@@ -21,8 +21,8 @@ namespace Net.Vpc.Upa
      *
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public interface CustomMultiFormula : Net.Vpc.Upa.Formula {
+    public interface CustomMultiFormula : Net.TheVpc.Upa.Formula {
 
-         void UpdateFormulas(Net.Vpc.Upa.CustomMultiFormulaContext context);
+         void UpdateFormulas(Net.TheVpc.Upa.CustomMultiFormulaContext context);
     }
 }

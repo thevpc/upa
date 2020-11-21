@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
 
@@ -21,27 +21,27 @@ namespace Net.Vpc.Upa.Persistence
      */
     public interface UConnection {
 
-         Net.Vpc.Upa.Persistence.QueryResult ExecuteQuery(string query, Net.Vpc.Upa.Types.DataTypeTransform[] types, System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.Parameter> queryParameters, bool updatable) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Persistence.QueryResult ExecuteQuery(string query, Net.TheVpc.Upa.Types.DataTypeTransform[] types, System.Collections.Generic.IList<Net.TheVpc.Upa.Persistence.Parameter> queryParameters, bool updatable) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         int ExecuteNonQuery(string currentQuery, System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.Parameter> queryParameters, System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.Parameter> generatedKeys) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         int ExecuteNonQuery(string currentQuery, System.Collections.Generic.IList<Net.TheVpc.Upa.Persistence.Parameter> queryParameters, System.Collections.Generic.IList<Net.TheVpc.Upa.Persistence.Parameter> generatedKeys) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         int ExecuteScript(Net.Vpc.Upa.Expressions.QueryScript script, bool exitOnError) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         int ExecuteScript(Net.TheVpc.Upa.Expressions.QueryScript script, bool exitOnError) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void Close() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void Close() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void AddCloseListener(Net.Vpc.Upa.CloseListener closeListener);
+         void AddCloseListener(Net.TheVpc.Upa.CloseListener closeListener);
 
-         void RemoveCloseListener(Net.Vpc.Upa.CloseListener closeListener);
+         void RemoveCloseListener(Net.TheVpc.Upa.CloseListener closeListener);
 
-         object GetMetadataAccessibleConnection() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         object GetMetadataAccessibleConnection() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         object GetPlatformConnection() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         object GetPlatformConnection() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         object GetProperty(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         object GetProperty(string name) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         System.Collections.Generic.IDictionary<string , object> GetProperties() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         System.Collections.Generic.IDictionary<string , object> GetProperties() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void SetProperty(string name, object @value) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void SetProperty(string name, object @value) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
          void BeginTransaction();
 

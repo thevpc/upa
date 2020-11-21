@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Shared
+namespace Net.TheVpc.Upa.Impl.Persistence.Shared
 {
 
 
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 12/20/12 2:47 AM
      */
-    public class EnumAsIntMarshaller : Net.Vpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
+    public class EnumAsIntMarshaller : Net.TheVpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
 
         private System.Type type;
 
@@ -27,7 +27,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
 
         public EnumAsIntMarshaller(System.Type type) {
             this.type = type;
-            values = Net.Vpc.Upa.Impl.Util.PlatformUtils.GetEnumValues(type);
+            values = Net.TheVpc.Upa.Impl.Util.PlatformUtils.GetEnumValues(type);
         }
 
         public override object Read(int index, System.Data.IDataReader resultSet) /* throws System.Exception */  {

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Connection
+namespace Net.TheVpc.Upa.Impl.Persistence.Connection
 {
 
     /**

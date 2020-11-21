@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
 
@@ -21,47 +21,47 @@ namespace Net.Vpc.Upa.Persistence
      */
     public interface PersistenceStore {
 
-         void SetProperties(Net.Vpc.Upa.Properties parameters);
+         void SetProperties(Net.TheVpc.Upa.Properties parameters);
 
-         bool IsAccessible(Net.Vpc.Upa.Persistence.ConnectionProfile connectionProfile);
+         bool IsAccessible(Net.TheVpc.Upa.Persistence.ConnectionProfile connectionProfile);
 
          string GetValidIdentifier(string s);
 
-         void CheckAccessible(Net.Vpc.Upa.Persistence.ConnectionProfile connectionProfile);
+         void CheckAccessible(Net.TheVpc.Upa.Persistence.ConnectionProfile connectionProfile);
 
          System.Collections.Generic.ISet<string> GetSupportedDrivers();
 
-         bool IsCreatedStorage() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsCreatedStorage() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Persistence.FieldPersister CreatePersistSequenceGenerator(Net.Vpc.Upa.Field field) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Persistence.FieldPersister CreatePersistSequenceGenerator(Net.TheVpc.Upa.Field field) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Persistence.FieldPersister CreateUpdateSequenceGenerator(Net.Vpc.Upa.Field field) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Persistence.FieldPersister CreateUpdateSequenceGenerator(Net.TheVpc.Upa.Field field) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void CreateStorage(Net.Vpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void CreateStorage(Net.TheVpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void DropStorage(Net.Vpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void DropStorage(Net.TheVpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Properties GetProperties();
+         Net.TheVpc.Upa.Properties GetProperties();
 
-         Net.Vpc.Upa.Properties GetStoreParameters();
+         Net.TheVpc.Upa.Properties GetStoreParameters();
 
-         Net.Vpc.Upa.Persistence.ConnectionProfile GetConnectionProfile() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Persistence.ConnectionProfile GetConnectionProfile() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void Close() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void Close() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
          void SetReadOnly(bool @value);
 
          bool IsReadOnly();
 
-         Net.Vpc.Upa.Query CreateQuery(Net.Vpc.Upa.Entity e, Net.Vpc.Upa.Expressions.EntityStatement query, Net.Vpc.Upa.Persistence.EntityExecutionContext qlContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Query CreateQuery(Net.TheVpc.Upa.Entity e, Net.TheVpc.Upa.Expressions.EntityStatement query, Net.TheVpc.Upa.Persistence.EntityExecutionContext qlContext) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Query CreateQuery(Net.Vpc.Upa.Expressions.EntityStatement query, Net.Vpc.Upa.Persistence.EntityExecutionContext qlContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Query CreateQuery(Net.TheVpc.Upa.Expressions.EntityStatement query, Net.TheVpc.Upa.Persistence.EntityExecutionContext qlContext) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void CreateStructure(Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void CreateStructure(Net.TheVpc.Upa.Persistence.EntityExecutionContext executionContext) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
          bool IsReservedKeyword(string name);
 
-         void SetNativeConstraintsEnabled(bool enable) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void SetNativeConstraintsEnabled(bool enable) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
          bool IsComplexSelectSupported();
 
@@ -75,29 +75,29 @@ namespace Net.Vpc.Upa.Persistence
 
          bool IsTopSupported();
 
-         Net.Vpc.Upa.Persistence.PersistenceNameStrategy GetPersistenceNameStrategy();
+         Net.TheVpc.Upa.Persistence.PersistenceNameStrategy GetPersistenceNameStrategy();
 
-         void SetPersistenceNameStrategy(Net.Vpc.Upa.Persistence.PersistenceNameStrategy persistenceNameStrategy);
+         void SetPersistenceNameStrategy(Net.TheVpc.Upa.Persistence.PersistenceNameStrategy persistenceNameStrategy);
 
-         string GetPersistenceName(Net.Vpc.Upa.UPAObject persistentObject) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         string GetPersistenceName(Net.TheVpc.Upa.UPAObject persistentObject) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         string GetPersistenceName(Net.Vpc.Upa.UPAObject persistentObject, Net.Vpc.Upa.Persistence.PersistenceNameType spec) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         string GetPersistenceName(Net.TheVpc.Upa.UPAObject persistentObject, Net.TheVpc.Upa.Persistence.PersistenceNameType spec) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         string GetPersistenceName(string name, Net.Vpc.Upa.Persistence.PersistenceNameType spec) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         string GetPersistenceName(string name, Net.TheVpc.Upa.Persistence.PersistenceNameType spec) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.PersistenceState GetPersistenceState(Net.Vpc.Upa.UPAObject @object, Net.Vpc.Upa.Persistence.PersistenceNameType spec, Net.Vpc.Upa.Persistence.EntityExecutionContext entityExecutionContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.PersistenceState GetPersistenceState(Net.TheVpc.Upa.UPAObject @object, Net.TheVpc.Upa.Persistence.PersistenceNameType spec, Net.TheVpc.Upa.Persistence.EntityExecutionContext entityExecutionContext) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         bool IsView(Net.Vpc.Upa.Entity entity);
+         bool IsView(Net.TheVpc.Upa.Entity entity);
 
-         void AlterPersistenceUnitAddObject(Net.Vpc.Upa.UPAObject @object) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void AlterPersistenceUnitAddObject(Net.TheVpc.Upa.UPAObject @object) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void AlterPersistenceUnitRemoveObject(Net.Vpc.Upa.UPAObject @object) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void AlterPersistenceUnitRemoveObject(Net.TheVpc.Upa.UPAObject @object) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void AlterPersistenceUnitUpdateObject(Net.Vpc.Upa.UPAObject oldObject, Net.Vpc.Upa.UPAObject newObject, System.Collections.Generic.ISet<string> updates) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void AlterPersistenceUnitUpdateObject(Net.TheVpc.Upa.UPAObject oldObject, Net.TheVpc.Upa.UPAObject newObject, System.Collections.Generic.ISet<string> updates) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         bool CommitStorage() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool CommitStorage() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void RevalidateModel() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void RevalidateModel() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
         /**
              * create connection
@@ -105,8 +105,8 @@ namespace Net.Vpc.Upa.Persistence
              * @return
              * @throws UPAException
              */
-         Net.Vpc.Upa.Persistence.UConnection CreateConnection() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Persistence.UConnection CreateConnection() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void SetIdentityConstraintsEnabled(Net.Vpc.Upa.Entity entity, bool enable, Net.Vpc.Upa.Persistence.EntityExecutionContext context);
+         void SetIdentityConstraintsEnabled(Net.TheVpc.Upa.Entity entity, bool enable, Net.TheVpc.Upa.Persistence.EntityExecutionContext context);
     }
 }

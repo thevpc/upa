@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
 
@@ -29,7 +29,7 @@ namespace Net.Vpc.Upa.Persistence
 
         private string password;
 
-        private Net.Vpc.Upa.Persistence.StructureStrategy structureStrategy;
+        private Net.TheVpc.Upa.Persistence.StructureStrategy structureStrategy;
 
         private System.Collections.Generic.IDictionary<string , string> properties = new System.Collections.Generic.Dictionary<string , string>();
 
@@ -57,11 +57,11 @@ namespace Net.Vpc.Upa.Persistence
             this.password = password;
         }
 
-        public virtual Net.Vpc.Upa.Persistence.StructureStrategy GetStructureStrategy() {
+        public virtual Net.TheVpc.Upa.Persistence.StructureStrategy GetStructureStrategy() {
             return structureStrategy;
         }
 
-        public virtual void SetStructureStrategy(Net.Vpc.Upa.Persistence.StructureStrategy structureStrategy) {
+        public virtual void SetStructureStrategy(Net.TheVpc.Upa.Persistence.StructureStrategy structureStrategy) {
             this.structureStrategy = structureStrategy;
         }
 
@@ -90,7 +90,7 @@ namespace Net.Vpc.Upa.Persistence
         public override bool Equals(object o) {
             if (this == o) return true;
             if (o == null || GetType() != o.GetType()) return false;
-            Net.Vpc.Upa.Persistence.ConnectionConfig that = (Net.Vpc.Upa.Persistence.ConnectionConfig) o;
+            Net.TheVpc.Upa.Persistence.ConnectionConfig that = (Net.TheVpc.Upa.Persistence.ConnectionConfig) o;
             if (connectionString != null ? !connectionString.Equals(that.connectionString) : that.connectionString != null) return false;
             if (enabled != null ? !enabled.Equals(that.enabled) : that.enabled != null) return false;
             if (userName != null ? !userName.Equals(that.userName) : that.userName != null) return false;
@@ -105,7 +105,7 @@ namespace Net.Vpc.Upa.Persistence
             result = 31 * result + (enabled != null ? enabled.GetHashCode() : 0);
             result = 31 * result + (userName != null ? userName.GetHashCode() : 0);
             result = 31 * result + (password != null ? password.GetHashCode() : 0);
-            result = 31 * result + (structureStrategy != default(Net.Vpc.Upa.Persistence.StructureStrategy) ? structureStrategy.GetHashCode() : 0);
+            result = 31 * result + (structureStrategy != default(Net.TheVpc.Upa.Persistence.StructureStrategy) ? structureStrategy.GetHashCode() : 0);
             result = 31 * result + (properties != null ? properties.GetHashCode() : 0);
             return result;
         }

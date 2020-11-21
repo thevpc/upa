@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
     /**
@@ -25,19 +25,19 @@ namespace Net.Vpc.Upa.Expressions
 
         private string alias;
 
-        private Net.Vpc.Upa.Expressions.Expression expression;
+        private Net.TheVpc.Upa.Expressions.Expression expression;
 
-        public QueryField(string alias, Net.Vpc.Upa.Expressions.Expression expression) {
+        public QueryField(string alias, Net.TheVpc.Upa.Expressions.Expression expression) {
             /*, Object relative*/
             this.expression = expression;
             this.alias = alias;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Expression GetExpression() {
+        public virtual Net.TheVpc.Upa.Expressions.Expression GetExpression() {
             return expression;
         }
 
-        public virtual void SetExpression(Net.Vpc.Upa.Expressions.Expression expression) {
+        public virtual void SetExpression(Net.TheVpc.Upa.Expressions.Expression expression) {
             this.expression = expression;
         }
 
@@ -51,7 +51,7 @@ namespace Net.Vpc.Upa.Expressions
 
 
         public override string ToString() {
-            Net.Vpc.Upa.Expressions.Expression e = GetExpression();
+            Net.TheVpc.Upa.Expressions.Expression e = GetExpression();
             return (alias == null ? "" : ("." + alias)) + (e == null ? "NULL" : e.ToString());
         }
     }

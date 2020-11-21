@@ -11,11 +11,11 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledexpression
 {
 
 
-    public class CompiledKeyExpression : Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpressionImpl {
+    public class CompiledKeyExpression : Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpressionImpl {
 
 
 
@@ -27,9 +27,9 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
 
         private string desc;
 
-        private Net.Vpc.Upa.Entity entity;
+        private Net.TheVpc.Upa.Entity entity;
 
-        public CompiledKeyExpression(Net.Vpc.Upa.Entity entity, object key, string alias) {
+        public CompiledKeyExpression(Net.TheVpc.Upa.Entity entity, object key, string alias) {
             if (key == null) {
                 throw new System.ArgumentException ("Key could not be null");
             }
@@ -41,8 +41,8 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         }
 
 
-        public override Net.Vpc.Upa.Types.DataTypeTransform GetTypeTransform() {
-            return Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.BOOLEAN;
+        public override Net.TheVpc.Upa.Types.DataTypeTransform GetTypeTransform() {
+            return Net.TheVpc.Upa.Impl.Transform.IdentityDataTypeTransform.BOOLEAN;
         }
 
         public virtual object GetKey() {
@@ -53,9 +53,9 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         public override string GetDescription() {
             if (desc == null) {
                 try {
-                    Net.Vpc.Upa.Entity _entity = GetEntity();
-                    Net.Vpc.Upa.Key ukey = _entity.GetBuilder().IdToKey(key);
-                    System.Collections.Generic.IList<Net.Vpc.Upa.Field> f = _entity.GetPrimaryFields();
+                    Net.TheVpc.Upa.Entity _entity = GetEntity();
+                    Net.TheVpc.Upa.Key ukey = _entity.GetBuilder().IdToKey(key);
+                    System.Collections.Generic.IList<Net.TheVpc.Upa.Field> f = _entity.GetPrimaryFields();
                     System.Text.StringBuilder descsb = new System.Text.StringBuilder();
                     object[] values = ukey.GetValue();
                     for (int i = 0; i < (f).Count; i++) {
@@ -67,18 +67,18 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
                         if (values[i] == null) {
                             descsb.Append(f[i].GetI18NString()).Append(" undefined operator ");
                         } else {
-                            descsb.Append(f[i].GetI18NString()).Append(" = ").Append(new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledLiteral(values[i], Net.Vpc.Upa.Impl.Util.UPAUtils.GetTypeTransformOrIdentity(f[i])).ToString());
+                            descsb.Append(f[i].GetI18NString()).Append(" = ").Append(new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledLiteral(values[i], Net.TheVpc.Upa.Impl.Util.UPAUtils.GetTypeTransformOrIdentity(f[i])).ToString());
                         }
                     }
                     desc = descsb.ToString();
-                } catch (Net.Vpc.Upa.Exceptions.UPAException ex) {
+                } catch (Net.TheVpc.Upa.Exceptions.UPAException ex) {
                     desc = "";
                 }
             }
             return desc;
         }
 
-        public virtual Net.Vpc.Upa.Entity GetEntity() {
+        public virtual Net.TheVpc.Upa.Entity GetEntity() {
             return entity;
         }
 
@@ -91,20 +91,20 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         }
 
 
-        public override Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledKeyExpression o = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledKeyExpression(entity, key, entityAlias);
+        public override Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledKeyExpression o = new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledKeyExpression(entity, key, entityAlias);
             o.SetDescription(GetDescription());
             o.GetClientParameters().SetAll(GetClientParameters());
             return o;
         }
 
 
-        public override Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetSubExpressions() {
+        public override Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetSubExpressions() {
             return null;
         }
 
 
-        public override void SetSubExpression(int index, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
+        public override void SetSubExpression(int index, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
             throw new System.Exception("Not supported.");
         }
     }

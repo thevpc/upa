@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -20,37 +20,37 @@ namespace Net.Vpc.Upa
      */
     public class EntityPartPath {
 
-        private Net.Vpc.Upa.Entity entity;
+        private Net.TheVpc.Upa.Entity entity;
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.EntityPart> path;
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.EntityPart> path;
 
-        public EntityPartPath(Net.Vpc.Upa.Entity entity, System.Collections.Generic.IList<Net.Vpc.Upa.EntityPart> path) {
+        public EntityPartPath(Net.TheVpc.Upa.Entity entity, System.Collections.Generic.IList<Net.TheVpc.Upa.EntityPart> path) {
             this.entity = entity;
             if (path == null) {
-                this.path = new System.Collections.Generic.List<Net.Vpc.Upa.EntityPart>(5);
+                this.path = new System.Collections.Generic.List<Net.TheVpc.Upa.EntityPart>(5);
             } else {
-                this.path = new System.Collections.Generic.List<Net.Vpc.Upa.EntityPart>(path);
+                this.path = new System.Collections.Generic.List<Net.TheVpc.Upa.EntityPart>(path);
             }
         }
 
-        public virtual void Add(Net.Vpc.Upa.EntityPart part) {
+        public virtual void Add(Net.TheVpc.Upa.EntityPart part) {
             path.Add(part);
         }
 
         public override string ToString() {
             System.Text.StringBuilder sb = new System.Text.StringBuilder(entity.GetName());
-            foreach (Net.Vpc.Upa.EntityPart p in path) {
+            foreach (Net.TheVpc.Upa.EntityPart p in path) {
                 sb.Append("/");
                 sb.Append(p.GetName());
             }
             return sb.ToString();
         }
 
-        public virtual Net.Vpc.Upa.Entity GetEntity() {
+        public virtual Net.TheVpc.Upa.Entity GetEntity() {
             return entity;
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.EntityPart> GetPath() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.EntityPart> GetPath() {
             return path;
         }
     }

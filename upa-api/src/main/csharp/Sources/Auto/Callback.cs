@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -30,11 +30,11 @@ namespace Net.Vpc.Upa
 
          object Invoke(params object [] arguments);
 
-         Net.Vpc.Upa.CallbackType GetCallbackType();
+         Net.TheVpc.Upa.CallbackType GetCallbackType();
 
-         Net.Vpc.Upa.EventPhase GetPhase();
+         Net.TheVpc.Upa.EventPhase GetPhase();
 
-         Net.Vpc.Upa.ObjectType GetObjectType();
+         Net.TheVpc.Upa.ObjectType GetObjectType();
 
          System.Collections.Generic.IDictionary<string , object> GetConfiguration();
     }

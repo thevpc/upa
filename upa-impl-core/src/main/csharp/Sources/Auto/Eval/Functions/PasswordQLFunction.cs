@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Eval.Functions
+namespace Net.TheVpc.Upa.Impl.Eval.Functions
 {
 
 
@@ -19,16 +19,16 @@ namespace Net.Vpc.Upa.Impl.Eval.Functions
      *
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class PasswordQLFunction : Net.Vpc.Upa.Function {
+    public class PasswordQLFunction : Net.TheVpc.Upa.Function {
 
-        private Net.Vpc.Upa.PasswordStrategy strategy;
+        private Net.TheVpc.Upa.PasswordStrategy strategy;
 
-        public PasswordQLFunction(Net.Vpc.Upa.PasswordStrategy digest) {
+        public PasswordQLFunction(Net.TheVpc.Upa.PasswordStrategy digest) {
             this.strategy = digest;
         }
 
 
-        public virtual object Eval(Net.Vpc.Upa.EvalContext evalContext) {
+        public virtual object Eval(Net.TheVpc.Upa.EvalContext evalContext) {
             return strategy.Encode((string) evalContext.GetArguments()[0]);
         }
     }

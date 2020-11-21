@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiledfilters
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledfilters
 {
 
 
@@ -19,15 +19,15 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledfilters
      *
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class RefEqualCompiledExpressionFilter : Net.Vpc.Upa.Impl.Uql.CompiledExpressionFilter {
+    public class RefEqualCompiledExpressionFilter : Net.TheVpc.Upa.Impl.Uql.CompiledExpressionFilter {
 
-        private Net.Vpc.Upa.Expressions.CompiledExpression @value;
+        private Net.TheVpc.Upa.Expressions.CompiledExpression @value;
 
-        public RefEqualCompiledExpressionFilter(Net.Vpc.Upa.Expressions.CompiledExpression @value) {
+        public RefEqualCompiledExpressionFilter(Net.TheVpc.Upa.Expressions.CompiledExpression @value) {
             this.@value = @value;
         }
 
-        public virtual bool Accept(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e) {
+        public virtual bool Accept(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e) {
             return e == @value;
         }
     }

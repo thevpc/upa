@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
     /**
      * User: taha Date: 16 juin 2003 Time: 15:47:42
      */
-    public class ImageType : Net.Vpc.Upa.Types.FileType {
+    public class ImageType : Net.TheVpc.Upa.Types.FileType {
 
         private int width;
 
@@ -34,13 +34,13 @@ namespace Net.Vpc.Upa.Types
         }
 
 
-        public override void Check(object @value, string name, string description) /* throws Net.Vpc.Upa.Types.ConstraintsException */  {
+        public override void Check(object @value, string name, string description) /* throws Net.TheVpc.Upa.Types.ConstraintsException */  {
             base.Check(@value, name, description);
             if (@value == null) {
                 return;
             }
-            if ((GetMaxSize()).Value > 0 && (GetMaxSize()).Value < ((Net.Vpc.Upa.Types.FileData) @value).Size()) {
-                throw new Net.Vpc.Upa.Types.ConstraintsException("ImageSizeTooBig", name, description, @value, GetMaxSize());
+            if ((GetMaxSize()).Value > 0 && (GetMaxSize()).Value < ((Net.TheVpc.Upa.Types.FileData) @value).Size()) {
+                throw new Net.TheVpc.Upa.Types.ConstraintsException("ImageSizeTooBig", name, description, @value, GetMaxSize());
             }
         }
 

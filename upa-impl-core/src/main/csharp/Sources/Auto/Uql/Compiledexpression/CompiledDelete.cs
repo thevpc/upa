@@ -12,21 +12,21 @@
 
 
 using System.Linq;
-namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledexpression
 {
 
 
-    public class CompiledDelete : Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledEntityStatement, Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledUpdateStatement {
+    public class CompiledDelete : Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledEntityStatement, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledUpdateStatement {
 
 
 
-        protected internal Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition;
+        protected internal Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition;
 
-        protected internal Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName entity;
+        protected internal Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName entity;
 
         protected internal string entityAlias;
 
-        public CompiledDelete(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDelete other)  : this(){
+        public CompiledDelete(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledDelete other)  : this(){
 
             AddQuery(other);
         }
@@ -36,19 +36,19 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             entityAlias = null;
         }
 
-        private Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDelete From(string entityName, string alias) {
-            this.entity = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName(entityName);
+        private Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledDelete From(string entityName, string alias) {
+            this.entity = new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName(entityName);
             entityAlias = alias;
-            ExportDeclaration(alias, Net.Vpc.Upa.Impl.Uql.DecObjectType.ENTITY, entityName, null);
+            ExportDeclaration(alias, Net.TheVpc.Upa.Impl.Uql.DecObjectType.ENTITY, entityName, null);
             PrepareChildren(entity);
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDelete From(string table) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledDelete From(string table) {
             return From(table, null);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName GetEntity() {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName GetEntity() {
             return entity;
         }
 
@@ -56,18 +56,18 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return entityAlias;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDelete Where(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledDelete Where(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
             this.condition = condition;
             PrepareChildren(condition);
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetCondition() {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetCondition() {
             return condition;
         }
 
-        public override Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDelete o = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDelete();
+        public override Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledDelete o = new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledDelete();
             o.SetDescription(GetDescription());
             o.GetClientParameters().SetAll(GetClientParameters());
             o.AddQuery(this);
@@ -78,7 +78,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return 3;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDelete AddQuery(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDelete other) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledDelete AddQuery(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledDelete other) {
             if (other == null) {
                 return this;
             }
@@ -89,15 +89,15 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
                 if (condition == null) {
                     Where(other.condition.Copy());
                 } else {
-                    Where(new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledAnd(condition, other.condition.Copy()));
+                    Where(new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledAnd(condition, other.condition.Copy()));
                 }
             }
             return this;
         }
 
 
-        public override Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetSubExpressions() {
-            System.Collections.Generic.List<Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression> all = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression>();
+        public override Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetSubExpressions() {
+            System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression> all = new System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression>();
             if (entity != null) {
                 all.Add(entity);
             }
@@ -108,11 +108,11 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         }
 
 
-        public override void SetSubExpression(int index, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
+        public override void SetSubExpression(int index, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
             int i = 0;
             if (entity != null) {
                 if (i == index) {
-                    entity = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName) expression;
+                    entity = (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName) expression;
                 }
                 i++;
             }
@@ -124,9 +124,9 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             }
         }
 
-        protected internal override System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression> FindEntityDefinitions() {
-            System.Collections.Generic.List<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression>();
-            list.Add(new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression(GetEntityAlias() == null ? GetEntity().GetName() : GetEntityAlias(), GetEntity()));
+        protected internal override System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression> FindEntityDefinitions() {
+            System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression> list = new System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression>();
+            list.Add(new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression(GetEntityAlias() == null ? GetEntity().GetName() : GetEntityAlias(), GetEntity()));
             return list;
         }
     }

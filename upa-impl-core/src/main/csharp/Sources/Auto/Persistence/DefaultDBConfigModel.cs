@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
      * Created by IntelliJ IDEA. User: root Date: 9 mai 2003 Time: 11:38:44 To
      * change this template use Options | File Templates.
      */
-    public class DefaultDBConfigModel : Net.Vpc.Upa.Persistence.DBConfigModel {
+    public class DefaultDBConfigModel : Net.TheVpc.Upa.Persistence.DBConfigModel {
 
         private string[] adapters;
 

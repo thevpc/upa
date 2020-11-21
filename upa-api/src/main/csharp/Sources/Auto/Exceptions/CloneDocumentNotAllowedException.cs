@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
-    public class CloneDocumentNotAllowedException : Net.Vpc.Upa.Exceptions.EntityException {
+    public class CloneDocumentNotAllowedException : Net.TheVpc.Upa.Exceptions.EntityException {
 
-        public CloneDocumentNotAllowedException(Net.Vpc.Upa.Entity entity)  : base(entity, "cloneDocument.NotAllowed"){
+        public CloneDocumentNotAllowedException(Net.TheVpc.Upa.Entity entity)  : base(entity, "cloneDocument.NotAllowed"){
 
         }
     }

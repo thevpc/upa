@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config.Callback
+namespace Net.TheVpc.Upa.Impl.Config.Callback
 {
 
     /**

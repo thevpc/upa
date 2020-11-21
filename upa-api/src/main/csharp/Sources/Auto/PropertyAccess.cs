@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -26,8 +26,8 @@ namespace Net.Vpc.Upa
 
     public class PropertyAccess : System.Attribute {
 
-        private Net.Vpc.Upa.PropertyAccessType _Value = Net.Vpc.Upa.PropertyAccessType.PROPERTY;
-        public  Net.Vpc.Upa.PropertyAccessType Value{
+        private Net.TheVpc.Upa.PropertyAccessType _Value = Net.TheVpc.Upa.PropertyAccessType.PROPERTY;
+        public  Net.TheVpc.Upa.PropertyAccessType Value{
             get {return _Value;}
             set {_Value=value;}
         }
@@ -38,8 +38,8 @@ namespace Net.Vpc.Upa
              *
              * @return annotation configuration
              */
-        private Net.Vpc.Upa.Config.ItemConfig _Config = new Net.Vpc.Upa.Config.ItemConfig();
-        public  Net.Vpc.Upa.Config.ItemConfig Config{
+        private Net.TheVpc.Upa.Config.ItemConfig _Config = new Net.TheVpc.Upa.Config.ItemConfig();
+        public  Net.TheVpc.Upa.Config.ItemConfig Config{
             get {return _Config;}
             set {_Config=value;}
         }

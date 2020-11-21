@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
 
@@ -187,7 +187,7 @@ namespace Net.Vpc.Upa.Persistence
              *                      parameter marker in the SQL statement; if a database access error occurs
              *                      or this method is called on a closed <code>PreparedStatement</code>
              */
-         void SetDate(int parameterIndex, Net.Vpc.Upa.Types.Date x);
+         void SetDate(int parameterIndex, Net.TheVpc.Upa.Types.Date x);
 
         /**
              * Sets the designated parameter to the given <code>java.sql.Time</code>
@@ -200,7 +200,7 @@ namespace Net.Vpc.Upa.Persistence
              *                      parameter marker in the SQL statement; if a database access error occurs
              *                      or this method is called on a closed <code>PreparedStatement</code>
              */
-         void SetTime(int parameterIndex, Net.Vpc.Upa.Types.Time x);
+         void SetTime(int parameterIndex, Net.TheVpc.Upa.Types.Time x);
 
         /**
              * Sets the designated parameter to the given
@@ -213,22 +213,22 @@ namespace Net.Vpc.Upa.Persistence
              *                      parameter marker in the SQL statement; if a database access error occurs
              *                      or this method is called on a closed <code>PreparedStatement</code>
              */
-         void SetTimestamp(int parameterIndex, Net.Vpc.Upa.Types.Timestamp x);
+         void SetTimestamp(int parameterIndex, Net.TheVpc.Upa.Types.Timestamp x);
 
          int ExecuteUpdate();
 
-         Net.Vpc.Upa.Persistence.NativeResult ExecuteQuery();
+         Net.TheVpc.Upa.Persistence.NativeResult ExecuteQuery();
 
-         Net.Vpc.Upa.Persistence.NativeResult GetGeneratedKeys();
+         Net.TheVpc.Upa.Persistence.NativeResult GetGeneratedKeys();
 
          void SetObject(int i, object @object);
 
-         void SetBlob(int i, Net.Vpc.Upa.Types.Blob stream);
+         void SetBlob(int i, Net.TheVpc.Upa.Types.Blob stream);
 
          void SetBlob(int i, System.IO.Stream stream);
 
          void SetClob(int i, System.IO.TextReader reader);
 
-         void SetClob(int i, Net.Vpc.Upa.Types.Clob reader);
+         void SetClob(int i, Net.TheVpc.Upa.Types.Clob reader);
     }
 }

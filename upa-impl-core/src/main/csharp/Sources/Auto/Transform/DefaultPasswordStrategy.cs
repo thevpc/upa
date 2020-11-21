@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Transform
+namespace Net.TheVpc.Upa.Impl.Transform
 {
 
 
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Impl.Transform
      *
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class DefaultPasswordStrategy : Net.Vpc.Upa.PasswordStrategy {
+    public class DefaultPasswordStrategy : Net.TheVpc.Upa.PasswordStrategy {
 
         private string digest;
 
@@ -27,11 +27,11 @@ namespace Net.Vpc.Upa.Impl.Transform
 
         private int maxSize;
 
-        public static readonly Net.Vpc.Upa.Impl.Transform.DefaultPasswordStrategy MD5 = new Net.Vpc.Upa.Impl.Transform.DefaultPasswordStrategy("MD5", true, 32);
+        public static readonly Net.TheVpc.Upa.Impl.Transform.DefaultPasswordStrategy MD5 = new Net.TheVpc.Upa.Impl.Transform.DefaultPasswordStrategy("MD5", true, 32);
 
-        public static readonly Net.Vpc.Upa.Impl.Transform.DefaultPasswordStrategy SHA1 = new Net.Vpc.Upa.Impl.Transform.DefaultPasswordStrategy("SHA1", true, 20);
+        public static readonly Net.TheVpc.Upa.Impl.Transform.DefaultPasswordStrategy SHA1 = new Net.TheVpc.Upa.Impl.Transform.DefaultPasswordStrategy("SHA1", true, 20);
 
-        public static readonly Net.Vpc.Upa.Impl.Transform.DefaultPasswordStrategy SHA256 = new Net.Vpc.Upa.Impl.Transform.DefaultPasswordStrategy("SHA-256", true, 64);
+        public static readonly Net.TheVpc.Upa.Impl.Transform.DefaultPasswordStrategy SHA256 = new Net.TheVpc.Upa.Impl.Transform.DefaultPasswordStrategy("SHA-256", true, 64);
 
         public DefaultPasswordStrategy(string digest, bool fixedSize, int maxSize) {
             this.digest = digest;
@@ -47,7 +47,7 @@ namespace Net.Vpc.Upa.Impl.Transform
                 // first of all convert this object to String
                 byte[] bytesOfMessage = System.Text.Encoding.GetEncoding("UTF-8").GetBytes(@value);
                 byte[] hash = null;
-                return Net.Vpc.Upa.Impl.Util.StringUtils.ToHexString(hash);
+                return Net.TheVpc.Upa.Impl.Util.StringUtils.ToHexString(hash);
             } catch (System.Exception ex) {
                 throw new System.Exception("RuntimeException", ex);
             }

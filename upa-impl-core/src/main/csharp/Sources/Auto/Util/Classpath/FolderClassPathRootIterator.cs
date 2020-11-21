@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util.Classpath
+namespace Net.TheVpc.Upa.Impl.Util.Classpath
 {
 
 
@@ -19,11 +19,11 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
      *
      * @author taha.bensalah@gmail.com
      */
-    public class FolderClassPathRootIterator : System.Collections.Generic.IEnumerator<Net.Vpc.Upa.Impl.Util.Classpath.ClassPathResource> {
+    public class FolderClassPathRootIterator : System.Collections.Generic.IEnumerator<Net.TheVpc.Upa.Impl.Util.Classpath.ClassPathResource> {
 
         private string root;
 
-        private Net.Vpc.Upa.Impl.Util.Classpath.FileClassPathResource last;
+        private Net.TheVpc.Upa.Impl.Util.Classpath.FileClassPathResource last;
 
         private System.Collections.Generic.Stack<string> stack = new System.Collections.Generic.Stack<string>();
 
@@ -42,7 +42,7 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
             return !(stack.Count==0);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Util.Classpath.ClassPathResource Next() {
+        public virtual Net.TheVpc.Upa.Impl.Util.Classpath.ClassPathResource Next() {
             string r = stack.Pop();
             if (System.IO.Directory.Exists(r)) {
                 string[] f = System.IO.Directory.GetFileSystemEntries(r);
@@ -53,10 +53,10 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
                     }
                 }
                 string p = (r).Substring(((root)).Length + 1).Replace("\\", "/");
-                return last = new Net.Vpc.Upa.Impl.Util.Classpath.FileClassPathResource(p + "/", r);
+                return last = new Net.TheVpc.Upa.Impl.Util.Classpath.FileClassPathResource(p + "/", r);
             } else {
                 string p = (r).Substring(((root)).Length + 1).Replace("\\", "/");
-                return last = new Net.Vpc.Upa.Impl.Util.Classpath.FileClassPathResource(p, r);
+                return last = new Net.TheVpc.Upa.Impl.Util.Classpath.FileClassPathResource(p, r);
             }
         }
 

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -19,21 +19,21 @@ namespace Net.Vpc.Upa.Impl.Persistence
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 9/17/12 3:15 PM
      */
-    public class DefaultPersistenceNameStrategy : Net.Vpc.Upa.Persistence.PersistenceNameStrategy {
+    public class DefaultPersistenceNameStrategy : Net.TheVpc.Upa.Persistence.PersistenceNameStrategy {
 
-        protected internal static System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.Vpc.Upa.Impl.Persistence.DefaultPersistenceNameStrategy)).FullName);
+        protected internal static System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.TheVpc.Upa.Impl.Persistence.DefaultPersistenceNameStrategy)).FullName);
 
         private string escapedNamePattern;
 
-        private Net.Vpc.Upa.Persistence.PersistenceStore persistenceStore;
+        private Net.TheVpc.Upa.Persistence.PersistenceStore persistenceStore;
 
-        private Net.Vpc.Upa.PersistenceUnit persistenceUnit;
+        private Net.TheVpc.Upa.PersistenceUnit persistenceUnit;
 
-        private Net.Vpc.Upa.Persistence.PersistenceNameConfig model;
+        private Net.TheVpc.Upa.Persistence.PersistenceNameConfig model;
 
         private System.Collections.Generic.IDictionary<string , string> modelMap = new System.Collections.Generic.Dictionary<string , string>();
 
-        public virtual void Init(Net.Vpc.Upa.Persistence.PersistenceStore persistenceStore, Net.Vpc.Upa.Persistence.PersistenceNameConfig model) {
+        public virtual void Init(Net.TheVpc.Upa.Persistence.PersistenceStore persistenceStore, Net.TheVpc.Upa.Persistence.PersistenceNameConfig model) {
             this.model = model;
             this.persistenceStore = persistenceStore;
             //        modelMapPatterns.put("GLOBAL_PERSISTENCE_NAME", "{OBJECT_NAME}");
@@ -45,8 +45,8 @@ namespace Net.Vpc.Upa.Impl.Persistence
                 modelMap["LOCAL_PERSISTENCE_NAME"]=model.GetLocalPersistenceName();
                 modelMap["PERSISTENCE_NAME_ESCAPE"]=model.GetPersistenceNameEscape();
                 if (model.GetNames() != null) {
-                    foreach (Net.Vpc.Upa.Persistence.PersistenceName persistenceNameFormat in model.GetNames()) {
-                        if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(persistenceNameFormat.GetObject())) {
+                    foreach (Net.TheVpc.Upa.Persistence.PersistenceName persistenceNameFormat in model.GetNames()) {
+                        if (Net.TheVpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(persistenceNameFormat.GetObject())) {
                             modelMap[persistenceNameFormat.GetPersistenceNameType().Name()]=persistenceNameFormat.GetValue();
                         } else {
                             modelMap[persistenceNameFormat.GetPersistenceNameType().Name() + ":" + persistenceNameFormat.GetObject()]=persistenceNameFormat.GetValue();
@@ -59,28 +59,28 @@ namespace Net.Vpc.Upa.Impl.Persistence
         public virtual void Close() {
         }
 
-        public virtual string GetPersistenceName(object source, Net.Vpc.Upa.Persistence.PersistenceNameType spec) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.PersistenceNameType> types = new System.Collections.Generic.List<Net.Vpc.Upa.Persistence.PersistenceNameType>();
-            Net.Vpc.Upa.Impl.Persistence.UPAObjectAndSpec upaObjectAndSpec = new Net.Vpc.Upa.Impl.Persistence.UPAObjectAndSpec(source, spec);
-            if (source is Net.Vpc.Upa.Entity) {
-                Net.Vpc.Upa.Entity v = (Net.Vpc.Upa.Entity) source;
+        public virtual string GetPersistenceName(object source, Net.TheVpc.Upa.Persistence.PersistenceNameType spec) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Persistence.PersistenceNameType> types = new System.Collections.Generic.List<Net.TheVpc.Upa.Persistence.PersistenceNameType>();
+            Net.TheVpc.Upa.Impl.Persistence.UPAObjectAndSpec upaObjectAndSpec = new Net.TheVpc.Upa.Impl.Persistence.UPAObjectAndSpec(source, spec);
+            if (source is Net.TheVpc.Upa.Entity) {
+                Net.TheVpc.Upa.Entity v = (Net.TheVpc.Upa.Entity) source;
                 if (spec == null) {
                     string p = v.GetPersistenceName();
                     if (p == null) {
                         p = v.GetName();
                     }
-                    foreach (Net.Vpc.Upa.Extensions.EntityExtensionDefinition extension in v.GetExtensionDefinitions()) {
-                        if (extension is Net.Vpc.Upa.Extensions.ViewEntityExtensionDefinition) {
-                            types.Add(Net.Vpc.Upa.Persistence.PersistenceNameType.VIEW);
+                    foreach (Net.TheVpc.Upa.Extensions.EntityExtensionDefinition extension in v.GetExtensionDefinitions()) {
+                        if (extension is Net.TheVpc.Upa.Extensions.ViewEntityExtensionDefinition) {
+                            types.Add(Net.TheVpc.Upa.Persistence.PersistenceNameType.VIEW);
                         }
-                        if (extension is Net.Vpc.Upa.Extensions.UnionEntityExtensionDefinition) {
-                            types.Add(Net.Vpc.Upa.Persistence.PersistenceNameType.UNION_TABLE);
+                        if (extension is Net.TheVpc.Upa.Extensions.UnionEntityExtensionDefinition) {
+                            types.Add(Net.TheVpc.Upa.Persistence.PersistenceNameType.UNION_TABLE);
                         }
                     }
-                    types.Add(Net.Vpc.Upa.Persistence.PersistenceNameType.TABLE);
-                    return ValidatePersistenceName(p, Net.Vpc.Upa.Persistence.PersistenceNameType.TABLE, v.GetName(), upaObjectAndSpec, types);
+                    types.Add(Net.TheVpc.Upa.Persistence.PersistenceNameType.TABLE);
+                    return ValidatePersistenceName(p, Net.TheVpc.Upa.Persistence.PersistenceNameType.TABLE, v.GetName(), upaObjectAndSpec, types);
                 }
-                if (Net.Vpc.Upa.Persistence.PersistenceNameType.PK_CONSTRAINT.Equals(spec)) {
+                if (Net.TheVpc.Upa.Persistence.PersistenceNameType.PK_CONSTRAINT.Equals(spec)) {
                     string p = v.GetShortName();
                     if (p == null) {
                         p = v.GetPersistenceName();
@@ -88,21 +88,21 @@ namespace Net.Vpc.Upa.Impl.Persistence
                     if (p == null) {
                         p = v.GetName();
                     }
-                    types.Add(Net.Vpc.Upa.Persistence.PersistenceNameType.PK_CONSTRAINT);
-                    return ValidatePersistenceName("PK_" + p, Net.Vpc.Upa.Persistence.PersistenceNameType.PK_CONSTRAINT, v.GetName(), upaObjectAndSpec, types);
+                    types.Add(Net.TheVpc.Upa.Persistence.PersistenceNameType.PK_CONSTRAINT);
+                    return ValidatePersistenceName("PK_" + p, Net.TheVpc.Upa.Persistence.PersistenceNameType.PK_CONSTRAINT, v.GetName(), upaObjectAndSpec, types);
                 }
-                if (Net.Vpc.Upa.Persistence.PersistenceNameType.IMPLICIT_VIEW.Equals(spec)) {
+                if (Net.TheVpc.Upa.Persistence.PersistenceNameType.IMPLICIT_VIEW.Equals(spec)) {
                     string p = v.GetPersistenceName();
                     if (p == null) {
                         p = v.GetName();
                     }
-                    types.Add(Net.Vpc.Upa.Persistence.PersistenceNameType.IMPLICIT_VIEW);
-                    types.Add(Net.Vpc.Upa.Persistence.PersistenceNameType.TABLE);
-                    return ValidatePersistenceName(p + "_IV", Net.Vpc.Upa.Persistence.PersistenceNameType.IMPLICIT_VIEW, v.GetName(), upaObjectAndSpec, types);
+                    types.Add(Net.TheVpc.Upa.Persistence.PersistenceNameType.IMPLICIT_VIEW);
+                    types.Add(Net.TheVpc.Upa.Persistence.PersistenceNameType.TABLE);
+                    return ValidatePersistenceName(p + "_IV", Net.TheVpc.Upa.Persistence.PersistenceNameType.IMPLICIT_VIEW, v.GetName(), upaObjectAndSpec, types);
                 }
             }
-            if (source is Net.Vpc.Upa.Index) {
-                Net.Vpc.Upa.Index v = (Net.Vpc.Upa.Index) source;
+            if (source is Net.TheVpc.Upa.Index) {
+                Net.TheVpc.Upa.Index v = (Net.TheVpc.Upa.Index) source;
                 string p = v.GetPersistenceName();
                 if (p == null) {
                     p = v.GetName();
@@ -118,38 +118,38 @@ namespace Net.Vpc.Upa.Impl.Persistence
                     }
                     p = sb.ToString();
                 }
-                types.Add(Net.Vpc.Upa.Persistence.PersistenceNameType.INDEX);
-                return ValidatePersistenceName(p, Net.Vpc.Upa.Persistence.PersistenceNameType.INDEX, v.GetName(), upaObjectAndSpec, types);
+                types.Add(Net.TheVpc.Upa.Persistence.PersistenceNameType.INDEX);
+                return ValidatePersistenceName(p, Net.TheVpc.Upa.Persistence.PersistenceNameType.INDEX, v.GetName(), upaObjectAndSpec, types);
             }
-            if (source is Net.Vpc.Upa.Relationship) {
-                Net.Vpc.Upa.Relationship v = (Net.Vpc.Upa.Relationship) source;
+            if (source is Net.TheVpc.Upa.Relationship) {
+                Net.TheVpc.Upa.Relationship v = (Net.TheVpc.Upa.Relationship) source;
                 string p = v.GetPersistenceName();
                 if (p == null) {
                     p = v.GetName();
                 }
-                types.Add(Net.Vpc.Upa.Persistence.PersistenceNameType.FK_CONSTRAINT);
-                return ValidatePersistenceName(p, Net.Vpc.Upa.Persistence.PersistenceNameType.FK_CONSTRAINT, v.GetName(), upaObjectAndSpec, types);
+                types.Add(Net.TheVpc.Upa.Persistence.PersistenceNameType.FK_CONSTRAINT);
+                return ValidatePersistenceName(p, Net.TheVpc.Upa.Persistence.PersistenceNameType.FK_CONSTRAINT, v.GetName(), upaObjectAndSpec, types);
             }
-            if (source is Net.Vpc.Upa.PrimitiveField) {
-                Net.Vpc.Upa.Field v = (Net.Vpc.Upa.Field) source;
+            if (source is Net.TheVpc.Upa.PrimitiveField) {
+                Net.TheVpc.Upa.Field v = (Net.TheVpc.Upa.Field) source;
                 string p = v.GetPersistenceName();
                 if (p == null) {
                     p = v.GetName();
                 }
-                types.Add(Net.Vpc.Upa.Persistence.PersistenceNameType.COLUMN);
-                return ValidatePersistenceName(p, Net.Vpc.Upa.Persistence.PersistenceNameType.COLUMN, v.GetEntity().GetName() + "." + v.GetName(), upaObjectAndSpec, types);
+                types.Add(Net.TheVpc.Upa.Persistence.PersistenceNameType.COLUMN);
+                return ValidatePersistenceName(p, Net.TheVpc.Upa.Persistence.PersistenceNameType.COLUMN, v.GetEntity().GetName() + "." + v.GetName(), upaObjectAndSpec, types);
             }
             if (source is string) {
-                if (Net.Vpc.Upa.Persistence.PersistenceNameType.ALIAS.Equals(spec)) {
-                    return ValidatePersistenceName((string) source, Net.Vpc.Upa.Persistence.PersistenceNameType.ALIAS, "aliasName", upaObjectAndSpec, types);
+                if (Net.TheVpc.Upa.Persistence.PersistenceNameType.ALIAS.Equals(spec)) {
+                    return ValidatePersistenceName((string) source, Net.TheVpc.Upa.Persistence.PersistenceNameType.ALIAS, "aliasName", upaObjectAndSpec, types);
                 } else {
-                    return ValidatePersistenceName((string) source, Net.Vpc.Upa.Persistence.PersistenceNameType.ALIAS, null, upaObjectAndSpec, types);
+                    return ValidatePersistenceName((string) source, Net.TheVpc.Upa.Persistence.PersistenceNameType.ALIAS, null, upaObjectAndSpec, types);
                 }
             }
             throw new System.ArgumentException ("No Supported");
         }
 
-        private string GetParamValue(string confPrefix, Net.Vpc.Upa.Persistence.PersistenceNameType type, string name, Net.Vpc.Upa.Properties parameters) {
+        private string GetParamValue(string confPrefix, Net.TheVpc.Upa.Persistence.PersistenceNameType type, string name, Net.TheVpc.Upa.Properties parameters) {
             string v = GetParamValue(confPrefix, type.Name() + ":" + name, parameters);
             if (v == null) {
                 v = GetParamValue(confPrefix, type.Name(), parameters);
@@ -157,28 +157,28 @@ namespace Net.Vpc.Upa.Impl.Persistence
             return v;
         }
 
-        private string GetParamValue(string confPrefix, string name, Net.Vpc.Upa.Properties parameters) {
-            string v = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,string>(modelMap,name);
-            if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(v)) {
+        private string GetParamValue(string confPrefix, string name, Net.TheVpc.Upa.Properties parameters) {
+            string v = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,string>(modelMap,name);
+            if (Net.TheVpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(v)) {
                 v = parameters.GetString(confPrefix + name);
             }
-            if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(v)) {
+            if (!Net.TheVpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(v)) {
                 return v;
             }
             return null;
         }
 
-        protected internal virtual string ValidatePersistenceName(string persistenceNameFormat, Net.Vpc.Upa.Persistence.PersistenceNameType defaultType, string absoluteName, Net.Vpc.Upa.Impl.Persistence.UPAObjectAndSpec e, System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.PersistenceNameType> types) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        protected internal virtual string ValidatePersistenceName(string persistenceNameFormat, Net.TheVpc.Upa.Persistence.PersistenceNameType defaultType, string absoluteName, Net.TheVpc.Upa.Impl.Persistence.UPAObjectAndSpec e, System.Collections.Generic.IList<Net.TheVpc.Upa.Persistence.PersistenceNameType> types) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             //        String varName = "*";
             string confPrefix = "";
             //UPA.CONNECTION_STRING+".";
             string persistenceNamePattern = null;
-            Net.Vpc.Upa.Properties parameters = GetPersistenceUnit().GetProperties();
+            Net.TheVpc.Upa.Properties parameters = GetPersistenceUnit().GetProperties();
             if (absoluteName != null) {
                 persistenceNamePattern = GetParamValue(confPrefix, defaultType, absoluteName, parameters);
             }
             if (persistenceNamePattern == null) {
-                foreach (Net.Vpc.Upa.Persistence.PersistenceNameType t in types) {
+                foreach (Net.TheVpc.Upa.Persistence.PersistenceNameType t in types) {
                     persistenceNamePattern = GetParamValue(confPrefix, t, absoluteName, parameters);
                     if (persistenceNamePattern != null) {
                         break;
@@ -416,19 +416,19 @@ namespace Net.Vpc.Upa.Impl.Persistence
             return objectName;
         }
 
-        public virtual Net.Vpc.Upa.Persistence.PersistenceStore GetPersistenceStore() {
+        public virtual Net.TheVpc.Upa.Persistence.PersistenceStore GetPersistenceStore() {
             return persistenceStore;
         }
 
-        public virtual void SetPersistenceStore(Net.Vpc.Upa.Persistence.PersistenceStore persistenceStore) {
+        public virtual void SetPersistenceStore(Net.TheVpc.Upa.Persistence.PersistenceStore persistenceStore) {
             this.persistenceStore = persistenceStore;
         }
 
-        public virtual Net.Vpc.Upa.PersistenceUnit GetPersistenceUnit() {
+        public virtual Net.TheVpc.Upa.PersistenceUnit GetPersistenceUnit() {
             return persistenceUnit;
         }
 
-        public virtual void SetPersistenceUnit(Net.Vpc.Upa.PersistenceUnit persistenceUnit) {
+        public virtual void SetPersistenceUnit(Net.TheVpc.Upa.PersistenceUnit persistenceUnit) {
             this.persistenceUnit = persistenceUnit;
         }
     }

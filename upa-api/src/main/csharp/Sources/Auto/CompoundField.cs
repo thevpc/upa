@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -20,35 +20,35 @@ namespace Net.Vpc.Upa
      * A compound Field defines a "super" field that is composed of a set of primitive fields.
      * Compound fields can not include other compound fields.
      */
-    public interface CompoundField : Net.Vpc.Upa.Field {
+    public interface CompoundField : Net.TheVpc.Upa.Field {
 
         /**
              * all inner fields
              *
              * @return all fields
              */
-         System.Collections.Generic.IList<Net.Vpc.Upa.PrimitiveField> GetFields();
+         System.Collections.Generic.IList<Net.TheVpc.Upa.PrimitiveField> GetFields();
 
         /**
              * field by position
              * @param index position
              * @return Field at the given position
              */
-         Net.Vpc.Upa.PrimitiveField GetFieldAt(int index);
+         Net.TheVpc.Upa.PrimitiveField GetFieldAt(int index);
 
         /**
              * field by name
              * @param name name of the field
              * @return Field with the given name
              */
-         Net.Vpc.Upa.PrimitiveField GetField(string name);
+         Net.TheVpc.Upa.PrimitiveField GetField(string name);
 
         /**
              * return index of the given field or -1 if not found
              * @param child field to look for
              * @return index of the given field or -1 if not found
              */
-         int IndexOfField(Net.Vpc.Upa.PrimitiveField child);
+         int IndexOfField(Net.TheVpc.Upa.PrimitiveField child);
 
         /**
              * return index of the given field or -1 if not found
@@ -61,7 +61,7 @@ namespace Net.Vpc.Upa
              * leading (very first) field
              * @return leading (very first) field
              */
-         Net.Vpc.Upa.PrimitiveField GetLeadingField();
+         Net.TheVpc.Upa.PrimitiveField GetLeadingField();
 
         /**
              * number of primitive fields in the compound field

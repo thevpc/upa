@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Impl.Util
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 1/5/13 11:28 PM
      */
-    internal class EntityBeanGetterSetterAttribute : Net.Vpc.Upa.Impl.Util.AbstractEntityBeanAttribute {
+    internal class EntityBeanGetterSetterAttribute : Net.TheVpc.Upa.Impl.Util.AbstractEntityBeanAttribute {
 
         private System.Reflection.MethodInfo getter;
 
@@ -29,22 +29,22 @@ namespace Net.Vpc.Upa.Impl.Util
 
         private System.Type fieldType;
 
-        private Net.Vpc.Upa.Impl.Util.EntityBeanType entityBeanAdapter;
+        private Net.TheVpc.Upa.Impl.Util.EntityBeanType entityBeanAdapter;
 
-        internal EntityBeanGetterSetterAttribute(Net.Vpc.Upa.Impl.Util.EntityBeanType entityBeanAdapter, string fieldName, System.Type fieldType, System.Type type)  : base(entityBeanAdapter, fieldName, fieldType){
+        internal EntityBeanGetterSetterAttribute(Net.TheVpc.Upa.Impl.Util.EntityBeanType entityBeanAdapter, string fieldName, System.Type fieldType, System.Type type)  : base(entityBeanAdapter, fieldName, fieldType){
 
             this.entityBeanAdapter = entityBeanAdapter;
             this.fieldName = fieldName;
             this.fieldType = fieldType;
-            getter = entityBeanAdapter.GetMethod(type, Net.Vpc.Upa.Impl.Util.PlatformUtils.GetterName(fieldName, fieldType), fieldType);
+            getter = entityBeanAdapter.GetMethod(type, Net.TheVpc.Upa.Impl.Util.PlatformUtils.GetterName(fieldName, fieldType), fieldType);
             if (getter == null) {
-                getter = entityBeanAdapter.GetMethod(type, Net.Vpc.Upa.Impl.Util.PlatformUtils.GetterName(fieldName, fieldType), fieldType);
+                getter = entityBeanAdapter.GetMethod(type, Net.TheVpc.Upa.Impl.Util.PlatformUtils.GetterName(fieldName, fieldType), fieldType);
             }
             //            System.out.println("why");
             if (getter != null) {
                 //getter.SetAccessible(true);
             }
-            setter = entityBeanAdapter.GetMethod(type, Net.Vpc.Upa.Impl.Util.PlatformUtils.SetterName(fieldName), typeof(void), fieldType);
+            setter = entityBeanAdapter.GetMethod(type, Net.TheVpc.Upa.Impl.Util.PlatformUtils.SetterName(fieldName), typeof(void), fieldType);
             if (setter != null) {
                 //setter.SetAccessible(true);
             }
@@ -83,7 +83,7 @@ namespace Net.Vpc.Upa.Impl.Util
                 if (e is System.Exception) {
                     e = (System.Exception) (((System.Exception) e)).InnerException;
                 }
-                throw new Net.Vpc.Upa.Exceptions.UPAException(e, new Net.Vpc.Upa.Types.I18NString("UnableToSetFieldValue"), fieldName, entityBeanAdapter.GetEntity(), setter);
+                throw new Net.TheVpc.Upa.Exceptions.UPAException(e, new Net.TheVpc.Upa.Types.I18NString("UnableToSetFieldValue"), fieldName, entityBeanAdapter.GetEntity(), setter);
             }
         }
     }

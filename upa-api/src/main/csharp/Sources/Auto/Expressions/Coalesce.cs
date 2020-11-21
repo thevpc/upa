@@ -11,59 +11,59 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
 
-    public sealed class Coalesce : Net.Vpc.Upa.Expressions.FunctionExpression {
+    public sealed class Coalesce : Net.TheVpc.Upa.Expressions.FunctionExpression {
 
 
 
-        private System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression> elements;
+        private System.Collections.Generic.List<Net.TheVpc.Upa.Expressions.Expression> elements;
 
         public Coalesce() {
-            elements = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression>(1);
+            elements = new System.Collections.Generic.List<Net.TheVpc.Upa.Expressions.Expression>(1);
         }
 
-        public Coalesce(Net.Vpc.Upa.Expressions.Expression[] expressions)  : this(new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression>(expressions)){
+        public Coalesce(Net.TheVpc.Upa.Expressions.Expression[] expressions)  : this(new System.Collections.Generic.List<Net.TheVpc.Upa.Expressions.Expression>(expressions)){
 
         }
 
-        public Coalesce(System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.Expression> expressions) {
-            elements = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression>((expressions).Count);
-            foreach (Net.Vpc.Upa.Expressions.Expression expression in expressions) {
+        public Coalesce(System.Collections.Generic.IList<Net.TheVpc.Upa.Expressions.Expression> expressions) {
+            elements = new System.Collections.Generic.List<Net.TheVpc.Upa.Expressions.Expression>((expressions).Count);
+            foreach (Net.TheVpc.Upa.Expressions.Expression expression in expressions) {
                 Add(expression);
             }
         }
 
 
-        public override void SetArgument(int index, Net.Vpc.Upa.Expressions.Expression e) {
+        public override void SetArgument(int index, Net.TheVpc.Upa.Expressions.Expression e) {
             elements[index]=e;
         }
 
-        public Coalesce(Net.Vpc.Upa.Expressions.Expression expression1, Net.Vpc.Upa.Expressions.Expression expression2)  : this(){
+        public Coalesce(Net.TheVpc.Upa.Expressions.Expression expression1, Net.TheVpc.Upa.Expressions.Expression expression2)  : this(){
 
             Add(expression1);
             Add(expression2);
         }
 
-        public Coalesce(Net.Vpc.Upa.Expressions.Expression expression1, Net.Vpc.Upa.Expressions.Expression expression2, Net.Vpc.Upa.Expressions.Expression expression3)  : this(){
+        public Coalesce(Net.TheVpc.Upa.Expressions.Expression expression1, Net.TheVpc.Upa.Expressions.Expression expression2, Net.TheVpc.Upa.Expressions.Expression expression3)  : this(){
 
             Add(expression1);
             Add(expression2);
             Add(expression3);
         }
 
-        public Net.Vpc.Upa.Expressions.Coalesce Clear() {
+        public Net.TheVpc.Upa.Expressions.Coalesce Clear() {
             elements.Clear();
             return this;
         }
 
-        public Net.Vpc.Upa.Expressions.Coalesce Add(object varName) {
-            return Add(Net.Vpc.Upa.Expressions.ExpressionFactory.ToVar(varName));
+        public Net.TheVpc.Upa.Expressions.Coalesce Add(object varName) {
+            return Add(Net.TheVpc.Upa.Expressions.ExpressionFactory.ToVar(varName));
         }
 
-        public Net.Vpc.Upa.Expressions.Coalesce Add(Net.Vpc.Upa.Expressions.Expression expression) {
+        public Net.TheVpc.Upa.Expressions.Coalesce Add(Net.TheVpc.Upa.Expressions.Expression expression) {
             elements.Add(expression);
             return this;
         }
@@ -72,7 +72,7 @@ namespace Net.Vpc.Upa.Expressions
             return (elements).Count;
         }
 
-        public Net.Vpc.Upa.Expressions.Expression Get(int i) {
+        public Net.TheVpc.Upa.Expressions.Expression Get(int i) {
             return elements[i];
         }
 
@@ -80,7 +80,7 @@ namespace Net.Vpc.Upa.Expressions
             int max = Size();
             bool valid = false;
             for (int i = 0; i < max; i++) {
-                Net.Vpc.Upa.Expressions.Expression e = Get(i);
+                Net.TheVpc.Upa.Expressions.Expression e = Get(i);
                 if (e.IsValid()) {
                     valid = true;
                 }
@@ -88,10 +88,10 @@ namespace Net.Vpc.Upa.Expressions
             return valid;
         }
 
-        public override Net.Vpc.Upa.Expressions.Expression Copy() {
-            Net.Vpc.Upa.Expressions.Coalesce o = new Net.Vpc.Upa.Expressions.Coalesce();
-            o.elements = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression>((elements).Count);
-            foreach (Net.Vpc.Upa.Expressions.Expression element in elements) {
+        public override Net.TheVpc.Upa.Expressions.Expression Copy() {
+            Net.TheVpc.Upa.Expressions.Coalesce o = new Net.TheVpc.Upa.Expressions.Coalesce();
+            o.elements = new System.Collections.Generic.List<Net.TheVpc.Upa.Expressions.Expression>((elements).Count);
+            foreach (Net.TheVpc.Upa.Expressions.Expression element in elements) {
                 o.Add(element.Copy());
             }
             return o;
@@ -108,7 +108,7 @@ namespace Net.Vpc.Upa.Expressions
         }
 
 
-        public override Net.Vpc.Upa.Expressions.Expression GetArgument(int index) {
+        public override Net.TheVpc.Upa.Expressions.Expression GetArgument(int index) {
             return elements[index];
         }
     }

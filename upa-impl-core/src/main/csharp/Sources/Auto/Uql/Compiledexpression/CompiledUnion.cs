@@ -12,7 +12,7 @@
 
 
 using System.Linq;
-namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledexpression
 {
 
 
@@ -23,23 +23,23 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
      * Time: 12:34 AM
      * To change this template use File | Settings | File Templates.
      */
-    public class CompiledUnion : Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledEntityStatement, Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement {
+    public class CompiledUnion : Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledEntityStatement, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement {
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement> queryStatements = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement>();
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement> queryStatements = new System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement>();
 
-        public virtual void Add(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement s) {
+        public virtual void Add(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement s) {
             queryStatements.Add(s);
             PrepareChildren(s);
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement> GetQueryStatements() {
-            return new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement>(queryStatements);
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement> GetQueryStatements() {
+            return new System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement>(queryStatements);
         }
 
 
-        public override Net.Vpc.Upa.Types.DataTypeTransform GetTypeTransform() {
+        public override Net.TheVpc.Upa.Types.DataTypeTransform GetTypeTransform() {
             if ((queryStatements.Count==0)) {
-                return new Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform(Net.Vpc.Upa.Types.TypesFactory.VOID);
+                return new Net.TheVpc.Upa.Impl.Transform.IdentityDataTypeTransform(Net.TheVpc.Upa.Types.TypesFactory.VOID);
             }
             return queryStatements[0].GetTypeTransform();
         }
@@ -49,17 +49,17 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return queryStatements[0].CountFields();
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField> GetFields() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField> GetFields() {
             return queryStatements[0].GetFields();
         }
 
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField GetField(int i) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField GetField(int i) {
             return queryStatements[0].GetField(i);
         }
 
 
-        public override Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetSubExpressions() {
+        public override Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetSubExpressions() {
             return queryStatements.ToArray();
         }
 
@@ -68,7 +68,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             if ((queryStatements.Count==0)) {
                 return false;
             }
-            foreach (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement queryStatement in queryStatements) {
+            foreach (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement queryStatement in queryStatements) {
                 if (!queryStatement.IsValid()) {
                     return false;
                 }
@@ -80,7 +80,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         public override bool Equals(object o) {
             if (this == o) return true;
             if (o == null || GetType() != o.GetType()) return false;
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledUnion union = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledUnion) o;
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledUnion union = (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledUnion) o;
             if (queryStatements != null ? !queryStatements.Equals(union.queryStatements) : union.queryStatements != null) return false;
             return true;
         }
@@ -91,24 +91,24 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         }
 
 
-        public override Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledUnion o = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledUnion();
+        public override Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledUnion o = new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledUnion();
             o.SetDescription(GetDescription());
             o.GetClientParameters().SetAll(GetClientParameters());
-            foreach (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement queryStatement in queryStatements) {
-                o.Add((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement) queryStatement.Copy());
+            foreach (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement queryStatement in queryStatements) {
+                o.Add((Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement) queryStatement.Copy());
             }
             return o;
         }
 
 
-        public override void SetSubExpression(int index, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
-            queryStatements[index]=(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement) expression;
+        public override void SetSubExpression(int index, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
+            queryStatements[index]=(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement) expression;
         }
 
 
-        protected internal override System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression> FindEntityDefinitions() {
-            return Net.Vpc.Upa.Impl.Util.PlatformUtils.EmptyList<T>();
+        protected internal override System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression> FindEntityDefinitions() {
+            return Net.TheVpc.Upa.Impl.Util.PlatformUtils.EmptyList<T>();
         }
     }
 }

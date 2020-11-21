@@ -11,23 +11,23 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     public interface RemoveTrace {
 
          void AddTrace(string trace);
 
-         void Add(Net.Vpc.Upa.RelationshipType type, Net.Vpc.Upa.Entity entity, long count);
+         void Add(Net.TheVpc.Upa.RelationshipType type, Net.TheVpc.Upa.Entity entity, long count);
 
-         Net.Vpc.Upa.DeletionTraceElement[] GetTrace(Net.Vpc.Upa.RelationshipType type);
+         Net.TheVpc.Upa.DeletionTraceElement[] GetTrace(Net.TheVpc.Upa.RelationshipType type);
 
-         Net.Vpc.Upa.DeletionTraceElement[] GetTrace();
+         Net.TheVpc.Upa.DeletionTraceElement[] GetTrace();
 
         override string ToString();
 
          long GetRemoveCount();
 
-         long GetRemoveCount(Net.Vpc.Upa.RelationshipType type);
+         long GetRemoveCount(Net.TheVpc.Upa.RelationshipType type);
     }
 }

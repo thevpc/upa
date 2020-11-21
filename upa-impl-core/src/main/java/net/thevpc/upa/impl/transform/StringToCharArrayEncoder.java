@@ -1,0 +1,32 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ *
+ * and open the template in the editor.
+ */
+package net.thevpc.upa.impl.transform;
+
+import net.thevpc.upa.types.CharArrayEncoder;
+
+/**
+ *
+ * @author taha.bensalah@gmail.com
+ */
+public class StringToCharArrayEncoder implements CharArrayEncoder {
+
+    public static final StringToCharArrayEncoder INSTANCE = new StringToCharArrayEncoder();
+
+    public char[] encode(Object o) {
+        if (o == null) {
+            return null;
+        }
+        return (((String) o)).toCharArray();
+    }
+
+    public Object decode(char[] bytes) {
+        if (bytes == null) {
+            return null;
+        }
+        return new String(bytes);
+    }
+
+}

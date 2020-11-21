@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -27,11 +27,11 @@ namespace Net.Vpc.Upa
 
         private bool privileged;
 
-        private Net.Vpc.Upa.TransactionType transactionType = Net.Vpc.Upa.TransactionType.REQUIRED;
+        private Net.TheVpc.Upa.TransactionType transactionType = Net.TheVpc.Upa.TransactionType.REQUIRED;
 
-        private Net.Vpc.Upa.PersistenceGroup persistenceGroup;
+        private Net.TheVpc.Upa.PersistenceGroup persistenceGroup;
 
-        private Net.Vpc.Upa.PersistenceUnit persistenceUnit;
+        private Net.TheVpc.Upa.PersistenceUnit persistenceUnit;
 
         public virtual string GetLogin() {
             return login;
@@ -57,35 +57,35 @@ namespace Net.Vpc.Upa
             this.privileged = privileged;
         }
 
-        public virtual Net.Vpc.Upa.TransactionType GetTransactionType() {
+        public virtual Net.TheVpc.Upa.TransactionType GetTransactionType() {
             return transactionType;
         }
 
-        public virtual void SetTransactionType(Net.Vpc.Upa.TransactionType transactionType) {
+        public virtual void SetTransactionType(Net.TheVpc.Upa.TransactionType transactionType) {
             this.transactionType = transactionType;
         }
 
-        public virtual Net.Vpc.Upa.PersistenceGroup GetPersistenceGroup() {
+        public virtual Net.TheVpc.Upa.PersistenceGroup GetPersistenceGroup() {
             return persistenceGroup;
         }
 
-        public virtual void SetPersistenceGroup(Net.Vpc.Upa.PersistenceGroup persistenceGroup) {
+        public virtual void SetPersistenceGroup(Net.TheVpc.Upa.PersistenceGroup persistenceGroup) {
             this.persistenceGroup = persistenceGroup;
         }
 
-        public virtual Net.Vpc.Upa.PersistenceUnit GetPersistenceUnit() {
+        public virtual Net.TheVpc.Upa.PersistenceUnit GetPersistenceUnit() {
             return persistenceUnit;
         }
 
-        public virtual void SetPersistenceUnit(Net.Vpc.Upa.PersistenceUnit persistenceUnit) {
+        public virtual void SetPersistenceUnit(Net.TheVpc.Upa.PersistenceUnit persistenceUnit) {
             this.persistenceUnit = persistenceUnit;
         }
 
-        public virtual Net.Vpc.Upa.InvokeContext Copy() {
+        public virtual Net.TheVpc.Upa.InvokeContext Copy() {
             try {
-                return (Net.Vpc.Upa.InvokeContext) base.MemberwiseClone();
+                return (Net.TheVpc.Upa.InvokeContext) base.MemberwiseClone();
             } catch (System.Exception ex) {
-                throw new Net.Vpc.Upa.Exceptions.UnexpectedException(ex);
+                throw new Net.TheVpc.Upa.Exceptions.UnexpectedException(ex);
             }
         }
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit

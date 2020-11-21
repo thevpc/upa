@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -19,13 +19,13 @@ namespace Net.Vpc.Upa.Impl.Util
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 8/27/12 12:16 AM
      */
-    public class CustomRecordBeanType : Net.Vpc.Upa.Impl.Util.RecordBeanType {
+    public class CustomRecordBeanType : Net.TheVpc.Upa.Impl.Util.RecordBeanType {
 
-        private Net.Vpc.Upa.BeanType customType;
+        private Net.TheVpc.Upa.BeanType customType;
 
-        public CustomRecordBeanType(Net.Vpc.Upa.Entity entity, System.Type customType)  : base(entity){
+        public CustomRecordBeanType(Net.TheVpc.Upa.Entity entity, System.Type customType)  : base(entity){
 
-            this.customType = Net.Vpc.Upa.Impl.Util.PlatformBeanTypeRepository.GetInstance().GetBeanType(customType);
+            this.customType = Net.TheVpc.Upa.Impl.Util.PlatformBeanTypeRepository.GetInstance().GetBeanType(customType);
         }
 
 

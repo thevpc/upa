@@ -11,18 +11,18 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
 
-    public partial class CacheFile : Net.Vpc.Upa.Closeable {
+    public partial class CacheFile : Net.TheVpc.Upa.Closeable {
 
         private int status;
 
-        private static object START_FILE = "net.vpc.lib.pheromone.ariana.io.CacheFile.START";
+        private static object START_FILE = "net.thevpc.lib.pheromone.ariana.io.CacheFile.START";
 
-        private static object END_FILE = "net.vpc.lib.pheromone.ariana.io.CacheFile.END";
+        private static object END_FILE = "net.thevpc.lib.pheromone.ariana.io.CacheFile.END";
 
         private object lastExtractedObject;
 
@@ -52,12 +52,12 @@ namespace Net.Vpc.Upa.Impl.Util
 
 
 
-        public virtual object Read() /* throws Net.Vpc.Upa.Impl.Util.CacheException */  {
+        public virtual object Read() /* throws Net.TheVpc.Upa.Impl.Util.CacheException */  {
             if (objectRead) {
                 HasNext();
             }
             if (END_FILE.Equals(lastExtractedObject)) {
-                throw new Net.Vpc.Upa.Impl.Util.CacheException("End Of Cache File Reached");
+                throw new Net.TheVpc.Upa.Impl.Util.CacheException("End Of Cache File Reached");
             } else {
                 objectRead = true;
                 return lastExtractedObject;

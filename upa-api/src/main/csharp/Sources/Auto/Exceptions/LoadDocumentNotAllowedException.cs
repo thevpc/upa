@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
-    public class LoadDocumentNotAllowedException : Net.Vpc.Upa.Exceptions.EntityException {
+    public class LoadDocumentNotAllowedException : Net.TheVpc.Upa.Exceptions.EntityException {
 
-        public LoadDocumentNotAllowedException(Net.Vpc.Upa.Entity entity)  : base(entity, "loadDocument.NotAllowed"){
+        public LoadDocumentNotAllowedException(Net.TheVpc.Upa.Entity entity)  : base(entity, "loadDocument.NotAllowed"){
 
         }
     }

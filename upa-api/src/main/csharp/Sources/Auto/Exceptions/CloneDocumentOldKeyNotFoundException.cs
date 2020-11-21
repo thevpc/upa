@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
-    public class CloneDocumentOldKeyNotFoundException : Net.Vpc.Upa.Exceptions.EntityException {
+    public class CloneDocumentOldKeyNotFoundException : Net.TheVpc.Upa.Exceptions.EntityException {
 
-        public CloneDocumentOldKeyNotFoundException(Net.Vpc.Upa.Entity entity)  : base(entity, "cloneDocument.OldKeyNotFound"){
+        public CloneDocumentOldKeyNotFoundException(Net.TheVpc.Upa.Entity entity)  : base(entity, "cloneDocument.OldKeyNotFound"){
 
         }
     }

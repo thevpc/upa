@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
-    public class UnupdatableDocumentException : Net.Vpc.Upa.Exceptions.EntityException {
+    public class UnupdatableDocumentException : Net.TheVpc.Upa.Exceptions.EntityException {
 
-        public UnupdatableDocumentException(Net.Vpc.Upa.Entity entity)  : base(entity, "update.Unupdatable"){
+        public UnupdatableDocumentException(Net.TheVpc.Upa.Entity entity)  : base(entity, "update.Unupdatable"){
 
         }
     }

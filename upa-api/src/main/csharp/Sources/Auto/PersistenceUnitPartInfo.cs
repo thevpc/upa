@@ -11,10 +11,10 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
-    public abstract class PersistenceUnitPartInfo : Net.Vpc.Upa.UPAObjectInfo {
+    public abstract class PersistenceUnitPartInfo : Net.TheVpc.Upa.UPAObjectInfo {
 
         public PersistenceUnitPartInfo(string type)  : base(type){
 

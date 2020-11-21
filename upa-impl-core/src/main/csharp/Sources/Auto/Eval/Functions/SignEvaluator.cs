@@ -11,19 +11,19 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Eval.Functions
+namespace Net.TheVpc.Upa.Impl.Eval.Functions
 {
 
 
     /**
      * Created by vpc on 7/3/16.
      */
-    public class SignEvaluator : Net.Vpc.Upa.Function {
+    public class SignEvaluator : Net.TheVpc.Upa.Function {
 
-        public static readonly Net.Vpc.Upa.Function INSTANCE = new Net.Vpc.Upa.Impl.Eval.Functions.SignEvaluator();
+        public static readonly Net.TheVpc.Upa.Function INSTANCE = new Net.TheVpc.Upa.Impl.Eval.Functions.SignEvaluator();
 
 
-        public virtual object Eval(Net.Vpc.Upa.EvalContext evalContext) {
+        public virtual object Eval(Net.TheVpc.Upa.EvalContext evalContext) {
             object obj = evalContext.GetArguments()[0];
             object n = (object) obj;
             return System.Convert.ToDouble(n) > 0 ? 1 : System.Convert.ToDouble(n) < 0 ? -1 : 0;

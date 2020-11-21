@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: net.thevpc.common:thevpc-common-mvn:1.1.1">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/net/thevpc/common/thevpc-common-mvn/1.1.1/thevpc-common-mvn-1.1.1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/net/thevpc/common/thevpc-common-mvn/1.1.1/thevpc-common-mvn-1.1.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/net/thevpc/common/thevpc-common-mvn/1.1.1/thevpc-common-mvn-1.1.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

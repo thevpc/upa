@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -23,8 +23,8 @@ namespace Net.Vpc.Upa
 
          string GetName();
 
-         Net.Vpc.Upa.Types.DataType GetDataType();
+         Net.TheVpc.Upa.Types.DataType GetDataType();
 
-         Net.Vpc.Upa.Function GetFunction();
+         Net.TheVpc.Upa.Function GetFunction();
     }
 }

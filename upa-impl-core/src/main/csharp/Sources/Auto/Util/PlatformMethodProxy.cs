@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
     /**
@@ -19,6 +19,6 @@ namespace Net.Vpc.Upa.Impl.Util
      */
     public interface PlatformMethodProxy<T> {
 
-         object Intercept(Net.Vpc.Upa.Impl.Util.PlatformMethodProxyEvent<T> @event) /* throws System.Exception */ ;
+         object Intercept(Net.TheVpc.Upa.Impl.Util.PlatformMethodProxyEvent<T> @event) /* throws System.Exception */ ;
     }
 }

@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Bulk
+namespace Net.TheVpc.Upa.Bulk
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public abstract class TextCSVParser : Net.Vpc.Upa.Bulk.AbstractDataParser {
+    public abstract class TextCSVParser : Net.TheVpc.Upa.Bulk.AbstractDataParser {
 
         private bool containsHeader;
 
@@ -34,9 +34,9 @@ namespace Net.Vpc.Upa.Bulk
 
         private bool supportsBackSlash = true;
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Bulk.TextCSVColumn> columns = new System.Collections.Generic.List<Net.Vpc.Upa.Bulk.TextCSVColumn>();
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Bulk.TextCSVColumn> columns = new System.Collections.Generic.List<Net.TheVpc.Upa.Bulk.TextCSVColumn>();
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Bulk.TextCSVColumn> GetColumns() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Bulk.TextCSVColumn> GetColumns() {
             return columns;
         }
 

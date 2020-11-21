@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Result
+namespace Net.TheVpc.Upa.Impl.Persistence.Result
 {
 
 
@@ -20,16 +20,16 @@ namespace Net.Vpc.Upa.Impl.Persistence.Result
      */
     public class LoaderContext {
 
-        protected internal Net.Vpc.Upa.Impl.Util.CacheMap<Net.Vpc.Upa.NamedId , object> referencesCache;
+        protected internal Net.TheVpc.Upa.Impl.Util.CacheMap<Net.TheVpc.Upa.NamedId , object> referencesCache;
 
         protected internal System.Collections.Generic.IDictionary<string , object> hints;
 
-        public LoaderContext(Net.Vpc.Upa.Impl.Util.CacheMap<Net.Vpc.Upa.NamedId , object> referencesCache, System.Collections.Generic.IDictionary<string , object> hints) {
+        public LoaderContext(Net.TheVpc.Upa.Impl.Util.CacheMap<Net.TheVpc.Upa.NamedId , object> referencesCache, System.Collections.Generic.IDictionary<string , object> hints) {
             this.referencesCache = referencesCache;
             this.hints = hints;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Util.CacheMap<Net.Vpc.Upa.NamedId , object> GetReferencesCache() {
+        public virtual Net.TheVpc.Upa.Impl.Util.CacheMap<Net.TheVpc.Upa.NamedId , object> GetReferencesCache() {
             return referencesCache;
         }
 

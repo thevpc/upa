@@ -11,15 +11,15 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public sealed class Sequence : Net.Vpc.Upa.Formula {
+    public sealed class Sequence : Net.TheVpc.Upa.Formula {
 
-        private Net.Vpc.Upa.SequenceStrategy strategy = Net.Vpc.Upa.SequenceStrategy.AUTO;
+        private Net.TheVpc.Upa.SequenceStrategy strategy = Net.TheVpc.Upa.SequenceStrategy.AUTO;
 
         private int initialValue = 1;
 
@@ -31,19 +31,19 @@ namespace Net.Vpc.Upa
 
         private string name;
 
-        public Sequence()  : this(Net.Vpc.Upa.SequenceStrategy.AUTO){
+        public Sequence()  : this(Net.TheVpc.Upa.SequenceStrategy.AUTO){
 
         }
 
-        public Sequence(Net.Vpc.Upa.SequenceStrategy strategy)  : this(strategy, 1, 50, null, null, null){
+        public Sequence(Net.TheVpc.Upa.SequenceStrategy strategy)  : this(strategy, 1, 50, null, null, null){
 
         }
 
-        public Sequence(Net.Vpc.Upa.SequenceStrategy strategy, int initialValue, int allocationSize)  : this(strategy, initialValue, allocationSize, null, null, null){
+        public Sequence(Net.TheVpc.Upa.SequenceStrategy strategy, int initialValue, int allocationSize)  : this(strategy, initialValue, allocationSize, null, null, null){
 
         }
 
-        public Sequence(Net.Vpc.Upa.SequenceStrategy strategy, int seed, int allocationSize, string name, string group, string format) {
+        public Sequence(Net.TheVpc.Upa.SequenceStrategy strategy, int seed, int allocationSize, string name, string group, string format) {
             this.strategy = strategy;
             this.initialValue = seed;
             this.allocationSize = allocationSize;
@@ -52,7 +52,7 @@ namespace Net.Vpc.Upa
             this.name = name;
         }
 
-        public Net.Vpc.Upa.SequenceStrategy GetStrategy() {
+        public Net.TheVpc.Upa.SequenceStrategy GetStrategy() {
             return strategy;
         }
 

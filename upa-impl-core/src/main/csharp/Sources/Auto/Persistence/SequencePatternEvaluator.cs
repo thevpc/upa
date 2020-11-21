@@ -11,22 +11,22 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
     /**
      * Created by vpc on 8/7/15.
      */
-    public class SequencePatternEvaluator : Net.Vpc.Upa.Impl.Util.Converter<string , string> {
+    public class SequencePatternEvaluator : Net.TheVpc.Upa.Impl.Util.Converter<string , string> {
 
-        private Net.Vpc.Upa.Field field;
+        private Net.TheVpc.Upa.Field field;
 
         private object replacement;
 
-        private Net.Vpc.Upa.Record record;
+        private Net.TheVpc.Upa.Record record;
 
-        public SequencePatternEvaluator(Net.Vpc.Upa.Field field, object replacement, Net.Vpc.Upa.Record record) {
+        public SequencePatternEvaluator(Net.TheVpc.Upa.Field field, object replacement, Net.TheVpc.Upa.Record record) {
             this.field = field;
             this.replacement = replacement;
             this.record = record;
@@ -40,8 +40,8 @@ namespace Net.Vpc.Upa.Impl.Persistence
             if (record != null && record.IsSet(v)) {
                 return System.Convert.ToString(record.GetObject<T>(v));
             }
-            Net.Vpc.Upa.Expressions.Select s = new Net.Vpc.Upa.Expressions.Select();
-            s.Field(new Net.Vpc.Upa.Expressions.UserExpression(v), "customValue");
+            Net.TheVpc.Upa.Expressions.Select s = new Net.TheVpc.Upa.Expressions.Select();
+            s.Field(new Net.TheVpc.Upa.Expressions.UserExpression(v), "customValue");
             return System.Convert.ToString(field.GetEntity().GetPersistenceUnit().CreateQuery(s).GetSingleValue());
         }
     }

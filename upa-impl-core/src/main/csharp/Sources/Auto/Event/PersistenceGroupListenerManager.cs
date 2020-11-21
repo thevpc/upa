@@ -12,7 +12,7 @@
 
 
 using System.Linq;
-namespace Net.Vpc.Upa.Impl.Event
+namespace Net.TheVpc.Upa.Impl.Event
 {
 
 
@@ -22,99 +22,99 @@ namespace Net.Vpc.Upa.Impl.Event
      */
     public class PersistenceGroupListenerManager {
 
-        private static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.Vpc.Upa.Impl.Event.PersistenceGroupListenerManager)).FullName);
+        private static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.TheVpc.Upa.Impl.Event.PersistenceGroupListenerManager)).FullName);
 
-        private Net.Vpc.Upa.PersistenceGroup group;
+        private Net.TheVpc.Upa.PersistenceGroup group;
 
-        private Net.Vpc.Upa.Impl.Util.CallbackManager callbackManager = new Net.Vpc.Upa.Impl.Util.CallbackManager();
+        private Net.TheVpc.Upa.Impl.Util.CallbackManager callbackManager = new Net.TheVpc.Upa.Impl.Util.CallbackManager();
 
         private static bool DEFAULT_SYSTEM = false;
 
-        private readonly System.Collections.Generic.IList<Net.Vpc.Upa.Callbacks.PersistenceUnitDefinitionListener> persistenceUnitDefinitionListeners = new System.Collections.Generic.List<Net.Vpc.Upa.Callbacks.PersistenceUnitDefinitionListener>();
+        private readonly System.Collections.Generic.IList<Net.TheVpc.Upa.Callbacks.PersistenceUnitDefinitionListener> persistenceUnitDefinitionListeners = new System.Collections.Generic.List<Net.TheVpc.Upa.Callbacks.PersistenceUnitDefinitionListener>();
 
-        public PersistenceGroupListenerManager(Net.Vpc.Upa.PersistenceGroup group) {
+        public PersistenceGroupListenerManager(Net.TheVpc.Upa.PersistenceGroup group) {
             this.group = group;
         }
 
-        public virtual void FireOnCreatePersistenceUnit(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event) {
-            Net.Vpc.Upa.EventPhase phase = @event.GetPhase();
-            Net.Vpc.Upa.Callbacks.PersistenceUnitDefinitionListener[] interceptorList = GetPersistenceUnitDefinitionListeners();
-            if (phase == Net.Vpc.Upa.EventPhase.BEFORE) {
-                foreach (Net.Vpc.Upa.Callbacks.PersistenceUnitDefinitionListener listener in interceptorList) {
+        public virtual void FireOnCreatePersistenceUnit(Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent @event) {
+            Net.TheVpc.Upa.EventPhase phase = @event.GetPhase();
+            Net.TheVpc.Upa.Callbacks.PersistenceUnitDefinitionListener[] interceptorList = GetPersistenceUnitDefinitionListeners();
+            if (phase == Net.TheVpc.Upa.EventPhase.BEFORE) {
+                foreach (Net.TheVpc.Upa.Callbacks.PersistenceUnitDefinitionListener listener in interceptorList) {
                     listener.OnPreCreatePersistenceUnit(@event);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceGroup().GetName(), DEFAULT_SYSTEM)) {
+                foreach (Net.TheVpc.Upa.Callback callback in GetCallbackPreInvokers(Net.TheVpc.Upa.CallbackType.ON_CREATE, Net.TheVpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceGroup().GetName(), DEFAULT_SYSTEM)) {
                     callback.Invoke(@event);
                 }
             } else {
-                foreach (Net.Vpc.Upa.Callbacks.PersistenceUnitDefinitionListener listener in interceptorList) {
+                foreach (Net.TheVpc.Upa.Callbacks.PersistenceUnitDefinitionListener listener in interceptorList) {
                     listener.OnCreatePersistenceUnit(@event);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPostInvokers(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceGroup().GetName(), DEFAULT_SYSTEM)) {
+                foreach (Net.TheVpc.Upa.Callback callback in GetCallbackPostInvokers(Net.TheVpc.Upa.CallbackType.ON_CREATE, Net.TheVpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceGroup().GetName(), DEFAULT_SYSTEM)) {
                     callback.Invoke(@event);
                 }
             }
         }
 
-        public virtual void FireOnDropPersistenceUnit(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event) {
-            Net.Vpc.Upa.EventPhase phase = @event.GetPhase();
-            Net.Vpc.Upa.Callbacks.PersistenceUnitDefinitionListener[] interceptorList = GetPersistenceUnitDefinitionListeners();
-            if (phase == Net.Vpc.Upa.EventPhase.BEFORE) {
-                foreach (Net.Vpc.Upa.Callbacks.PersistenceUnitDefinitionListener listener in interceptorList) {
+        public virtual void FireOnDropPersistenceUnit(Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent @event) {
+            Net.TheVpc.Upa.EventPhase phase = @event.GetPhase();
+            Net.TheVpc.Upa.Callbacks.PersistenceUnitDefinitionListener[] interceptorList = GetPersistenceUnitDefinitionListeners();
+            if (phase == Net.TheVpc.Upa.EventPhase.BEFORE) {
+                foreach (Net.TheVpc.Upa.Callbacks.PersistenceUnitDefinitionListener listener in interceptorList) {
                     listener.OnPreDropPersistenceUnit(@event);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.PERSISTENCE_GROUP, @event.GetPersistenceGroup().GetName(), DEFAULT_SYSTEM)) {
+                foreach (Net.TheVpc.Upa.Callback callback in GetCallbackPreInvokers(Net.TheVpc.Upa.CallbackType.ON_DROP, Net.TheVpc.Upa.ObjectType.PERSISTENCE_GROUP, @event.GetPersistenceGroup().GetName(), DEFAULT_SYSTEM)) {
                     callback.Invoke(@event);
                 }
             } else {
-                foreach (Net.Vpc.Upa.Callbacks.PersistenceUnitDefinitionListener listener in interceptorList) {
+                foreach (Net.TheVpc.Upa.Callbacks.PersistenceUnitDefinitionListener listener in interceptorList) {
                     listener.OnDropPersistenceUnit(@event);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPostInvokers(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.PERSISTENCE_GROUP, @event.GetPersistenceGroup().GetName(), DEFAULT_SYSTEM)) {
+                foreach (Net.TheVpc.Upa.Callback callback in GetCallbackPostInvokers(Net.TheVpc.Upa.CallbackType.ON_DROP, Net.TheVpc.Upa.ObjectType.PERSISTENCE_GROUP, @event.GetPersistenceGroup().GetName(), DEFAULT_SYSTEM)) {
                     callback.Invoke(@event);
                 }
             }
         }
 
-        public virtual void AddPersistenceUnitDefinitionListener(Net.Vpc.Upa.Callbacks.PersistenceUnitDefinitionListener persistenceUnitDefinitionListener) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void AddPersistenceUnitDefinitionListener(Net.TheVpc.Upa.Callbacks.PersistenceUnitDefinitionListener persistenceUnitDefinitionListener) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             persistenceUnitDefinitionListeners.Add(persistenceUnitDefinitionListener);
         }
 
-        public virtual void RemovePersistenceUnitDefinitionListener(Net.Vpc.Upa.Callbacks.PersistenceUnitDefinitionListener persistenceUnitDefinitionListener) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void RemovePersistenceUnitDefinitionListener(Net.TheVpc.Upa.Callbacks.PersistenceUnitDefinitionListener persistenceUnitDefinitionListener) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             persistenceUnitDefinitionListeners.Remove(persistenceUnitDefinitionListener);
         }
 
-        public virtual Net.Vpc.Upa.Callbacks.PersistenceUnitDefinitionListener[] GetPersistenceUnitDefinitionListeners() {
+        public virtual Net.TheVpc.Upa.Callbacks.PersistenceUnitDefinitionListener[] GetPersistenceUnitDefinitionListeners() {
             return persistenceUnitDefinitionListeners.ToArray();
         }
 
-        public virtual Net.Vpc.Upa.Impl.Util.CallbackManager GetCallbackManager() {
+        public virtual Net.TheVpc.Upa.Impl.Util.CallbackManager GetCallbackManager() {
             return callbackManager;
         }
 
-        public virtual void AddCallback(Net.Vpc.Upa.Callback callback) {
+        public virtual void AddCallback(Net.TheVpc.Upa.Callback callback) {
             callbackManager.AddCallback(callback);
         }
 
-        public virtual void RemoveCallback(Net.Vpc.Upa.Callback callback) {
+        public virtual void RemoveCallback(Net.TheVpc.Upa.Callback callback) {
             callbackManager.RemoveCallback(callback);
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Callback> GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string nameFilter, bool system) {
-            return GetCallbackEffectiveInvokers(callbackType, objectType, nameFilter, system, Net.Vpc.Upa.EventPhase.BEFORE);
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Callback> GetCallbackPreInvokers(Net.TheVpc.Upa.CallbackType callbackType, Net.TheVpc.Upa.ObjectType objectType, string nameFilter, bool system) {
+            return GetCallbackEffectiveInvokers(callbackType, objectType, nameFilter, system, Net.TheVpc.Upa.EventPhase.BEFORE);
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Callback> GetCallbackPostInvokers(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string nameFilter, bool system) {
-            return GetCallbackEffectiveInvokers(callbackType, objectType, nameFilter, system, Net.Vpc.Upa.EventPhase.AFTER);
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Callback> GetCallbackPostInvokers(Net.TheVpc.Upa.CallbackType callbackType, Net.TheVpc.Upa.ObjectType objectType, string nameFilter, bool system) {
+            return GetCallbackEffectiveInvokers(callbackType, objectType, nameFilter, system, Net.TheVpc.Upa.EventPhase.AFTER);
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Callback> GetCallbackEffectiveInvokers(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string nameFilter, bool system, Net.Vpc.Upa.EventPhase phase) {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Callback> allCallbacks = callbackManager.GetCallbacks(callbackType, objectType, nameFilter, system, false, phase);
-            Net.Vpc.Upa.Impl.FwkConvertUtils.ListAddRange(allCallbacks, new System.Collections.Generic.List<Net.Vpc.Upa.Callback>(group.GetContext().GetCallbacks(callbackType, objectType, nameFilter, system, false, phase)));
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Callback> GetCallbackEffectiveInvokers(Net.TheVpc.Upa.CallbackType callbackType, Net.TheVpc.Upa.ObjectType objectType, string nameFilter, bool system, Net.TheVpc.Upa.EventPhase phase) {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Callback> allCallbacks = callbackManager.GetCallbacks(callbackType, objectType, nameFilter, system, false, phase);
+            Net.TheVpc.Upa.Impl.FwkConvertUtils.ListAddRange(allCallbacks, new System.Collections.Generic.List<Net.TheVpc.Upa.Callback>(group.GetContext().GetCallbacks(callbackType, objectType, nameFilter, system, false, phase)));
             return allCallbacks;
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Callback> GetCallbacks(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string nameFilter, bool system, bool preparedOnly, Net.Vpc.Upa.EventPhase phase) {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Callback> GetCallbacks(Net.TheVpc.Upa.CallbackType callbackType, Net.TheVpc.Upa.ObjectType objectType, string nameFilter, bool system, bool preparedOnly, Net.TheVpc.Upa.EventPhase phase) {
             return callbackManager.GetCallbacks(callbackType, objectType, nameFilter, system, preparedOnly, phase);
         }
     }

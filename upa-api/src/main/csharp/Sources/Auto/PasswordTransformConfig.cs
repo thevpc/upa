@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa
      *
      * @author taha.bensalah@gmail.com
      */
-    public class PasswordTransformConfig : Net.Vpc.Upa.Types.DataTypeTransformConfig {
+    public class PasswordTransformConfig : Net.TheVpc.Upa.Types.DataTypeTransformConfig {
 
         public static readonly object NO_VALUE = new object();
 
@@ -47,11 +47,11 @@ namespace Net.Vpc.Upa
             this.SetObjectCipherStrategy(cipherStrategy);
         }
 
-        public virtual void SetCipherStrategy(Net.Vpc.Upa.PasswordStrategy cipherStrategy) {
+        public virtual void SetCipherStrategy(Net.TheVpc.Upa.PasswordStrategy cipherStrategy) {
             this.SetObjectCipherStrategy(cipherStrategy);
         }
 
-        public virtual void SetCipherStrategy(Net.Vpc.Upa.PasswordStrategyType cipherStrategy) {
+        public virtual void SetCipherStrategy(Net.TheVpc.Upa.PasswordStrategyType cipherStrategy) {
             this.SetObjectCipherStrategy(cipherStrategy);
         }
 
@@ -59,8 +59,8 @@ namespace Net.Vpc.Upa
             if (cipherStrategy == null) {
                 throw new System.NullReferenceException();
             }
-            if (!(cipherStrategy is string || cipherStrategy is System.Type || cipherStrategy is Net.Vpc.Upa.PasswordStrategy || (cipherStrategy is Net.Vpc.Upa.PasswordStrategyType && !cipherStrategy.Equals(Net.Vpc.Upa.PasswordStrategyType.CUSTOM)))) {
-                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("cipherStrategy should be of type String (as CipherStrategy class name), Class (CipherStrategy implementing class), CipherStrategy (instance), or CipherStrategyType (any value but custom)");
+            if (!(cipherStrategy is string || cipherStrategy is System.Type || cipherStrategy is Net.TheVpc.Upa.PasswordStrategy || (cipherStrategy is Net.TheVpc.Upa.PasswordStrategyType && !cipherStrategy.Equals(Net.TheVpc.Upa.PasswordStrategyType.CUSTOM)))) {
+                throw new Net.TheVpc.Upa.Exceptions.UPAIllegalArgumentException("cipherStrategy should be of type String (as CipherStrategy class name), Class (CipherStrategy implementing class), CipherStrategy (instance), or CipherStrategyType (any value but custom)");
             }
             this.cipherStrategy = cipherStrategy;
         }

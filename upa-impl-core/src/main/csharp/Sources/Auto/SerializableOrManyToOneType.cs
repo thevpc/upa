@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
@@ -21,7 +21,7 @@ namespace Net.Vpc.Upa.Impl
      *
      * @author taha.bensalah@gmail.com
      */
-    public class SerializableOrManyToOneType : Net.Vpc.Upa.Types.DefaultDataType {
+    public class SerializableOrManyToOneType : Net.TheVpc.Upa.Types.DefaultDataType {
 
         public SerializableOrManyToOneType(string name, System.Type platformType, bool nullable)  : base(name, platformType, nullable){
 

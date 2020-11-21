@@ -11,10 +11,10 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
-    public class InvalidStructureModificationContextException : Net.Vpc.Upa.Exceptions.PersistenceUnitLockingException {
+    public class InvalidStructureModificationContextException : Net.TheVpc.Upa.Exceptions.PersistenceUnitLockingException {
 
         public InvalidStructureModificationContextException()  : this("InvalidStructureModificationContextException"){
 

@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
     /**
      * Created by vpc on 7/20/15.
      */
-    public class DefaultEntityDescriptor : Net.Vpc.Upa.EntityDescriptor {
+    public class DefaultEntityDescriptor : Net.TheVpc.Upa.EntityDescriptor {
 
         private string name;
 
@@ -28,9 +28,9 @@ namespace Net.Vpc.Upa
 
         private System.Type entityType;
 
-        private Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.EntityModifier> modifiers;
+        private Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.EntityModifier> modifiers;
 
-        private Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.EntityModifier> excludeModifiers;
+        private Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.EntityModifier> excludeModifiers;
 
         private string packagePath;
 
@@ -40,15 +40,15 @@ namespace Net.Vpc.Upa
 
         private int position;
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Extensions.EntityExtensionDefinition> entityExtensions;
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Extensions.EntityExtensionDefinition> entityExtensions;
 
         private object source;
 
-        public System.Collections.Generic.IList<Net.Vpc.Upa.FieldDescriptor> fieldDescriptors;
+        public System.Collections.Generic.IList<Net.TheVpc.Upa.FieldDescriptor> fieldDescriptors;
 
-        public System.Collections.Generic.IList<Net.Vpc.Upa.IndexDescriptor> indexDescriptors;
+        public System.Collections.Generic.IList<Net.TheVpc.Upa.IndexDescriptor> indexDescriptors;
 
-        public System.Collections.Generic.IList<Net.Vpc.Upa.RelationshipDescriptor> relationshipDescriptors;
+        public System.Collections.Generic.IList<Net.TheVpc.Upa.RelationshipDescriptor> relationshipDescriptors;
 
         public System.Collections.Generic.IDictionary<string , object> properties;
 
@@ -56,7 +56,7 @@ namespace Net.Vpc.Upa
             return name;
         }
 
-        public virtual Net.Vpc.Upa.DefaultEntityDescriptor SetName(string name) {
+        public virtual Net.TheVpc.Upa.DefaultEntityDescriptor SetName(string name) {
             this.name = name;
             return this;
         }
@@ -65,7 +65,7 @@ namespace Net.Vpc.Upa
             return shortName;
         }
 
-        public virtual Net.Vpc.Upa.DefaultEntityDescriptor SetShortName(string shortName) {
+        public virtual Net.TheVpc.Upa.DefaultEntityDescriptor SetShortName(string shortName) {
             this.shortName = shortName;
             return this;
         }
@@ -74,7 +74,7 @@ namespace Net.Vpc.Upa
             return idType;
         }
 
-        public virtual Net.Vpc.Upa.DefaultEntityDescriptor SetIdType(System.Type idType) {
+        public virtual Net.TheVpc.Upa.DefaultEntityDescriptor SetIdType(System.Type idType) {
             this.idType = idType;
             return this;
         }
@@ -83,25 +83,25 @@ namespace Net.Vpc.Upa
             return entityType;
         }
 
-        public virtual Net.Vpc.Upa.DefaultEntityDescriptor SetEntityType(System.Type entityType) {
+        public virtual Net.TheVpc.Upa.DefaultEntityDescriptor SetEntityType(System.Type entityType) {
             this.entityType = entityType;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.EntityModifier> GetModifiers() {
+        public virtual Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.EntityModifier> GetModifiers() {
             return modifiers;
         }
 
-        public virtual Net.Vpc.Upa.DefaultEntityDescriptor SetModifiers(Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.EntityModifier> modifiers) {
+        public virtual Net.TheVpc.Upa.DefaultEntityDescriptor SetModifiers(Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.EntityModifier> modifiers) {
             this.modifiers = modifiers;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.EntityModifier> GetExcludeModifiers() {
+        public virtual Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.EntityModifier> GetExcludeModifiers() {
             return excludeModifiers;
         }
 
-        public virtual Net.Vpc.Upa.DefaultEntityDescriptor SetExcludeModifiers(Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.EntityModifier> excludeModifiers) {
+        public virtual Net.TheVpc.Upa.DefaultEntityDescriptor SetExcludeModifiers(Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.EntityModifier> excludeModifiers) {
             this.excludeModifiers = excludeModifiers;
             return this;
         }
@@ -110,7 +110,7 @@ namespace Net.Vpc.Upa
             return packagePath;
         }
 
-        public virtual Net.Vpc.Upa.DefaultEntityDescriptor SetPackagePath(string packagePath) {
+        public virtual Net.TheVpc.Upa.DefaultEntityDescriptor SetPackagePath(string packagePath) {
             this.packagePath = packagePath;
             return this;
         }
@@ -119,16 +119,16 @@ namespace Net.Vpc.Upa
             return position;
         }
 
-        public virtual Net.Vpc.Upa.DefaultEntityDescriptor SetPosition(int position) {
+        public virtual Net.TheVpc.Upa.DefaultEntityDescriptor SetPosition(int position) {
             this.position = position;
             return this;
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Extensions.EntityExtensionDefinition> GetEntityExtensions() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Extensions.EntityExtensionDefinition> GetEntityExtensions() {
             return entityExtensions;
         }
 
-        public virtual Net.Vpc.Upa.DefaultEntityDescriptor SetEntityExtensions(System.Collections.Generic.IList<Net.Vpc.Upa.Extensions.EntityExtensionDefinition> entityExtensions) {
+        public virtual Net.TheVpc.Upa.DefaultEntityDescriptor SetEntityExtensions(System.Collections.Generic.IList<Net.TheVpc.Upa.Extensions.EntityExtensionDefinition> entityExtensions) {
             this.entityExtensions = entityExtensions;
             return this;
         }
@@ -137,34 +137,34 @@ namespace Net.Vpc.Upa
             return source;
         }
 
-        public virtual Net.Vpc.Upa.DefaultEntityDescriptor SetSource(object source) {
+        public virtual Net.TheVpc.Upa.DefaultEntityDescriptor SetSource(object source) {
             this.source = source;
             return this;
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.FieldDescriptor> GetFieldDescriptors() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.FieldDescriptor> GetFieldDescriptors() {
             return fieldDescriptors;
         }
 
-        public virtual Net.Vpc.Upa.DefaultEntityDescriptor SetFieldDescriptors(System.Collections.Generic.IList<Net.Vpc.Upa.FieldDescriptor> fieldDescriptors) {
+        public virtual Net.TheVpc.Upa.DefaultEntityDescriptor SetFieldDescriptors(System.Collections.Generic.IList<Net.TheVpc.Upa.FieldDescriptor> fieldDescriptors) {
             this.fieldDescriptors = fieldDescriptors;
             return this;
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.IndexDescriptor> GetIndexDescriptors() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.IndexDescriptor> GetIndexDescriptors() {
             return indexDescriptors;
         }
 
-        public virtual Net.Vpc.Upa.DefaultEntityDescriptor SetIndexDescriptors(System.Collections.Generic.IList<Net.Vpc.Upa.IndexDescriptor> indexDescriptors) {
+        public virtual Net.TheVpc.Upa.DefaultEntityDescriptor SetIndexDescriptors(System.Collections.Generic.IList<Net.TheVpc.Upa.IndexDescriptor> indexDescriptors) {
             this.indexDescriptors = indexDescriptors;
             return this;
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.RelationshipDescriptor> GetRelationshipDescriptors() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.RelationshipDescriptor> GetRelationshipDescriptors() {
             return relationshipDescriptors;
         }
 
-        public virtual Net.Vpc.Upa.DefaultEntityDescriptor SetRelationshipDescriptors(System.Collections.Generic.IList<Net.Vpc.Upa.RelationshipDescriptor> relationshipDescriptors) {
+        public virtual Net.TheVpc.Upa.DefaultEntityDescriptor SetRelationshipDescriptors(System.Collections.Generic.IList<Net.TheVpc.Upa.RelationshipDescriptor> relationshipDescriptors) {
             this.relationshipDescriptors = relationshipDescriptors;
             return this;
         }
@@ -174,7 +174,7 @@ namespace Net.Vpc.Upa
             return listOrder;
         }
 
-        public virtual Net.Vpc.Upa.DefaultEntityDescriptor SetListOrder(string listOrder) {
+        public virtual Net.TheVpc.Upa.DefaultEntityDescriptor SetListOrder(string listOrder) {
             this.listOrder = listOrder;
             return this;
         }
@@ -183,7 +183,7 @@ namespace Net.Vpc.Upa
             return archivingOrder;
         }
 
-        public virtual Net.Vpc.Upa.DefaultEntityDescriptor SetArchivingOrder(string archivingOrder) {
+        public virtual Net.TheVpc.Upa.DefaultEntityDescriptor SetArchivingOrder(string archivingOrder) {
             this.archivingOrder = archivingOrder;
             return this;
         }
@@ -192,7 +192,7 @@ namespace Net.Vpc.Upa
             return properties;
         }
 
-        public virtual Net.Vpc.Upa.DefaultEntityDescriptor SetProperties(System.Collections.Generic.IDictionary<string , object> properties) {
+        public virtual Net.TheVpc.Upa.DefaultEntityDescriptor SetProperties(System.Collections.Generic.IDictionary<string , object> properties) {
             this.properties = properties;
             return this;
         }

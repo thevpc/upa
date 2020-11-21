@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Callbacks
+namespace Net.TheVpc.Upa.Callbacks
 {
 
 
@@ -19,15 +19,15 @@ namespace Net.Vpc.Upa.Callbacks
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 11/27/12 9:52 PM
      */
-    public class NamedFormulaEvent : Net.Vpc.Upa.Callbacks.UPAEvent {
+    public class NamedFormulaEvent : Net.TheVpc.Upa.Callbacks.UPAEvent {
 
-        private Net.Vpc.Upa.NamedFormulaDefinition namedFormulaDefinition;
+        private Net.TheVpc.Upa.NamedFormulaDefinition namedFormulaDefinition;
 
-        public NamedFormulaEvent(Net.Vpc.Upa.NamedFormulaDefinition namedFormulaDefinition) {
+        public NamedFormulaEvent(Net.TheVpc.Upa.NamedFormulaDefinition namedFormulaDefinition) {
             this.namedFormulaDefinition = namedFormulaDefinition;
         }
 
-        public virtual Net.Vpc.Upa.NamedFormulaDefinition GetNamedFormulaDefinition() {
+        public virtual Net.TheVpc.Upa.NamedFormulaDefinition GetNamedFormulaDefinition() {
             return namedFormulaDefinition;
         }
     }

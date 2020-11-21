@@ -11,12 +11,12 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
 
     public interface TypeValueValidator {
 
-         void ValidateValue(object @value, string name, string description, Net.Vpc.Upa.Types.DataType type) /* throws Net.Vpc.Upa.Types.ConstraintsException */ ;
+         void ValidateValue(object @value, string name, string description, Net.TheVpc.Upa.Types.DataType type) /* throws Net.TheVpc.Upa.Types.ConstraintsException */ ;
     }
 }

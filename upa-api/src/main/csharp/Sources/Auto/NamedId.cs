@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     /**
@@ -62,8 +62,8 @@ namespace Net.Vpc.Upa
 
         public override bool Equals(object o) {
             if (this == o) return true;
-            if (!(o is Net.Vpc.Upa.NamedId)) return false;
-            Net.Vpc.Upa.NamedId namedId = (Net.Vpc.Upa.NamedId) o;
+            if (!(o is Net.TheVpc.Upa.NamedId)) return false;
+            Net.TheVpc.Upa.NamedId namedId = (Net.TheVpc.Upa.NamedId) o;
             if (id != null ? !id.Equals(namedId.id) : namedId.id != null) return false;
             return !(name != null ? !name.Equals(namedId.name) : namedId.name != null);
         }

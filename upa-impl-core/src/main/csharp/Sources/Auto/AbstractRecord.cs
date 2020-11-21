@@ -12,7 +12,7 @@
 
 
 using System.Linq;
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
@@ -21,7 +21,7 @@ namespace Net.Vpc.Upa.Impl
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 8/25/12 1:31 AM
      */
-    public abstract class AbstractRecord : Net.Vpc.Upa.Record {
+    public abstract class AbstractRecord : Net.TheVpc.Upa.Record {
 
         protected internal System.Collections.Generic.HashSet<string> updated;
 
@@ -63,7 +63,7 @@ namespace Net.Vpc.Upa.Impl
                 System.Collections.Generic.HashSet<string> accepted = new System.Collections.Generic.HashSet<string>(new System.Collections.Generic.List<string>(keys));
                 foreach (string s in accepted) {
                     if (other.ContainsKey(s)) {
-                        SetObject(s, Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(other,s));
+                        SetObject(s, Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(other,s));
                     }
                 }
             }
@@ -256,7 +256,7 @@ namespace Net.Vpc.Upa.Impl
 
         public virtual System.Numerics.BigInteger? GetBigInteger() {
             object n = GetNumber();
-            return (n is System.Numerics.BigInteger?) ? (System.Numerics.BigInteger?) n : Net.Vpc.Upa.Impl.FwkConvertUtils.CreateBigInteger(n.ToString());
+            return (n is System.Numerics.BigInteger?) ? (System.Numerics.BigInteger?) n : Net.TheVpc.Upa.Impl.FwkConvertUtils.CreateBigInteger(n.ToString());
         }
 
         /**
@@ -360,7 +360,7 @@ namespace Net.Vpc.Upa.Impl
              * {@inheritDoc}
              */
 
-        public virtual Net.Vpc.Upa.Types.Temporal GetDate(string key) {
+        public virtual Net.TheVpc.Upa.Types.Temporal GetDate(string key) {
             return GetObject<T>(key);
         }
 
@@ -368,15 +368,15 @@ namespace Net.Vpc.Upa.Impl
              * {@inheritDoc}
              */
 
-        public virtual Net.Vpc.Upa.Types.Temporal GetDate(string key, Net.Vpc.Upa.Types.Temporal defaultValue) {
-            return GetObject<Net.Vpc.Upa.Types.Temporal>(key, defaultValue);
+        public virtual Net.TheVpc.Upa.Types.Temporal GetDate(string key, Net.TheVpc.Upa.Types.Temporal defaultValue) {
+            return GetObject<Net.TheVpc.Upa.Types.Temporal>(key, defaultValue);
         }
 
         /**
              * {@inheritDoc}
              */
 
-        public virtual void SetDate(string key, Net.Vpc.Upa.Types.Temporal @value) {
+        public virtual void SetDate(string key, Net.TheVpc.Upa.Types.Temporal @value) {
             SetObject(key, @value);
         }
 
@@ -384,12 +384,12 @@ namespace Net.Vpc.Upa.Impl
              * {@inheritDoc}
              */
 
-        public virtual Net.Vpc.Upa.Types.Temporal GetDate() {
+        public virtual Net.TheVpc.Upa.Types.Temporal GetDate() {
             return GetSingleResult<T>();
         }
 
 
-        public virtual void SetAll(Net.Vpc.Upa.Record other) {
+        public virtual void SetAll(Net.TheVpc.Upa.Record other) {
             if (other != null) {
                 SetAll(other.ToMap());
             }
@@ -408,7 +408,7 @@ namespace Net.Vpc.Upa.Impl
              * {@inheritDoc}
              */
 
-        public virtual void SetAll(Net.Vpc.Upa.Record other, params string [] keys) {
+        public virtual void SetAll(Net.TheVpc.Upa.Record other, params string [] keys) {
             if (other != null) {
                 SetAll(other.ToMap(), keys);
             }
@@ -421,7 +421,7 @@ namespace Net.Vpc.Upa.Impl
         public virtual bool RetainAll(System.Collections.Generic.ISet<string> keys) {
             bool modified = false;
             System.Collections.Generic.HashSet<string> k = new System.Collections.Generic.HashSet<string>(KeySet());
-            Net.Vpc.Upa.Impl.FwkConvertUtils.SetRemoveRange(k, keys);
+            Net.TheVpc.Upa.Impl.FwkConvertUtils.SetRemoveRange(k, keys);
             foreach (string s in k) {
                 modified = true;
                 Remove(s);
@@ -444,10 +444,10 @@ namespace Net.Vpc.Upa.Impl
             if (o == null) {
                 return false;
             }
-            if (!(o is Net.Vpc.Upa.Record)) {
+            if (!(o is Net.TheVpc.Upa.Record)) {
                 return false;
             }
-            return ToMap().Equals(((Net.Vpc.Upa.Record) o).ToMap());
+            return ToMap().Equals(((Net.TheVpc.Upa.Record) o).ToMap());
         }
 
         /**
@@ -467,25 +467,25 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
-        public virtual Net.Vpc.Upa.Record Copy() {
-            Net.Vpc.Upa.Impl.DefaultRecord r = new Net.Vpc.Upa.Impl.DefaultRecord();
+        public virtual Net.TheVpc.Upa.Record Copy() {
+            Net.TheVpc.Upa.Impl.DefaultRecord r = new Net.TheVpc.Upa.Impl.DefaultRecord();
             r.SetAll(this);
             return r;
         }
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
-        public abstract void AddPropertyChangeListener(string arg1, Net.Vpc.Upa.PropertyChangeListener arg2);
+        public abstract void AddPropertyChangeListener(string arg1, Net.TheVpc.Upa.PropertyChangeListener arg2);
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract System.Collections.Generic.IDictionary<string , object> ToMap();
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract T GetSingleResult<T>();
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
-        public abstract void AddPropertyChangeListener(Net.Vpc.Upa.PropertyChangeListener arg1);
+        public abstract void AddPropertyChangeListener(Net.TheVpc.Upa.PropertyChangeListener arg1);
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract void SetObject(string arg1, object arg2);
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
-        public abstract void RemovePropertyChangeListener(Net.Vpc.Upa.PropertyChangeListener arg1);
+        public abstract void RemovePropertyChangeListener(Net.TheVpc.Upa.PropertyChangeListener arg1);
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
-        public abstract void RemovePropertyChangeListener(string arg1, Net.Vpc.Upa.PropertyChangeListener arg2);
+        public abstract void RemovePropertyChangeListener(string arg1, Net.TheVpc.Upa.PropertyChangeListener arg2);
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract T GetObject<T>(string arg1);
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit

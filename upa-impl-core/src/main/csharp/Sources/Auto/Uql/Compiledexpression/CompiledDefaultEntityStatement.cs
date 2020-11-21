@@ -11,16 +11,16 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledexpression
 {
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public abstract class CompiledDefaultEntityStatement : Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpressionImpl, Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityStatement {
+    public abstract class CompiledDefaultEntityStatement : Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpressionImpl, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityStatement {
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
-        public override abstract Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetSubExpressions();
+        public override abstract Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetSubExpressions();
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
-        public override abstract void SetSubExpression(int arg1, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression arg2);
+        public override abstract void SetSubExpression(int arg1, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression arg2);
     }
 }

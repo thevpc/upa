@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class CreatePersistenceUnitException : Net.Vpc.Upa.Exceptions.PersistenceUnitException {
+    public class CreatePersistenceUnitException : Net.TheVpc.Upa.Exceptions.PersistenceUnitException {
 
         public CreatePersistenceUnitException() {
         }
@@ -27,11 +27,11 @@ namespace Net.Vpc.Upa.Exceptions
 
         }
 
-        public CreatePersistenceUnitException(Net.Vpc.Upa.Types.I18NString message, params object [] parameters)  : base(message, parameters){
+        public CreatePersistenceUnitException(Net.TheVpc.Upa.Types.I18NString message, params object [] parameters)  : base(message, parameters){
 
         }
 
-        public CreatePersistenceUnitException(System.Exception cause, Net.Vpc.Upa.Types.I18NString messageId, params object [] parameters)  : base(cause, messageId, parameters){
+        public CreatePersistenceUnitException(System.Exception cause, Net.TheVpc.Upa.Types.I18NString messageId, params object [] parameters)  : base(cause, messageId, parameters){
 
         }
     }

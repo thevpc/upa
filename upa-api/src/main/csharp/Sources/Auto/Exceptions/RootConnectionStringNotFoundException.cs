@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class RootConnectionStringNotFoundException : Net.Vpc.Upa.Exceptions.ConnectionException {
+    public class RootConnectionStringNotFoundException : Net.TheVpc.Upa.Exceptions.ConnectionException {
 
         public RootConnectionStringNotFoundException()  : base("RootConnectionStringNotFoundException"){
 

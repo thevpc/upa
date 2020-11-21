@@ -11,16 +11,16 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class NoSuchIndexException : Net.Vpc.Upa.Exceptions.EntityException {
+    public class NoSuchIndexException : Net.TheVpc.Upa.Exceptions.EntityException {
 
-        public NoSuchIndexException(string entityName, string indexName, System.Exception cause)  : base(cause, new Net.Vpc.Upa.Types.I18NString("NoSuchIndexException"), entityName, indexName){
+        public NoSuchIndexException(string entityName, string indexName, System.Exception cause)  : base(cause, new Net.TheVpc.Upa.Types.I18NString("NoSuchIndexException"), entityName, indexName){
 
         }
     }

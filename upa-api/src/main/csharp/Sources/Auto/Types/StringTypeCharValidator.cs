@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 9/29/12 1:45 AM
      */
-    public class StringTypeCharValidator : Net.Vpc.Upa.Types.TypeValueValidator {
+    public class StringTypeCharValidator : Net.TheVpc.Upa.Types.TypeValueValidator {
 
         protected internal string chars;
 
@@ -38,7 +38,7 @@ namespace Net.Vpc.Upa.Types
         }
 
 
-        public virtual void ValidateValue(object typeValue, string name, string description, Net.Vpc.Upa.Types.DataType type) /* throws Net.Vpc.Upa.Types.ConstraintsException */  {
+        public virtual void ValidateValue(object typeValue, string name, string description, Net.TheVpc.Upa.Types.DataType type) /* throws Net.TheVpc.Upa.Types.ConstraintsException */  {
             if (typeValue == null) {
                 return;
             }
@@ -46,13 +46,13 @@ namespace Net.Vpc.Upa.Types
             if (positive) {
                 for (int i = 0; i < (sval).Length; i++) {
                     if (chars.IndexOf(sval[i]) < 0) {
-                        throw new Net.Vpc.Upa.Types.ConstraintsException("StringBadChars", name, description, typeValue, "" + sval[i]);
+                        throw new Net.TheVpc.Upa.Types.ConstraintsException("StringBadChars", name, description, typeValue, "" + sval[i]);
                     }
                 }
             } else {
                 for (int i = 0; i < (sval).Length; i++) {
                     if (chars.IndexOf(sval[i]) >= 0) {
-                        throw new Net.Vpc.Upa.Types.ConstraintsException("StringBadChars", name, description, typeValue, "" + sval[i]);
+                        throw new Net.TheVpc.Upa.Types.ConstraintsException("StringBadChars", name, description, typeValue, "" + sval[i]);
                     }
                 }
             }

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
     /**
@@ -20,7 +20,7 @@ namespace Net.Vpc.Upa.Impl.Util
      */
     public class StringHelper {
 
-        public static readonly Net.Vpc.Upa.Impl.Util.StringHelper EMPTY_STRING = new Net.Vpc.Upa.Impl.Util.StringHelper("", "", "", true);
+        public static readonly Net.TheVpc.Upa.Impl.Util.StringHelper EMPTY_STRING = new Net.TheVpc.Upa.Impl.Util.StringHelper("", "", "", true);
 
         private string undefinedValue = "";
 
@@ -38,7 +38,7 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public virtual string Format(string s) {
-            if (Net.Vpc.Upa.Impl.Util.StringUtils.IsUndefined(s)) {
+            if (Net.TheVpc.Upa.Impl.Util.StringUtils.IsUndefined(s)) {
                 return undefinedValue;
             }
             if (s == null) {

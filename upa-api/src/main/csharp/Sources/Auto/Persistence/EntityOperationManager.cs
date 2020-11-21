@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
     /**
@@ -20,34 +20,34 @@ namespace Net.Vpc.Upa.Persistence
      */
     public interface EntityOperationManager {
 
-         Net.Vpc.Upa.Persistence.EntityRemoveOperation GetRemoveOperation();
+         Net.TheVpc.Upa.Persistence.EntityRemoveOperation GetRemoveOperation();
 
-         void SetRemoveOperation(Net.Vpc.Upa.Persistence.EntityRemoveOperation operation);
+         void SetRemoveOperation(Net.TheVpc.Upa.Persistence.EntityRemoveOperation operation);
 
-         Net.Vpc.Upa.Persistence.EntityUpdateOperation GetUpdateOperation();
+         Net.TheVpc.Upa.Persistence.EntityUpdateOperation GetUpdateOperation();
 
-         void SetUpdateOperation(Net.Vpc.Upa.Persistence.EntityUpdateOperation operation);
+         void SetUpdateOperation(Net.TheVpc.Upa.Persistence.EntityUpdateOperation operation);
 
-         Net.Vpc.Upa.Persistence.EntityPersistOperation GetPersistOperation();
+         Net.TheVpc.Upa.Persistence.EntityPersistOperation GetPersistOperation();
 
-         void SetPersistOperation(Net.Vpc.Upa.Persistence.EntityPersistOperation operation);
+         void SetPersistOperation(Net.TheVpc.Upa.Persistence.EntityPersistOperation operation);
 
-         Net.Vpc.Upa.Persistence.EntityFindOperation GetFindOperation();
+         Net.TheVpc.Upa.Persistence.EntityFindOperation GetFindOperation();
 
-         void SetFindOperation(Net.Vpc.Upa.Persistence.EntityFindOperation operation);
+         void SetFindOperation(Net.TheVpc.Upa.Persistence.EntityFindOperation operation);
 
-         Net.Vpc.Upa.Persistence.EntityResetOperation GetResetOperation();
+         Net.TheVpc.Upa.Persistence.EntityResetOperation GetResetOperation();
 
-         void SetResetOperation(Net.Vpc.Upa.Persistence.EntityResetOperation operation);
+         void SetResetOperation(Net.TheVpc.Upa.Persistence.EntityResetOperation operation);
 
-         Net.Vpc.Upa.Persistence.EntityClearOperation GetClearOperation();
+         Net.TheVpc.Upa.Persistence.EntityClearOperation GetClearOperation();
 
-         void SetClearOperation(Net.Vpc.Upa.Persistence.EntityClearOperation operation);
+         void SetClearOperation(Net.TheVpc.Upa.Persistence.EntityClearOperation operation);
 
-         Net.Vpc.Upa.Persistence.EntityInitializeOperation GetInitializeOperation();
+         Net.TheVpc.Upa.Persistence.EntityInitializeOperation GetInitializeOperation();
 
-         void SetInitOperation(Net.Vpc.Upa.Persistence.EntityInitializeOperation operation);
+         void SetInitOperation(Net.TheVpc.Upa.Persistence.EntityInitializeOperation operation);
 
-         Net.Vpc.Upa.Persistence.PersistenceStore GetPersistenceStore();
+         Net.TheVpc.Upa.Persistence.PersistenceStore GetPersistenceStore();
     }
 }

@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
 
-    public class LongType : Net.Vpc.Upa.Types.NumberType {
+    public class LongType : Net.TheVpc.Upa.Types.NumberType {
 
-        public static readonly Net.Vpc.Upa.Types.LongType DEFAULT = new Net.Vpc.Upa.Types.LongType(null, null, true, false);
+        public static readonly Net.TheVpc.Upa.Types.LongType DEFAULT = new Net.TheVpc.Upa.Types.LongType(null, null, true, false);
 
         protected internal long? min;
 
@@ -65,19 +65,19 @@ namespace Net.Vpc.Upa.Types
         }
 
 
-        public override void Check(object @value, string name, string description) /* throws Net.Vpc.Upa.Types.ConstraintsException */  {
+        public override void Check(object @value, string name, string description) /* throws Net.TheVpc.Upa.Types.ConstraintsException */  {
             base.Check(@value, name, description);
             if (@value == null) {
                 return;
             }
             if (!(@value is long?)) {
-                throw new Net.Vpc.Upa.Types.ConstraintsException("InvalidCast", name, description, @value);
+                throw new Net.TheVpc.Upa.Types.ConstraintsException("InvalidCast", name, description, @value);
             }
             if (GetMin() != null && ((long?) @value) < GetMin()) {
-                throw new Net.Vpc.Upa.Types.ConstraintsException("NumberTooLow", name, description, @value, GetMin());
+                throw new Net.TheVpc.Upa.Types.ConstraintsException("NumberTooLow", name, description, @value, GetMin());
             }
             if (GetMax() != null && ((long?) @value) > GetMax()) {
-                throw new Net.Vpc.Upa.Types.ConstraintsException("NumberTooHigh", name, description, @value, GetMax());
+                throw new Net.TheVpc.Upa.Types.ConstraintsException("NumberTooHigh", name, description, @value, GetMax());
             }
         }
 
@@ -114,7 +114,7 @@ namespace Net.Vpc.Upa.Types
             if (this == o) return true;
             if (o == null || GetType() != o.GetType()) return false;
             if (!base.Equals(o)) return false;
-            Net.Vpc.Upa.Types.LongType longType = (Net.Vpc.Upa.Types.LongType) o;
+            Net.TheVpc.Upa.Types.LongType longType = (Net.TheVpc.Upa.Types.LongType) o;
             if (min != null ? !min.Equals(longType.min) : longType.min != null) return false;
             return max != null ? max.Equals(longType.max) : longType.max == null;
         }
@@ -128,8 +128,8 @@ namespace Net.Vpc.Upa.Types
         }
 
 
-        public override Net.Vpc.Upa.DataTypeInfo GetInfo() {
-            Net.Vpc.Upa.DataTypeInfo d = base.GetInfo();
+        public override Net.TheVpc.Upa.DataTypeInfo GetInfo() {
+            Net.TheVpc.Upa.DataTypeInfo d = base.GetInfo();
             if (min != null) {
                 d.GetProperties()["min"]=System.Convert.ToString(min);
             }

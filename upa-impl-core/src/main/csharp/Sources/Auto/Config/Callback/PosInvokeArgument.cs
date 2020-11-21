@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config.Callback
+namespace Net.TheVpc.Upa.Impl.Config.Callback
 {
 
     /**
      * Created by vpc on 7/25/15.
      */
-    public sealed class PosInvokeArgument : Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument {
+    public sealed class PosInvokeArgument : Net.TheVpc.Upa.Impl.Config.Callback.InvokeArgument {
 
         private string name;
 
@@ -58,7 +58,7 @@ namespace Net.Vpc.Upa.Impl.Config.Callback
         public override bool Equals(object o) {
             if (this == o) return true;
             if (o == null || GetType() != o.GetType()) return false;
-            Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument that = (Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument) o;
+            Net.TheVpc.Upa.Impl.Config.Callback.PosInvokeArgument that = (Net.TheVpc.Upa.Impl.Config.Callback.PosInvokeArgument) o;
             if (pos != that.pos) return false;
             if (acceptSubClasses != that.acceptSubClasses) return false;
             if (name != null ? !name.Equals(that.name) : that.name != null) return false;

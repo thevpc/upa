@@ -12,38 +12,38 @@
 
 
 using System.Linq;
-namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledexpression
 {
 
 
-    public class CompiledJoinCriteria : Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpressionImpl {
+    public class CompiledJoinCriteria : Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpressionImpl {
 
-        private Net.Vpc.Upa.Expressions.JoinType joinType;
+        private Net.TheVpc.Upa.Expressions.JoinType joinType;
 
-        private Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect entity;
+        private Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect entity;
 
         private string alias;
 
-        private Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition;
+        private Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition;
 
-        public CompiledJoinCriteria(Net.Vpc.Upa.Expressions.JoinType joinType, Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect entity, string alias, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
+        public CompiledJoinCriteria(Net.TheVpc.Upa.Expressions.JoinType joinType, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect entity, string alias, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
             this.joinType = joinType;
             this.entity = entity;
             this.alias = alias;
-            SetCondition(joinType.Equals(Net.Vpc.Upa.Expressions.JoinType.CROSS_JOIN) ? null : condition);
+            SetCondition(joinType.Equals(Net.TheVpc.Upa.Expressions.JoinType.CROSS_JOIN) ? null : condition);
         }
 
-        public virtual Net.Vpc.Upa.Expressions.JoinType GetJoinType() {
+        public virtual Net.TheVpc.Upa.Expressions.JoinType GetJoinType() {
             return joinType;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect GetEntity() {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect GetEntity() {
             return entity;
         }
 
         public virtual string GetEntityName() {
-            if (entity != null && entity is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName) {
-                Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName s = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName) entity;
+            if (entity != null && entity is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName) {
+                Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName s = (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName) entity;
                 return s.GetName();
             }
             return null;
@@ -53,24 +53,24 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return alias;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetCondition() {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetCondition() {
             return condition;
         }
 
-        public virtual void AddCondition(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
+        public virtual void AddCondition(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
             if (condition != null) {
                 if (this.condition == null) {
                     SetCondition(condition);
                 } else {
                     this.condition.UnsetParent();
-                    SetCondition(new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledAnd(this.condition, condition));
+                    SetCondition(new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledAnd(this.condition, condition));
                 }
             }
         }
 
 
-        public override Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetSubExpressions() {
-            System.Collections.Generic.List<Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression> all = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression>();
+        public override Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetSubExpressions() {
+            System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression> all = new System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression>();
             all.Add(entity);
             if (condition != null) {
                 all.Add(condition);
@@ -78,7 +78,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return all.ToArray();
         }
 
-        public virtual void SetEntity(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect expression) {
+        public virtual void SetEntity(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect expression) {
             if (this.entity != null) {
                 this.entity.UnsetParent();
             }
@@ -86,7 +86,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             PrepareChildren(expression);
         }
 
-        public void SetCondition(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
+        public void SetCondition(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
             if (this.condition != null) {
                 this.condition.UnsetParent();
             }
@@ -95,11 +95,11 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         }
 
 
-        public override void SetSubExpression(int index, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
+        public override void SetSubExpression(int index, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
             switch(index) {
                 case 0:
                     {
-                        SetEntity((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect) expression);
+                        SetEntity((Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect) expression);
                         return;
                     }
                 case 1:
@@ -111,8 +111,8 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             throw new System.ArgumentException ("Invalid index");
         }
 
-        public override Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
-            return new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria(joinType, (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect) (entity == null ? null : entity.Copy()), alias, condition == null ? null : condition.Copy());
+        public override Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
+            return new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria(joinType, (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect) (entity == null ? null : entity.Copy()), alias, condition == null ? null : condition.Copy());
         }
 
 
@@ -122,19 +122,19 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             string aliasString = GetEntityAlias();
             string joinKey = "INNER JOIN";
             switch(GetJoinType()) {
-                case Net.Vpc.Upa.Expressions.JoinType.INNER_JOIN:
+                case Net.TheVpc.Upa.Expressions.JoinType.INNER_JOIN:
                     joinKey = "INNER JOIN";
                     break;
-                case Net.Vpc.Upa.Expressions.JoinType.FULL_JOIN:
+                case Net.TheVpc.Upa.Expressions.JoinType.FULL_JOIN:
                     joinKey = "FULL JOIN";
                     break;
-                case Net.Vpc.Upa.Expressions.JoinType.LEFT_JOIN:
+                case Net.TheVpc.Upa.Expressions.JoinType.LEFT_JOIN:
                     joinKey = "LEFT JOIN";
                     break;
-                case Net.Vpc.Upa.Expressions.JoinType.RIGHT_JOIN:
+                case Net.TheVpc.Upa.Expressions.JoinType.RIGHT_JOIN:
                     joinKey = "RIGHT JOIN";
                     break;
-                case Net.Vpc.Upa.Expressions.JoinType.CROSS_JOIN:
+                case Net.TheVpc.Upa.Expressions.JoinType.CROSS_JOIN:
                     joinKey = "CROSS JOIN";
                     break;
             }

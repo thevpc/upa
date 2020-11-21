@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
 
@@ -183,7 +183,7 @@ namespace Net.Vpc.Upa.Expressions
                             unicodeStr = false;
                             encountredSlash = false;
                         } catch (System.Exception nfe) {
-                            throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("Unable to parse unicode value: " + unicode, nfe);
+                            throw new Net.TheVpc.Upa.Exceptions.UPAIllegalArgumentException("Unable to parse unicode value: " + unicode, nfe);
                         }
                     }
                     continue;

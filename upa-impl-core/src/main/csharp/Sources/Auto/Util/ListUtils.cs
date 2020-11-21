@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -21,7 +21,7 @@ namespace Net.Vpc.Upa.Impl.Util
      */
     public class ListUtils {
 
-        public static  void Add<T>(System.Collections.Generic.IList<T> items, T child, int index, Net.Vpc.Upa.UPAObject newParent, Net.Vpc.Upa.UPAObject obj, Net.Vpc.Upa.Impl.Util.ItemInterceptor<T> interceptor) where  T : Net.Vpc.Upa.UPAObject {
+        public static  void Add<T>(System.Collections.Generic.IList<T> items, T child, int index, Net.TheVpc.Upa.UPAObject newParent, Net.TheVpc.Upa.UPAObject obj, Net.TheVpc.Upa.Impl.Util.ItemInterceptor<T> interceptor) where  T : Net.TheVpc.Upa.UPAObject {
             if (index < 0) {
                 index = (items).Count + index + 1;
             }
@@ -34,20 +34,20 @@ namespace Net.Vpc.Upa.Impl.Util
             if (interceptor != null) {
                 interceptor.Before(child, index);
             }
-            Net.Vpc.Upa.UPAObjectListener[] objectListeners = obj.GetObjectListeners();
-            foreach (Net.Vpc.Upa.UPAObjectListener li in objectListeners) {
-                li.ItemAdded(child, index, newParent, Net.Vpc.Upa.EventPhase.BEFORE);
+            Net.TheVpc.Upa.UPAObjectListener[] objectListeners = obj.GetObjectListeners();
+            foreach (Net.TheVpc.Upa.UPAObjectListener li in objectListeners) {
+                li.ItemAdded(child, index, newParent, Net.TheVpc.Upa.EventPhase.BEFORE);
             }
             items.Insert(index, child);
             if (interceptor != null) {
                 interceptor.After(child, index);
             }
-            foreach (Net.Vpc.Upa.UPAObjectListener li in objectListeners) {
-                li.ItemAdded(child, index, newParent, Net.Vpc.Upa.EventPhase.AFTER);
+            foreach (Net.TheVpc.Upa.UPAObjectListener li in objectListeners) {
+                li.ItemAdded(child, index, newParent, Net.TheVpc.Upa.EventPhase.AFTER);
             }
         }
 
-        public static  T Remove<T>(System.Collections.Generic.IList<T> items, int index, Net.Vpc.Upa.UPAObject propertyChangeSupport, Net.Vpc.Upa.Impl.Util.ItemInterceptor<T> interceptor) where  T : Net.Vpc.Upa.UPAObject {
+        public static  T Remove<T>(System.Collections.Generic.IList<T> items, int index, Net.TheVpc.Upa.UPAObject propertyChangeSupport, Net.TheVpc.Upa.Impl.Util.ItemInterceptor<T> interceptor) where  T : Net.TheVpc.Upa.UPAObject {
             if (index < 0) {
                 index = (items).Count + index;
             }
@@ -55,35 +55,35 @@ namespace Net.Vpc.Upa.Impl.Util
             if (interceptor != null) {
                 interceptor.Before(toRemove, index);
             }
-            Net.Vpc.Upa.UPAObjectListener[] objectListeners = propertyChangeSupport.GetObjectListeners();
-            foreach (Net.Vpc.Upa.UPAObjectListener li in objectListeners) {
-                li.ItemRemoved(toRemove, index, Net.Vpc.Upa.EventPhase.BEFORE);
+            Net.TheVpc.Upa.UPAObjectListener[] objectListeners = propertyChangeSupport.GetObjectListeners();
+            foreach (Net.TheVpc.Upa.UPAObjectListener li in objectListeners) {
+                li.ItemRemoved(toRemove, index, Net.TheVpc.Upa.EventPhase.BEFORE);
             }
-            Net.Vpc.Upa.Impl.Util.ListUtils.Remove<T>(items, index, 1);
+            Net.TheVpc.Upa.Impl.Util.ListUtils.Remove<T>(items, index, 1);
             if (interceptor != null) {
                 interceptor.After(toRemove, index);
             }
-            foreach (Net.Vpc.Upa.UPAObjectListener li in objectListeners) {
-                li.ItemRemoved(toRemove, index, Net.Vpc.Upa.EventPhase.AFTER);
+            foreach (Net.TheVpc.Upa.UPAObjectListener li in objectListeners) {
+                li.ItemRemoved(toRemove, index, Net.TheVpc.Upa.EventPhase.AFTER);
             }
             return toRemove;
         }
 
-        public static  void MoveTo<T>(System.Collections.Generic.IList<T> list, int index, int toIndex, Net.Vpc.Upa.UPAObject propertyChangeSupport, Net.Vpc.Upa.Impl.Util.ItemInterceptor<T> interceptor) where  T : Net.Vpc.Upa.UPAObject {
+        public static  void MoveTo<T>(System.Collections.Generic.IList<T> list, int index, int toIndex, Net.TheVpc.Upa.UPAObject propertyChangeSupport, Net.TheVpc.Upa.Impl.Util.ItemInterceptor<T> interceptor) where  T : Net.TheVpc.Upa.UPAObject {
             T item = list[index];
-            Net.Vpc.Upa.UPAObjectListener[] objectListeners = propertyChangeSupport.GetObjectListeners();
-            foreach (Net.Vpc.Upa.UPAObjectListener li in objectListeners) {
-                li.ItemMoved(item, index, toIndex, Net.Vpc.Upa.EventPhase.BEFORE);
+            Net.TheVpc.Upa.UPAObjectListener[] objectListeners = propertyChangeSupport.GetObjectListeners();
+            foreach (Net.TheVpc.Upa.UPAObjectListener li in objectListeners) {
+                li.ItemMoved(item, index, toIndex, Net.TheVpc.Upa.EventPhase.BEFORE);
             }
             if (interceptor != null) {
                 interceptor.Before(item, index);
             }
-            Net.Vpc.Upa.Impl.Util.ListUtils.MoveTo<T>(list, index, toIndex);
+            Net.TheVpc.Upa.Impl.Util.ListUtils.MoveTo<T>(list, index, toIndex);
             if (interceptor != null) {
                 interceptor.After(item, index);
             }
-            foreach (Net.Vpc.Upa.UPAObjectListener li in objectListeners) {
-                li.ItemMoved(item, index, toIndex, Net.Vpc.Upa.EventPhase.AFTER);
+            foreach (Net.TheVpc.Upa.UPAObjectListener li in objectListeners) {
+                li.ItemMoved(item, index, toIndex, Net.TheVpc.Upa.EventPhase.AFTER);
             }
         }
 
@@ -98,7 +98,7 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public static  void MoveTo<T>(System.Collections.Generic.IList<T> list, int index, int toIndex) {
-            T r = Net.Vpc.Upa.Impl.FwkConvertUtils.ListRemoveAt<T>(list,index);
+            T r = Net.TheVpc.Upa.Impl.FwkConvertUtils.ListRemoveAt<T>(list,index);
             list.Insert(toIndex, r);
         }
 
@@ -109,9 +109,9 @@ namespace Net.Vpc.Upa.Impl.Util
         public static  void MoveTo<T>(System.Collections.Generic.IList<T> list, int index, int toIndex, int count) {
             System.Collections.Generic.IList<T> x = new System.Collections.Generic.List<T>();
             for (int i = 0; i < count; i++) {
-                x.Add(Net.Vpc.Upa.Impl.FwkConvertUtils.ListRemoveAt<T>(list,index));
+                x.Add(Net.TheVpc.Upa.Impl.FwkConvertUtils.ListRemoveAt<T>(list,index));
             }
-            Net.Vpc.Upa.Impl.FwkConvertUtils.ListInsertRange(list, toIndex, x);
+            Net.TheVpc.Upa.Impl.FwkConvertUtils.ListInsertRange(list, toIndex, x);
         }
     }
 }

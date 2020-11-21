@@ -3,7 +3,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -24,7 +24,7 @@ namespace Net.Vpc.Upa.Impl.Util
             return file;
         }
 
-        public virtual void Write(System.Object o) /* throws Net.Vpc.Upa.Impl.Util.CacheException */  {
+        public virtual void Write(System.Object o) /* throws Net.TheVpc.Upa.Impl.Util.CacheException */  {
             if (!IsWriting()) {
                 SetWriting();
             }
@@ -32,7 +32,7 @@ namespace Net.Vpc.Upa.Impl.Util
             streamFormatter.Serialize(outputStream, o);
         }
 
-        private void SetWriting() /* throws Net.Vpc.Upa.Impl.Util.CacheException */  {
+        private void SetWriting() /* throws Net.TheVpc.Upa.Impl.Util.CacheException */  {
             if (outputStream != null)
             {
                 outputStream.Close();
@@ -42,7 +42,7 @@ namespace Net.Vpc.Upa.Impl.Util
             status = 1;
         }
 
-        public void Close() /* throws Net.Vpc.Upa.Impl.Util.CacheException */  {
+        public void Close() /* throws Net.TheVpc.Upa.Impl.Util.CacheException */  {
             try {
                 if (IsWriting()) {
                     streamFormatter.Serialize(outputStream, END_FILE);
@@ -58,7 +58,7 @@ namespace Net.Vpc.Upa.Impl.Util
             }
         }
 
-        public virtual bool HasNext() /* throws Net.Vpc.Upa.Impl.Util.CacheException */  {
+        public virtual bool HasNext() /* throws Net.TheVpc.Upa.Impl.Util.CacheException */  {
             if (empty) {
                 return false;
             }
@@ -72,13 +72,13 @@ namespace Net.Vpc.Upa.Impl.Util
             return !END_FILE.Equals(lastExtractedObject);
         }
 
-        private void SetReading() /* throws Net.Vpc.Upa.Impl.Util.CacheException */  {
+        private void SetReading() /* throws Net.TheVpc.Upa.Impl.Util.CacheException */  {
             status = 2;
             System.Object o = null;
             inputStream = File.OpenRead(GetFile().FullName);
             o = streamFormatter.Deserialize(inputStream);
             if (!START_FILE.Equals(o)) {
-                throw new Net.Vpc.Upa.Impl.Util.CacheException("Bad cache file");
+                throw new Net.TheVpc.Upa.Impl.Util.CacheException("Bad cache file");
             } else {
                 objectRead = true;
                 return;

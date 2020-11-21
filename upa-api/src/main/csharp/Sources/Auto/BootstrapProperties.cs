@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -21,20 +21,20 @@ namespace Net.Vpc.Upa
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 8/25/12 1:31 AM
      */
-    internal class BootstrapProperties : Net.Vpc.Upa.Properties {
+    internal class BootstrapProperties : Net.TheVpc.Upa.Properties {
 
         private System.Collections.Generic.IDictionary<string , object> @base = new System.Collections.Generic.Dictionary<string , object>();
 
-        private Net.Vpc.Upa.PropertyChangeSupport propertyChangeSupport;
+        private Net.TheVpc.Upa.PropertyChangeSupport propertyChangeSupport;
 
-        private Net.Vpc.Upa.Properties parent;
+        private Net.TheVpc.Upa.Properties parent;
 
         public BootstrapProperties()  : this(null){
 
         }
 
-        public BootstrapProperties(Net.Vpc.Upa.Properties parent) {
-            propertyChangeSupport = new Net.Vpc.Upa.PropertyChangeSupport(this);
+        public BootstrapProperties(Net.TheVpc.Upa.Properties parent) {
+            propertyChangeSupport = new Net.TheVpc.Upa.PropertyChangeSupport(this);
             this.parent = parent;
         }
 
@@ -48,7 +48,7 @@ namespace Net.Vpc.Upa
                 System.Collections.Generic.HashSet<string> accepted = new System.Collections.Generic.HashSet<string>(new System.Collections.Generic.List<string>(keys));
                 foreach (string s in accepted) {
                     if (other.ContainsKey(s)) {
-                        SetObject(s, Net.Vpc.Upa.FwkConvertUtils.GetMapValue<string,object>(other,s));
+                        SetObject(s, Net.TheVpc.Upa.FwkConvertUtils.GetMapValue<string,object>(other,s));
                     }
                 }
             }
@@ -212,27 +212,27 @@ namespace Net.Vpc.Upa
         }
 
 
-        public virtual Net.Vpc.Upa.Types.Temporal GetDate(string key) {
+        public virtual Net.TheVpc.Upa.Types.Temporal GetDate(string key) {
             return GetObject<>(key);
         }
 
 
-        public virtual Net.Vpc.Upa.Types.Temporal GetDate(string key, Net.Vpc.Upa.Types.Temporal defaultValue) {
+        public virtual Net.TheVpc.Upa.Types.Temporal GetDate(string key, Net.TheVpc.Upa.Types.Temporal defaultValue) {
             return GetObject<>(key, defaultValue);
         }
 
 
-        public virtual void SetDate(string key, Net.Vpc.Upa.Types.Temporal @value) {
+        public virtual void SetDate(string key, Net.TheVpc.Upa.Types.Temporal @value) {
             SetObject(key, @value);
         }
 
 
-        public virtual Net.Vpc.Upa.Types.Temporal GetSingleDate() {
+        public virtual Net.TheVpc.Upa.Types.Temporal GetSingleDate() {
             return GetSingleObject<>();
         }
 
 
-        public virtual void SetAll(Net.Vpc.Upa.Properties other, params string [] keys) {
+        public virtual void SetAll(Net.TheVpc.Upa.Properties other, params string [] keys) {
             SetAll(other.ToMap(), keys);
         }
 
@@ -243,18 +243,18 @@ namespace Net.Vpc.Upa
             return parent != null && parent.ContainsKey(key);
         }
 
-        public virtual Net.Vpc.Upa.Properties GetParent() {
+        public virtual Net.TheVpc.Upa.Properties GetParent() {
             return parent;
         }
 
-        public virtual void SetParent(Net.Vpc.Upa.Properties parent) {
+        public virtual void SetParent(Net.TheVpc.Upa.Properties parent) {
             this.parent = parent;
         }
 
 
         public virtual  T GetObject<T>(string key) {
             if (parent == null || @base.ContainsKey(key)) {
-                return (T) Net.Vpc.Upa.FwkConvertUtils.GetMapValue<string,object>(@base,key);
+                return (T) Net.TheVpc.Upa.FwkConvertUtils.GetMapValue<string,object>(@base,key);
             }
             return parent.GetObject<>(key);
         }
@@ -262,7 +262,7 @@ namespace Net.Vpc.Upa
 
         public virtual  T GetObject<T>(string key, T @value) {
             if (@base.ContainsKey(key)) {
-                return (T) Net.Vpc.Upa.FwkConvertUtils.GetMapValue<string,object>(@base,key);
+                return (T) Net.TheVpc.Upa.FwkConvertUtils.GetMapValue<string,object>(@base,key);
             } else {
                 if (parent != null) {
                     return parent.GetObject<>(key, @value);
@@ -303,8 +303,8 @@ namespace Net.Vpc.Upa
                 return new System.Collections.Generic.HashSet<K>(@base.Keys);
             }
             System.Collections.Generic.HashSet<string> all = new System.Collections.Generic.HashSet<string>();
-            Net.Vpc.Upa.FwkConvertUtils.CollectionAddRange(all, new System.Collections.Generic.HashSet<K>(@base.Keys));
-            Net.Vpc.Upa.FwkConvertUtils.CollectionAddRange(all, parent.KeySet());
+            Net.TheVpc.Upa.FwkConvertUtils.CollectionAddRange(all, new System.Collections.Generic.HashSet<K>(@base.Keys));
+            Net.TheVpc.Upa.FwkConvertUtils.CollectionAddRange(all, parent.KeySet());
             return all;
         }
 
@@ -319,27 +319,27 @@ namespace Net.Vpc.Upa
                 return new System.Collections.Generic.Dictionary<string , object>(@base);
             }
             System.Collections.Generic.IDictionary<string , object> r = new System.Collections.Generic.Dictionary<string , object>(parent.ToMap());
-            Net.Vpc.Upa.FwkConvertUtils.PutAllMap<string,object>(r,@base);
+            Net.TheVpc.Upa.FwkConvertUtils.PutAllMap<string,object>(r,@base);
             return r;
         }
 
 
-        public virtual void AddPropertyChangeListener(string key, Net.Vpc.Upa.PropertyChangeListener listener) {
+        public virtual void AddPropertyChangeListener(string key, Net.TheVpc.Upa.PropertyChangeListener listener) {
             propertyChangeSupport.AddPropertyChangeListener(key, listener);
         }
 
 
-        public virtual void RemovePropertyChangeListener(string key, Net.Vpc.Upa.PropertyChangeListener listener) {
+        public virtual void RemovePropertyChangeListener(string key, Net.TheVpc.Upa.PropertyChangeListener listener) {
             propertyChangeSupport.RemovePropertyChangeListener(key, listener);
         }
 
 
-        public virtual void AddPropertyChangeListener(Net.Vpc.Upa.PropertyChangeListener listener) {
+        public virtual void AddPropertyChangeListener(Net.TheVpc.Upa.PropertyChangeListener listener) {
             propertyChangeSupport.AddPropertyChangeListener(listener);
         }
 
 
-        public virtual void RemovePropertyChangeListener(Net.Vpc.Upa.PropertyChangeListener listener) {
+        public virtual void RemovePropertyChangeListener(Net.TheVpc.Upa.PropertyChangeListener listener) {
             propertyChangeSupport.RemovePropertyChangeListener(listener);
         }
 

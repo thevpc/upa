@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
-    public class NavigateEntityNotAllowedException : Net.Vpc.Upa.Exceptions.EntityException {
+    public class NavigateEntityNotAllowedException : Net.TheVpc.Upa.Exceptions.EntityException {
 
-        public NavigateEntityNotAllowedException(Net.Vpc.Upa.Entity entity)  : base(entity, "navigate.NotAllowed"){
+        public NavigateEntityNotAllowedException(Net.TheVpc.Upa.Entity entity)  : base(entity, "navigate.NotAllowed"){
 
         }
     }

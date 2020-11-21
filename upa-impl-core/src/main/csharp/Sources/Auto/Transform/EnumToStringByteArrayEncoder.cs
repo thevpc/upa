@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Transform
+namespace Net.TheVpc.Upa.Impl.Transform
 {
 
 
@@ -19,9 +19,9 @@ namespace Net.Vpc.Upa.Impl.Transform
      *
      * @author taha.bensalah@gmail.com
      */
-    public class EnumToStringByteArrayEncoder : Net.Vpc.Upa.Types.ByteArrayEncoder {
+    public class EnumToStringByteArrayEncoder : Net.TheVpc.Upa.Types.ByteArrayEncoder {
 
-        private static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.Vpc.Upa.Impl.Transform.EnumToStringByteArrayEncoder)).FullName);
+        private static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.TheVpc.Upa.Impl.Transform.EnumToStringByteArrayEncoder)).FullName);
 
         private System.Type enumClass;
 
@@ -47,7 +47,7 @@ namespace Net.Vpc.Upa.Impl.Transform
             try {
                 return System.Enum.Parse(enumClass,sval);
             } catch (System.ArgumentException  ex) {
-                log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Unable to parse" + sval + " as enum " + (enumClass).FullName,ex));
+                log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Unable to parse" + sval + " as enum " + (enumClass).FullName,ex));
                 return null;
             }
         }

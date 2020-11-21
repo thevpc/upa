@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
-    public class DefaultPrimitiveField : Net.Vpc.Upa.Impl.AbstractField, Net.Vpc.Upa.PrimitiveField {
+    public class DefaultPrimitiveField : Net.TheVpc.Upa.Impl.AbstractField, Net.TheVpc.Upa.PrimitiveField {
 
-        public static readonly Net.Vpc.Upa.Impl.DefaultPrimitiveField[] EMPTY_ARRAY = new Net.Vpc.Upa.Impl.DefaultPrimitiveField[0];
+        public static readonly Net.TheVpc.Upa.Impl.DefaultPrimitiveField[] EMPTY_ARRAY = new Net.TheVpc.Upa.Impl.DefaultPrimitiveField[0];
 
         public DefaultPrimitiveField()  : base(){
 

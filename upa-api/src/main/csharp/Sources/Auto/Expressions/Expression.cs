@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
 
@@ -19,27 +19,27 @@ namespace Net.Vpc.Upa.Expressions
 
          bool IsValid();
 
-         Net.Vpc.Upa.Expressions.Expression Copy();
+         Net.TheVpc.Upa.Expressions.Expression Copy();
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren();
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Expressions.TaggedExpression> GetChildren();
 
-         void SetChild(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.Expressions.ExpressionTag tag);
+         void SetChild(Net.TheVpc.Upa.Expressions.Expression e, Net.TheVpc.Upa.Expressions.ExpressionTag tag);
 
-         Net.Vpc.Upa.Expressions.Expression FindOne(Net.Vpc.Upa.Expressions.ExpressionFilter filter);
+         Net.TheVpc.Upa.Expressions.Expression FindOne(Net.TheVpc.Upa.Expressions.ExpressionFilter filter);
 
         /**
              * pre-order DFS traversal of expression
              * @param filter
              */
-         void Visit(Net.Vpc.Upa.Expressions.ExpressionVisitor filter);
+         void Visit(Net.TheVpc.Upa.Expressions.ExpressionVisitor filter);
 
         /**
              * post-order DFS traversal and transformation of expression
              * @param transformer transformer
              * @return result
              */
-         Net.Vpc.Upa.Expressions.ExpressionTransformerResult Transform(Net.Vpc.Upa.Expressions.ExpressionTransformer transformer);
+         Net.TheVpc.Upa.Expressions.ExpressionTransformerResult Transform(Net.TheVpc.Upa.Expressions.ExpressionTransformer transformer);
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.Expression> FindAll(Net.Vpc.Upa.Expressions.ExpressionFilter filter);
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Expressions.Expression> FindAll(Net.TheVpc.Upa.Expressions.ExpressionFilter filter);
     }
 }

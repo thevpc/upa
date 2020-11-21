@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql
+namespace Net.TheVpc.Upa.Impl.Uql
 {
 
     /**
@@ -26,9 +26,9 @@ namespace Net.Vpc.Upa.Impl.Uql
 
         private object referrerParent;
 
-        private Net.Vpc.Upa.Impl.Uql.DecObjectType referrerType;
+        private Net.TheVpc.Upa.Impl.Uql.DecObjectType referrerType;
 
-        public ExpressionDeclaration(string name, Net.Vpc.Upa.Impl.Uql.DecObjectType referrerType, object referrerName, object referrerParent) {
+        public ExpressionDeclaration(string name, Net.TheVpc.Upa.Impl.Uql.DecObjectType referrerType, object referrerName, object referrerParent) {
             this.name = name;
             this.referrerName = referrerName;
             this.referrerParent = referrerParent;
@@ -51,11 +51,11 @@ namespace Net.Vpc.Upa.Impl.Uql
             this.referrerParent = referrerParent;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.DecObjectType GetReferrerType() {
+        public virtual Net.TheVpc.Upa.Impl.Uql.DecObjectType GetReferrerType() {
             return referrerType;
         }
 
-        public virtual void SetReferrerType(Net.Vpc.Upa.Impl.Uql.DecObjectType referrerType) {
+        public virtual void SetReferrerType(Net.TheVpc.Upa.Impl.Uql.DecObjectType referrerType) {
             this.referrerType = referrerType;
         }
 

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Config
+namespace Net.TheVpc.Upa.Config
 {
 
 
@@ -25,15 +25,15 @@ namespace Net.Vpc.Upa.Config
 
         private string name;
 
-        private Net.Vpc.Upa.Types.DataType type;
+        private Net.TheVpc.Upa.Types.DataType type;
 
-        private Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> modifiers = Net.Vpc.Upa.FlagSets.NoneOf<T>();
+        private Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> modifiers = Net.TheVpc.Upa.FlagSets.NoneOf<T>();
 
-        private Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> excludeModifiers = Net.Vpc.Upa.FlagSets.NoneOf<T>();
+        private Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> excludeModifiers = Net.TheVpc.Upa.FlagSets.NoneOf<T>();
 
-        private Net.Vpc.Upa.Formula persistFormula;
+        private Net.TheVpc.Upa.Formula persistFormula;
 
-        private Net.Vpc.Upa.Formula updateFormula;
+        private Net.TheVpc.Upa.Formula updateFormula;
 
         private bool persistFormulaSet;
 
@@ -43,7 +43,7 @@ namespace Net.Vpc.Upa.Config
 
         private bool defaultValueSet;
 
-        private object unspecifiedValue = Net.Vpc.Upa.UnspecifiedValue.DEFAULT;
+        private object unspecifiedValue = Net.TheVpc.Upa.UnspecifiedValue.DEFAULT;
 
         private bool unspecifiedValueSet;
 
@@ -55,7 +55,7 @@ namespace Net.Vpc.Upa.Config
             return persistFormulaSet;
         }
 
-        public virtual Net.Vpc.Upa.Config.FieldDesc SetPersistFormulaSet(bool persistFormulaSet) {
+        public virtual Net.TheVpc.Upa.Config.FieldDesc SetPersistFormulaSet(bool persistFormulaSet) {
             this.persistFormulaSet = persistFormulaSet;
             if (!persistFormulaSet) {
                 persistFormula = null;
@@ -67,7 +67,7 @@ namespace Net.Vpc.Upa.Config
             return updateFormulaSet;
         }
 
-        public virtual Net.Vpc.Upa.Config.FieldDesc SetUpdateFormulaSet(bool updateFormulaSet) {
+        public virtual Net.TheVpc.Upa.Config.FieldDesc SetUpdateFormulaSet(bool updateFormulaSet) {
             this.updateFormulaSet = updateFormulaSet;
             if (!updateFormulaSet) {
                 updateFormula = null;
@@ -79,7 +79,7 @@ namespace Net.Vpc.Upa.Config
             return defaultValueSet;
         }
 
-        public virtual Net.Vpc.Upa.Config.FieldDesc SetDefaultValueSet(bool defaultValueSet) {
+        public virtual Net.TheVpc.Upa.Config.FieldDesc SetDefaultValueSet(bool defaultValueSet) {
             this.defaultValueSet = defaultValueSet;
             if (!defaultValueSet) {
                 defaultValue = null;
@@ -91,74 +91,74 @@ namespace Net.Vpc.Upa.Config
             return unspecifiedValueSet;
         }
 
-        public virtual Net.Vpc.Upa.Config.FieldDesc SetUnspecifiedValueSet(bool unspecifiedValueSet) {
+        public virtual Net.TheVpc.Upa.Config.FieldDesc SetUnspecifiedValueSet(bool unspecifiedValueSet) {
             this.unspecifiedValueSet = unspecifiedValueSet;
             if (!unspecifiedValueSet) {
-                unspecifiedValue = Net.Vpc.Upa.UnspecifiedValue.DEFAULT;
+                unspecifiedValue = Net.TheVpc.Upa.UnspecifiedValue.DEFAULT;
             }
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Config.FieldDesc SetName(string name) {
+        public virtual Net.TheVpc.Upa.Config.FieldDesc SetName(string name) {
             this.name = name;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> GetModifiers() {
+        public virtual Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> GetModifiers() {
             return modifiers;
         }
 
-        public virtual Net.Vpc.Upa.Config.FieldDesc SetModifiers(Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> modifiers) {
+        public virtual Net.TheVpc.Upa.Config.FieldDesc SetModifiers(Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> modifiers) {
             this.modifiers = modifiers;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> GetExcludeModifiers() {
+        public virtual Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> GetExcludeModifiers() {
             return excludeModifiers;
         }
 
-        public virtual Net.Vpc.Upa.Config.FieldDesc SetExcludeModifiers(Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> modifiers) {
+        public virtual Net.TheVpc.Upa.Config.FieldDesc SetExcludeModifiers(Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> modifiers) {
             this.excludeModifiers = modifiers;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Config.FieldDesc AddModifiers(Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> modifiers) {
+        public virtual Net.TheVpc.Upa.Config.FieldDesc AddModifiers(Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> modifiers) {
             return SetModifiers(GetModifiers().AddAll(modifiers));
         }
 
-        public virtual Net.Vpc.Upa.Config.FieldDesc RemoveModifiers(Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> modifiers) {
+        public virtual Net.TheVpc.Upa.Config.FieldDesc RemoveModifiers(Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> modifiers) {
             return SetModifiers(GetModifiers().RemoveAll(modifiers));
         }
 
-        public virtual Net.Vpc.Upa.Config.FieldDesc AddExcludeModifiers(Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> modifiers) {
+        public virtual Net.TheVpc.Upa.Config.FieldDesc AddExcludeModifiers(Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> modifiers) {
             return SetExcludeModifiers(GetExcludeModifiers().AddAll(modifiers));
         }
 
-        public virtual Net.Vpc.Upa.Config.FieldDesc RemoveExcludeModifiers(Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> modifiers) {
+        public virtual Net.TheVpc.Upa.Config.FieldDesc RemoveExcludeModifiers(Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> modifiers) {
             return SetExcludeModifiers(GetExcludeModifiers().RemoveAll(modifiers));
         }
 
-        public virtual Net.Vpc.Upa.Formula GetPersistFormula() {
+        public virtual Net.TheVpc.Upa.Formula GetPersistFormula() {
             return persistFormula;
         }
 
-        public virtual Net.Vpc.Upa.Formula GetUpdateFormula() {
+        public virtual Net.TheVpc.Upa.Formula GetUpdateFormula() {
             return updateFormula;
         }
 
-        public virtual Net.Vpc.Upa.Config.FieldDesc SetFormula(Net.Vpc.Upa.Formula formula) {
+        public virtual Net.TheVpc.Upa.Config.FieldDesc SetFormula(Net.TheVpc.Upa.Formula formula) {
             SetPersistFormula(formula);
             SetUpdateFormula(formula);
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Config.FieldDesc SetPersistFormula(Net.Vpc.Upa.Formula persistFormula) {
+        public virtual Net.TheVpc.Upa.Config.FieldDesc SetPersistFormula(Net.TheVpc.Upa.Formula persistFormula) {
             this.persistFormula = persistFormula;
             this.persistFormulaSet = true;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Config.FieldDesc SetUpdateFormula(Net.Vpc.Upa.Formula updateFormula) {
+        public virtual Net.TheVpc.Upa.Config.FieldDesc SetUpdateFormula(Net.TheVpc.Upa.Formula updateFormula) {
             this.updateFormula = updateFormula;
             this.updateFormulaSet = true;
             return this;
@@ -168,17 +168,17 @@ namespace Net.Vpc.Upa.Config
             return defaultValue;
         }
 
-        public virtual Net.Vpc.Upa.Config.FieldDesc SetDefaultValue(object defaultValue) {
+        public virtual Net.TheVpc.Upa.Config.FieldDesc SetDefaultValue(object defaultValue) {
             this.defaultValue = defaultValue;
             this.defaultValueSet = true;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Types.DataType GetDataType() {
+        public virtual Net.TheVpc.Upa.Types.DataType GetDataType() {
             return type;
         }
 
-        public virtual Net.Vpc.Upa.Config.FieldDesc SetDataType(Net.Vpc.Upa.Types.DataType type) {
+        public virtual Net.TheVpc.Upa.Config.FieldDesc SetDataType(Net.TheVpc.Upa.Types.DataType type) {
             this.type = type;
             return this;
         }

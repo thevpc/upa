@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Connection
+namespace Net.TheVpc.Upa.Impl.Persistence.Connection
 {
 
 
@@ -19,9 +19,9 @@ namespace Net.Vpc.Upa.Impl.Persistence.Connection
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 9/13/12 7:53 PM
      */
-    public class DefaultConnectionProfile : Net.Vpc.Upa.Persistence.ConnectionProfile {
+    public class DefaultConnectionProfile : Net.TheVpc.Upa.Persistence.ConnectionProfile {
 
-        private Net.Vpc.Upa.Persistence.DatabaseProduct databaseProduct;
+        private Net.TheVpc.Upa.Persistence.DatabaseProduct databaseProduct;
 
         private string databaseProductVersion;
 
@@ -29,15 +29,15 @@ namespace Net.Vpc.Upa.Impl.Persistence.Connection
 
         private string connectionDriverVersion;
 
-        private Net.Vpc.Upa.Persistence.StructureStrategy structureStrategy = Net.Vpc.Upa.Persistence.StructureStrategy.IGNORE;
+        private Net.TheVpc.Upa.Persistence.StructureStrategy structureStrategy = Net.TheVpc.Upa.Persistence.StructureStrategy.IGNORE;
 
         private System.Collections.Generic.IDictionary<string , string> properties;
 
-        public virtual Net.Vpc.Upa.Persistence.DatabaseProduct GetDatabaseProduct() {
+        public virtual Net.TheVpc.Upa.Persistence.DatabaseProduct GetDatabaseProduct() {
             return databaseProduct;
         }
 
-        public virtual void SetDatabaseProduct(Net.Vpc.Upa.Persistence.DatabaseProduct databaseProduct) {
+        public virtual void SetDatabaseProduct(Net.TheVpc.Upa.Persistence.DatabaseProduct databaseProduct) {
             this.databaseProduct = databaseProduct;
         }
 
@@ -65,11 +65,11 @@ namespace Net.Vpc.Upa.Impl.Persistence.Connection
             this.connectionDriverVersion = connectionDriverVersion;
         }
 
-        public virtual Net.Vpc.Upa.Persistence.StructureStrategy GetStructureStrategy() {
+        public virtual Net.TheVpc.Upa.Persistence.StructureStrategy GetStructureStrategy() {
             return structureStrategy;
         }
 
-        public virtual void SetStructureStrategy(Net.Vpc.Upa.Persistence.StructureStrategy structureStrategy) {
+        public virtual void SetStructureStrategy(Net.TheVpc.Upa.Persistence.StructureStrategy structureStrategy) {
             this.structureStrategy = structureStrategy;
         }
 
@@ -94,7 +94,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Connection
             if (connectionDriverVersion != null) {
                 sb.Append(", connectionDriverVersion='").Append(connectionDriverVersion).Append('\'');
             }
-            if (structureStrategy != default(Net.Vpc.Upa.Persistence.StructureStrategy)) {
+            if (structureStrategy != default(Net.TheVpc.Upa.Persistence.StructureStrategy)) {
                 sb.Append(", structureStrategy='").Append(structureStrategy).Append('\'');
             }
             sb.Append(", properties=").Append(properties);
@@ -110,7 +110,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Connection
             if (o == null || GetType() != o.GetType()) {
                 return false;
             }
-            Net.Vpc.Upa.Impl.Persistence.Connection.DefaultConnectionProfile that = (Net.Vpc.Upa.Impl.Persistence.Connection.DefaultConnectionProfile) o;
+            Net.TheVpc.Upa.Impl.Persistence.Connection.DefaultConnectionProfile that = (Net.TheVpc.Upa.Impl.Persistence.Connection.DefaultConnectionProfile) o;
             if (connectionDriver != null ? !connectionDriver.Equals(that.connectionDriver) : that.connectionDriver != null) {
                 return false;
             }
@@ -134,11 +134,11 @@ namespace Net.Vpc.Upa.Impl.Persistence.Connection
 
 
         public override int GetHashCode() {
-            int result = databaseProduct != default(Net.Vpc.Upa.Persistence.DatabaseProduct) ? databaseProduct.GetHashCode() : 0;
+            int result = databaseProduct != default(Net.TheVpc.Upa.Persistence.DatabaseProduct) ? databaseProduct.GetHashCode() : 0;
             result = 31 * result + (databaseProductVersion != null ? databaseProductVersion.GetHashCode() : 0);
             result = 31 * result + (connectionDriver != null ? connectionDriver.GetHashCode() : 0);
             result = 31 * result + (connectionDriverVersion != null ? connectionDriverVersion.GetHashCode() : 0);
-            result = 31 * result + (structureStrategy != default(Net.Vpc.Upa.Persistence.StructureStrategy) ? structureStrategy.GetHashCode() : 0);
+            result = 31 * result + (structureStrategy != default(Net.TheVpc.Upa.Persistence.StructureStrategy) ? structureStrategy.GetHashCode() : 0);
             result = 31 * result + (properties != null ? properties.GetHashCode() : 0);
             return result;
         }

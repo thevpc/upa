@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -20,37 +20,37 @@ namespace Net.Vpc.Upa
      */
     public interface UpdateQuery {
 
-         Net.Vpc.Upa.UpdateQuery SetNone();
+         Net.TheVpc.Upa.UpdateQuery SetNone();
 
-         Net.Vpc.Upa.UpdateQuery SetValues(object @object);
+         Net.TheVpc.Upa.UpdateQuery SetValues(object @object);
 
-         Net.Vpc.Upa.UpdateQuery SetValues(Net.Vpc.Upa.Document document);
+         Net.TheVpc.Upa.UpdateQuery SetValues(Net.TheVpc.Upa.Document document);
 
          object GetValues();
 
-         Net.Vpc.Upa.UpdateQuery ById(object expr);
+         Net.TheVpc.Upa.UpdateQuery ById(object expr);
 
-          Net.Vpc.Upa.UpdateQuery ByIdList<T>(System.Collections.Generic.IList<T> expr);
+          Net.TheVpc.Upa.UpdateQuery ByIdList<T>(System.Collections.Generic.IList<T> expr);
 
-         Net.Vpc.Upa.UpdateQuery ByKey(Net.Vpc.Upa.Key expr);
+         Net.TheVpc.Upa.UpdateQuery ByKey(Net.TheVpc.Upa.Key expr);
 
-         Net.Vpc.Upa.UpdateQuery ByObject(object expr);
+         Net.TheVpc.Upa.UpdateQuery ByObject(object expr);
 
-         Net.Vpc.Upa.UpdateQuery ByPrototype(object expr);
+         Net.TheVpc.Upa.UpdateQuery ByPrototype(object expr);
 
-         Net.Vpc.Upa.UpdateQuery ByDocument(Net.Vpc.Upa.Document expr);
+         Net.TheVpc.Upa.UpdateQuery ByDocument(Net.TheVpc.Upa.Document expr);
 
-         Net.Vpc.Upa.UpdateQuery ByPrototype(Net.Vpc.Upa.Document expr);
+         Net.TheVpc.Upa.UpdateQuery ByPrototype(Net.TheVpc.Upa.Document expr);
 
-         Net.Vpc.Upa.UpdateQuery ByKeyList(System.Collections.Generic.IList<Net.Vpc.Upa.Key> expr);
+         Net.TheVpc.Upa.UpdateQuery ByKeyList(System.Collections.Generic.IList<Net.TheVpc.Upa.Key> expr);
 
-         Net.Vpc.Upa.UpdateQuery ByExpressionList(System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.Expression> expr);
+         Net.TheVpc.Upa.UpdateQuery ByExpressionList(System.Collections.Generic.IList<Net.TheVpc.Upa.Expressions.Expression> expr);
 
-         Net.Vpc.Upa.UpdateQuery ByExpression(Net.Vpc.Upa.Expressions.Expression expr);
+         Net.TheVpc.Upa.UpdateQuery ByExpression(Net.TheVpc.Upa.Expressions.Expression expr);
 
-         Net.Vpc.Upa.UpdateQuery ByAll();
+         Net.TheVpc.Upa.UpdateQuery ByAll();
 
-         Net.Vpc.Upa.ConditionType GetUpdateConditionType();
+         Net.TheVpc.Upa.ConditionType GetUpdateConditionType();
 
          object GetUpdateCondition();
 
@@ -58,53 +58,53 @@ namespace Net.Vpc.Upa
 
          System.Collections.Generic.IDictionary<string , object> GetHints(bool autoCreate);
 
-         Net.Vpc.Upa.UpdateQuery SetHints(System.Collections.Generic.IDictionary<string , object> hints);
+         Net.TheVpc.Upa.UpdateQuery SetHints(System.Collections.Generic.IDictionary<string , object> hints);
 
-         Net.Vpc.Upa.UpdateQuery SetHint(string name, object @value);
+         Net.TheVpc.Upa.UpdateQuery SetHint(string name, object @value);
 
-         Net.Vpc.Upa.UpdateQuery AddUpdatableField(string name);
+         Net.TheVpc.Upa.UpdateQuery AddUpdatableField(string name);
 
-         Net.Vpc.Upa.UpdateQuery RemoveUpdatableField(string name);
+         Net.TheVpc.Upa.UpdateQuery RemoveUpdatableField(string name);
 
-         Net.Vpc.Upa.UpdateQuery AddUpdatableFields(params string [] names);
+         Net.TheVpc.Upa.UpdateQuery AddUpdatableFields(params string [] names);
 
-         Net.Vpc.Upa.UpdateQuery RemoveUpdatableFields(params string [] names);
+         Net.TheVpc.Upa.UpdateQuery RemoveUpdatableFields(params string [] names);
 
-         Net.Vpc.Upa.UpdateQuery AddUpdatableFields(System.Collections.Generic.ICollection<string> names);
+         Net.TheVpc.Upa.UpdateQuery AddUpdatableFields(System.Collections.Generic.ICollection<string> names);
 
-         Net.Vpc.Upa.UpdateQuery RemoveUpdatableFields(System.Collections.Generic.ICollection<string> names);
+         Net.TheVpc.Upa.UpdateQuery RemoveUpdatableFields(System.Collections.Generic.ICollection<string> names);
 
-         Net.Vpc.Upa.UpdateQuery UpdateAll();
+         Net.TheVpc.Upa.UpdateQuery UpdateAll();
 
          System.Collections.Generic.ISet<string> GetUpdatedFields();
 
-         Net.Vpc.Upa.UpdateQuery SetUpdatedFields(System.Collections.Generic.ICollection<string> partialUpdateFields);
+         Net.TheVpc.Upa.UpdateQuery SetUpdatedFields(System.Collections.Generic.ICollection<string> partialUpdateFields);
 
-         Net.Vpc.Upa.UpdateQuery Update(System.Collections.Generic.ICollection<string> partialUpdateFields);
+         Net.TheVpc.Upa.UpdateQuery Update(System.Collections.Generic.ICollection<string> partialUpdateFields);
 
-         Net.Vpc.Upa.UpdateQuery Update(params string [] partialUpdateFields);
+         Net.TheVpc.Upa.UpdateQuery Update(params string [] partialUpdateFields);
 
-         Net.Vpc.Upa.UpdateQuery Update(string partialUpdateFields);
+         Net.TheVpc.Upa.UpdateQuery Update(string partialUpdateFields);
 
-         Net.Vpc.Upa.UpdateQuery RemoveUpdatedFields(System.Collections.Generic.ICollection<string> partialUpdateFields);
+         Net.TheVpc.Upa.UpdateQuery RemoveUpdatedFields(System.Collections.Generic.ICollection<string> partialUpdateFields);
 
-         Net.Vpc.Upa.Filters.FieldFilter GetFormulaFields();
+         Net.TheVpc.Upa.Filters.FieldFilter GetFormulaFields();
 
-         Net.Vpc.Upa.UpdateQuery Validate(string formulaField);
+         Net.TheVpc.Upa.UpdateQuery Validate(string formulaField);
 
-         Net.Vpc.Upa.UpdateQuery Validate(params string [] formulaFields);
+         Net.TheVpc.Upa.UpdateQuery Validate(params string [] formulaFields);
 
-         Net.Vpc.Upa.UpdateQuery Validate(System.Collections.Generic.ICollection<string> formulaFields);
+         Net.TheVpc.Upa.UpdateQuery Validate(System.Collections.Generic.ICollection<string> formulaFields);
 
-         Net.Vpc.Upa.UpdateQuery Validate(Net.Vpc.Upa.Filters.FieldFilter formulaFields);
+         Net.TheVpc.Upa.UpdateQuery Validate(Net.TheVpc.Upa.Filters.FieldFilter formulaFields);
 
-         Net.Vpc.Upa.UpdateQuery ValidateAll();
+         Net.TheVpc.Upa.UpdateQuery ValidateAll();
 
-         Net.Vpc.Upa.UpdateQuery ValidateNone();
+         Net.TheVpc.Upa.UpdateQuery ValidateNone();
 
          bool IsIgnoreUnspecified();
 
-         Net.Vpc.Upa.UpdateQuery SetIgnoreUnspecified(bool ignoreUnspecified);
+         Net.TheVpc.Upa.UpdateQuery SetIgnoreUnspecified(bool ignoreUnspecified);
 
          long Execute();
     }

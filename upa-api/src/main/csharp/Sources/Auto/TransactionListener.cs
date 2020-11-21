@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     /**
@@ -20,6 +20,6 @@ namespace Net.Vpc.Upa
      */
     public interface TransactionListener {
 
-         void Closing(Net.Vpc.Upa.Transaction transaction);
+         void Closing(Net.TheVpc.Upa.Transaction transaction);
     }
 }

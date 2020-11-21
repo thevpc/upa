@@ -10,7 +10,7 @@
  ********************************************************/
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
     internal sealed class FwkConvertUtils{
         public static void ListAddRange<E>(System.Collections.Generic.IList<E> list, System.Collections.Generic.ICollection<E> items)

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Eval.Functions
+namespace Net.TheVpc.Upa.Impl.Eval.Functions
 {
 
 
@@ -19,15 +19,15 @@ namespace Net.Vpc.Upa.Impl.Eval.Functions
      *
      * @author taha.bensalah@gmail.com
      */
-    public class CoalesceEvaluator : Net.Vpc.Upa.Function {
+    public class CoalesceEvaluator : Net.TheVpc.Upa.Function {
 
-        public static readonly Net.Vpc.Upa.Function INSTANCE = new Net.Vpc.Upa.Impl.Eval.Functions.CoalesceEvaluator();
+        public static readonly Net.TheVpc.Upa.Function INSTANCE = new Net.TheVpc.Upa.Impl.Eval.Functions.CoalesceEvaluator();
 
         public CoalesceEvaluator() {
         }
 
 
-        public virtual object Eval(Net.Vpc.Upa.EvalContext evalContext) {
+        public virtual object Eval(Net.TheVpc.Upa.EvalContext evalContext) {
             foreach (object arg in evalContext.GetArguments()) {
                 if (arg != null) {
                     return arg;

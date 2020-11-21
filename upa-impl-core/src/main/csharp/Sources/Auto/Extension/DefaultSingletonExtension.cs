@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Extension
+namespace Net.TheVpc.Upa.Impl.Extension
 {
 
 
@@ -19,29 +19,29 @@ namespace Net.Vpc.Upa.Impl.Extension
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 8/30/12 12:39 AM
      */
-    public class DefaultSingletonExtension : Net.Vpc.Upa.Impl.Extension.AbstractEntityExtension, Net.Vpc.Upa.Persistence.SingletonExtension {
+    public class DefaultSingletonExtension : Net.TheVpc.Upa.Impl.Extension.AbstractEntityExtension, Net.TheVpc.Upa.Persistence.SingletonExtension {
 
 
-        public override void Install(Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.Persistence.EntityOperationManager entityOperationManager, Net.Vpc.Upa.Extensions.EntityExtensionDefinition extension) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public override void Install(Net.TheVpc.Upa.Entity entity, Net.TheVpc.Upa.Persistence.EntityOperationManager entityOperationManager, Net.TheVpc.Upa.Extensions.EntityExtensionDefinition extension) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             base.Install(entity, entityOperationManager, extension);
         }
 
 
-        public override void CommitModelChanges() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Entity entity = GetEntity();
+        public override void CommitModelChanges() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Entity entity = GetEntity();
             if ((entity.GetPrimaryFields().Count==0)) {
-                Net.Vpc.Upa.Field field = entity.AddField("SGLcode", null, Net.Vpc.Upa.FlagSets.Of<E>(Net.Vpc.Upa.UserFieldModifier.ID), null, 0, new Net.Vpc.Upa.Types.IntType(0, 0, false, false), -1);
-                field.SetAccessLevel(Net.Vpc.Upa.AccessLevel.PRIVATE);
-                field.SetPersistFormula(new Net.Vpc.Upa.Sequence(Net.Vpc.Upa.SequenceStrategy.AUTO));
+                Net.TheVpc.Upa.Field field = entity.AddField("SGLcode", null, Net.TheVpc.Upa.FlagSets.Of<E>(Net.TheVpc.Upa.UserFieldModifier.ID), null, 0, new Net.TheVpc.Upa.Types.IntType(0, 0, false, false), -1);
+                field.SetAccessLevel(Net.TheVpc.Upa.AccessLevel.PRIVATE);
+                field.SetPersistFormula(new Net.TheVpc.Upa.Sequence(Net.TheVpc.Upa.SequenceStrategy.AUTO));
             }
-            if (!entity.GetUserExcludeModifiers().Contains(Net.Vpc.Upa.EntityModifier.NAVIGATE)) {
-                entity.GetModifiers().Add(Net.Vpc.Upa.EntityModifier.NAVIGATE);
+            if (!entity.GetUserExcludeModifiers().Contains(Net.TheVpc.Upa.EntityModifier.NAVIGATE)) {
+                entity.GetModifiers().Add(Net.TheVpc.Upa.EntityModifier.NAVIGATE);
             }
         }
 
 
         public virtual bool IsAutoCreate() {
-            Net.Vpc.Upa.Extensions.SingletonExtensionDefinition entitySpec = (Net.Vpc.Upa.Extensions.SingletonExtensionDefinition) GetDefinition();
+            Net.TheVpc.Upa.Extensions.SingletonExtensionDefinition entitySpec = (Net.TheVpc.Upa.Extensions.SingletonExtensionDefinition) GetDefinition();
             return entitySpec.IsAutoCreate();
         }
     }

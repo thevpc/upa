@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
 
@@ -19,8 +19,8 @@ namespace Net.Vpc.Upa.Persistence
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 8/28/12 8:28 PM
      */
-    public interface ViewEntityExtension : Net.Vpc.Upa.Persistence.EntityExtension {
+    public interface ViewEntityExtension : Net.TheVpc.Upa.Persistence.EntityExtension {
 
-         Net.Vpc.Upa.Expressions.QueryStatement GetQuery();
+         Net.TheVpc.Upa.Expressions.QueryStatement GetQuery();
     }
 }

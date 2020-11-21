@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Filters
+namespace Net.TheVpc.Upa.Filters
 {
 
 
@@ -20,6 +20,6 @@ namespace Net.Vpc.Upa.Filters
      */
     public interface EntityFilter {
 
-         bool Accept(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool Accept(Net.TheVpc.Upa.Entity entity) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
     }
 }

@@ -1,6 +1,6 @@
-using Net.Vpc.Upa.Impl.Util;
+using Net.TheVpc.Upa.Impl.Util;
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -11,18 +11,18 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
 //        private readonly R ret;
 //
-//        private readonly Net.Vpc.Upa.Persistence.QueryResult result;
+//        private readonly Net.TheVpc.Upa.Persistence.QueryResult result;
 //
-//        private Net.Vpc.Upa.Impl.Persistence.SingleEntityQueryResult<R> singleEntityQueryResult;
+//        private Net.TheVpc.Upa.Impl.Persistence.SingleEntityQueryResult<R> singleEntityQueryResult;
 //
-//        public SingleEntityQueryResultParseMethodInterceptor(Net.Vpc.Upa.Impl.Persistence.SingleEntityQueryResult<R> singleEntityQueryResult, R ret, Net.Vpc.Upa.Persistence.QueryResult result) {
+//        public SingleEntityQueryResultParseMethodInterceptor(Net.TheVpc.Upa.Impl.Persistence.SingleEntityQueryResult<R> singleEntityQueryResult, R ret, Net.TheVpc.Upa.Persistence.QueryResult result) {
 //            this.singleEntityQueryResult = singleEntityQueryResult;
 //            this.ret = ret;
 //            this.result = result;
 //        }
 //
 //
-//        public virtual R MakeAware() /* throws Net.Vpc.Upa.Exceptions.UPAException */
+//        public virtual R MakeAware() /* throws Net.TheVpc.Upa.Exceptions.UPAException */
 //        {
 //            return ret.Proxy<R>(MyInterceptorMethod);
 //        }
@@ -30,7 +30,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
 //        public object MyInterceptorMethod<T>(T@object, string methodName, object[] args, EmitProxyExecute<T> execute)
 //        {
 //            string name = methodName;
-//            Net.Vpc.Upa.Impl.Persistence.FieldTracking prop = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.Vpc.Upa.Impl.Persistence.FieldTracking>(singleEntityQueryResult.setterToProp,name);
+//            Net.TheVpc.Upa.Impl.Persistence.FieldTracking prop = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.TheVpc.Upa.Impl.Persistence.FieldTracking>(singleEntityQueryResult.setterToProp,name);
 //            if (prop == null) {
 //                return execute(@object, args);
 //            } else {

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Parser
+namespace Net.TheVpc.Upa.Impl.Uql.Parser
 {
 
 
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Parser
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 8/26/12 3:13 PM
      */
-    public abstract class FunctionSQLProvider : Net.Vpc.Upa.Impl.Persistence.SQLProvider {
+    public abstract class FunctionSQLProvider : Net.TheVpc.Upa.Impl.Persistence.SQLProvider {
 
         private System.Type expressionType;
 
@@ -28,12 +28,12 @@ namespace Net.Vpc.Upa.Impl.Uql.Parser
         }
 
 
-        public virtual string GetSQL(object o, Net.Vpc.Upa.Persistence.EntityExecutionContext qlContext, Net.Vpc.Upa.Impl.Persistence.SQLManager sqlManager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledFunction cc = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledFunction) o;
+        public virtual string GetSQL(object o, Net.TheVpc.Upa.Persistence.EntityExecutionContext qlContext, Net.TheVpc.Upa.Impl.Persistence.SQLManager sqlManager, Net.TheVpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledFunction cc = (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledFunction) o;
             return Simplify(qlContext, sqlManager, declarations, cc.GetArguments());
         }
 
-        public virtual string Simplify(Net.Vpc.Upa.Persistence.EntityExecutionContext ctx, Net.Vpc.Upa.Impl.Persistence.SQLManager sqlManager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations, params Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression [] @params) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual string Simplify(Net.TheVpc.Upa.Persistence.EntityExecutionContext ctx, Net.TheVpc.Upa.Impl.Persistence.SQLManager sqlManager, Net.TheVpc.Upa.Impl.Uql.ExpressionDeclarationList declarations, params Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression [] @params) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             string[] p = new string[@params.Length];
             for (int i = 0; i < p.Length; i++) {
                 p[i] = sqlManager.GetSQL(@params[i], ctx, declarations);

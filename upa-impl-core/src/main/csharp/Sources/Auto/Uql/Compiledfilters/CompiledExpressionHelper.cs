@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiledfilters
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledfilters
 {
 
 
@@ -21,29 +21,29 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledfilters
      */
     public sealed class CompiledExpressionHelper {
 
-        public static Net.Vpc.Upa.Impl.Uql.CompiledExpressionFilter PARAM_FILTER = new Net.Vpc.Upa.Impl.Uql.Compiledfilters.TypeCompiledExpressionFilter(typeof(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam));
+        public static Net.TheVpc.Upa.Impl.Uql.CompiledExpressionFilter PARAM_FILTER = new Net.TheVpc.Upa.Impl.Uql.Compiledfilters.TypeCompiledExpressionFilter(typeof(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledParam));
 
-        public static Net.Vpc.Upa.Impl.Uql.CompiledExpressionFilter SELECT_FILTER = new Net.Vpc.Upa.Impl.Uql.Compiledfilters.TypeCompiledExpressionFilter(typeof(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect));
+        public static Net.TheVpc.Upa.Impl.Uql.CompiledExpressionFilter SELECT_FILTER = new Net.TheVpc.Upa.Impl.Uql.Compiledfilters.TypeCompiledExpressionFilter(typeof(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect));
 
-        public static Net.Vpc.Upa.Impl.Uql.CompiledExpressionFilter QUERY_STATEMENT_FILTER = new Net.Vpc.Upa.Impl.Uql.Compiledfilters.TypeCompiledExpressionFilter(typeof(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement));
+        public static Net.TheVpc.Upa.Impl.Uql.CompiledExpressionFilter QUERY_STATEMENT_FILTER = new Net.TheVpc.Upa.Impl.Uql.Compiledfilters.TypeCompiledExpressionFilter(typeof(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement));
 
-        public static Net.Vpc.Upa.Impl.Uql.CompiledExpressionFilter QL_FUNCTION_FILTER = new Net.Vpc.Upa.Impl.Uql.Compiledfilters.TypeCompiledExpressionFilter(typeof(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQLFunctionExpression));
+        public static Net.TheVpc.Upa.Impl.Uql.CompiledExpressionFilter QL_FUNCTION_FILTER = new Net.TheVpc.Upa.Impl.Uql.Compiledfilters.TypeCompiledExpressionFilter(typeof(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQLFunctionExpression));
 
-        public static Net.Vpc.Upa.Impl.Uql.CompiledExpressionFilter DESCENDENT_FILTER = new Net.Vpc.Upa.Impl.Uql.Compiledfilters.TypeCompiledExpressionFilter(typeof(Net.Vpc.Upa.Impl.Uql.Compiledexpression.IsHierarchyDescendentCompiled));
+        public static Net.TheVpc.Upa.Impl.Uql.CompiledExpressionFilter DESCENDENT_FILTER = new Net.TheVpc.Upa.Impl.Uql.Compiledfilters.TypeCompiledExpressionFilter(typeof(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.IsHierarchyDescendentCompiled));
 
-        public static Net.Vpc.Upa.Impl.Uql.CompiledExpressionFilter THIS_VAR_FILTER = new Net.Vpc.Upa.Impl.Uql.Compiledfilters.CompiledExpressionFilterThisVar();
+        public static Net.TheVpc.Upa.Impl.Uql.CompiledExpressionFilter THIS_VAR_FILTER = new Net.TheVpc.Upa.Impl.Uql.Compiledfilters.CompiledExpressionFilterThisVar();
 
         private CompiledExpressionHelper() {
         }
 
-        public static System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar> FindChildrenLeafVars(Net.Vpc.Upa.Expressions.CompiledExpression v) {
-            return ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression) v).FindExpressionsList<T>(Net.Vpc.Upa.Impl.Uql.Compiledfilters.CompiledExpressionFilterLeafVar.INSTANCE);
+        public static System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar> FindChildrenLeafVars(Net.TheVpc.Upa.Expressions.CompiledExpression v) {
+            return ((Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression) v).FindExpressionsList<T>(Net.TheVpc.Upa.Impl.Uql.Compiledfilters.CompiledExpressionFilterLeafVar.INSTANCE);
         }
 
-        public static Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar FindRootVar(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar v) {
+        public static Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar FindRootVar(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar v) {
             while (v != null) {
-                if (v.GetParentExpression() is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) {
-                    v = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) v.GetParentExpression();
+                if (v.GetParentExpression() is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) {
+                    v = (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) v.GetParentExpression();
                 } else {
                     break;
                 }
@@ -51,23 +51,23 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledfilters
             return v;
         }
 
-        public static Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField FindRootCompiledQueryField(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar v) {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e = v;
+        public static Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField FindRootCompiledQueryField(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar v) {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e = v;
             while (e != null) {
-                if (e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField) {
-                    return (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField) e;
+                if (e is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField) {
+                    return (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField) e;
                 }
                 e = e.GetParentExpression();
             }
             return null;
         }
 
-        public static Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect FindEnclosingSelect(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar v) {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression) v;
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar rv = FindRootVar(v);
+        public static Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect FindEnclosingSelect(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar v) {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e = (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression) v;
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar rv = FindRootVar(v);
             while (e != null) {
-                if (e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect) {
-                    Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect s = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect) e;
+                if (e is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect) {
+                    Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect s = (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect) e;
                     string entityAlias = s.GetEntityAlias();
                     if (entityAlias != null && (entityAlias).Length > 0) {
                         if (rv.GetName().Equals(entityAlias)) {
@@ -78,7 +78,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledfilters
                             return s;
                         }
                     }
-                    foreach (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria c in s.GetJoins()) {
+                    foreach (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria c in s.GetJoins()) {
                         string joinAlias = c.GetEntityAlias();
                         if (joinAlias != null && (joinAlias).Length > 0) {
                             if (rv.GetName().Equals(joinAlias)) {

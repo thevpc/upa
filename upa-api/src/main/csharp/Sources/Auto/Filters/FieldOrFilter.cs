@@ -12,24 +12,24 @@
 
 
 using System.Linq;
-namespace Net.Vpc.Upa.Filters
+namespace Net.TheVpc.Upa.Filters
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class FieldOrFilter : Net.Vpc.Upa.Filters.AbstractFieldFilter {
+    public class FieldOrFilter : Net.TheVpc.Upa.Filters.AbstractFieldFilter {
 
-        private Net.Vpc.Upa.Filters.FieldFilter[] v = new Net.Vpc.Upa.Filters.FieldFilter[0];
+        private Net.TheVpc.Upa.Filters.FieldFilter[] v = new Net.TheVpc.Upa.Filters.FieldFilter[0];
 
-        public FieldOrFilter(params Net.Vpc.Upa.Filters.FieldFilter [] filters)  : this(new System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter>(filters)){
+        public FieldOrFilter(params Net.TheVpc.Upa.Filters.FieldFilter [] filters)  : this(new System.Collections.Generic.List<Net.TheVpc.Upa.Filters.FieldFilter>(filters)){
 
         }
 
-        public FieldOrFilter(System.Collections.Generic.IList<Net.Vpc.Upa.Filters.FieldFilter> filters) {
-            System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter> all = new System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter>((filters).Count);
-            foreach (Net.Vpc.Upa.Filters.FieldFilter a in filters) {
+        public FieldOrFilter(System.Collections.Generic.IList<Net.TheVpc.Upa.Filters.FieldFilter> filters) {
+            System.Collections.Generic.List<Net.TheVpc.Upa.Filters.FieldFilter> all = new System.Collections.Generic.List<Net.TheVpc.Upa.Filters.FieldFilter>((filters).Count);
+            foreach (Net.TheVpc.Upa.Filters.FieldFilter a in filters) {
                 if (a != null) {
                     all.Add(a);
                 }
@@ -37,45 +37,45 @@ namespace Net.Vpc.Upa.Filters
             v = all.ToArray();
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Filters.FieldFilter> GetChildren() {
-            return new System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter>(v);
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Filters.FieldFilter> GetChildren() {
+            return new System.Collections.Generic.List<Net.TheVpc.Upa.Filters.FieldFilter>(v);
         }
 
-        public static Net.Vpc.Upa.Filters.FieldOrFilter Or(params Net.Vpc.Upa.Filters.FieldFilter [] filters) {
-            System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter> all = new System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter>(filters.Length);
-            foreach (Net.Vpc.Upa.Filters.FieldFilter filter in filters) {
+        public static Net.TheVpc.Upa.Filters.FieldOrFilter Or(params Net.TheVpc.Upa.Filters.FieldFilter [] filters) {
+            System.Collections.Generic.List<Net.TheVpc.Upa.Filters.FieldFilter> all = new System.Collections.Generic.List<Net.TheVpc.Upa.Filters.FieldFilter>(filters.Length);
+            foreach (Net.TheVpc.Upa.Filters.FieldFilter filter in filters) {
                 if (filter != null) {
-                    if (filter is Net.Vpc.Upa.Filters.FieldOrFilter) {
-                        Net.Vpc.Upa.FwkConvertUtils.CollectionAddRange(all, ((Net.Vpc.Upa.Filters.FieldOrFilter) filter).GetChildren());
+                    if (filter is Net.TheVpc.Upa.Filters.FieldOrFilter) {
+                        Net.TheVpc.Upa.FwkConvertUtils.CollectionAddRange(all, ((Net.TheVpc.Upa.Filters.FieldOrFilter) filter).GetChildren());
                     } else {
                         all.Add(filter);
                     }
                 }
             }
-            return new Net.Vpc.Upa.Filters.FieldOrFilter(all);
+            return new Net.TheVpc.Upa.Filters.FieldOrFilter(all);
         }
 
-        public override Net.Vpc.Upa.Filters.FieldOrFilter Or(Net.Vpc.Upa.Filters.FieldFilter filter) {
+        public override Net.TheVpc.Upa.Filters.FieldOrFilter Or(Net.TheVpc.Upa.Filters.FieldFilter filter) {
             if (filter != null) {
-                if (filter is Net.Vpc.Upa.Filters.FieldOrFilter) {
-                    System.Collections.Generic.IList<Net.Vpc.Upa.Filters.FieldFilter> children = ((Net.Vpc.Upa.Filters.FieldOrFilter) filter).GetChildren();
-                    System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter> all = new System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter>(v.Length + (children).Count);
-                    Net.Vpc.Upa.FwkConvertUtils.CollectionAddRange(all, new System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter>(v));
-                    Net.Vpc.Upa.FwkConvertUtils.CollectionAddRange(all, children);
-                    return new Net.Vpc.Upa.Filters.FieldOrFilter(all);
+                if (filter is Net.TheVpc.Upa.Filters.FieldOrFilter) {
+                    System.Collections.Generic.IList<Net.TheVpc.Upa.Filters.FieldFilter> children = ((Net.TheVpc.Upa.Filters.FieldOrFilter) filter).GetChildren();
+                    System.Collections.Generic.List<Net.TheVpc.Upa.Filters.FieldFilter> all = new System.Collections.Generic.List<Net.TheVpc.Upa.Filters.FieldFilter>(v.Length + (children).Count);
+                    Net.TheVpc.Upa.FwkConvertUtils.CollectionAddRange(all, new System.Collections.Generic.List<Net.TheVpc.Upa.Filters.FieldFilter>(v));
+                    Net.TheVpc.Upa.FwkConvertUtils.CollectionAddRange(all, children);
+                    return new Net.TheVpc.Upa.Filters.FieldOrFilter(all);
                 } else {
-                    System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter> all = new System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter>(v.Length + 1);
-                    Net.Vpc.Upa.FwkConvertUtils.CollectionAddRange(all, new System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter>(v));
+                    System.Collections.Generic.List<Net.TheVpc.Upa.Filters.FieldFilter> all = new System.Collections.Generic.List<Net.TheVpc.Upa.Filters.FieldFilter>(v.Length + 1);
+                    Net.TheVpc.Upa.FwkConvertUtils.CollectionAddRange(all, new System.Collections.Generic.List<Net.TheVpc.Upa.Filters.FieldFilter>(v));
                     all.Add(filter);
-                    return new Net.Vpc.Upa.Filters.FieldOrFilter(all);
+                    return new Net.TheVpc.Upa.Filters.FieldOrFilter(all);
                 }
             } else {
                 return this;
             }
         }
 
-        public override bool Accept(Net.Vpc.Upa.Field field) {
-            foreach (Net.Vpc.Upa.Filters.FieldFilter fieldFilter in v) {
+        public override bool Accept(Net.TheVpc.Upa.Field field) {
+            foreach (Net.TheVpc.Upa.Filters.FieldFilter fieldFilter in v) {
                 if (!fieldFilter.Accept(field)) {
                     return false;
                 }
@@ -85,7 +85,7 @@ namespace Net.Vpc.Upa.Filters
 
 
         public override bool AcceptDynamic() {
-            foreach (Net.Vpc.Upa.Filters.FieldFilter fieldFilter in v) {
+            foreach (Net.TheVpc.Upa.Filters.FieldFilter fieldFilter in v) {
                 if (fieldFilter.AcceptDynamic()) {
                     return true;
                 }
@@ -115,7 +115,7 @@ namespace Net.Vpc.Upa.Filters
         public override int GetHashCode() {
             int hash = 3;
             hash = 43 * hash;
-            foreach (Net.Vpc.Upa.Filters.FieldFilter v1 in this.v) {
+            foreach (Net.TheVpc.Upa.Filters.FieldFilter v1 in this.v) {
                 hash = 43 * hash + v1.GetHashCode();
             }
             return hash;
@@ -129,7 +129,7 @@ namespace Net.Vpc.Upa.Filters
             if (GetType() != obj.GetType()) {
                 return false;
             }
-            Net.Vpc.Upa.Filters.FieldOrFilter other = (Net.Vpc.Upa.Filters.FieldOrFilter) obj;
+            Net.TheVpc.Upa.Filters.FieldOrFilter other = (Net.TheVpc.Upa.Filters.FieldOrFilter) obj;
             if (this.v == other.v) {
                 return true;
             }

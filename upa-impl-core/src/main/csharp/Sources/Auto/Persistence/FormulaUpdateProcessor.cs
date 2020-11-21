@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -24,23 +24,23 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
         internal bool forceExpressionTypeCasting = false;
 
-        private System.Collections.Generic.IDictionary<int? , Net.Vpc.Upa.Impl.Persistence.ValidationPass[]> orderedPasses = new System.Collections.Generic.Dictionary<int? , Net.Vpc.Upa.Impl.Persistence.ValidationPass[]>(1);
+        private System.Collections.Generic.IDictionary<int? , Net.TheVpc.Upa.Impl.Persistence.ValidationPass[]> orderedPasses = new System.Collections.Generic.Dictionary<int? , Net.TheVpc.Upa.Impl.Persistence.ValidationPass[]>(1);
 
-        private System.Collections.Generic.ISet<Net.Vpc.Upa.Field> inUseFields = new System.Collections.Generic.HashSet<Net.Vpc.Upa.Field>();
+        private System.Collections.Generic.ISet<Net.TheVpc.Upa.Field> inUseFields = new System.Collections.Generic.HashSet<Net.TheVpc.Upa.Field>();
 
         private int size = 0;
 
-        private Net.Vpc.Upa.Persistence.EntityOperationManager entityOperationManager;
+        private Net.TheVpc.Upa.Persistence.EntityOperationManager entityOperationManager;
 
-        private Net.Vpc.Upa.PersistenceUnit persistenceUnit;
+        private Net.TheVpc.Upa.PersistenceUnit persistenceUnit;
 
-        private Net.Vpc.Upa.Entity entity;
+        private Net.TheVpc.Upa.Entity entity;
 
         private bool onPersist;
 
-        private Net.Vpc.Upa.Expressions.Expression expr;
+        private Net.TheVpc.Upa.Expressions.Expression expr;
 
-        private Net.Vpc.Upa.Persistence.EntityExecutionContext context;
+        private Net.TheVpc.Upa.Persistence.EntityExecutionContext context;
 
         private System.Collections.Generic.IList<object> keysToUpdate = null;
 
@@ -48,94 +48,94 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
         internal bool isUpdateComplexValuesIncludingUpdatedTableSupported;
 
-        public FormulaUpdateProcessor(bool onPersist, System.Collections.Generic.IList<Net.Vpc.Upa.Field> fields, Net.Vpc.Upa.Expressions.Expression expr, Net.Vpc.Upa.Persistence.EntityExecutionContext context, Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.Persistence.EntityOperationManager epm) {
+        public FormulaUpdateProcessor(bool onPersist, System.Collections.Generic.IList<Net.TheVpc.Upa.Field> fields, Net.TheVpc.Upa.Expressions.Expression expr, Net.TheVpc.Upa.Persistence.EntityExecutionContext context, Net.TheVpc.Upa.Entity entity, Net.TheVpc.Upa.Persistence.EntityOperationManager epm) {
             this.entityOperationManager = epm;
             this.entity = entity;
             this.expr = expr;
             this.context = context;
             this.onPersist = onPersist;
             this.persistenceUnit = entity.GetPersistenceUnit();
-            foreach (Net.Vpc.Upa.Field field in fields) {
+            foreach (Net.TheVpc.Upa.Field field in fields) {
                 AddField(field);
             }
             isUpdateComplexValuesStatementSupported = persistenceUnit.GetPersistenceStore().GetProperties().GetBoolean("isUpdateComplexValuesStatementSupported", false);
             isUpdateComplexValuesIncludingUpdatedTableSupported = persistenceUnit.GetPersistenceStore().GetProperties().GetBoolean("isUpdateComplexValuesIncludingUpdatedTableSupported", false);
         }
 
-        private static Net.Vpc.Upa.Expressions.Expression GetFieldExpression(Net.Vpc.Upa.Field field, bool forPersist) {
+        private static Net.TheVpc.Upa.Expressions.Expression GetFieldExpression(Net.TheVpc.Upa.Field field, bool forPersist) {
             if (forPersist) {
-                return (field.GetPersistFormula() is Net.Vpc.Upa.ExpressionFormula) ? ((Net.Vpc.Upa.ExpressionFormula) field.GetPersistFormula()).GetExpression() : null;
+                return (field.GetPersistFormula() is Net.TheVpc.Upa.ExpressionFormula) ? ((Net.TheVpc.Upa.ExpressionFormula) field.GetPersistFormula()).GetExpression() : null;
             } else {
-                return (field.GetUpdateFormula() is Net.Vpc.Upa.ExpressionFormula) ? ((Net.Vpc.Upa.ExpressionFormula) field.GetUpdateFormula()).GetExpression() : null;
+                return (field.GetUpdateFormula() is Net.TheVpc.Upa.ExpressionFormula) ? ((Net.TheVpc.Upa.ExpressionFormula) field.GetUpdateFormula()).GetExpression() : null;
             }
         }
 
-        public virtual bool AddField(Net.Vpc.Upa.Field f) {
+        public virtual bool AddField(Net.TheVpc.Upa.Field f) {
             if (inUseFields.Contains(f)) {
                 return false;
             }
-            Net.Vpc.Upa.Formula formula = onPersist ? f.GetPersistFormula() : f.GetUpdateFormula();
-            Net.Vpc.Upa.Impl.Persistence.ValidationPass pass = null;
+            Net.TheVpc.Upa.Formula formula = onPersist ? f.GetPersistFormula() : f.GetUpdateFormula();
+            Net.TheVpc.Upa.Impl.Persistence.ValidationPass pass = null;
             int formulaPassInteger = onPersist ? f.GetPersistFormulaOrder() : f.GetUpdateFormulaOrder();
             // passIndexes.add(formulaPassInteger);
-            Net.Vpc.Upa.Impl.Persistence.ValidationPass[] passArray = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<int?,Net.Vpc.Upa.Impl.Persistence.ValidationPass[]>(orderedPasses,formulaPassInteger);
+            Net.TheVpc.Upa.Impl.Persistence.ValidationPass[] passArray = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<int?,Net.TheVpc.Upa.Impl.Persistence.ValidationPass[]>(orderedPasses,formulaPassInteger);
             if (passArray == null) {
-                orderedPasses[formulaPassInteger]=passArray = new Net.Vpc.Upa.Impl.Persistence.ValidationPass[((Net.Vpc.Upa.Impl.Persistence.ValidationPassType[])System.Enum.GetValues(typeof(Net.Vpc.Upa.Impl.Persistence.ValidationPassType))).Length];
+                orderedPasses[formulaPassInteger]=passArray = new Net.TheVpc.Upa.Impl.Persistence.ValidationPass[((Net.TheVpc.Upa.Impl.Persistence.ValidationPassType[])System.Enum.GetValues(typeof(Net.TheVpc.Upa.Impl.Persistence.ValidationPassType))).Length];
             }
             int pass1 = formulaPassInteger;
-            if (formula is Net.Vpc.Upa.CustomUpdaterFormula) {
-                pass = passArray[((int)Net.Vpc.Upa.Impl.Persistence.ValidationPassType.MANUAL_VALIDATION)];
+            if (formula is Net.TheVpc.Upa.CustomUpdaterFormula) {
+                pass = passArray[((int)Net.TheVpc.Upa.Impl.Persistence.ValidationPassType.MANUAL_VALIDATION)];
                 if (pass == null) {
-                    pass = passArray[((int)Net.Vpc.Upa.Impl.Persistence.ValidationPassType.MANUAL_VALIDATION)] = new Net.Vpc.Upa.Impl.Persistence.ValidationPass(pass1, Net.Vpc.Upa.Impl.Persistence.ValidationPassType.MANUAL_VALIDATION);
+                    pass = passArray[((int)Net.TheVpc.Upa.Impl.Persistence.ValidationPassType.MANUAL_VALIDATION)] = new Net.TheVpc.Upa.Impl.Persistence.ValidationPass(pass1, Net.TheVpc.Upa.Impl.Persistence.ValidationPassType.MANUAL_VALIDATION);
                     size++;
                 }
-            } else if (formula is Net.Vpc.Upa.CustomFormula) {
-                pass = passArray[((int)Net.Vpc.Upa.Impl.Persistence.ValidationPassType.CUSTOM_VALIDATION)];
+            } else if (formula is Net.TheVpc.Upa.CustomFormula) {
+                pass = passArray[((int)Net.TheVpc.Upa.Impl.Persistence.ValidationPassType.CUSTOM_VALIDATION)];
                 if (pass == null) {
-                    pass = passArray[((int)Net.Vpc.Upa.Impl.Persistence.ValidationPassType.CUSTOM_VALIDATION)] = new Net.Vpc.Upa.Impl.Persistence.ValidationPass(pass1, Net.Vpc.Upa.Impl.Persistence.ValidationPassType.CUSTOM_VALIDATION);
+                    pass = passArray[((int)Net.TheVpc.Upa.Impl.Persistence.ValidationPassType.CUSTOM_VALIDATION)] = new Net.TheVpc.Upa.Impl.Persistence.ValidationPass(pass1, Net.TheVpc.Upa.Impl.Persistence.ValidationPassType.CUSTOM_VALIDATION);
                     size++;
                 }
             } else if (!entityOperationManager.GetPersistenceStore().IsComplexSelectSupported()) {
-                Net.Vpc.Upa.Expressions.Expression fe = GetFieldExpression(f, onPersist);
-                Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression ce = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression) entity.Compile(fe);
-                bool found = ce.FindFirstExpression<T>(Net.Vpc.Upa.Impl.Uql.Compiledfilters.CompiledExpressionHelper.QUERY_STATEMENT_FILTER) != default(T);
+                Net.TheVpc.Upa.Expressions.Expression fe = GetFieldExpression(f, onPersist);
+                Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression ce = (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression) entity.Compile(fe);
+                bool found = ce.FindFirstExpression<T>(Net.TheVpc.Upa.Impl.Uql.Compiledfilters.CompiledExpressionHelper.QUERY_STATEMENT_FILTER) != default(T);
                 if (found) {
-                    pass = passArray[((int)Net.Vpc.Upa.Impl.Persistence.ValidationPassType.ITERATIVE_VALIDATION)];
+                    pass = passArray[((int)Net.TheVpc.Upa.Impl.Persistence.ValidationPassType.ITERATIVE_VALIDATION)];
                     if (pass == null) {
-                        pass = passArray[((int)Net.Vpc.Upa.Impl.Persistence.ValidationPassType.ITERATIVE_VALIDATION)] = new Net.Vpc.Upa.Impl.Persistence.ValidationPass(pass1, Net.Vpc.Upa.Impl.Persistence.ValidationPassType.ITERATIVE_VALIDATION);
+                        pass = passArray[((int)Net.TheVpc.Upa.Impl.Persistence.ValidationPassType.ITERATIVE_VALIDATION)] = new Net.TheVpc.Upa.Impl.Persistence.ValidationPass(pass1, Net.TheVpc.Upa.Impl.Persistence.ValidationPassType.ITERATIVE_VALIDATION);
                         size++;
                     }
                 } else {
-                    pass = passArray[((int)Net.Vpc.Upa.Impl.Persistence.ValidationPassType.DEFAULT_VALIDATION)];
+                    pass = passArray[((int)Net.TheVpc.Upa.Impl.Persistence.ValidationPassType.DEFAULT_VALIDATION)];
                     if (pass == null) {
-                        pass = passArray[((int)Net.Vpc.Upa.Impl.Persistence.ValidationPassType.DEFAULT_VALIDATION)] = new Net.Vpc.Upa.Impl.Persistence.ValidationPass(pass1, Net.Vpc.Upa.Impl.Persistence.ValidationPassType.DEFAULT_VALIDATION);
+                        pass = passArray[((int)Net.TheVpc.Upa.Impl.Persistence.ValidationPassType.DEFAULT_VALIDATION)] = new Net.TheVpc.Upa.Impl.Persistence.ValidationPass(pass1, Net.TheVpc.Upa.Impl.Persistence.ValidationPassType.DEFAULT_VALIDATION);
                         size++;
                     }
                 }
             } else {
-                pass = passArray[((int)Net.Vpc.Upa.Impl.Persistence.ValidationPassType.DEFAULT_VALIDATION)];
+                pass = passArray[((int)Net.TheVpc.Upa.Impl.Persistence.ValidationPassType.DEFAULT_VALIDATION)];
                 if (pass == null) {
-                    pass = passArray[((int)Net.Vpc.Upa.Impl.Persistence.ValidationPassType.DEFAULT_VALIDATION)] = new Net.Vpc.Upa.Impl.Persistence.ValidationPass(pass1, Net.Vpc.Upa.Impl.Persistence.ValidationPassType.DEFAULT_VALIDATION);
+                    pass = passArray[((int)Net.TheVpc.Upa.Impl.Persistence.ValidationPassType.DEFAULT_VALIDATION)] = new Net.TheVpc.Upa.Impl.Persistence.ValidationPass(pass1, Net.TheVpc.Upa.Impl.Persistence.ValidationPassType.DEFAULT_VALIDATION);
                     size++;
                 }
             }
             pass.GetFields().Add(f);
             inUseFields.Add(f);
-            System.Collections.Generic.ICollection<Net.Vpc.Upa.PrimitiveField> dependency = (System.Collections.Generic.ICollection<Net.Vpc.Upa.PrimitiveField>) f.GetProperties().GetObject<T>(onPersist ? Net.Vpc.Upa.Impl.DefaultEntity.PERSIST_DEPENDENT_FIELDS : Net.Vpc.Upa.Impl.DefaultEntity.UPDATE_DEPENDENT_FIELDS);
+            System.Collections.Generic.ICollection<Net.TheVpc.Upa.PrimitiveField> dependency = (System.Collections.Generic.ICollection<Net.TheVpc.Upa.PrimitiveField>) f.GetProperties().GetObject<T>(onPersist ? Net.TheVpc.Upa.Impl.DefaultEntity.PERSIST_DEPENDENT_FIELDS : Net.TheVpc.Upa.Impl.DefaultEntity.UPDATE_DEPENDENT_FIELDS);
             if (dependency != null) {
-                foreach (Net.Vpc.Upa.PrimitiveField aDependency in dependency) {
-                    Net.Vpc.Upa.PrimitiveField df = (Net.Vpc.Upa.PrimitiveField) aDependency;
+                foreach (Net.TheVpc.Upa.PrimitiveField aDependency in dependency) {
+                    Net.TheVpc.Upa.PrimitiveField df = (Net.TheVpc.Upa.PrimitiveField) aDependency;
                     //include only dependent fields from the same entity
                     if (df.GetEntity().GetName().Equals(f.GetEntity().GetName())) {
                         // add only formulas fields that are validateSupported
                         if (onPersist) {
-                            Net.Vpc.Upa.Formula ff = df.GetPersistFormula();
-                            if (ff != null && df.GetModifiers().Contains(Net.Vpc.Upa.FieldModifier.PERSIST_FORMULA)) {
+                            Net.TheVpc.Upa.Formula ff = df.GetPersistFormula();
+                            if (ff != null && df.GetModifiers().Contains(Net.TheVpc.Upa.FieldModifier.PERSIST_FORMULA)) {
                                 AddField(df);
                             }
                         } else {
-                            Net.Vpc.Upa.Formula ff = df.GetUpdateFormula();
-                            if (ff != null && df.GetModifiers().Contains(Net.Vpc.Upa.FieldModifier.UPDATE_FORMULA)) {
+                            Net.TheVpc.Upa.Formula ff = df.GetUpdateFormula();
+                            if (ff != null && df.GetModifiers().Contains(Net.TheVpc.Upa.FieldModifier.UPDATE_FORMULA)) {
                                 AddField(df);
                             }
                         }
@@ -150,8 +150,8 @@ namespace Net.Vpc.Upa.Impl.Persistence
         }
 
         public virtual int Size0() {
-            System.Collections.Generic.SortedSet<Net.Vpc.Upa.Impl.Persistence.ValidationPass> ts = new System.Collections.Generic.SortedSet<Net.Vpc.Upa.Impl.Persistence.ValidationPass>();
-            foreach (Net.Vpc.Upa.Impl.Persistence.ValidationPass[] o in (orderedPasses).Values) {
+            System.Collections.Generic.SortedSet<Net.TheVpc.Upa.Impl.Persistence.ValidationPass> ts = new System.Collections.Generic.SortedSet<Net.TheVpc.Upa.Impl.Persistence.ValidationPass>();
+            foreach (Net.TheVpc.Upa.Impl.Persistence.ValidationPass[] o in (orderedPasses).Values) {
                 for (int i = 0; i < 4; i++) {
                     if (o[i] != null) {
                         ts.Add(o[i]);
@@ -161,9 +161,9 @@ namespace Net.Vpc.Upa.Impl.Persistence
             return (ts).Count;
         }
 
-        public virtual System.Collections.Generic.ICollection<Net.Vpc.Upa.Impl.Persistence.ValidationPass> GetValidationPasses() {
-            System.Collections.Generic.SortedSet<Net.Vpc.Upa.Impl.Persistence.ValidationPass> ts = new System.Collections.Generic.SortedSet<Net.Vpc.Upa.Impl.Persistence.ValidationPass>();
-            foreach (Net.Vpc.Upa.Impl.Persistence.ValidationPass[] o in (orderedPasses).Values) {
+        public virtual System.Collections.Generic.ICollection<Net.TheVpc.Upa.Impl.Persistence.ValidationPass> GetValidationPasses() {
+            System.Collections.Generic.SortedSet<Net.TheVpc.Upa.Impl.Persistence.ValidationPass> ts = new System.Collections.Generic.SortedSet<Net.TheVpc.Upa.Impl.Persistence.ValidationPass>();
+            foreach (Net.TheVpc.Upa.Impl.Persistence.ValidationPass[] o in (orderedPasses).Values) {
                 for (int i = 0; i < 4; i++) {
                     if (o[i] != null) {
                         ts.Add(o[i]);
@@ -173,7 +173,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
             return ts;
         }
 
-        public virtual long UpdateFormulasCore() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual long UpdateFormulasCore() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             //        Object transaction = getPersistenceUnit().getPersistenceStore().getConnection().tryBeginTransaction();
             //        boolean transactionSucceeded = false;
             //        try {
@@ -189,25 +189,25 @@ namespace Net.Vpc.Upa.Impl.Persistence
             //                        + monitor.getMax());
             //            }
             int allUpdates = 0;
-            foreach (Net.Vpc.Upa.Impl.Persistence.ValidationPass validationPass in GetValidationPasses()) {
+            foreach (Net.TheVpc.Upa.Impl.Persistence.ValidationPass validationPass in GetValidationPasses()) {
                 int updates = 0;
                 switch(validationPass.GetType()) {
-                    case Net.Vpc.Upa.Impl.Persistence.ValidationPassType.DEFAULT_VALIDATION:
+                    case Net.TheVpc.Upa.Impl.Persistence.ValidationPassType.DEFAULT_VALIDATION:
                         {
                             updates = ValidateDefault(validationPass.GetFields(), expr);
                             break;
                         }
-                    case Net.Vpc.Upa.Impl.Persistence.ValidationPassType.ITERATIVE_VALIDATION:
+                    case Net.TheVpc.Upa.Impl.Persistence.ValidationPassType.ITERATIVE_VALIDATION:
                         {
                             updates = ValidateDefaultIterative(validationPass.GetFields(), expr);
                             break;
                         }
-                    case Net.Vpc.Upa.Impl.Persistence.ValidationPassType.CUSTOM_VALIDATION:
+                    case Net.TheVpc.Upa.Impl.Persistence.ValidationPassType.CUSTOM_VALIDATION:
                         {
                             updates = ValidateCustomFormula(validationPass.GetFields());
                             break;
                         }
-                    case Net.Vpc.Upa.Impl.Persistence.ValidationPassType.MANUAL_VALIDATION:
+                    case Net.TheVpc.Upa.Impl.Persistence.ValidationPassType.MANUAL_VALIDATION:
                         {
                             // System.out.println("MANUAL_VALIDATION = " +
                             // validationPass.pass+" : "+validationPass.fields);
@@ -230,19 +230,19 @@ namespace Net.Vpc.Upa.Impl.Persistence
             return allUpdates;
         }
 
-        protected internal virtual int ValidateCustomUpdaterFormula(System.Collections.Generic.ISet<Net.Vpc.Upa.Field> fields) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            System.Collections.Generic.HashSet<Net.Vpc.Upa.CustomUpdaterFormula> unique = new System.Collections.Generic.HashSet<Net.Vpc.Upa.CustomUpdaterFormula>();
-            foreach (Net.Vpc.Upa.Field field in fields) {
-                Net.Vpc.Upa.CustomUpdaterFormula c = (Net.Vpc.Upa.CustomUpdaterFormula) (onPersist ? field.GetPersistFormula() : field.GetUpdateFormula());
+        protected internal virtual int ValidateCustomUpdaterFormula(System.Collections.Generic.ISet<Net.TheVpc.Upa.Field> fields) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            System.Collections.Generic.HashSet<Net.TheVpc.Upa.CustomUpdaterFormula> unique = new System.Collections.Generic.HashSet<Net.TheVpc.Upa.CustomUpdaterFormula>();
+            foreach (Net.TheVpc.Upa.Field field in fields) {
+                Net.TheVpc.Upa.CustomUpdaterFormula c = (Net.TheVpc.Upa.CustomUpdaterFormula) (onPersist ? field.GetPersistFormula() : field.GetUpdateFormula());
                 unique.Add(c);
             }
-            foreach (Net.Vpc.Upa.CustomUpdaterFormula f in unique) {
+            foreach (Net.TheVpc.Upa.CustomUpdaterFormula f in unique) {
                 f.UpdateFormula(fields, expr, context);
             }
             return (int) entity.GetEntityCount(expr);
         }
 
-        protected internal virtual int ValidateCustomFormula(System.Collections.Generic.ISet<Net.Vpc.Upa.Field> fields) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        protected internal virtual int ValidateCustomFormula(System.Collections.Generic.ISet<Net.TheVpc.Upa.Field> fields) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             //                        if (monitor != null) {
             //                            if (monitor.isStopped()) {
             //                                return;
@@ -261,11 +261,11 @@ namespace Net.Vpc.Upa.Impl.Persistence
                 // System.out.println("ITERATIVE_VALIDATION = " +
                 // validationPass.pass+" : "+validationPass.fields+" :
                 // "+keysToUpdate[r]);
-                Net.Vpc.Upa.Record u = entity.GetBuilder().CreateRecord();
-                foreach (Net.Vpc.Upa.Field field in fields) {
-                    Net.Vpc.Upa.CustomFormula cf = (Net.Vpc.Upa.CustomFormula) (onPersist ? field.GetPersistFormula() : field.GetUpdateFormula());
+                Net.TheVpc.Upa.Record u = entity.GetBuilder().CreateRecord();
+                foreach (Net.TheVpc.Upa.Field field in fields) {
+                    Net.TheVpc.Upa.CustomFormula cf = (Net.TheVpc.Upa.CustomFormula) (onPersist ? field.GetPersistFormula() : field.GetUpdateFormula());
                     object v = cf.GetValue(field, aKeysToUpdate, context);
-                    u.SetObject(field.GetName(), new Net.Vpc.Upa.Expressions.Cast(new Net.Vpc.Upa.Expressions.Param(null, v), field.GetDataType()));
+                    u.SetObject(field.GetName(), new Net.TheVpc.Upa.Expressions.Cast(new Net.TheVpc.Upa.Expressions.Param(null, v), field.GetDataType()));
                 }
                 x += entity.UpdateCore(u, entity.GetBuilder().IdToExpression(aKeysToUpdate, entity.GetName()), context);
             }
@@ -285,7 +285,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
             return keysToUpdate;
         }
 
-        protected internal virtual int ValidateDefaultIterative(System.Collections.Generic.ISet<Net.Vpc.Upa.Field> fields, Net.Vpc.Upa.Expressions.Expression expression) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        protected internal virtual int ValidateDefaultIterative(System.Collections.Generic.ISet<Net.TheVpc.Upa.Field> fields, Net.TheVpc.Upa.Expressions.Expression expression) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             //                        if (monitor != null) {
             //                            if (monitor.isStopped()) {
             //                                return;
@@ -312,21 +312,21 @@ namespace Net.Vpc.Upa.Impl.Persistence
             return x;
         }
 
-        protected internal virtual int ValidateDefault(System.Collections.Generic.ICollection<Net.Vpc.Upa.Field> fields, Net.Vpc.Upa.Expressions.Expression expression) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        protected internal virtual int ValidateDefault(System.Collections.Generic.ICollection<Net.TheVpc.Upa.Field> fields, Net.TheVpc.Upa.Expressions.Expression expression) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             // System.out.println("DEFAULT_VALIDATION = " +
             // validationPass.pass+" : "+ validationPass.fields);
-            Net.Vpc.Upa.Record u = entity.GetBuilder().CreateRecord();
-            foreach (Net.Vpc.Upa.Field field in fields) {
-                Net.Vpc.Upa.Expressions.Expression fieldExpression = GetFieldExpression(field, onPersist);
-                Net.Vpc.Upa.Expressions.Expression validExpression = fieldExpression;
-                if (forceExpressionTypeCasting || (fieldExpression is Net.Vpc.Upa.Expressions.Literal && ((Net.Vpc.Upa.Expressions.Literal) fieldExpression).GetValue() == null)) {
-                    validExpression = new Net.Vpc.Upa.Expressions.Cast(fieldExpression, field.GetDataType());
+            Net.TheVpc.Upa.Record u = entity.GetBuilder().CreateRecord();
+            foreach (Net.TheVpc.Upa.Field field in fields) {
+                Net.TheVpc.Upa.Expressions.Expression fieldExpression = GetFieldExpression(field, onPersist);
+                Net.TheVpc.Upa.Expressions.Expression validExpression = fieldExpression;
+                if (forceExpressionTypeCasting || (fieldExpression is Net.TheVpc.Upa.Expressions.Literal && ((Net.TheVpc.Upa.Expressions.Literal) fieldExpression).GetValue() == null)) {
+                    validExpression = new Net.TheVpc.Upa.Expressions.Cast(fieldExpression, field.GetDataType());
                 }
                 u.SetObject(field.GetName(), validExpression);
             }
             try {
                 return entity.UpdateCore(u, expression, context);
-            } catch (Net.Vpc.Upa.Exceptions.UPAException ex) {
+            } catch (Net.TheVpc.Upa.Exceptions.UPAException ex) {
                 //            Log.bug(ex);
                 //            Select sb0 = new Select();
                 //            for (Field f : fields) {

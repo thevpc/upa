@@ -11,18 +11,18 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
-    public sealed class XOr : Net.Vpc.Upa.Expressions.BinaryOperatorExpression {
+    public sealed class XOr : Net.TheVpc.Upa.Expressions.BinaryOperatorExpression {
 
 
 
-        public XOr(Net.Vpc.Upa.Expressions.Expression left, object right)  : base(Net.Vpc.Upa.Expressions.BinaryOperator.XOR, left, right){
+        public XOr(Net.TheVpc.Upa.Expressions.Expression left, object right)  : base(Net.TheVpc.Upa.Expressions.BinaryOperator.XOR, left, right){
 
         }
 
-        public XOr(Net.Vpc.Upa.Expressions.Expression left, Net.Vpc.Upa.Expressions.Expression right)  : base(Net.Vpc.Upa.Expressions.BinaryOperator.XOR, left, right){
+        public XOr(Net.TheVpc.Upa.Expressions.Expression left, Net.TheVpc.Upa.Expressions.Expression right)  : base(Net.TheVpc.Upa.Expressions.BinaryOperator.XOR, left, right){
 
         }
     }

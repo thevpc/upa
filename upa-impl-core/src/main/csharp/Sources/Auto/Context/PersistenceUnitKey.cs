@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Context
+namespace Net.TheVpc.Upa.Impl.Context
 {
 
 
@@ -20,16 +20,16 @@ namespace Net.Vpc.Upa.Impl.Context
     * @creationdate 1/8/13 1:55 AM*/
     internal class PersistenceUnitKey {
 
-        private Net.Vpc.Upa.PersistenceUnit persistenceUnit;
+        private Net.TheVpc.Upa.PersistenceUnit persistenceUnit;
 
         private string key;
 
-        public PersistenceUnitKey(Net.Vpc.Upa.PersistenceUnit persistenceUnit, string key) {
+        public PersistenceUnitKey(Net.TheVpc.Upa.PersistenceUnit persistenceUnit, string key) {
             this.persistenceUnit = persistenceUnit;
             this.key = key;
         }
 
-        public virtual Net.Vpc.Upa.PersistenceUnit GetPersistenceUnit() {
+        public virtual Net.TheVpc.Upa.PersistenceUnit GetPersistenceUnit() {
             return persistenceUnit;
         }
 
@@ -58,7 +58,7 @@ namespace Net.Vpc.Upa.Impl.Context
             if (GetType() != obj.GetType()) {
                 return false;
             }
-            Net.Vpc.Upa.Impl.Context.PersistenceUnitKey other = (Net.Vpc.Upa.Impl.Context.PersistenceUnitKey) obj;
+            Net.TheVpc.Upa.Impl.Context.PersistenceUnitKey other = (Net.TheVpc.Upa.Impl.Context.PersistenceUnitKey) obj;
             if (this.persistenceUnit != other.persistenceUnit && (this.persistenceUnit == null || !this.persistenceUnit.Equals(other.persistenceUnit))) {
                 return false;
             }

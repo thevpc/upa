@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Result
+namespace Net.TheVpc.Upa.Impl.Persistence.Result
 {
 
 
@@ -20,6 +20,6 @@ namespace Net.Vpc.Upa.Impl.Persistence.Result
      */
     public interface QueryResultRelationLoader {
 
-         object LoadObject(Net.Vpc.Upa.Entity e, object id, bool record, Net.Vpc.Upa.Impl.Persistence.Result.LoaderContext context);
+         object LoadObject(Net.TheVpc.Upa.Entity e, object id, bool record, Net.TheVpc.Upa.Impl.Persistence.Result.LoaderContext context);
     }
 }

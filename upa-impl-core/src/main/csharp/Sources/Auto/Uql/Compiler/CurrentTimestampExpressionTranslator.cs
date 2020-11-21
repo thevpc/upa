@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiler
+namespace Net.TheVpc.Upa.Impl.Uql.Compiler
 {
 
 
@@ -19,17 +19,17 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiler
      *
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class CurrentTimestampExpressionTranslator : Net.Vpc.Upa.Impl.Uql.ExpressionTranslator {
+    public class CurrentTimestampExpressionTranslator : Net.TheVpc.Upa.Impl.Uql.ExpressionTranslator {
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TranslateExpression(object o, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
-            return CompileCurrentTimestamp((Net.Vpc.Upa.Expressions.CurrentTimestamp) o, declarations);
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TranslateExpression(object o, Net.TheVpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.TheVpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
+            return CompileCurrentTimestamp((Net.TheVpc.Upa.Expressions.CurrentTimestamp) o, declarations);
         }
 
-        protected internal virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledCurrentTimestamp CompileCurrentTimestamp(Net.Vpc.Upa.Expressions.CurrentTimestamp v, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
+        protected internal virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledCurrentTimestamp CompileCurrentTimestamp(Net.TheVpc.Upa.Expressions.CurrentTimestamp v, Net.TheVpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
             if (v == null) {
                 return null;
             }
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledCurrentTimestamp s = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledCurrentTimestamp();
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledCurrentTimestamp s = new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledCurrentTimestamp();
             //        s.setDeclarationList(declarations);
             return s;
         }

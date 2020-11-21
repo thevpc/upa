@@ -11,24 +11,24 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
-    public class DefaultMultiRecord : Net.Vpc.Upa.MultiRecord {
+    public class DefaultMultiRecord : Net.TheVpc.Upa.MultiRecord {
 
         public const string NO_ENTITY = "*";
 
-        private System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Record> records = new System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Record>();
+        private System.Collections.Generic.IDictionary<string , Net.TheVpc.Upa.Record> records = new System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Record>();
 
-        private Net.Vpc.Upa.Record plainRecord;
+        private Net.TheVpc.Upa.Record plainRecord;
 
         public virtual int EntitySize() {
             int size = 0;
             if (IsValidRecord(plainRecord)) {
                 size++;
             }
-            foreach (Net.Vpc.Upa.Record record in (records).Values) {
+            foreach (Net.TheVpc.Upa.Record record in (records).Values) {
                 if (IsValidRecord(record)) {
                     size++;
                 }
@@ -36,34 +36,34 @@ namespace Net.Vpc.Upa.Impl
             return size;
         }
 
-        private bool IsValidRecord(Net.Vpc.Upa.Record r) {
+        private bool IsValidRecord(Net.TheVpc.Upa.Record r) {
             return r != null && r.Size() > 0;
         }
 
         public virtual int FieldSize() {
             int s = 0;
-            foreach (Net.Vpc.Upa.Record record in (records).Values) {
+            foreach (Net.TheVpc.Upa.Record record in (records).Values) {
                 s += record.Size();
             }
             return s;
         }
 
-        public virtual Net.Vpc.Upa.Record GetPlainRecord() {
+        public virtual Net.TheVpc.Upa.Record GetPlainRecord() {
             return GetPlainRecord(false);
         }
 
-        public virtual Net.Vpc.Upa.Record GetPlainRecord(bool create) {
+        public virtual Net.TheVpc.Upa.Record GetPlainRecord(bool create) {
             if (plainRecord == null && create) {
-                plainRecord = new Net.Vpc.Upa.Impl.DefaultRecord();
+                plainRecord = new Net.TheVpc.Upa.Impl.DefaultRecord();
             }
             return plainRecord;
         }
 
-        public virtual Net.Vpc.Upa.Record GetRecord(string entityName) {
-            return Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.Vpc.Upa.Record>(records,entityName);
+        public virtual Net.TheVpc.Upa.Record GetRecord(string entityName) {
+            return Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.TheVpc.Upa.Record>(records,entityName);
         }
 
-        public virtual void SetRecord(string entityName, Net.Vpc.Upa.Record record) {
+        public virtual void SetRecord(string entityName, Net.TheVpc.Upa.Record record) {
             if (record == null) {
                 records.Remove(entityName);
             } else {
@@ -71,12 +71,12 @@ namespace Net.Vpc.Upa.Impl
             }
         }
 
-        public virtual Net.Vpc.Upa.Record GetSingleRecord() {
+        public virtual Net.TheVpc.Upa.Record GetSingleRecord() {
             if (EntitySize() == 1) {
                 if (IsValidRecord(plainRecord)) {
                     return plainRecord;
                 }
-                foreach (Net.Vpc.Upa.Record record in (records).Values) {
+                foreach (Net.TheVpc.Upa.Record record in (records).Values) {
                     if (IsValidRecord(record)) {
                         return record;
                     }
@@ -85,12 +85,12 @@ namespace Net.Vpc.Upa.Impl
             throw new System.IndexOutOfRangeException();
         }
 
-        public virtual Net.Vpc.Upa.Record Merge() {
-            Net.Vpc.Upa.Record r = new Net.Vpc.Upa.Impl.DefaultRecord();
+        public virtual Net.TheVpc.Upa.Record Merge() {
+            Net.TheVpc.Upa.Record r = new Net.TheVpc.Upa.Impl.DefaultRecord();
             if (plainRecord != null) {
                 r.SetAll(plainRecord);
             }
-            foreach (Net.Vpc.Upa.Record record in (records).Values) {
+            foreach (Net.TheVpc.Upa.Record record in (records).Values) {
                 r.SetAll(record);
             }
             return r;

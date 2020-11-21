@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
 
@@ -22,11 +22,11 @@ namespace Net.Vpc.Upa.Expressions
      * Time: 17:00:10
      * To change this template use Options | File Templates.
      */
-    public class CurrentUser : Net.Vpc.Upa.Expressions.FunctionExpression {
+    public class CurrentUser : Net.TheVpc.Upa.Expressions.FunctionExpression {
 
 
 
-        public CurrentUser(Net.Vpc.Upa.Expressions.Expression[] expressions) {
+        public CurrentUser(Net.TheVpc.Upa.Expressions.Expression[] expressions) {
             CheckArgCount(GetName(), expressions, 0);
         }
 
@@ -34,17 +34,17 @@ namespace Net.Vpc.Upa.Expressions
         }
 
 
-        public override void SetArgument(int index, Net.Vpc.Upa.Expressions.Expression e) {
+        public override void SetArgument(int index, Net.TheVpc.Upa.Expressions.Expression e) {
             throw new System.Exception("Not supported yet.");
         }
 
 
-        public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
-            return new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+        public override System.Collections.Generic.IList<Net.TheVpc.Upa.Expressions.TaggedExpression> GetChildren() {
+            return new System.Collections.Generic.List<Net.TheVpc.Upa.Expressions.TaggedExpression>();
         }
 
 
-        public override void SetChild(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.Expressions.ExpressionTag tag) {
+        public override void SetChild(Net.TheVpc.Upa.Expressions.Expression e, Net.TheVpc.Upa.Expressions.ExpressionTag tag) {
             throw new System.Exception("Not supported yet.");
         }
 
@@ -59,13 +59,13 @@ namespace Net.Vpc.Upa.Expressions
         }
 
 
-        public override Net.Vpc.Upa.Expressions.Expression GetArgument(int index) {
+        public override Net.TheVpc.Upa.Expressions.Expression GetArgument(int index) {
             throw new System.IndexOutOfRangeException();
         }
 
 
-        public override Net.Vpc.Upa.Expressions.Expression Copy() {
-            Net.Vpc.Upa.Expressions.CurrentUser o = new Net.Vpc.Upa.Expressions.CurrentUser();
+        public override Net.TheVpc.Upa.Expressions.Expression Copy() {
+            Net.TheVpc.Upa.Expressions.CurrentUser o = new Net.TheVpc.Upa.Expressions.CurrentUser();
             return o;
         }
     }

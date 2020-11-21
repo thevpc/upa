@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Bulk
+namespace Net.TheVpc.Upa.Bulk
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class TextFixedWidthColumn : Net.Vpc.Upa.Bulk.DataColumn {
+    public class TextFixedWidthColumn : Net.TheVpc.Upa.Bulk.DataColumn {
 
         private int skippedColumns;
 
@@ -26,7 +26,7 @@ namespace Net.Vpc.Upa.Bulk
 
         private int columnWidth;
 
-        private Net.Vpc.Upa.Bulk.TextAlignment textAlignment;
+        private Net.TheVpc.Upa.Bulk.TextAlignment textAlignment;
 
         private string defaultPaddingChars;
 
@@ -49,7 +49,7 @@ namespace Net.Vpc.Upa.Bulk
             this.skippedColumns = skippedColumns;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.TextFixedWidthColumn UpdateSkippedColumns(int skippedColumns) {
+        public virtual Net.TheVpc.Upa.Bulk.TextFixedWidthColumn UpdateSkippedColumns(int skippedColumns) {
             SetSkippedColumns(skippedColumns);
             return this;
         }
@@ -62,20 +62,20 @@ namespace Net.Vpc.Upa.Bulk
             this.columnWidth = columnWidth;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.TextFixedWidthColumn UpdateColumnWidth(int columnWidth) {
+        public virtual Net.TheVpc.Upa.Bulk.TextFixedWidthColumn UpdateColumnWidth(int columnWidth) {
             SetColumnWidth(columnWidth);
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.TextAlignment GetTextAlignment() {
+        public virtual Net.TheVpc.Upa.Bulk.TextAlignment GetTextAlignment() {
             return textAlignment;
         }
 
-        public virtual void SetTextAlignment(Net.Vpc.Upa.Bulk.TextAlignment textAlignment) {
+        public virtual void SetTextAlignment(Net.TheVpc.Upa.Bulk.TextAlignment textAlignment) {
             this.textAlignment = textAlignment;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.TextFixedWidthColumn UpdateTextAlignment(Net.Vpc.Upa.Bulk.TextAlignment textAlignment) {
+        public virtual Net.TheVpc.Upa.Bulk.TextFixedWidthColumn UpdateTextAlignment(Net.TheVpc.Upa.Bulk.TextAlignment textAlignment) {
             SetTextAlignment(textAlignment);
             return this;
         }
@@ -88,7 +88,7 @@ namespace Net.Vpc.Upa.Bulk
             this.defaultPaddingChars = defaultPaddingChars;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.TextFixedWidthColumn UpdateDefaultPaddingChars(string defaultPaddingChars) {
+        public virtual Net.TheVpc.Upa.Bulk.TextFixedWidthColumn UpdateDefaultPaddingChars(string defaultPaddingChars) {
             SetDefaultPaddingChars(defaultPaddingChars);
             return this;
         }
@@ -101,7 +101,7 @@ namespace Net.Vpc.Upa.Bulk
             this.leftPaddingChars = leftPaddingChars;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.TextFixedWidthColumn UpdateLeftPaddingChars(string leftPaddingChars) {
+        public virtual Net.TheVpc.Upa.Bulk.TextFixedWidthColumn UpdateLeftPaddingChars(string leftPaddingChars) {
             SetLeftPaddingChars(leftPaddingChars);
             return this;
         }
@@ -114,7 +114,7 @@ namespace Net.Vpc.Upa.Bulk
             this.rightPaddingChars = rightPaddingChars;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.TextFixedWidthColumn UpdateRightPaddingChars(string rightPaddingChars) {
+        public virtual Net.TheVpc.Upa.Bulk.TextFixedWidthColumn UpdateRightPaddingChars(string rightPaddingChars) {
             SetRightPaddingChars(rightPaddingChars);
             return this;
         }
@@ -127,7 +127,7 @@ namespace Net.Vpc.Upa.Bulk
             this.skippedColumnsChars = skippedColumnsChars;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.TextFixedWidthColumn UpdateSkippedColumnsChars(string skippedColumnsChars) {
+        public virtual Net.TheVpc.Upa.Bulk.TextFixedWidthColumn UpdateSkippedColumnsChars(string skippedColumnsChars) {
             SetSkippedColumnsChars(skippedColumnsChars);
             return this;
         }

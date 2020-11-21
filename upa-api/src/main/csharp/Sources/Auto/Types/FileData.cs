@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
 
@@ -38,7 +38,7 @@ namespace Net.Vpc.Upa.Types
 
 
         public FileData(string url) {
-            Load(GetURLName(url), Net.Vpc.Upa.FwkConvertUtils.OpenURLStream(url));
+            Load(GetURLName(url), Net.TheVpc.Upa.FwkConvertUtils.OpenURLStream(url));
         }
 
         public virtual byte[] GetData() {
@@ -81,7 +81,7 @@ namespace Net.Vpc.Upa.Types
         }
 
         private string GetURLName(string url) {
-            string p = Net.Vpc.Upa.FwkConvertUtils.GetURLPath(url);
+            string p = Net.TheVpc.Upa.FwkConvertUtils.GetURLPath(url);
             int slash = p.LastIndexOf('/');
             if (slash < 0) {
                 slash = p.LastIndexOf(':');

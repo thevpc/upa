@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     /**
@@ -20,6 +20,6 @@ namespace Net.Vpc.Upa
      */
     public interface Function {
 
-         object Eval(Net.Vpc.Upa.FunctionEvalContext evalContext);
+         object Eval(Net.TheVpc.Upa.FunctionEvalContext evalContext);
     }
 }

@@ -11,31 +11,31 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
 
-    public sealed class NullVal : Net.Vpc.Upa.Expressions.FunctionExpression {
+    public sealed class NullVal : Net.TheVpc.Upa.Expressions.FunctionExpression {
 
 
 
-        private Net.Vpc.Upa.Types.DataType type;
+        private Net.TheVpc.Upa.Types.DataType type;
 
-        public NullVal(Net.Vpc.Upa.Expressions.Expression[] expressions) {
+        public NullVal(Net.TheVpc.Upa.Expressions.Expression[] expressions) {
             if (expressions.Length != 0 && expressions.Length != 1 && expressions.Length != 2) {
                 CheckArgCount(GetName(), expressions, 1);
             }
-            this.type = (Net.Vpc.Upa.Types.DataType) ((Net.Vpc.Upa.Expressions.Cst) expressions[0]).GetValue();
+            this.type = (Net.TheVpc.Upa.Types.DataType) ((Net.TheVpc.Upa.Expressions.Cst) expressions[0]).GetValue();
         }
 
-        public NullVal(Net.Vpc.Upa.Types.DataType type) {
+        public NullVal(Net.TheVpc.Upa.Types.DataType type) {
             this.type = type;
         }
 
 
-        public override void SetArgument(int index, Net.Vpc.Upa.Expressions.Expression e) {
+        public override void SetArgument(int index, Net.TheVpc.Upa.Expressions.Expression e) {
             if (index == 0) {
-                this.type = (Net.Vpc.Upa.Types.DataType) ((Net.Vpc.Upa.Expressions.Cst) e).GetValue();
+                this.type = (Net.TheVpc.Upa.Types.DataType) ((Net.TheVpc.Upa.Expressions.Cst) e).GetValue();
             } else {
                 throw new System.IndexOutOfRangeException();
             }
@@ -52,11 +52,11 @@ namespace Net.Vpc.Upa.Expressions
         }
 
 
-        public override Net.Vpc.Upa.Expressions.Expression GetArgument(int index) {
+        public override Net.TheVpc.Upa.Expressions.Expression GetArgument(int index) {
             if (index != 0) {
                 throw new System.IndexOutOfRangeException();
             }
-            return new Net.Vpc.Upa.Expressions.Cst(type);
+            return new Net.TheVpc.Upa.Expressions.Cst(type);
         }
 
         public string GetDescription() {
@@ -64,8 +64,8 @@ namespace Net.Vpc.Upa.Expressions
         }
 
 
-        public override Net.Vpc.Upa.Expressions.Expression Copy() {
-            Net.Vpc.Upa.Expressions.NullVal o = new Net.Vpc.Upa.Expressions.NullVal(type);
+        public override Net.TheVpc.Upa.Expressions.Expression Copy() {
+            Net.TheVpc.Upa.Expressions.NullVal o = new Net.TheVpc.Upa.Expressions.NullVal(type);
             return o;
         }
 
@@ -73,7 +73,7 @@ namespace Net.Vpc.Upa.Expressions
             System.Type javaClass = type.GetPlatformType();
             int length = type.GetScale();
             int precision = type.GetPrecision();
-            string tname = Net.Vpc.Upa.Types.TypesFactory.GetTypeName(javaClass);
+            string tname = Net.TheVpc.Upa.Types.TypesFactory.GetTypeName(javaClass);
             if (tname == null) {
                 tname = ("UNKNOWN_TYPE(" + (javaClass).FullName + "," + length + "," + precision + ")");
             }

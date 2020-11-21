@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledexpression
 {
 
     /**
@@ -19,20 +19,20 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
     * @creationdate 1/8/13 12:14 AM*/
     public class CompiledOrderItem {
 
-        private Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression;
+        private Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression;
 
         private bool asc;
 
-        internal CompiledOrderItem(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression, bool asc) {
+        internal CompiledOrderItem(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression, bool asc) {
             this.SetExpression(expression);
             this.SetAsc(asc);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetExpression() {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetExpression() {
             return expression;
         }
 
-        public virtual void SetExpression(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
+        public virtual void SetExpression(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
             this.expression = expression;
         }
 
@@ -44,8 +44,8 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             this.asc = asc;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledOrderItem Copy() {
-            return new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledOrderItem(expression.Copy(), asc);
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledOrderItem Copy() {
+            return new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledOrderItem(expression.Copy(), asc);
         }
     }
 }

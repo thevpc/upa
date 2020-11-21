@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Bulk
+namespace Net.TheVpc.Upa.Bulk
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public abstract class SheetFormatter : Net.Vpc.Upa.Bulk.AbstractDataFormatter {
+    public abstract class SheetFormatter : Net.TheVpc.Upa.Bulk.AbstractDataFormatter {
 
         private bool writeHeader;
 
@@ -30,11 +30,11 @@ namespace Net.Vpc.Upa.Bulk
 
         private string sheetName;
 
-        private Net.Vpc.Upa.Bulk.SheetContentType contentType;
+        private Net.TheVpc.Upa.Bulk.SheetContentType contentType;
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Bulk.SheetColumn> columns = new System.Collections.Generic.List<Net.Vpc.Upa.Bulk.SheetColumn>();
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Bulk.SheetColumn> columns = new System.Collections.Generic.List<Net.TheVpc.Upa.Bulk.SheetColumn>();
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Bulk.SheetColumn> GetColumns() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Bulk.SheetColumn> GetColumns() {
             return columns;
         }
 
@@ -42,7 +42,7 @@ namespace Net.Vpc.Upa.Bulk
             return writeHeader;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.SheetFormatter SetWriteHeader(bool writeHeader) {
+        public virtual Net.TheVpc.Upa.Bulk.SheetFormatter SetWriteHeader(bool writeHeader) {
             this.writeHeader = writeHeader;
             return this;
         }
@@ -51,7 +51,7 @@ namespace Net.Vpc.Upa.Bulk
             return trimValues;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.SheetFormatter SetTrimValues(bool trimValues) {
+        public virtual Net.TheVpc.Upa.Bulk.SheetFormatter SetTrimValues(bool trimValues) {
             this.trimValues = trimValues;
             return this;
         }
@@ -60,7 +60,7 @@ namespace Net.Vpc.Upa.Bulk
             return sheetIndex;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.SheetFormatter SetSheetIndex(int sheetIndex) {
+        public virtual Net.TheVpc.Upa.Bulk.SheetFormatter SetSheetIndex(int sheetIndex) {
             this.sheetIndex = sheetIndex;
             return this;
         }
@@ -69,7 +69,7 @@ namespace Net.Vpc.Upa.Bulk
             return sheetName;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.SheetFormatter SetSheetName(string sheetName) {
+        public virtual Net.TheVpc.Upa.Bulk.SheetFormatter SetSheetName(string sheetName) {
             this.sheetName = sheetName;
             return this;
         }
@@ -78,22 +78,22 @@ namespace Net.Vpc.Upa.Bulk
             return skipRows;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.SheetFormatter SetSkipRows(int skipRows) {
+        public virtual Net.TheVpc.Upa.Bulk.SheetFormatter SetSkipRows(int skipRows) {
             this.skipRows = skipRows;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.SheetContentType GetContentType() {
+        public virtual Net.TheVpc.Upa.Bulk.SheetContentType GetContentType() {
             return contentType;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.SheetFormatter SetContentType(Net.Vpc.Upa.Bulk.SheetContentType contentType) {
+        public virtual Net.TheVpc.Upa.Bulk.SheetFormatter SetContentType(Net.TheVpc.Upa.Bulk.SheetContentType contentType) {
             this.contentType = contentType;
             return this;
         }
 
-        public abstract bool IsSupported(Net.Vpc.Upa.Bulk.SheetContentType contentType);
+        public abstract bool IsSupported(Net.TheVpc.Upa.Bulk.SheetContentType contentType);
 
-        public abstract Net.Vpc.Upa.Bulk.SheetContentType GetDefaultContentType();
+        public abstract Net.TheVpc.Upa.Bulk.SheetContentType GetDefaultContentType();
     }
 }

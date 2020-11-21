@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Callbacks
+namespace Net.TheVpc.Upa.Callbacks
 {
 
 
@@ -19,30 +19,30 @@ namespace Net.Vpc.Upa.Callbacks
      *
      * @author taha.bensalah@gmail.com
      */
-    public class EntityEvent : Net.Vpc.Upa.Callbacks.UPAEvent {
+    public class EntityEvent : Net.TheVpc.Upa.Callbacks.UPAEvent {
 
-        private Net.Vpc.Upa.Persistence.EntityExecutionContext context;
+        private Net.TheVpc.Upa.Persistence.EntityExecutionContext context;
 
-        private Net.Vpc.Upa.PersistenceUnit persistenceUnit;
+        private Net.TheVpc.Upa.PersistenceUnit persistenceUnit;
 
-        private Net.Vpc.Upa.Entity entity;
+        private Net.TheVpc.Upa.Entity entity;
 
-        private Net.Vpc.Upa.Package parent;
+        private Net.TheVpc.Upa.Package parent;
 
-        private Net.Vpc.Upa.Package oldParent;
+        private Net.TheVpc.Upa.Package oldParent;
 
         private int index;
 
         private int oldIndex;
 
-        private Net.Vpc.Upa.EventPhase phase;
+        private Net.TheVpc.Upa.EventPhase phase;
 
         /**
              * actual trigger if this event is fired by a trigger
              */
-        private Net.Vpc.Upa.Callbacks.Trigger trigger;
+        private Net.TheVpc.Upa.Callbacks.Trigger trigger;
 
-        public EntityEvent(Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.Package parent, int index, Net.Vpc.Upa.Package oldParent, int oldIndex, Net.Vpc.Upa.EventPhase phase) {
+        public EntityEvent(Net.TheVpc.Upa.Entity entity, Net.TheVpc.Upa.PersistenceUnit persistenceUnit, Net.TheVpc.Upa.Package parent, int index, Net.TheVpc.Upa.Package oldParent, int oldIndex, Net.TheVpc.Upa.EventPhase phase) {
             this.persistenceUnit = persistenceUnit;
             this.entity = entity;
             this.parent = parent;
@@ -52,7 +52,7 @@ namespace Net.Vpc.Upa.Callbacks
             this.phase = phase;
         }
 
-        public EntityEvent(Net.Vpc.Upa.Persistence.EntityExecutionContext context, Net.Vpc.Upa.EventPhase phase) {
+        public EntityEvent(Net.TheVpc.Upa.Persistence.EntityExecutionContext context, Net.TheVpc.Upa.EventPhase phase) {
             this.context = context;
             this.entity = context.GetEntity();
             this.parent = entity.GetParent();
@@ -62,39 +62,39 @@ namespace Net.Vpc.Upa.Callbacks
             this.phase = phase;
         }
 
-        public virtual Net.Vpc.Upa.EventPhase GetPhase() {
+        public virtual Net.TheVpc.Upa.EventPhase GetPhase() {
             return phase;
         }
 
-        public virtual Net.Vpc.Upa.Callbacks.Trigger GetTrigger() {
+        public virtual Net.TheVpc.Upa.Callbacks.Trigger GetTrigger() {
             return trigger;
         }
 
-        public virtual void SetTrigger(Net.Vpc.Upa.Callbacks.Trigger trigger) {
+        public virtual void SetTrigger(Net.TheVpc.Upa.Callbacks.Trigger trigger) {
             this.trigger = trigger;
         }
 
-        public virtual Net.Vpc.Upa.Entity GetEntity() {
+        public virtual Net.TheVpc.Upa.Entity GetEntity() {
             return entity;
         }
 
-        public virtual Net.Vpc.Upa.PersistenceGroup GetPersistenceGroup() {
+        public virtual Net.TheVpc.Upa.PersistenceGroup GetPersistenceGroup() {
             return persistenceUnit.GetPersistenceGroup();
         }
 
-        public virtual Net.Vpc.Upa.PersistenceUnit GetPersistenceUnit() {
+        public virtual Net.TheVpc.Upa.PersistenceUnit GetPersistenceUnit() {
             return persistenceUnit;
         }
 
-        public virtual Net.Vpc.Upa.Persistence.EntityExecutionContext GetContext() {
+        public virtual Net.TheVpc.Upa.Persistence.EntityExecutionContext GetContext() {
             return context;
         }
 
-        public virtual Net.Vpc.Upa.Package GetParent() {
+        public virtual Net.TheVpc.Upa.Package GetParent() {
             return parent;
         }
 
-        public virtual Net.Vpc.Upa.Package GetOldParent() {
+        public virtual Net.TheVpc.Upa.Package GetOldParent() {
             return oldParent;
         }
 

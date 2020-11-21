@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Transform
+namespace Net.TheVpc.Upa.Impl.Transform
 {
 
 
@@ -19,9 +19,9 @@ namespace Net.Vpc.Upa.Impl.Transform
      *
      * @author taha.bensalah@gmail.com
      */
-    public class PlainStringEncoder : Net.Vpc.Upa.Types.StringEncoder {
+    public class PlainStringEncoder : Net.TheVpc.Upa.Types.StringEncoder {
 
-        public static readonly Net.Vpc.Upa.Impl.Transform.PlainStringEncoder INSTANCE = new Net.Vpc.Upa.Impl.Transform.PlainStringEncoder();
+        public static readonly Net.TheVpc.Upa.Impl.Transform.PlainStringEncoder INSTANCE = new Net.TheVpc.Upa.Impl.Transform.PlainStringEncoder();
 
         public virtual string Encode(byte[] bytes) {
             if (bytes == null) {

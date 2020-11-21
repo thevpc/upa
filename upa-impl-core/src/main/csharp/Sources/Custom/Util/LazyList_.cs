@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -9,7 +9,7 @@ namespace Net.Vpc.Upa.Impl.Util
      * Created with IntelliJ IDEA. User: vpc Date: 8/16/12 Time: 6:13 AM To change
      * this template use File | Settings | File Templates.
      */
-    public class LazyList<T> : System.Collections.Generic.IList<T>, Net.Vpc.Upa.Closeable {
+    public class LazyList<T> : System.Collections.Generic.IList<T>, Net.TheVpc.Upa.Closeable {
 
         protected internal System.Collections.Generic.IEnumerator<T> @base;
 

@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     public interface NamedFormulaDefinition {
 
          string GetName();
 
-         Net.Vpc.Upa.Formula GetFormula();
+         Net.TheVpc.Upa.Formula GetFormula();
     }
 }

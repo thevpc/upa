@@ -11,10 +11,10 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
-    public interface EntityStatement : Net.Vpc.Upa.Expressions.Expression {
+    public interface EntityStatement : Net.TheVpc.Upa.Expressions.Expression {
 
          string GetEntityName();
 

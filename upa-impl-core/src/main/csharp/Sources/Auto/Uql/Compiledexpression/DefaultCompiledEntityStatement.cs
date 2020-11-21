@@ -11,11 +11,11 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledexpression
 {
 
 
-    public abstract class DefaultCompiledEntityStatement : Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpressionImpl, Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityStatement {
+    public abstract class DefaultCompiledEntityStatement : Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpressionImpl, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityStatement {
 
 
 
@@ -23,26 +23,26 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         }
 
 
-        public override Net.Vpc.Upa.Types.DataTypeTransform GetTypeTransform() {
-            return new Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform(Net.Vpc.Upa.Types.TypesFactory.VOID);
+        public override Net.TheVpc.Upa.Types.DataTypeTransform GetTypeTransform() {
+            return new Net.TheVpc.Upa.Impl.Transform.IdentityDataTypeTransform(Net.TheVpc.Upa.Types.TypesFactory.VOID);
         }
 
-        protected internal abstract System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression> FindEntityDefinitions();
+        protected internal abstract System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression> FindEntityDefinitions();
 
-        public virtual System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect> FindEntityDefinitions(System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect> inherited) {
-            System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect> m = new System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect>();
+        public virtual System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect> FindEntityDefinitions(System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect> inherited) {
+            System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect> m = new System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect>();
             if (inherited != null) {
-                Net.Vpc.Upa.Impl.FwkConvertUtils.PutAllMap<string,Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect>(m,inherited);
+                Net.TheVpc.Upa.Impl.FwkConvertUtils.PutAllMap<string,Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect>(m,inherited);
             }
-            System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression> list = FindEntityDefinitions();
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression> list = FindEntityDefinitions();
             if (list != null) {
-                foreach (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression objects in list) {
-                    Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect entity = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect) objects.GetExpression();
+                foreach (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression objects in list) {
+                    Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect entity = (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect) objects.GetExpression();
                     string entityAlias = objects.GetName();
                     if (entity != null) {
                         if (entityAlias == null) {
-                            if (entity is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName) {
-                                entityAlias = ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName) entity).GetName();
+                            if (entity is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName) {
+                                entityAlias = ((Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName) entity).GetName();
                             }
                         }
                         if (entityAlias != null) {
@@ -54,8 +54,8 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return m;
         }
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
-        public override abstract Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetSubExpressions();
+        public override abstract Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetSubExpressions();
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
-        public override abstract void SetSubExpression(int arg1, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression arg2);
+        public override abstract void SetSubExpression(int arg1, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression arg2);
     }
 }

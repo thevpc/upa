@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
-    public class RenameDocumentOldKeyNotFoundException : Net.Vpc.Upa.Exceptions.EntityException {
+    public class RenameDocumentOldKeyNotFoundException : Net.TheVpc.Upa.Exceptions.EntityException {
 
-        public RenameDocumentOldKeyNotFoundException(Net.Vpc.Upa.Entity entity)  : base(entity, "rename.OldKeyNotFound"){
+        public RenameDocumentOldKeyNotFoundException(Net.TheVpc.Upa.Entity entity)  : base(entity, "rename.OldKeyNotFound"){
 
         }
     }

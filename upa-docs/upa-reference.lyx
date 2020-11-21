@@ -628,9 +628,9 @@ The easiest way to use UPA is via Maven integration.
 
 \begin_layout Standard
 3- any supported jdbc driver.
- one can start with "derby" <dependency> <groupid>net.vpc.upa</groupid> <artifacti
+ one can start with "derby" <dependency> <groupId>net.thevpc.upa</groupId> <artifacti
 d>upa-api</artifactid> <version>1.2.0</version> </dependency> <dependency>
- <groupid>net.vpc.upa</groupid> <artifactid>upa-impl</artifactid> <version>1.2.0</ve
+ <groupId>net.thevpc.upa</groupId> <artifactid>upa-impl</artifactid> <version>1.2.0</ve
 rsion> </dependency> <dependency> <groupid>derbyclient</groupid> <artifactid>der
 byclient</artifactid> <version>1.2.0</version> </dependency>
 \end_layout
@@ -667,7 +667,7 @@ status open
 
 \begin_layout LyX-Code
 
-	<groupid>net.vpc.upa</groupid>
+	<groupId>net.thevpc.upa</groupId>
 \end_layout
 
 \begin_layout LyX-Code
@@ -692,7 +692,7 @@ status open
 
 \begin_layout LyX-Code
 
-	<groupid>net.vpc.upa</groupid>
+	<groupId>net.thevpc.upa</groupId>
 \end_layout
 
 \begin_layout LyX-Code
@@ -862,12 +862,12 @@ status open
 
 \begin_layout Plain Layout
 
-package net.vpc.upa.tutorial.model;
+package Net.TheVpc.Upa.tutorial.model;
 \end_layout
 
 \begin_layout Plain Layout
 
-import net.vpc.upa.config.*;
+import Net.TheVpc.Upa.config.*;
 \end_layout
 
 \begin_layout Plain Layout

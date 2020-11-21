@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util.Classpath
+namespace Net.TheVpc.Upa.Impl.Util.Classpath
 {
 
 
@@ -22,26 +22,26 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
 
     public partial class URLClassIterable : System.Collections.Generic.IEnumerable<System.Type> {
 
-        protected internal static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.Vpc.Upa.Impl.Util.Classpath.URLClassIterable)).FullName);
+        protected internal static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.TheVpc.Upa.Impl.Util.Classpath.URLClassIterable)).FullName);
 
         public string[] urls;
 
-        public Net.Vpc.Upa.Impl.Util.Classpath.ClassPathFilter configFilter;
+        public Net.TheVpc.Upa.Impl.Util.Classpath.ClassPathFilter configFilter;
 
-        public Net.Vpc.Upa.Impl.Util.Classpath.ClassFilter classFilter;
+        public Net.TheVpc.Upa.Impl.Util.Classpath.ClassFilter classFilter;
 
         public int nameStrategyModelConfigOrder = System.Int32.MinValue;
 
 
 
-        public URLClassIterable(string[] urls, Net.Vpc.Upa.Impl.Util.Classpath.ClassPathFilter configFilter, Net.Vpc.Upa.Impl.Util.Classpath.ClassFilter classFilter) {
+        public URLClassIterable(string[] urls, Net.TheVpc.Upa.Impl.Util.Classpath.ClassPathFilter configFilter, Net.TheVpc.Upa.Impl.Util.Classpath.ClassFilter classFilter) {
             this.urls = urls;
             this.configFilter = configFilter;
             this.classFilter = classFilter;
         }
 
         public virtual System.Collections.Generic.IEnumerator<System.Type> Iterator() {
-            return new Net.Vpc.Upa.Impl.Util.Classpath.URLClassIterableIterator(this);
+            return new Net.TheVpc.Upa.Impl.Util.Classpath.URLClassIterableIterator(this);
         }
 
         internal virtual System.Type ConfigureClassURL(string src, string path) /* throws System.Exception */  {
@@ -75,7 +75,7 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
                         try {
                             aClass = System.Type.GetType(cls, false, contextClassLoader);
                         } catch (System.Exception e) {
-                            log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Unable to load class {0} for UPA configuration. Ignored",null,cls));
+                            log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Unable to load class {0} for UPA configuration. Ignored",null,cls));
                         }
                         if (aClass != null) {
                             if (configFilter.AcceptClass(src, cls, aClass)) {

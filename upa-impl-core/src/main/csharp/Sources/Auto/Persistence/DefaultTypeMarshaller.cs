@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
     /**
@@ -21,21 +21,21 @@ namespace Net.Vpc.Upa.Impl.Persistence
      * Time: 5:38 PM
      * To change this template use File | Settings | File Templates.
      */
-    public abstract class DefaultTypeMarshaller : Net.Vpc.Upa.Impl.Persistence.TypeMarshaller {
+    public abstract class DefaultTypeMarshaller : Net.TheVpc.Upa.Impl.Persistence.TypeMarshaller {
 
-        private Net.Vpc.Upa.Impl.Persistence.MarshallManager marshallManager;
+        private Net.TheVpc.Upa.Impl.Persistence.MarshallManager marshallManager;
 
-        public virtual void SetMarshallManager(Net.Vpc.Upa.Impl.Persistence.MarshallManager marshallManager) {
+        public virtual void SetMarshallManager(Net.TheVpc.Upa.Impl.Persistence.MarshallManager marshallManager) {
             this.marshallManager = marshallManager;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Persistence.MarshallManager GetMarshallManager() {
+        public virtual Net.TheVpc.Upa.Impl.Persistence.MarshallManager GetMarshallManager() {
             return marshallManager;
         }
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract string ToSQLLiteral(object arg1);
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
-        public abstract Net.Vpc.Upa.Types.DataType GetPersistentDataType(Net.Vpc.Upa.Types.DataType arg1);
+        public abstract Net.TheVpc.Upa.Types.DataType GetPersistentDataType(Net.TheVpc.Upa.Types.DataType arg1);
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract object Read(int arg1, System.Data.IDataReader arg2);
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit

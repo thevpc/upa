@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Callbacks
+namespace Net.TheVpc.Upa.Callbacks
 {
 
 
@@ -19,11 +19,11 @@ namespace Net.Vpc.Upa.Callbacks
      *
      * @author taha.bensalah@gmail.com
      */
-    public class RemoveObjectEvent : Net.Vpc.Upa.Callbacks.RemoveEvent {
+    public class RemoveObjectEvent : Net.TheVpc.Upa.Callbacks.RemoveEvent {
 
         private object objectId;
 
-        public RemoveObjectEvent(object objectId, Net.Vpc.Upa.Expressions.Expression filterExpression, Net.Vpc.Upa.Persistence.EntityExecutionContext entityExecutionContext, Net.Vpc.Upa.EventPhase phase)  : base(filterExpression, entityExecutionContext, phase){
+        public RemoveObjectEvent(object objectId, Net.TheVpc.Upa.Expressions.Expression filterExpression, Net.TheVpc.Upa.Persistence.EntityExecutionContext entityExecutionContext, Net.TheVpc.Upa.EventPhase phase)  : base(filterExpression, entityExecutionContext, phase){
 
             this.objectId = objectId;
         }

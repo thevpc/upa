@@ -12,13 +12,13 @@
 
 
 using System.Linq;
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
 
     public class ConstraintsEvent {
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Types.ConstraintsException> errors = new System.Collections.Generic.List<Net.Vpc.Upa.Types.ConstraintsException>(1);
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Types.ConstraintsException> errors = new System.Collections.Generic.List<Net.TheVpc.Upa.Types.ConstraintsException>(1);
 
         /**
              * The object on which the Event initially occurred.
@@ -32,7 +32,7 @@ namespace Net.Vpc.Upa.Types
              * @throws UPAIllegalArgumentException if source is null.
              */
         public ConstraintsEvent(object source) {
-            if (source == null) throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("null source");
+            if (source == null) throw new Net.TheVpc.Upa.Exceptions.UPAIllegalArgumentException("null source");
             this.source = source;
         }
 
@@ -45,12 +45,12 @@ namespace Net.Vpc.Upa.Types
             return source;
         }
 
-        public virtual Net.Vpc.Upa.Types.ConstraintsEvent Add(Net.Vpc.Upa.Types.ConstraintsException e) {
+        public virtual Net.TheVpc.Upa.Types.ConstraintsEvent Add(Net.TheVpc.Upa.Types.ConstraintsException e) {
             errors.Add(e);
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Types.ConstraintsEvent Remove(Net.Vpc.Upa.Types.ConstraintsException e) {
+        public virtual Net.TheVpc.Upa.Types.ConstraintsEvent Remove(Net.TheVpc.Upa.Types.ConstraintsException e) {
             errors.Remove(e);
             return this;
         }
@@ -59,8 +59,8 @@ namespace Net.Vpc.Upa.Types
             return (errors).Count;
         }
 
-        public virtual Net.Vpc.Upa.Types.ConstraintsException GetConstraints(int pos) {
-            return (Net.Vpc.Upa.Types.ConstraintsException) errors[pos];
+        public virtual Net.TheVpc.Upa.Types.ConstraintsException GetConstraints(int pos) {
+            return (Net.TheVpc.Upa.Types.ConstraintsException) errors[pos];
         }
 
 

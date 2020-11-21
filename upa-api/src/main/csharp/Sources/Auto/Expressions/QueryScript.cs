@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
 
@@ -29,7 +29,7 @@ namespace Net.Vpc.Upa.Expressions
             }
         }
 
-        public virtual void AddScript(Net.Vpc.Upa.Expressions.QueryScript script) {
+        public virtual void AddScript(Net.TheVpc.Upa.Expressions.QueryScript script) {
             if (script != null) {
                 for (int i = 0; i < script.Size(); i++) {
                     AddStatement(script.GetStatement(i));

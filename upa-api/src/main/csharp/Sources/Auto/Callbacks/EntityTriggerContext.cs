@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Callbacks
+namespace Net.TheVpc.Upa.Callbacks
 {
 
 
@@ -21,10 +21,10 @@ namespace Net.Vpc.Upa.Callbacks
      */
     public interface EntityTriggerContext {
 
-         Net.Vpc.Upa.Entity GetEntity();
+         Net.TheVpc.Upa.Entity GetEntity();
 
-         Net.Vpc.Upa.Callbacks.Trigger GetTrigger();
+         Net.TheVpc.Upa.Callbacks.Trigger GetTrigger();
 
-         Net.Vpc.Upa.Persistence.EntityExecutionContext GetEntityExecutionContext();
+         Net.TheVpc.Upa.Persistence.EntityExecutionContext GetEntityExecutionContext();
     }
 }

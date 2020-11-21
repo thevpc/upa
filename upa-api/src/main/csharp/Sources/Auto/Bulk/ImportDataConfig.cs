@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Bulk
+namespace Net.TheVpc.Upa.Bulk
 {
 
 
@@ -20,33 +20,33 @@ namespace Net.Vpc.Upa.Bulk
      */
     public class ImportDataConfig {
 
-        private Net.Vpc.Upa.Bulk.ImportDataMode mode = Net.Vpc.Upa.Bulk.ImportDataMode.ADD_UPDATE;
+        private Net.TheVpc.Upa.Bulk.ImportDataMode mode = Net.TheVpc.Upa.Bulk.ImportDataMode.ADD_UPDATE;
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Bulk.ImportEntityFinder> entityFinders = new System.Collections.Generic.List<Net.Vpc.Upa.Bulk.ImportEntityFinder>();
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Bulk.ImportEntityFinder> entityFinders = new System.Collections.Generic.List<Net.TheVpc.Upa.Bulk.ImportEntityFinder>();
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Bulk.ImportEntityMapper> entityMappers = new System.Collections.Generic.List<Net.Vpc.Upa.Bulk.ImportEntityMapper>();
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Bulk.ImportEntityMapper> entityMappers = new System.Collections.Generic.List<Net.TheVpc.Upa.Bulk.ImportEntityMapper>();
 
-        public virtual Net.Vpc.Upa.Bulk.ImportDataMode GetMode() {
+        public virtual Net.TheVpc.Upa.Bulk.ImportDataMode GetMode() {
             return mode;
         }
 
-        public virtual void SetMode(Net.Vpc.Upa.Bulk.ImportDataMode mode) {
+        public virtual void SetMode(Net.TheVpc.Upa.Bulk.ImportDataMode mode) {
             this.mode = mode;
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Bulk.ImportEntityFinder> GetEntityFinders() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Bulk.ImportEntityFinder> GetEntityFinders() {
             return entityFinders;
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Bulk.ImportEntityMapper> GetEntityMappers() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Bulk.ImportEntityMapper> GetEntityMappers() {
             return entityMappers;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.ImportDataConfig Copy() {
-            Net.Vpc.Upa.Bulk.ImportDataConfig other = new Net.Vpc.Upa.Bulk.ImportDataConfig();
+        public virtual Net.TheVpc.Upa.Bulk.ImportDataConfig Copy() {
+            Net.TheVpc.Upa.Bulk.ImportDataConfig other = new Net.TheVpc.Upa.Bulk.ImportDataConfig();
             other.SetMode(mode);
-            Net.Vpc.Upa.FwkConvertUtils.ListAddRange(other.GetEntityFinders(), GetEntityFinders());
-            Net.Vpc.Upa.FwkConvertUtils.ListAddRange(other.GetEntityMappers(), GetEntityMappers());
+            Net.TheVpc.Upa.FwkConvertUtils.ListAddRange(other.GetEntityFinders(), GetEntityFinders());
+            Net.TheVpc.Upa.FwkConvertUtils.ListAddRange(other.GetEntityMappers(), GetEntityMappers());
             return other;
         }
     }

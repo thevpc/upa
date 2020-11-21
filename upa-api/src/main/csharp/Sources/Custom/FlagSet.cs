@@ -2,7 +2,7 @@ using System.Collections;
 using System.Text;
 using System.Collections.Generic;
 using System;
-namespace Net.Vpc.Upa{
+namespace Net.TheVpc.Upa{
 
 
     /**

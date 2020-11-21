@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Callbacks
+namespace Net.TheVpc.Upa.Callbacks
 {
 
     /**
@@ -20,12 +20,12 @@ namespace Net.Vpc.Upa.Callbacks
      */
     public interface RelationshipDefinitionListener {
 
-         void OnPreCreateRelationship(Net.Vpc.Upa.Callbacks.RelationshipEvent @event);
+         void OnPreCreateRelationship(Net.TheVpc.Upa.Callbacks.RelationshipEvent @event);
 
-         void OnCreateRelationship(Net.Vpc.Upa.Callbacks.RelationshipEvent @event);
+         void OnCreateRelationship(Net.TheVpc.Upa.Callbacks.RelationshipEvent @event);
 
-         void OnPreDropRelationship(Net.Vpc.Upa.Callbacks.RelationshipEvent @event);
+         void OnPreDropRelationship(Net.TheVpc.Upa.Callbacks.RelationshipEvent @event);
 
-         void OnDropRelationship(Net.Vpc.Upa.Callbacks.RelationshipEvent @event);
+         void OnDropRelationship(Net.TheVpc.Upa.Callbacks.RelationshipEvent @event);
     }
 }

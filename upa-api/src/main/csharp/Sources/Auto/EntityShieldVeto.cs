@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -21,6 +21,6 @@ namespace Net.Vpc.Upa
      */
     public interface EntityShieldVeto {
 
-         void CheckVeto(Net.Vpc.Upa.VetoableOperation operation, Net.Vpc.Upa.Entity entity, params object [] @params) /* throws Net.Vpc.Upa.Exceptions.UPAException, Net.Vpc.Upa.Exceptions.VetoException */ ;
+         void CheckVeto(Net.TheVpc.Upa.VetoableOperation operation, Net.TheVpc.Upa.Entity entity, params object [] @params) /* throws Net.TheVpc.Upa.Exceptions.UPAException, Net.TheVpc.Upa.Exceptions.VetoException */ ;
     }
 }

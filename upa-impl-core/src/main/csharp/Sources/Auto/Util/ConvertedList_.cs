@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -12,11 +12,11 @@ namespace Net.Vpc.Upa.Impl.Util
     public class ConvertedList<K, V> : AbstractReadOnlyList<V>
     {
 
-        private Net.Vpc.Upa.Impl.Util.Converter<K , V> converter;
+        private Net.TheVpc.Upa.Impl.Util.Converter<K , V> converter;
 
         private System.Collections.Generic.IList<K> @base;
 
-        public ConvertedList(System.Collections.Generic.IList<K> @base, Net.Vpc.Upa.Impl.Util.Converter<K , V> converter) {
+        public ConvertedList(System.Collections.Generic.IList<K> @base, Net.TheVpc.Upa.Impl.Util.Converter<K , V> converter) {
             this.@base = @base;
             this.converter = converter;
         }

@@ -11,18 +11,18 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
     /**
     * @author Taha BEN SALAH <taha.bensalah@gmail.com>
     * @creationdate 1/5/13 11:27 PM*/
-    internal class EntityBeanFieldAttribute : Net.Vpc.Upa.Impl.Util.AbstractEntityBeanAttribute {
+    internal class EntityBeanFieldAttribute : Net.TheVpc.Upa.Impl.Util.AbstractEntityBeanAttribute {
 
         private System.Reflection.FieldInfo field;
 
-        internal EntityBeanFieldAttribute(Net.Vpc.Upa.Impl.Util.EntityBeanType entityBeanAdapter, System.Reflection.FieldInfo field, System.Type cls)  : base(entityBeanAdapter, (field).Name, field.GetType()){
+        internal EntityBeanFieldAttribute(Net.TheVpc.Upa.Impl.Util.EntityBeanType entityBeanAdapter, System.Reflection.FieldInfo field, System.Type cls)  : base(entityBeanAdapter, (field).Name, field.GetType()){
 
             this.field = field;
             //field.SetAccessible(true);

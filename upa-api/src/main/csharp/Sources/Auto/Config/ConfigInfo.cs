@@ -11,29 +11,29 @@
 
 
 
-namespace Net.Vpc.Upa.Config
+namespace Net.TheVpc.Upa.Config
 {
 
     /**
      * @author taha.bensalah@gmail.com
      */
-    public class ConfigInfo : System.IComparable<Net.Vpc.Upa.Config.ConfigInfo> {
+    public class ConfigInfo : System.IComparable<Net.TheVpc.Upa.Config.ConfigInfo> {
 
-        public static Net.Vpc.Upa.Config.ConfigInfo DEFAULT = new Net.Vpc.Upa.Config.ConfigInfo(0, Net.Vpc.Upa.Config.ConfigAction.MERGE, null, null);
+        public static Net.TheVpc.Upa.Config.ConfigInfo DEFAULT = new Net.TheVpc.Upa.Config.ConfigInfo(0, Net.TheVpc.Upa.Config.ConfigAction.MERGE, null, null);
 
-        public static Net.Vpc.Upa.Config.ConfigInfo MIN = new Net.Vpc.Upa.Config.ConfigInfo(System.Int32.MinValue, Net.Vpc.Upa.Config.ConfigAction.MERGE, null, null);
+        public static Net.TheVpc.Upa.Config.ConfigInfo MIN = new Net.TheVpc.Upa.Config.ConfigInfo(System.Int32.MinValue, Net.TheVpc.Upa.Config.ConfigAction.MERGE, null, null);
 
-        public static Net.Vpc.Upa.Config.ConfigInfo MAX = new Net.Vpc.Upa.Config.ConfigInfo(System.Int32.MaxValue, Net.Vpc.Upa.Config.ConfigAction.MERGE, null, null);
+        public static Net.TheVpc.Upa.Config.ConfigInfo MAX = new Net.TheVpc.Upa.Config.ConfigInfo(System.Int32.MaxValue, Net.TheVpc.Upa.Config.ConfigAction.MERGE, null, null);
 
         private readonly int configOrder;
 
-        private readonly Net.Vpc.Upa.Config.ConfigAction configAction;
+        private readonly Net.TheVpc.Upa.Config.ConfigAction configAction;
 
         private readonly string persistenceGroup;
 
         private readonly string persistenceUnit;
 
-        public ConfigInfo(int configOrder, Net.Vpc.Upa.Config.ConfigAction configAction, string persistenceGroup, string persistenceUnit) {
+        public ConfigInfo(int configOrder, Net.TheVpc.Upa.Config.ConfigAction configAction, string persistenceGroup, string persistenceUnit) {
             this.configOrder = configOrder;
             this.configAction = configAction;
             this.persistenceGroup = IsNullOrEmpty(persistenceGroup) ? null : persistenceGroup;
@@ -44,7 +44,7 @@ namespace Net.Vpc.Upa.Config
             return configOrder;
         }
 
-        public virtual Net.Vpc.Upa.Config.ConfigAction GetConfigAction() {
+        public virtual Net.TheVpc.Upa.Config.ConfigAction GetConfigAction() {
             return configAction;
         }
 
@@ -60,7 +60,7 @@ namespace Net.Vpc.Upa.Config
         public override int GetHashCode() {
             int hash = 7;
             hash = 67 * hash + this.configOrder;
-            hash = 67 * hash + (this.configAction != default(Net.Vpc.Upa.Config.ConfigAction) ? this.configAction.GetHashCode() : 0);
+            hash = 67 * hash + (this.configAction != default(Net.TheVpc.Upa.Config.ConfigAction) ? this.configAction.GetHashCode() : 0);
             hash = 67 * hash + (this.persistenceGroup != null ? this.persistenceGroup.GetHashCode() : 0);
             hash = 67 * hash + (this.persistenceUnit != null ? this.persistenceUnit.GetHashCode() : 0);
             return hash;
@@ -74,7 +74,7 @@ namespace Net.Vpc.Upa.Config
             if (GetType() != obj.GetType()) {
                 return false;
             }
-            Net.Vpc.Upa.Config.ConfigInfo other = (Net.Vpc.Upa.Config.ConfigInfo) obj;
+            Net.TheVpc.Upa.Config.ConfigInfo other = (Net.TheVpc.Upa.Config.ConfigInfo) obj;
             if (this.configOrder != other.configOrder) {
                 return false;
             }
@@ -90,7 +90,7 @@ namespace Net.Vpc.Upa.Config
             return true;
         }
 
-        public virtual int CompareTo(Net.Vpc.Upa.Config.ConfigInfo o) {
+        public virtual int CompareTo(Net.TheVpc.Upa.Config.ConfigInfo o) {
             if (o == null) {
                 return 1;
             }
@@ -144,7 +144,7 @@ namespace Net.Vpc.Upa.Config
         }
 
         private static bool IsNullOrEmpty(string s) {
-            return s == null || (s.Trim()).Length == 0 || s.Equals(Net.Vpc.Upa.UPA.UNDEFINED_STRING);
+            return s == null || (s.Trim()).Length == 0 || s.Equals(Net.TheVpc.Upa.UPA.UNDEFINED_STRING);
         }
     }
 }

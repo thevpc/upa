@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Bulk
+namespace Net.TheVpc.Upa.Bulk
 {
 
     /**
@@ -20,7 +20,7 @@ namespace Net.Vpc.Upa.Bulk
      */
     public interface DataRowConverter {
 
-         Net.Vpc.Upa.Bulk.DataColumn[] GetColumns();
+         Net.TheVpc.Upa.Bulk.DataColumn[] GetColumns();
 
          object[] ObjectToRow(object o);
     }

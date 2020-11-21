@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledexpression
 {
 
 
@@ -22,7 +22,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
      * Time: 10:07:06
      * To change this template use Options | File Templates.
      */
-    public class CompiledIf : Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledFunction {
+    public class CompiledIf : Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledFunction {
 
 
 
@@ -38,22 +38,22 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
 
         }
 
-        public CompiledIf(System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression> expressions)  : this(){
+        public CompiledIf(System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression> expressions)  : this(){
 
-            foreach (Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression defaultCompiledExpression in expressions) {
+            foreach (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression defaultCompiledExpression in expressions) {
                 ProtectedAddArgument(defaultCompiledExpression);
             }
             state = VALID;
         }
 
-        public CompiledIf(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition)  : this(){
+        public CompiledIf(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition)  : this(){
 
-            condition.GetTypeTransform().GetSourceType().Cast(Net.Vpc.Upa.Types.TypesFactory.BOOLEAN);
+            condition.GetTypeTransform().GetSourceType().Cast(Net.TheVpc.Upa.Types.TypesFactory.BOOLEAN);
             Add(condition);
             state = EXPECT_VALUE;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledIf Then(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression @value) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledIf Then(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression @value) {
             if (state == EXPECT_VALUE) {
                 Add(@value);
                 state = EXPECT_CONDITION;
@@ -65,7 +65,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             }
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledIf Else(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression @value) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledIf Else(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression @value) {
             if (state == EXPECT_CONDITION) {
                 Add(@value);
                 state = VALID;
@@ -77,9 +77,9 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             }
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledIf ElseIf(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledIf ElseIf(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression condition) {
             if (state == EXPECT_CONDITION) {
-                condition.GetTypeTransform().GetSourceType().Cast(Net.Vpc.Upa.Types.TypesFactory.BOOLEAN);
+                condition.GetTypeTransform().GetSourceType().Cast(Net.TheVpc.Upa.Types.TypesFactory.BOOLEAN);
                 Add(condition);
                 state = EXPECT_VALUE;
                 return this;
@@ -90,7 +90,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             }
         }
 
-        private void Add(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
+        private void Add(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
             ProtectedAddArgument(expression);
         }
 
@@ -103,15 +103,15 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
              * @return type of first value expression
              */
 
-        public override Net.Vpc.Upa.Types.DataTypeTransform GetTypeTransform() {
+        public override Net.TheVpc.Upa.Types.DataTypeTransform GetTypeTransform() {
             return GetArgument(1).GetTypeTransform();
         }
 
 
-        public override Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledIf o = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledIf();
+        public override Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledIf o = new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledIf();
             o.state = state;
-            foreach (Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression param in GetArguments()) {
+            foreach (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression param in GetArguments()) {
                 o.ProtectedAddArgument(param.Copy());
             }
             o.SetDescription(GetDescription());
@@ -123,7 +123,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         public override string ToString() {
             System.Text.StringBuilder s = new System.Text.StringBuilder();
             int i = 0;
-            foreach (Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression in GetArguments()) {
+            foreach (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression in GetArguments()) {
                 if (i % 2 == 0) {
                     if (i == 0) {
                         s.Append("if (").Append(expression).Append(") then ");

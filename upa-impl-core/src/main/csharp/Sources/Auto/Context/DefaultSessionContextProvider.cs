@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Context
+namespace Net.TheVpc.Upa.Impl.Context
 {
 
 
@@ -19,17 +19,17 @@ namespace Net.Vpc.Upa.Impl.Context
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 9/12/12 12:14 AM
      */
-    public class DefaultSessionContextProvider : Net.Vpc.Upa.SessionContextProvider {
+    public class DefaultSessionContextProvider : Net.TheVpc.Upa.SessionContextProvider {
 
-        private static System.Threading.ThreadLocal<System.Collections.Generic.IDictionary<Net.Vpc.Upa.PersistenceGroup , Net.Vpc.Upa.Session>> current = new System.Threading.ThreadLocal<System.Collections.Generic.IDictionary<Net.Vpc.Upa.PersistenceGroup , Net.Vpc.Upa.Session>>();
+        private static System.Threading.ThreadLocal<System.Collections.Generic.IDictionary<Net.TheVpc.Upa.PersistenceGroup , Net.TheVpc.Upa.Session>> current = new System.Threading.ThreadLocal<System.Collections.Generic.IDictionary<Net.TheVpc.Upa.PersistenceGroup , Net.TheVpc.Upa.Session>>();
 
 
-        public virtual Net.Vpc.Upa.Session GetSession(Net.Vpc.Upa.PersistenceGroup persistenceGroup) {
-            return Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<Net.Vpc.Upa.PersistenceGroup,Net.Vpc.Upa.Session>(GetMap(),persistenceGroup);
+        public virtual Net.TheVpc.Upa.Session GetSession(Net.TheVpc.Upa.PersistenceGroup persistenceGroup) {
+            return Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<Net.TheVpc.Upa.PersistenceGroup,Net.TheVpc.Upa.Session>(GetMap(),persistenceGroup);
         }
 
 
-        public virtual void SetSession(Net.Vpc.Upa.PersistenceGroup persistenceGroup, Net.Vpc.Upa.Session session) {
+        public virtual void SetSession(Net.TheVpc.Upa.PersistenceGroup persistenceGroup, Net.TheVpc.Upa.Session session) {
             if (session == null) {
                 GetMap().Remove(persistenceGroup);
             } else {
@@ -37,10 +37,10 @@ namespace Net.Vpc.Upa.Impl.Context
             }
         }
 
-        private static System.Collections.Generic.IDictionary<Net.Vpc.Upa.PersistenceGroup , Net.Vpc.Upa.Session> GetMap() {
-            System.Collections.Generic.IDictionary<Net.Vpc.Upa.PersistenceGroup , Net.Vpc.Upa.Session> v = (current).Value;
+        private static System.Collections.Generic.IDictionary<Net.TheVpc.Upa.PersistenceGroup , Net.TheVpc.Upa.Session> GetMap() {
+            System.Collections.Generic.IDictionary<Net.TheVpc.Upa.PersistenceGroup , Net.TheVpc.Upa.Session> v = (current).Value;
             if (v == null) {
-                v = new System.Collections.Generic.Dictionary<Net.Vpc.Upa.PersistenceGroup , Net.Vpc.Upa.Session>(3);
+                v = new System.Collections.Generic.Dictionary<Net.TheVpc.Upa.PersistenceGroup , Net.TheVpc.Upa.Session>(3);
                 (current).Value = v;
             }
             return v;

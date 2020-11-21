@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Config
+namespace Net.TheVpc.Upa.Config
 {
 
 
@@ -108,22 +108,22 @@ namespace Net.Vpc.Upa.Config
         }
 
 
-        private Net.Vpc.Upa.Config.BoolEnum _Nullable = Net.Vpc.Upa.Config.BoolEnum.UNDEFINED;
-        public  Net.Vpc.Upa.Config.BoolEnum Nullable{
+        private Net.TheVpc.Upa.Config.BoolEnum _Nullable = Net.TheVpc.Upa.Config.BoolEnum.UNDEFINED;
+        public  Net.TheVpc.Upa.Config.BoolEnum Nullable{
             get {return _Nullable;}
             set {_Nullable=value;}
         }
 
 
-        private Net.Vpc.Upa.UserFieldModifier[] _Modifiers = {  };
-        public  Net.Vpc.Upa.UserFieldModifier[] Modifiers{
+        private Net.TheVpc.Upa.UserFieldModifier[] _Modifiers = {  };
+        public  Net.TheVpc.Upa.UserFieldModifier[] Modifiers{
             get {return _Modifiers;}
             set {_Modifiers=value;}
         }
 
 
-        private Net.Vpc.Upa.UserFieldModifier[] _ExcludeModifiers = {  };
-        public  Net.Vpc.Upa.UserFieldModifier[] ExcludeModifiers{
+        private Net.TheVpc.Upa.UserFieldModifier[] _ExcludeModifiers = {  };
+        public  Net.TheVpc.Upa.UserFieldModifier[] ExcludeModifiers{
             get {return _ExcludeModifiers;}
             set {_ExcludeModifiers=value;}
         }
@@ -157,57 +157,57 @@ namespace Net.Vpc.Upa.Config
         }
 
 
-        private Net.Vpc.Upa.AccessLevel _AccessLevel = Net.Vpc.Upa.AccessLevel.DEFAULT;
-        public  Net.Vpc.Upa.AccessLevel AccessLevel{
+        private Net.TheVpc.Upa.AccessLevel _AccessLevel = Net.TheVpc.Upa.AccessLevel.DEFAULT;
+        public  Net.TheVpc.Upa.AccessLevel AccessLevel{
             get {return _AccessLevel;}
             set {_AccessLevel=value;}
         }
 
 
-        private Net.Vpc.Upa.AccessLevel _PersistAccessLevel = Net.Vpc.Upa.AccessLevel.DEFAULT;
-        public  Net.Vpc.Upa.AccessLevel PersistAccessLevel{
+        private Net.TheVpc.Upa.AccessLevel _PersistAccessLevel = Net.TheVpc.Upa.AccessLevel.DEFAULT;
+        public  Net.TheVpc.Upa.AccessLevel PersistAccessLevel{
             get {return _PersistAccessLevel;}
             set {_PersistAccessLevel=value;}
         }
 
 
-        private Net.Vpc.Upa.AccessLevel _UpdateAccessLevel = Net.Vpc.Upa.AccessLevel.DEFAULT;
-        public  Net.Vpc.Upa.AccessLevel UpdateAccessLevel{
+        private Net.TheVpc.Upa.AccessLevel _UpdateAccessLevel = Net.TheVpc.Upa.AccessLevel.DEFAULT;
+        public  Net.TheVpc.Upa.AccessLevel UpdateAccessLevel{
             get {return _UpdateAccessLevel;}
             set {_UpdateAccessLevel=value;}
         }
 
 
-        private Net.Vpc.Upa.AccessLevel _ReadAccessLevel = Net.Vpc.Upa.AccessLevel.DEFAULT;
-        public  Net.Vpc.Upa.AccessLevel ReadAccessLevel{
+        private Net.TheVpc.Upa.AccessLevel _ReadAccessLevel = Net.TheVpc.Upa.AccessLevel.DEFAULT;
+        public  Net.TheVpc.Upa.AccessLevel ReadAccessLevel{
             get {return _ReadAccessLevel;}
             set {_ReadAccessLevel=value;}
         }
 
 
-        private Net.Vpc.Upa.ProtectionLevel _ProtectionLevel = Net.Vpc.Upa.ProtectionLevel.DEFAULT;
-        public  Net.Vpc.Upa.ProtectionLevel ProtectionLevel{
+        private Net.TheVpc.Upa.ProtectionLevel _ProtectionLevel = Net.TheVpc.Upa.ProtectionLevel.DEFAULT;
+        public  Net.TheVpc.Upa.ProtectionLevel ProtectionLevel{
             get {return _ProtectionLevel;}
             set {_ProtectionLevel=value;}
         }
 
 
-        private Net.Vpc.Upa.ProtectionLevel _PersistProtectionLevel = Net.Vpc.Upa.ProtectionLevel.DEFAULT;
-        public  Net.Vpc.Upa.ProtectionLevel PersistProtectionLevel{
+        private Net.TheVpc.Upa.ProtectionLevel _PersistProtectionLevel = Net.TheVpc.Upa.ProtectionLevel.DEFAULT;
+        public  Net.TheVpc.Upa.ProtectionLevel PersistProtectionLevel{
             get {return _PersistProtectionLevel;}
             set {_PersistProtectionLevel=value;}
         }
 
 
-        private Net.Vpc.Upa.ProtectionLevel _UpdateProtectionLevel = Net.Vpc.Upa.ProtectionLevel.DEFAULT;
-        public  Net.Vpc.Upa.ProtectionLevel UpdateProtectionLevel{
+        private Net.TheVpc.Upa.ProtectionLevel _UpdateProtectionLevel = Net.TheVpc.Upa.ProtectionLevel.DEFAULT;
+        public  Net.TheVpc.Upa.ProtectionLevel UpdateProtectionLevel{
             get {return _UpdateProtectionLevel;}
             set {_UpdateProtectionLevel=value;}
         }
 
 
-        private Net.Vpc.Upa.ProtectionLevel _ReadProtectionLevel = Net.Vpc.Upa.ProtectionLevel.DEFAULT;
-        public  Net.Vpc.Upa.ProtectionLevel ReadProtectionLevel{
+        private Net.TheVpc.Upa.ProtectionLevel _ReadProtectionLevel = Net.TheVpc.Upa.ProtectionLevel.DEFAULT;
+        public  Net.TheVpc.Upa.ProtectionLevel ReadProtectionLevel{
             get {return _ReadProtectionLevel;}
             set {_ReadProtectionLevel=value;}
         }
@@ -218,8 +218,8 @@ namespace Net.Vpc.Upa.Config
              *
              * @return annotation configuration
              */
-        private Net.Vpc.Upa.Config.ItemConfig _Config = new Net.Vpc.Upa.Config.ItemConfig();
-        public  Net.Vpc.Upa.Config.ItemConfig Config{
+        private Net.TheVpc.Upa.Config.ItemConfig _Config = new Net.TheVpc.Upa.Config.ItemConfig();
+        public  Net.TheVpc.Upa.Config.ItemConfig Config{
             get {return _Config;}
             set {_Config=value;}
         }

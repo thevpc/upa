@@ -11,15 +11,15 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
 
-    public class ManyToOneType : Net.Vpc.Upa.Types.DefaultDataType {
+    public class ManyToOneType : Net.TheVpc.Upa.Types.DefaultDataType {
 
         private string targetEntityName;
 
-        private Net.Vpc.Upa.Relationship relationship;
+        private Net.TheVpc.Upa.Relationship relationship;
 
         private bool updatable;
 
@@ -45,11 +45,11 @@ namespace Net.Vpc.Upa.Types
             this.targetEntityName = targetEntityName;
         }
 
-        public virtual Net.Vpc.Upa.Relationship GetRelationship() {
+        public virtual Net.TheVpc.Upa.Relationship GetRelationship() {
             return relationship;
         }
 
-        public virtual void SetRelationship(Net.Vpc.Upa.Relationship relationship) {
+        public virtual void SetRelationship(Net.TheVpc.Upa.Relationship relationship) {
             this.relationship = relationship;
         }
 
@@ -73,7 +73,7 @@ namespace Net.Vpc.Upa.Types
             if (this == o) return true;
             if (o == null || GetType() != o.GetType()) return false;
             if (!base.Equals(o)) return false;
-            Net.Vpc.Upa.Types.ManyToOneType that = (Net.Vpc.Upa.Types.ManyToOneType) o;
+            Net.TheVpc.Upa.Types.ManyToOneType that = (Net.TheVpc.Upa.Types.ManyToOneType) o;
             if (updatable != that.updatable) return false;
             if (targetEntityName != null ? !targetEntityName.Equals(that.targetEntityName) : that.targetEntityName != null) return false;
             return relationship != null ? relationship.Equals(that.relationship) : that.relationship == null;
@@ -89,8 +89,8 @@ namespace Net.Vpc.Upa.Types
         }
 
 
-        public override Net.Vpc.Upa.DataTypeInfo GetInfo() {
-            Net.Vpc.Upa.DataTypeInfo d = base.GetInfo();
+        public override Net.TheVpc.Upa.DataTypeInfo GetInfo() {
+            Net.TheVpc.Upa.DataTypeInfo d = base.GetInfo();
             d.GetProperties()["updatable"]=System.Convert.ToString(updatable);
             if (targetEntityName != null) {
                 d.GetProperties()["targetEntityName"]=System.Convert.ToString(targetEntityName);

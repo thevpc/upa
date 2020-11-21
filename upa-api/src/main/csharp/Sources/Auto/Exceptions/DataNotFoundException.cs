@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
@@ -22,9 +22,9 @@ namespace Net.Vpc.Upa.Exceptions
      * Time: 15:03:00
      * To change this template use File | Settings | File Templates.
      */
-    public class DataNotFoundException : Net.Vpc.Upa.Exceptions.EntityException {
+    public class DataNotFoundException : Net.TheVpc.Upa.Exceptions.EntityException {
 
-        public DataNotFoundException(Net.Vpc.Upa.Entity entity)  : base(entity, "DataNotFoundException"){
+        public DataNotFoundException(Net.TheVpc.Upa.Entity entity)  : base(entity, "DataNotFoundException"){
 
         }
     }

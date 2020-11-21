@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     public interface PrimitiveId {
@@ -22,6 +22,6 @@ namespace Net.Vpc.Upa
 
          int Size();
 
-         Net.Vpc.Upa.Field GetField(int index);
+         Net.TheVpc.Upa.Field GetField(int index);
     }
 }

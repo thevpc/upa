@@ -11,18 +11,18 @@
 
 
 
-namespace Net.Vpc.Upa.Callbacks
+namespace Net.TheVpc.Upa.Callbacks
 {
 
 
-    public interface UpdateRelationshipSourceFormulaInterceptor : Net.Vpc.Upa.Callbacks.EntityInterceptor {
+    public interface UpdateRelationshipSourceFormulaInterceptor : Net.TheVpc.Upa.Callbacks.EntityInterceptor {
 
-         string GetRelationshipName() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         string GetRelationshipName() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Filters.FieldFilter GetFormulaFields() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Filters.FieldFilter GetFormulaFields() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Filters.FieldFilter GetConditionFields() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Filters.FieldFilter GetConditionFields() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Expressions.Expression TranslateExpression(Net.Vpc.Upa.Expressions.Expression e) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Expressions.Expression TranslateExpression(Net.TheVpc.Upa.Expressions.Expression e) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
     }
 }

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config.Decorations
+namespace Net.TheVpc.Upa.Impl.Config.Decorations
 {
 
 
@@ -19,25 +19,25 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
      *
      * @author taha.bensalah@gmail.com
      */
-    public sealed class AnnotationDecoration : Net.Vpc.Upa.Impl.Config.Decorations.AbstractDecoration {
+    public sealed class AnnotationDecoration : Net.TheVpc.Upa.Impl.Config.Decorations.AbstractDecoration {
 
         private System.Attribute ann;
 
-        private Net.Vpc.Upa.Config.DecorationSourceType decorationSourceType;
+        private Net.TheVpc.Upa.Config.DecorationSourceType decorationSourceType;
 
-        private Net.Vpc.Upa.Config.DecorationTarget targetType;
+        private Net.TheVpc.Upa.Config.DecorationTarget targetType;
 
         private string type;
 
         private string location;
 
-        private Net.Vpc.Upa.Config.ConfigInfo configInfo;
+        private Net.TheVpc.Upa.Config.ConfigInfo configInfo;
 
-        private System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Config.DecorationValue> values = null;
+        private System.Collections.Generic.IDictionary<string , Net.TheVpc.Upa.Config.DecorationValue> values = null;
 
         private int position;
 
-        public AnnotationDecoration(System.Attribute ann, Net.Vpc.Upa.Config.DecorationSourceType locationType, Net.Vpc.Upa.Config.DecorationTarget targetType, string type, string location, int position, Net.Vpc.Upa.Config.ConfigInfo configInfo) {
+        public AnnotationDecoration(System.Attribute ann, Net.TheVpc.Upa.Config.DecorationSourceType locationType, Net.TheVpc.Upa.Config.DecorationTarget targetType, string type, string location, int position, Net.TheVpc.Upa.Config.ConfigInfo configInfo) {
             this.ann = ann;
             this.decorationSourceType = locationType;
             this.targetType = targetType;
@@ -47,7 +47,7 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
             this.position = position;
         }
 
-        public AnnotationDecoration(System.Attribute ann, Net.Vpc.Upa.Config.DecorationSourceType locationType, Net.Vpc.Upa.Config.DecorationTarget targetType, string type, string location, int position)  : this(ann, locationType, targetType, type, location, position, null){
+        public AnnotationDecoration(System.Attribute ann, Net.TheVpc.Upa.Config.DecorationSourceType locationType, Net.TheVpc.Upa.Config.DecorationTarget targetType, string type, string location, int position)  : this(ann, locationType, targetType, type, location, position, null){
 
         }
 
@@ -59,13 +59,13 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
             return position;
         }
 
-        protected internal override Net.Vpc.Upa.Config.ConfigInfo GetConfigInfo0() {
+        protected internal override Net.TheVpc.Upa.Config.ConfigInfo GetConfigInfo0() {
             if (configInfo == null) {
-                Net.Vpc.Upa.Config.Decoration config = GetDecoration("config");
+                Net.TheVpc.Upa.Config.Decoration config = GetDecoration("config");
                 if (config != null) {
-                    Net.Vpc.Upa.Config.Decoration c = (Net.Vpc.Upa.Config.Decoration) config;
-                    if (c.GetName().Equals((typeof(Net.Vpc.Upa.Config.Config)).FullName)) {
-                        configInfo = new Net.Vpc.Upa.Config.ConfigInfo(c.GetInt("order"), (Net.Vpc.Upa.Config.ConfigAction)(System.Enum.Parse(typeof(Net.Vpc.Upa.Config.ConfigAction),c.GetString("action"))), c.GetString("persistenceGroup"), c.GetString("persistenceUnit"));
+                    Net.TheVpc.Upa.Config.Decoration c = (Net.TheVpc.Upa.Config.Decoration) config;
+                    if (c.GetName().Equals((typeof(Net.TheVpc.Upa.Config.Config)).FullName)) {
+                        configInfo = new Net.TheVpc.Upa.Config.ConfigInfo(c.GetInt("order"), (Net.TheVpc.Upa.Config.ConfigAction)(System.Enum.Parse(typeof(Net.TheVpc.Upa.Config.ConfigAction),c.GetString("action"))), c.GetString("persistenceGroup"), c.GetString("persistenceUnit"));
                     }
                 }
             }
@@ -76,11 +76,11 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
             return location;
         }
 
-        public override Net.Vpc.Upa.Config.DecorationSourceType GetDecorationSourceType() {
+        public override Net.TheVpc.Upa.Config.DecorationSourceType GetDecorationSourceType() {
             return decorationSourceType;
         }
 
-        public override Net.Vpc.Upa.Config.DecorationTarget GetTarget() {
+        public override Net.TheVpc.Upa.Config.DecorationTarget GetTarget() {
             return targetType;
         }
 
@@ -88,14 +88,14 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
             return type;
         }
 
-        public override Net.Vpc.Upa.Config.ConfigInfo GetConfig() {
+        public override Net.TheVpc.Upa.Config.ConfigInfo GetConfig() {
             if (configInfo == null) {
                 try {
                     System.Reflection.MethodInfo method = ann.GetType().GetMethod("config");
-                    if (method != null && ((method).ReturnType).FullName.Equals((typeof(Net.Vpc.Upa.Config.Config)).FullName)) {
+                    if (method != null && ((method).ReturnType).FullName.Equals((typeof(Net.TheVpc.Upa.Config.Config)).FullName)) {
                         object t = method.Invoke(ann, new object[0]);
-                        Net.Vpc.Upa.Impl.Config.Decorations.AnnotationDecoration c = new Net.Vpc.Upa.Impl.Config.Decorations.AnnotationDecoration((System.Attribute) t, default(Net.Vpc.Upa.Config.DecorationSourceType), default(Net.Vpc.Upa.Config.DecorationTarget), null, null, 0);
-                        configInfo = new Net.Vpc.Upa.Config.ConfigInfo(c.GetInt("order"), (Net.Vpc.Upa.Config.ConfigAction)(System.Enum.Parse(typeof(Net.Vpc.Upa.Config.ConfigAction),c.GetString("action"))), c.GetString("persistenceGroup"), c.GetString("persistenceUnit"));
+                        Net.TheVpc.Upa.Impl.Config.Decorations.AnnotationDecoration c = new Net.TheVpc.Upa.Impl.Config.Decorations.AnnotationDecoration((System.Attribute) t, default(Net.TheVpc.Upa.Config.DecorationSourceType), default(Net.TheVpc.Upa.Config.DecorationTarget), null, null, 0);
+                        configInfo = new Net.TheVpc.Upa.Config.ConfigInfo(c.GetInt("order"), (Net.TheVpc.Upa.Config.ConfigAction)(System.Enum.Parse(typeof(Net.TheVpc.Upa.Config.ConfigAction),c.GetString("action"))), c.GetString("persistenceGroup"), c.GetString("persistenceUnit"));
                     }
                 } catch (System.Exception e) {
                 }
@@ -103,14 +103,14 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
             //ignore
             //                e.printStackTrace();
             if (configInfo == null) {
-                configInfo = new Net.Vpc.Upa.Config.ConfigInfo(System.Int32.MinValue, Net.Vpc.Upa.Config.ConfigAction.MERGE, null, null);
+                configInfo = new Net.TheVpc.Upa.Config.ConfigInfo(System.Int32.MinValue, Net.TheVpc.Upa.Config.ConfigAction.MERGE, null, null);
             }
             return configInfo;
         }
 
-        protected internal override System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Config.DecorationValue> GetAttributes0() {
+        protected internal override System.Collections.Generic.IDictionary<string , Net.TheVpc.Upa.Config.DecorationValue> GetAttributes0() {
             if (values == null) {
-                System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Config.DecorationValue> map = new System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Config.DecorationValue>();
+                System.Collections.Generic.IDictionary<string , Net.TheVpc.Upa.Config.DecorationValue> map = new System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Config.DecorationValue>();
                 int pos = 0;
                 foreach (System.Reflection.MethodInfo declaredMethod in ann.GetType().GetMethods()) {
                     string mname = (declaredMethod).Name;
@@ -135,14 +135,14 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
             System.Text.StringBuilder b = new System.Text.StringBuilder();
             b.Append("@").Append(GetName());
             b.Append("[");
-            if (targetType == default(Net.Vpc.Upa.Config.DecorationTarget)) {
+            if (targetType == default(Net.TheVpc.Upa.Config.DecorationTarget)) {
                 b.Append("EMBEDDED").Append(":");
             }
             b.Append(type);
-            if (targetType == Net.Vpc.Upa.Config.DecorationTarget.METHOD || targetType == Net.Vpc.Upa.Config.DecorationTarget.FIELD) {
+            if (targetType == Net.TheVpc.Upa.Config.DecorationTarget.METHOD || targetType == Net.TheVpc.Upa.Config.DecorationTarget.FIELD) {
                 b.Append(".").Append(location);
             }
-            if (!GetConfig().Equals(Net.Vpc.Upa.Config.ConfigInfo.DEFAULT)) {
+            if (!GetConfig().Equals(Net.TheVpc.Upa.Config.ConfigInfo.DEFAULT)) {
                 b.Append(";");
                 b.Append(GetConfig());
             }

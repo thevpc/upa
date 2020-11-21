@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
 
@@ -25,16 +25,16 @@ namespace Net.Vpc.Upa.Persistence
 
         private string @object;
 
-        private Net.Vpc.Upa.Persistence.PersistenceNameType persistenceNameType;
+        private Net.TheVpc.Upa.Persistence.PersistenceNameType persistenceNameType;
 
         private string @value;
 
-        public PersistenceName(string @object, Net.Vpc.Upa.Persistence.PersistenceNameType type, string name, int configOrder) {
+        public PersistenceName(string @object, Net.TheVpc.Upa.Persistence.PersistenceNameType type, string name, int configOrder) {
             if (type == null) {
-                throw new Net.Vpc.Upa.Exceptions.UPAException("NullType");
+                throw new Net.TheVpc.Upa.Exceptions.UPAException("NullType");
             }
             if (name == null || (name.Trim()).Length == 0) {
-                throw new Net.Vpc.Upa.Exceptions.UPAException("NullName");
+                throw new Net.TheVpc.Upa.Exceptions.UPAException("NullName");
             } else {
                 name = name.Trim();
             }
@@ -55,7 +55,7 @@ namespace Net.Vpc.Upa.Persistence
             return @object;
         }
 
-        public virtual Net.Vpc.Upa.Persistence.PersistenceNameType GetPersistenceNameType() {
+        public virtual Net.TheVpc.Upa.Persistence.PersistenceNameType GetPersistenceNameType() {
             return persistenceNameType;
         }
 
@@ -80,7 +80,7 @@ namespace Net.Vpc.Upa.Persistence
             if (GetType() != obj.GetType()) {
                 return false;
             }
-            Net.Vpc.Upa.Persistence.PersistenceName other = (Net.Vpc.Upa.Persistence.PersistenceName) obj;
+            Net.TheVpc.Upa.Persistence.PersistenceName other = (Net.TheVpc.Upa.Persistence.PersistenceName) obj;
             if ((this.@object == null) ? (other.@object != null) : !this.@object.Equals(other.@object)) {
                 return false;
             }

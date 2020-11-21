@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
     /**
@@ -22,19 +22,19 @@ namespace Net.Vpc.Upa.Expressions
      */
     public class ExpressionTransformerResult {
 
-        private Net.Vpc.Upa.Expressions.Expression expression;
+        private Net.TheVpc.Upa.Expressions.Expression expression;
 
         private bool replaced;
 
         private bool updated;
 
-        public ExpressionTransformerResult(Net.Vpc.Upa.Expressions.Expression expression, bool replaced, bool updated) {
+        public ExpressionTransformerResult(Net.TheVpc.Upa.Expressions.Expression expression, bool replaced, bool updated) {
             this.expression = expression;
             this.replaced = replaced;
             this.updated = updated;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Expression GetExpression() {
+        public virtual Net.TheVpc.Upa.Expressions.Expression GetExpression() {
             return expression;
         }
 

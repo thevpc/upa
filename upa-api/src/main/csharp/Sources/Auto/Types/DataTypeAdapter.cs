@@ -11,18 +11,18 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
 
     /**
      * Created by vpc on 6/17/16.
      */
-    public class DataTypeAdapter : Net.Vpc.Upa.Types.DataType, System.ICloneable {
+    public class DataTypeAdapter : Net.TheVpc.Upa.Types.DataType, System.ICloneable {
 
-        private Net.Vpc.Upa.Types.DataType dataType;
+        private Net.TheVpc.Upa.Types.DataType dataType;
 
-        public DataTypeAdapter(Net.Vpc.Upa.Types.DataType dataType) {
+        public DataTypeAdapter(Net.TheVpc.Upa.Types.DataType dataType) {
             this.dataType = dataType;
         }
 
@@ -62,35 +62,35 @@ namespace Net.Vpc.Upa.Types
             return dataType.GetPrecision();
         }
 
-        public virtual object Rewrite(object @value, string name, string description) /* throws Net.Vpc.Upa.Types.ConstraintsException */  {
+        public virtual object Rewrite(object @value, string name, string description) /* throws Net.TheVpc.Upa.Types.ConstraintsException */  {
             return dataType.Rewrite(@value, name, description);
         }
 
-        public virtual void Check(object @value, string name, string description) /* throws Net.Vpc.Upa.Types.ConstraintsException */  {
+        public virtual void Check(object @value, string name, string description) /* throws Net.TheVpc.Upa.Types.ConstraintsException */  {
             dataType.Check(@value, name, description);
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Types.TypeValueValidator> GetValueValidators() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Types.TypeValueValidator> GetValueValidators() {
             return dataType.GetValueValidators();
         }
 
-        public virtual Net.Vpc.Upa.Types.DataType AddValueValidator(Net.Vpc.Upa.Types.TypeValueValidator validator) {
+        public virtual Net.TheVpc.Upa.Types.DataType AddValueValidator(Net.TheVpc.Upa.Types.TypeValueValidator validator) {
             return dataType.AddValueValidator(validator);
         }
 
-        public virtual Net.Vpc.Upa.Types.DataType RemoveValueValidator(Net.Vpc.Upa.Types.TypeValueValidator validator) {
+        public virtual Net.TheVpc.Upa.Types.DataType RemoveValueValidator(Net.TheVpc.Upa.Types.TypeValueValidator validator) {
             return dataType.RemoveValueValidator(validator);
         }
 
-        public virtual Net.Vpc.Upa.Types.DataType AddValueRewriter(Net.Vpc.Upa.Types.TypeValueRewriter rewriter) {
+        public virtual Net.TheVpc.Upa.Types.DataType AddValueRewriter(Net.TheVpc.Upa.Types.TypeValueRewriter rewriter) {
             return dataType.AddValueRewriter(rewriter);
         }
 
-        public virtual Net.Vpc.Upa.Types.DataType RemoveValueReWriter(Net.Vpc.Upa.Types.TypeValueRewriter rewriter) {
+        public virtual Net.TheVpc.Upa.Types.DataType RemoveValueReWriter(Net.TheVpc.Upa.Types.TypeValueRewriter rewriter) {
             return dataType.RemoveValueReWriter(rewriter);
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Types.TypeValueRewriter> GetValueRewriters() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Types.TypeValueRewriter> GetValueRewriters() {
             return dataType.GetValueRewriters();
         }
 
@@ -98,11 +98,11 @@ namespace Net.Vpc.Upa.Types
             return dataType.GetUnitName();
         }
 
-        public virtual Net.Vpc.Upa.Types.DataType SetUnitName(string unitName) {
+        public virtual Net.TheVpc.Upa.Types.DataType SetUnitName(string unitName) {
             return dataType.SetUnitName(unitName);
         }
 
-        public virtual bool IsAssignableFrom(Net.Vpc.Upa.Types.DataType type) {
+        public virtual bool IsAssignableFrom(Net.TheVpc.Upa.Types.DataType type) {
             return dataType.IsAssignableFrom(type);
         }
 
@@ -110,7 +110,7 @@ namespace Net.Vpc.Upa.Types
             return dataType.IsInstance(@object);
         }
 
-        public virtual void Cast(Net.Vpc.Upa.Types.DataType type) {
+        public virtual void Cast(Net.TheVpc.Upa.Types.DataType type) {
             dataType.Cast(type);
         }
 
@@ -126,11 +126,11 @@ namespace Net.Vpc.Upa.Types
             dataType.SetName(name);
         }
 
-        public virtual Net.Vpc.Upa.Properties GetProperties() {
+        public virtual Net.TheVpc.Upa.Properties GetProperties() {
             return dataType.GetProperties();
         }
 
-        public virtual void SetProperties(Net.Vpc.Upa.Properties properties) {
+        public virtual void SetProperties(Net.TheVpc.Upa.Properties properties) {
             dataType.SetProperties(properties);
         }
 
@@ -138,7 +138,7 @@ namespace Net.Vpc.Upa.Types
             try {
                 return base.MemberwiseClone();
             } catch (System.Exception ex) {
-                throw new Net.Vpc.Upa.Exceptions.UnexpectedException("Clone Not Supported", ex);
+                throw new Net.TheVpc.Upa.Exceptions.UnexpectedException("Clone Not Supported", ex);
             }
         }
 
@@ -146,7 +146,7 @@ namespace Net.Vpc.Upa.Types
         public override bool Equals(object o) {
             if (this == o) return true;
             if (o == null || GetType() != o.GetType()) return false;
-            Net.Vpc.Upa.Types.DataTypeAdapter that = (Net.Vpc.Upa.Types.DataTypeAdapter) o;
+            Net.TheVpc.Upa.Types.DataTypeAdapter that = (Net.TheVpc.Upa.Types.DataTypeAdapter) o;
             return dataType != null ? dataType.Equals(that.dataType) : that.dataType == null;
         }
 
@@ -156,7 +156,7 @@ namespace Net.Vpc.Upa.Types
         }
 
 
-        public virtual Net.Vpc.Upa.DataTypeInfo GetInfo() {
+        public virtual Net.TheVpc.Upa.DataTypeInfo GetInfo() {
             return dataType.GetInfo();
         }
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit

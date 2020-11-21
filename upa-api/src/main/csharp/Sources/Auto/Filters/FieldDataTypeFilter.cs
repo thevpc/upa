@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Filters
+namespace Net.TheVpc.Upa.Filters
 {
 
 
@@ -22,7 +22,7 @@ namespace Net.Vpc.Upa.Filters
      * Time: 7:22 PM
      * To change this template use File | Settings | File Templates.
      */
-    public class FieldDataTypeFilter : Net.Vpc.Upa.Filters.AbstractFieldFilter {
+    public class FieldDataTypeFilter : Net.TheVpc.Upa.Filters.AbstractFieldFilter {
 
         private System.Type type;
 
@@ -39,7 +39,7 @@ namespace Net.Vpc.Upa.Filters
         }
 
 
-        public override bool Accept(Net.Vpc.Upa.Field f) {
+        public override bool Accept(Net.TheVpc.Upa.Field f) {
             return type.IsAssignableFrom(f.GetDataType().GetType());
         }
     }

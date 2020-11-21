@@ -11,47 +11,47 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class ComposedToFlatFieldPersister : Net.Vpc.Upa.Persistence.FieldPersister {
+    public class ComposedToFlatFieldPersister : Net.TheVpc.Upa.Persistence.FieldPersister {
 
-        private Net.Vpc.Upa.Field field;
+        private Net.TheVpc.Upa.Field field;
 
-        private Net.Vpc.Upa.EntityBuilder relationshipTargetConverter;
+        private Net.TheVpc.Upa.EntityBuilder relationshipTargetConverter;
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Field> flatFields;
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Field> flatFields;
 
-        public ComposedToFlatFieldPersister(Net.Vpc.Upa.Field field) {
+        public ComposedToFlatFieldPersister(Net.TheVpc.Upa.Field field) {
             this.field = field;
-            Net.Vpc.Upa.Types.ManyToOneType t = (Net.Vpc.Upa.Types.ManyToOneType) field.GetDataType();
-            Net.Vpc.Upa.Entity master = t.GetRelationship().GetTargetRole().GetEntity();
-            Net.Vpc.Upa.RelationshipRole detailRole = t.GetRelationship().GetSourceRole();
+            Net.TheVpc.Upa.Types.ManyToOneType t = (Net.TheVpc.Upa.Types.ManyToOneType) field.GetDataType();
+            Net.TheVpc.Upa.Entity master = t.GetRelationship().GetTargetRole().GetEntity();
+            Net.TheVpc.Upa.RelationshipRole detailRole = t.GetRelationship().GetSourceRole();
             flatFields = detailRole.GetFields();
             relationshipTargetConverter = master.GetBuilder();
         }
 
-        public virtual void BeforePersist(Net.Vpc.Upa.Record record, Net.Vpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void BeforePersist(Net.TheVpc.Upa.Record record, Net.TheVpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             object o = record.GetObject<T>(field.GetName());
-            Net.Vpc.Upa.Key key = relationshipTargetConverter.ObjectToKey(o);
+            Net.TheVpc.Upa.Key key = relationshipTargetConverter.ObjectToKey(o);
             if (key == null) {
-                foreach (Net.Vpc.Upa.Field ff in flatFields) {
+                foreach (Net.TheVpc.Upa.Field ff in flatFields) {
                     record.SetObject(ff.GetName(), ff.GetUnspecifiedValueDecoded());
                 }
             } else {
                 int i = 0;
-                foreach (Net.Vpc.Upa.Field ff in flatFields) {
+                foreach (Net.TheVpc.Upa.Field ff in flatFields) {
                     record.SetObject(ff.GetName(), key.GetObjectAt(i));
                     i++;
                 }
             }
         }
 
-        public virtual void AfterPersist(Net.Vpc.Upa.Record record, Net.Vpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void AfterPersist(Net.TheVpc.Upa.Record record, Net.TheVpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
         }
     }
 }

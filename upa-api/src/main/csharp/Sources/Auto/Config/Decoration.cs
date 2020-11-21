@@ -11,20 +11,20 @@
 
 
 
-namespace Net.Vpc.Upa.Config
+namespace Net.TheVpc.Upa.Config
 {
 
 
     /**
      * @author taha.bensalah@gmail.com
      */
-    public interface Decoration : Net.Vpc.Upa.Config.DecorationValue {
+    public interface Decoration : Net.TheVpc.Upa.Config.DecorationValue {
 
          string GetLocation();
 
-         Net.Vpc.Upa.Config.DecorationSourceType GetDecorationSourceType();
+         Net.TheVpc.Upa.Config.DecorationSourceType GetDecorationSourceType();
 
-         Net.Vpc.Upa.Config.DecorationTarget GetTarget();
+         Net.TheVpc.Upa.Config.DecorationTarget GetTarget();
 
          string GetLocationType();
 
@@ -44,20 +44,20 @@ namespace Net.Vpc.Upa.Config
 
           T GetEnum<T>(string name, System.Type type);
 
-         Net.Vpc.Upa.Config.DecorationValue Get(string name);
+         Net.TheVpc.Upa.Config.DecorationValue Get(string name);
 
          System.Type GetType(string name);
 
-         Net.Vpc.Upa.Config.Decoration GetDecoration(string name);
+         Net.TheVpc.Upa.Config.Decoration GetDecoration(string name);
 
           T[] GetPrimitiveArray<T>(string name, System.Type type);
 
-         Net.Vpc.Upa.Config.DecorationValue[] GetArray(string name);
+         Net.TheVpc.Upa.Config.DecorationValue[] GetArray(string name);
 
-         System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Config.DecorationValue> GetAttributes();
+         System.Collections.Generic.IDictionary<string , Net.TheVpc.Upa.Config.DecorationValue> GetAttributes();
 
-         Net.Vpc.Upa.Config.Decoration CastName(string type);
+         Net.TheVpc.Upa.Config.Decoration CastName(string type);
 
-         Net.Vpc.Upa.Config.Decoration CastName(System.Type type);
+         Net.TheVpc.Upa.Config.Decoration CastName(System.Type type);
     }
 }

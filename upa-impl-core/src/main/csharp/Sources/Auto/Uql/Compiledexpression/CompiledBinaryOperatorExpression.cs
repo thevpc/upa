@@ -11,29 +11,29 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledexpression
 {
 
 
-    public abstract class CompiledBinaryOperatorExpression : Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpressionImpl {
+    public abstract class CompiledBinaryOperatorExpression : Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpressionImpl {
 
 
 
-        protected internal Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression left;
+        protected internal Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression left;
 
-        protected internal Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression right;
+        protected internal Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression right;
 
-        protected internal Net.Vpc.Upa.Expressions.BinaryOperator @operator;
+        protected internal Net.TheVpc.Upa.Expressions.BinaryOperator @operator;
 
-        public CompiledBinaryOperatorExpression(Net.Vpc.Upa.Expressions.BinaryOperator @operator, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression left, object right)  : this(@operator, left, Net.Vpc.Upa.Impl.Uql.CompiledExpressionFactory.ToLiteral(right)){
+        public CompiledBinaryOperatorExpression(Net.TheVpc.Upa.Expressions.BinaryOperator @operator, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression left, object right)  : this(@operator, left, Net.TheVpc.Upa.Impl.Uql.CompiledExpressionFactory.ToLiteral(right)){
 
         }
 
-        public CompiledBinaryOperatorExpression(Net.Vpc.Upa.Expressions.BinaryOperator @operator, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression left, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression right) {
+        public CompiledBinaryOperatorExpression(Net.TheVpc.Upa.Expressions.BinaryOperator @operator, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression left, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression right) {
             this.left = left;
             this.right = right;
-            Net.Vpc.Upa.Types.DataTypeTransform leftType = null;
-            Net.Vpc.Upa.Types.DataTypeTransform rightType = null;
+            Net.TheVpc.Upa.Types.DataTypeTransform leftType = null;
+            Net.TheVpc.Upa.Types.DataTypeTransform rightType = null;
             if (left != null && left.GetTypeTransform() != null && !left.GetTypeTransform().GetSourceType().GetPlatformType().Equals(typeof(object))) {
                 leftType = left.GetTypeTransform();
             }
@@ -49,15 +49,15 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             PrepareChildren(left, right);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetLeft() {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetLeft() {
             return left;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetRight() {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetRight() {
             return right;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetOther(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression r) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetOther(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression r) {
             if (r == left) {
                 return right;
             }
@@ -73,12 +73,12 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         }
 
 
-        public override Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetSubExpressions() {
-            return new Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] { left, right };
+        public override Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetSubExpressions() {
+            return new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] { left, right };
         }
 
 
-        public override void SetSubExpression(int index, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
+        public override void SetSubExpression(int index, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
             switch(index) {
                 case 0:
                     {
@@ -103,85 +103,85 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             }
         }
 
-        public virtual Net.Vpc.Upa.Expressions.BinaryOperator GetOperator() {
+        public virtual Net.TheVpc.Upa.Expressions.BinaryOperator GetOperator() {
             return @operator;
         }
 
         private string GetOperatorString() {
             switch(GetOperator()) {
-                case Net.Vpc.Upa.Expressions.BinaryOperator.AND:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.AND:
                     {
                         return "AND";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.OR:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.OR:
                     {
                         return "OR";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.BIT_AND:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.BIT_AND:
                     {
                         return "&";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.LSHIFT:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.LSHIFT:
                     {
                         return "<<";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.BIT_OR:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.BIT_OR:
                     {
                         return "|";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.RSHIFT:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.RSHIFT:
                     {
                         return ">>";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.URSHIFT:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.URSHIFT:
                     {
                         return ">>>";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.XOR:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.XOR:
                     {
                         return "^";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.DIFF:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.DIFF:
                     {
                         return "!=";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.EQ:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.EQ:
                     {
                         return "=";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.GT:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.GT:
                     {
                         return ">";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.GE:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.GE:
                     {
                         return ">=";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.LT:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.LT:
                     {
                         return "<";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.LE:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.LE:
                     {
                         return "<=";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.PLUS:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.PLUS:
                     {
                         return "+";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.MINUS:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.MINUS:
                     {
                         return "-";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.MUL:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.MUL:
                     {
                         return "*";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.DIV:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.DIV:
                     {
                         return "/";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.LIKE:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.LIKE:
                     {
                         return " LIKE ";
                     }
@@ -200,90 +200,90 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return s;
         }
 
-        public override Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledBinaryOperatorExpression o = Create(GetOperator(), GetLeft().Copy(), GetRight().Copy());
+        public override Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledBinaryOperatorExpression o = Create(GetOperator(), GetLeft().Copy(), GetRight().Copy());
             o.SetDescription(GetDescription());
             o.GetClientParameters().SetAll(GetClientParameters());
             return o;
         }
 
-        public static Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledBinaryOperatorExpression Create(Net.Vpc.Upa.Expressions.BinaryOperator @operator, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression left, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression right) {
+        public static Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledBinaryOperatorExpression Create(Net.TheVpc.Upa.Expressions.BinaryOperator @operator, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression left, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression right) {
             switch(@operator) {
-                case Net.Vpc.Upa.Expressions.BinaryOperator.AND:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.AND:
                     {
-                        return new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledAnd(left, right);
+                        return new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledAnd(left, right);
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.OR:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.OR:
                     {
-                        return new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledOr(left, right);
+                        return new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledOr(left, right);
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.BIT_AND:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.BIT_AND:
                     {
-                        return new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledBitAnd(left, right);
+                        return new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledBitAnd(left, right);
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.BIT_OR:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.BIT_OR:
                     {
-                        return new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledBitOr(left, right);
+                        return new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledBitOr(left, right);
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.LSHIFT:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.LSHIFT:
                     {
-                        return new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledLShift(left, right);
+                        return new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledLShift(left, right);
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.RSHIFT:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.RSHIFT:
                     {
-                        return new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledRShift(left, right);
+                        return new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledRShift(left, right);
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.URSHIFT:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.URSHIFT:
                     {
-                        return new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledURShift(left, right);
+                        return new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledURShift(left, right);
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.XOR:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.XOR:
                     {
-                        return new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledXOr(left, right);
+                        return new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledXOr(left, right);
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.DIFF:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.DIFF:
                     {
-                        return new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDifferent(left, right);
+                        return new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledDifferent(left, right);
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.EQ:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.EQ:
                     {
-                        return new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEquals(left, right);
+                        return new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEquals(left, right);
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.GT:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.GT:
                     {
-                        return new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledGreaterThan(left, right);
+                        return new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledGreaterThan(left, right);
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.GE:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.GE:
                     {
-                        return new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledGreaterEqualThan(left, right);
+                        return new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledGreaterEqualThan(left, right);
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.LT:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.LT:
                     {
-                        return new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledLessThan(left, right);
+                        return new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledLessThan(left, right);
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.LE:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.LE:
                     {
-                        return new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledLessEqualThan(left, right);
+                        return new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledLessEqualThan(left, right);
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.PLUS:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.PLUS:
                     {
-                        return new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledPlus(left, right);
+                        return new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledPlus(left, right);
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.MINUS:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.MINUS:
                     {
-                        return new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledMinus(left, right);
+                        return new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledMinus(left, right);
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.MUL:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.MUL:
                     {
-                        return new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledMul(left, right);
+                        return new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledMul(left, right);
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.DIV:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.DIV:
                     {
-                        return new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDiv(left, right);
+                        return new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledDiv(left, right);
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.LIKE:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.LIKE:
                     {
-                        return new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledLike(left, right);
+                        return new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledLike(left, right);
                     }
                 default:
                     {

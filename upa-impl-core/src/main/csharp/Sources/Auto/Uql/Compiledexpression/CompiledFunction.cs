@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledexpression
 {
 
 
@@ -19,9 +19,9 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
      * Created with IntelliJ IDEA. User: vpc Date: 8/16/12 Time: 10:54 PM To change
      * this template use File | Settings | File Templates.
      */
-    public abstract class CompiledFunction : Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpressionImpl {
+    public abstract class CompiledFunction : Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpressionImpl {
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression> expressions = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression>();
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression> expressions = new System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression>();
 
         private string name;
 
@@ -37,11 +37,11 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return (expressions).Count;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetArgument(int index) {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetArgument(int index) {
             return expressions[index];
         }
 
-        protected internal virtual void ProtectedSetArgument(int i, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e) {
+        protected internal virtual void ProtectedSetArgument(int i, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e) {
             if (e == null) {
                 throw new System.ArgumentException ();
             }
@@ -49,7 +49,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             PrepareChildren(e);
         }
 
-        protected internal virtual void ProtectedAddArgument(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e) {
+        protected internal virtual void ProtectedAddArgument(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e) {
             if (e == null) {
                 throw new System.ArgumentException ();
             }
@@ -57,23 +57,23 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             PrepareChildren(e);
         }
 
-        public Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetArgumentImpl(int index) {
+        public Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression GetArgumentImpl(int index) {
             return null;
         }
 
 
-        public override Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetSubExpressions() {
+        public override Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetSubExpressions() {
             return GetArguments();
         }
 
 
-        public override void SetSubExpression(int index, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
+        public override void SetSubExpression(int index, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
             ProtectedSetArgument(index, expression);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetArguments() {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetArguments() {
             int max = GetArgumentsCount();
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] p = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[max];
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] p = new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[max];
             for (int i = 0; i < max; i++) {
                 p[i] = GetArgument(i);
             }
@@ -98,7 +98,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             int max = GetArgumentsCount();
             bool valid = max == 0;
             for (int i = 0; i < max; i++) {
-                Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e = GetArgument(i);
+                Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e = GetArgument(i);
                 if (e.IsValid()) {
                     valid = true;
                 }
@@ -106,8 +106,8 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return valid;
         }
 
-        protected internal virtual void ProtectedCopyTo(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledFunction o) {
-            foreach (Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression element in GetArguments()) {
+        protected internal virtual void ProtectedCopyTo(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledFunction o) {
+            foreach (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression element in GetArguments()) {
                 o.ProtectedAddArgument(element.Copy());
             }
             o.SetDescription(GetDescription());

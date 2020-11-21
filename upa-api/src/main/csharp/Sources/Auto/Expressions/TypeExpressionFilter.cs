@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
     /**
      * @author taha.bensalah@gmail.com
      */
-    public class TypeExpressionFilter : Net.Vpc.Upa.Expressions.ExpressionFilter {
+    public class TypeExpressionFilter : Net.TheVpc.Upa.Expressions.ExpressionFilter {
 
         private System.Type type;
 
@@ -26,7 +26,7 @@ namespace Net.Vpc.Upa.Expressions
         }
 
 
-        public virtual bool Accept(Net.Vpc.Upa.Expressions.Expression expression) {
+        public virtual bool Accept(Net.TheVpc.Upa.Expressions.Expression expression) {
             return type.IsInstanceOfType(expression);
         }
     }

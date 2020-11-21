@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiledfilters
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledfilters
 {
 
 
     /**
     * @author Taha BEN SALAH <taha.bensalah@gmail.com>
     * @creationdate 1/10/13 11:22 PM*/
-    public class CompiledParamFilter : Net.Vpc.Upa.Impl.Uql.CompiledExpressionFilter {
+    public class CompiledParamFilter : Net.TheVpc.Upa.Impl.Uql.CompiledExpressionFilter {
 
         private readonly string name;
 
@@ -27,8 +27,8 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledfilters
         }
 
 
-        public virtual bool Accept(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e) {
-            return (e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) && name.Equals(((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) e).GetName());
+        public virtual bool Accept(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e) {
+            return (e is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) && name.Equals(((Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) e).GetName());
         }
     }
 }

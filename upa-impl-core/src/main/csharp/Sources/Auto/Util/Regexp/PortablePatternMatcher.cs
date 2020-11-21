@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util.Regexp
+namespace Net.TheVpc.Upa.Impl.Util.Regexp
 {
 
 

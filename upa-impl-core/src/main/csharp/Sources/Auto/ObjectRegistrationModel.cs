@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
@@ -21,74 +21,74 @@ namespace Net.Vpc.Upa.Impl
      */
     public interface ObjectRegistrationModel {
 
-         bool ContainsPackage(Net.Vpc.Upa.Package item, Net.Vpc.Upa.Package parent) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool ContainsPackage(Net.TheVpc.Upa.Package item, Net.TheVpc.Upa.Package parent) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         bool ContainsEntity(Net.Vpc.Upa.Entity item, Net.Vpc.Upa.Package parent) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool ContainsEntity(Net.TheVpc.Upa.Entity item, Net.TheVpc.Upa.Package parent) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         bool ContainsField(Net.Vpc.Upa.Field item) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool ContainsField(Net.TheVpc.Upa.Field item) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         bool ContainsIndex(Net.Vpc.Upa.Index item, Net.Vpc.Upa.Entity parent) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool ContainsIndex(Net.TheVpc.Upa.Index item, Net.TheVpc.Upa.Entity parent) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         bool ContainsRelationship(Net.Vpc.Upa.Relationship item) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool ContainsRelationship(Net.TheVpc.Upa.Relationship item) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         bool ContainsSection(Net.Vpc.Upa.Section item) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool ContainsSection(Net.TheVpc.Upa.Section item) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void RegisterPackage(Net.Vpc.Upa.Package item, Net.Vpc.Upa.Package parent) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void RegisterPackage(Net.TheVpc.Upa.Package item, Net.TheVpc.Upa.Package parent) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void RegisterEntity(Net.Vpc.Upa.Entity item, Net.Vpc.Upa.Package parent) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void RegisterEntity(Net.TheVpc.Upa.Entity item, Net.TheVpc.Upa.Package parent) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void RegisterSection(Net.Vpc.Upa.Section item) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void RegisterSection(Net.TheVpc.Upa.Section item) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void RegisterField(Net.Vpc.Upa.Field item) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void RegisterField(Net.TheVpc.Upa.Field item) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void RegisterIndex(Net.Vpc.Upa.Index item, Net.Vpc.Upa.Entity parent) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void RegisterIndex(Net.TheVpc.Upa.Index item, Net.TheVpc.Upa.Entity parent) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void RegisterRelationship(Net.Vpc.Upa.Relationship item) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void RegisterRelationship(Net.TheVpc.Upa.Relationship item) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void UnregisterPackage(Net.Vpc.Upa.Package item) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void UnregisterPackage(Net.TheVpc.Upa.Package item) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void UnregisterEntity(Net.Vpc.Upa.Entity item) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void UnregisterEntity(Net.TheVpc.Upa.Entity item) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void UnregisterSection(Net.Vpc.Upa.Section item) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void UnregisterSection(Net.TheVpc.Upa.Section item) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void UnregisterField(Net.Vpc.Upa.Field item) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void UnregisterField(Net.TheVpc.Upa.Field item) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void UnregisterIndex(Net.Vpc.Upa.Index item) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void UnregisterIndex(Net.TheVpc.Upa.Index item) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void UnregisterRelation(Net.Vpc.Upa.Relationship item) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void UnregisterRelation(Net.TheVpc.Upa.Relationship item) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Index GetIndex(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Index GetIndex(string name) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Entity GetEntity(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Entity GetEntity(string name) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Relationship GetRelationship(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Relationship GetRelationship(string name) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Relationship FindRelationship(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Relationship FindRelationship(string name) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Entity FindEntity(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Entity FindEntity(string name) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Entity FindEntity(System.Type name) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Entity FindEntity(System.Type name) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Entity> FindEntities(System.Type entityType) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Entity> FindEntities(System.Type entityType) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Entity> GetEntities() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Entity> GetEntities() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Field> GetFields() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Field> GetFields() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Index> GetIndexes() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Index> GetIndexes() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Package> GetPackages() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Package> GetPackages() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Relationship> GetRelationships() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Relationship> GetRelationships() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Entity GetEntity(System.Type entityType) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Entity GetEntity(System.Type entityType) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Entity GetEntityByIdType(System.Type idType) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Entity GetEntityByIdType(System.Type idType) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         bool ContainsEntity(string entityName) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool ContainsEntity(string entityName) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         bool ContainsEntity(System.Type entityType) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool ContainsEntity(System.Type entityType) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Index> GetIndexes(string entityName) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Index> GetIndexes(string entityName) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
     }
 }

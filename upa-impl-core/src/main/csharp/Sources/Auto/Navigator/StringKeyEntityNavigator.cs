@@ -11,63 +11,63 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Navigator
+namespace Net.TheVpc.Upa.Impl.Navigator
 {
 
 
-    public class StringKeyEntityNavigator : Net.Vpc.Upa.Impl.Navigator.DefaultEntityNavigator {
+    public class StringKeyEntityNavigator : Net.TheVpc.Upa.Impl.Navigator.DefaultEntityNavigator {
 
         internal int synchNbrTry = 25;
 
         internal int asynchNbrTry = 25;
 
-        public StringKeyEntityNavigator(Net.Vpc.Upa.Entity entity)  : base(entity){
+        public StringKeyEntityNavigator(Net.TheVpc.Upa.Entity entity)  : base(entity){
 
         }
 
 
-        public override object GetNewKey() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Field> primaryFields = entity.GetPrimaryFields();
+        public override object GetNewKey() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Field> primaryFields = entity.GetPrimaryFields();
             if ((primaryFields).Count == 1) {
                 return entity.CreateId(GetNewValue(primaryFields[0]));
             }
-            throw new Net.Vpc.Upa.Exceptions.UPAException("Unsupported number of Primary Keys for StringKeyEntityNavigator");
+            throw new Net.TheVpc.Upa.Exceptions.UPAException("Unsupported number of Primary Keys for StringKeyEntityNavigator");
         }
 
-        public virtual string GetNewValue(Net.Vpc.Upa.Field field) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Entity entity = field.GetEntity();
+        public virtual string GetNewValue(Net.TheVpc.Upa.Field field) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Entity entity = field.GetEntity();
             string idName = field.GetName();
             string goodId = null;
             for (int i = 0; i < asynchNbrTry; i++) {
                 System.Collections.Generic.SortedSet<string> requestedIds = new System.Collections.Generic.SortedSet<string>();
-                Net.Vpc.Upa.Expressions.InCollection idsSet = new Net.Vpc.Upa.Expressions.InCollection(new Net.Vpc.Upa.Expressions.Var(idName));
+                Net.TheVpc.Upa.Expressions.InCollection idsSet = new Net.TheVpc.Upa.Expressions.InCollection(new Net.TheVpc.Upa.Expressions.Var(idName));
                 for (int j = 0; j < synchNbrTry; j++) {
                     string id = (string) GenerateValue(field);
-                    idsSet.Add(new Net.Vpc.Upa.Expressions.Literal(id));
+                    idsSet.Add(new Net.TheVpc.Upa.Expressions.Literal(id));
                     requestedIds.Add(id);
                 }
-                System.Collections.Generic.IList<Net.Vpc.Upa.Record> recordList = entity.CreateQuery((new Net.Vpc.Upa.Expressions.Select()).From(entity.GetName()).Field(new Net.Vpc.Upa.Expressions.Var(idName)).Where(idsSet)).GetRecordList();
+                System.Collections.Generic.IList<Net.TheVpc.Upa.Record> recordList = entity.CreateQuery((new Net.TheVpc.Upa.Expressions.Select()).From(entity.GetName()).Field(new Net.TheVpc.Upa.Expressions.Var(idName)).Where(idsSet)).GetRecordList();
                 System.Collections.Generic.SortedSet<string> foundIds = new System.Collections.Generic.SortedSet<string>();
-                foreach (Net.Vpc.Upa.Record record in recordList) {
+                foreach (Net.TheVpc.Upa.Record record in recordList) {
                     foundIds.Add(record.GetString());
                 }
-                Net.Vpc.Upa.Impl.FwkConvertUtils.SetRemoveRange(requestedIds, foundIds);
+                Net.TheVpc.Upa.Impl.FwkConvertUtils.SetRemoveRange(requestedIds, foundIds);
                 if ((requestedIds.Count==0)) {
                     continue;
                 }
-                goodId = Net.Vpc.Upa.Impl.FwkConvertUtils.CollectionSetFirst<string>(requestedIds);
+                goodId = Net.TheVpc.Upa.Impl.FwkConvertUtils.CollectionSetFirst<string>(requestedIds);
                 break;
             }
             return goodId;
         }
 
-        protected internal virtual object GenerateValue(Net.Vpc.Upa.Field field) {
+        protected internal virtual object GenerateValue(Net.TheVpc.Upa.Field field) {
             try {
-                Net.Vpc.Upa.Types.StringType dataType = (Net.Vpc.Upa.Types.StringType) field.GetDataType();
+                Net.TheVpc.Upa.Types.StringType dataType = (Net.TheVpc.Upa.Types.StringType) field.GetDataType();
                 string goodChars = null;
-                foreach (Net.Vpc.Upa.Types.TypeValueValidator valueValidator in dataType.GetValueValidators()) {
-                    if (valueValidator is Net.Vpc.Upa.Types.StringTypeCharValidator) {
-                        Net.Vpc.Upa.Types.StringTypeCharValidator s = (Net.Vpc.Upa.Types.StringTypeCharValidator) valueValidator;
+                foreach (Net.TheVpc.Upa.Types.TypeValueValidator valueValidator in dataType.GetValueValidators()) {
+                    if (valueValidator is Net.TheVpc.Upa.Types.StringTypeCharValidator) {
+                        Net.TheVpc.Upa.Types.StringTypeCharValidator s = (Net.TheVpc.Upa.Types.StringTypeCharValidator) valueValidator;
                         if (s.IsPositive()) {
                             goodChars = s.GetChars();
                             break;
@@ -75,7 +75,7 @@ namespace Net.Vpc.Upa.Impl.Navigator
                     }
                 }
                 if (goodChars == null) {
-                    goodChars = Net.Vpc.Upa.Impl.Util.IdentifierUtils.ALPHA_NUM_CHARS;
+                    goodChars = Net.TheVpc.Upa.Impl.Util.IdentifierUtils.ALPHA_NUM_CHARS;
                 }
                 //prefer alphabetic at start
                 //prefer alphanumeric at end
@@ -95,7 +95,7 @@ namespace Net.Vpc.Upa.Impl.Navigator
                     }
                 }
                 for (int i = 0; i < 100; i++) {
-                    string k = Net.Vpc.Upa.Impl.Util.IdentifierUtils.GenerateID(dataType.GetMin(), dataType.GetMax(), alpha.ToString(), goodChars, alpha.ToString() + num.ToString());
+                    string k = Net.TheVpc.Upa.Impl.Util.IdentifierUtils.GenerateID(dataType.GetMin(), dataType.GetMax(), alpha.ToString(), goodChars, alpha.ToString() + num.ToString());
                     bool ok = true;
                     for (int j = 1; j < (k).Length - 2; j++) {
                         if (ponct.ToString().IndexOf(k[j]) >= 0 && ponct.ToString().IndexOf(k[j + 1]) >= 0) {
@@ -107,8 +107,8 @@ namespace Net.Vpc.Upa.Impl.Navigator
                         return k;
                     }
                 }
-                return Net.Vpc.Upa.Impl.Util.IdentifierUtils.GenerateID(dataType.GetMin(), dataType.GetMax(), goodChars, goodChars, goodChars);
-            } catch (Net.Vpc.Upa.Types.ConstraintsException e) {
+                return Net.TheVpc.Upa.Impl.Util.IdentifierUtils.GenerateID(dataType.GetMin(), dataType.GetMax(), goodChars, goodChars, goodChars);
+            } catch (Net.TheVpc.Upa.Types.ConstraintsException e) {
                 return null;
             }
         }

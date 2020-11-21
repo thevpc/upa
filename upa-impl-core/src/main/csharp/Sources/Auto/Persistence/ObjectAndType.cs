@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -23,9 +23,9 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
         private System.Type cls;
 
-        private Net.Vpc.Upa.Persistence.PersistenceNameType spec;
+        private Net.TheVpc.Upa.Persistence.PersistenceNameType spec;
 
-        internal ObjectAndType(System.Type cls, Net.Vpc.Upa.Persistence.PersistenceNameType type) {
+        internal ObjectAndType(System.Type cls, Net.TheVpc.Upa.Persistence.PersistenceNameType type) {
             this.cls = cls;
             this.spec = type;
         }
@@ -34,7 +34,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
             return cls;
         }
 
-        public virtual Net.Vpc.Upa.Persistence.PersistenceNameType GetSpec() {
+        public virtual Net.TheVpc.Upa.Persistence.PersistenceNameType GetSpec() {
             return spec;
         }
 
@@ -46,7 +46,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
             if (o == null || GetType() != o.GetType()) {
                 return false;
             }
-            Net.Vpc.Upa.Impl.Persistence.ObjectAndType that = (Net.Vpc.Upa.Impl.Persistence.ObjectAndType) o;
+            Net.TheVpc.Upa.Impl.Persistence.ObjectAndType that = (Net.TheVpc.Upa.Impl.Persistence.ObjectAndType) o;
             if (cls != null ? !cls.Equals(that.cls) : that.cls != null) {
                 return false;
             }

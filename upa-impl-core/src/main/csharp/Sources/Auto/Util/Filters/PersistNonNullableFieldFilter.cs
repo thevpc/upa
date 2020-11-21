@@ -11,22 +11,22 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util.Filters
+namespace Net.TheVpc.Upa.Impl.Util.Filters
 {
 
 
     /**
     * Created by vpc on 12/23/13.*/
-    public class PersistNonNullableFieldFilter : Net.Vpc.Upa.Filters.AbstractFieldFilter {
+    public class PersistNonNullableFieldFilter : Net.TheVpc.Upa.Filters.AbstractFieldFilter {
 
 
-        public override bool AcceptDynamic() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public override bool AcceptDynamic() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return false;
         }
 
 
-        public override bool Accept(Net.Vpc.Upa.Field f) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return f.GetModifiers().Contains(Net.Vpc.Upa.FieldModifier.PERSIST) && !f.GetModifiers().Contains(Net.Vpc.Upa.FieldModifier.ID) && !f.GetDataType().IsNullable();
+        public override bool Accept(Net.TheVpc.Upa.Field f) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            return f.GetModifiers().Contains(Net.TheVpc.Upa.FieldModifier.PERSIST) && !f.GetModifiers().Contains(Net.TheVpc.Upa.FieldModifier.ID) && !f.GetDataType().IsNullable();
         }
     }
 }

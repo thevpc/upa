@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
@@ -21,24 +21,24 @@ namespace Net.Vpc.Upa.Impl
      */
     public interface SequenceManager {
 
-         Net.Vpc.Upa.Impl.PrivateSequence GetOrCreateSequence(string name, string pattern, int initialValue, int increment) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Impl.PrivateSequence GetOrCreateSequence(string name, string pattern, int initialValue, int increment) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Impl.PrivateSequence GetSequence(string name, string pattern) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Impl.PrivateSequence GetSequence(string name, string pattern) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         void CreateSequence(string name, string pattern, int initialValue, int increment) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void CreateSequence(string name, string pattern, int initialValue, int increment) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         bool IsLocked(string name, string pattern) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsLocked(string name, string pattern) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         bool IsLockedBySelf(string name, string pattern) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsLockedBySelf(string name, string pattern) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         bool IsLockedBy(string name, string pattern, string user) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsLockedBy(string name, string pattern, string user) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         int LockValue(string name, string pattern) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         int LockValue(string name, string pattern) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         int GetCurrentValue(string name, string pattern) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         int GetCurrentValue(string name, string pattern) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         int NextValue(string name, string pattern, int initialValue, int increment) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         int NextValue(string name, string pattern, int initialValue, int increment) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         int Unlock(string name, string pattern) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         int Unlock(string name, string pattern) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
     }
 }

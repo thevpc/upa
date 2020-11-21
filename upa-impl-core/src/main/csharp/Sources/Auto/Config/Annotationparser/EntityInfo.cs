@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config.Annotationparser
+namespace Net.TheVpc.Upa.Impl.Config.Annotationparser
 {
 
 
@@ -19,52 +19,52 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 11/15/12 11:46 AM
      */
-    internal class EntityInfo : Net.Vpc.Upa.EntityDescriptor {
+    internal class EntityInfo : Net.TheVpc.Upa.EntityDescriptor {
 
         public object source = null;
 
-        public System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Config.Annotationparser.IndexInfo> indexes = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Config.Annotationparser.IndexInfo>();
+        public System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Config.Annotationparser.IndexInfo> indexes = new System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Config.Annotationparser.IndexInfo>();
 
-        public Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.EntityModifier> modifiers = Net.Vpc.Upa.FlagSets.NoneOf<Net.Vpc.Upa.EntityModifier>();
+        public Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.EntityModifier> modifiers = Net.TheVpc.Upa.FlagSets.NoneOf<Net.TheVpc.Upa.EntityModifier>();
 
-        public Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.EntityModifier> excludeModifiers = Net.Vpc.Upa.FlagSets.NoneOf<Net.Vpc.Upa.EntityModifier>();
+        public Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.EntityModifier> excludeModifiers = Net.TheVpc.Upa.FlagSets.NoneOf<Net.TheVpc.Upa.EntityModifier>();
 
         public System.Type idType = null;
 
-        public Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<System.Type> entityType = new Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<System.Type>();
+        public Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<System.Type> entityType = new Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<System.Type>();
 
-        public Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> listOrder = new Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string>();
+        public Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> listOrder = new Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string>();
 
-        public Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> archivingOrder = new Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string>();
+        public Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> archivingOrder = new Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string>();
 
         public string name = null;
 
         public string shortName = null;
 
-        public System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Impl.Config.Annotationparser.FieldInfo> fieldsMap = new System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Impl.Config.Annotationparser.FieldInfo>();
+        public System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Impl.Config.Annotationparser.FieldInfo> fieldsMap = new System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Impl.Config.Annotationparser.FieldInfo>();
 
-        public System.Collections.Generic.IList<Net.Vpc.Upa.Extensions.EntityExtensionDefinition> specs = new System.Collections.Generic.List<Net.Vpc.Upa.Extensions.EntityExtensionDefinition>();
+        public System.Collections.Generic.IList<Net.TheVpc.Upa.Extensions.EntityExtensionDefinition> specs = new System.Collections.Generic.List<Net.TheVpc.Upa.Extensions.EntityExtensionDefinition>();
 
-        public System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Config.Annotationparser.RelationshipInfo> relations = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Config.Annotationparser.RelationshipInfo>();
+        public System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Config.Annotationparser.RelationshipInfo> relations = new System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Config.Annotationparser.RelationshipInfo>();
 
-        public System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Config.Annotationparser.FieldInfo> fieldsList;
+        public System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Config.Annotationparser.FieldInfo> fieldsList;
 
-        public Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> path = new Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string>();
+        public Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> path = new Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string>();
 
-        public Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<int?> pathPosition = new Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<int?>();
+        public Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<int?> pathPosition = new Net.TheVpc.Upa.Impl.Config.Annotationparser.OverriddenValue<int?>();
 
         public System.Collections.Generic.Dictionary<string , object> entityParams = new System.Collections.Generic.Dictionary<string , object>();
 
-        public Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository repo;
+        public Net.TheVpc.Upa.Impl.Config.Decorations.DecorationRepository repo;
 
-        public Net.Vpc.Upa.ObjectFactory factory;
+        public Net.TheVpc.Upa.ObjectFactory factory;
 
-        public EntityInfo(Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository repo, Net.Vpc.Upa.ObjectFactory factory) {
+        public EntityInfo(Net.TheVpc.Upa.Impl.Config.Decorations.DecorationRepository repo, Net.TheVpc.Upa.ObjectFactory factory) {
             this.repo = repo;
             this.factory = factory;
         }
 
-        public virtual Net.Vpc.Upa.ObjectFactory GetFactory() {
+        public virtual Net.TheVpc.Upa.ObjectFactory GetFactory() {
             return factory;
         }
 
@@ -72,8 +72,8 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             return entityParams;
         }
 
-        public virtual void AddModifiers(System.Collections.Generic.ICollection<Net.Vpc.Upa.EntityModifier> others) {
-            foreach (Net.Vpc.Upa.EntityModifier m in others) {
+        public virtual void AddModifiers(System.Collections.Generic.ICollection<Net.TheVpc.Upa.EntityModifier> others) {
+            foreach (Net.TheVpc.Upa.EntityModifier m in others) {
                 if (excludeModifiers.Contains(m)) {
                     excludeModifiers.Remove(m);
                 }
@@ -81,8 +81,8 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             }
         }
 
-        public virtual void AddExcludeModifiers(System.Collections.Generic.ICollection<Net.Vpc.Upa.EntityModifier> others) {
-            foreach (Net.Vpc.Upa.EntityModifier m in others) {
+        public virtual void AddExcludeModifiers(System.Collections.Generic.ICollection<Net.TheVpc.Upa.EntityModifier> others) {
+            foreach (Net.TheVpc.Upa.EntityModifier m in others) {
                 if (modifiers.Contains(m)) {
                     modifiers.Remove(m);
                 }
@@ -90,25 +90,25 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             }
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.FieldDescriptor> GetFieldDescriptors() {
-            System.Collections.Generic.IList<Net.Vpc.Upa.FieldDescriptor> all = new System.Collections.Generic.List<Net.Vpc.Upa.FieldDescriptor>();
-            foreach (Net.Vpc.Upa.Impl.Config.Annotationparser.FieldInfo fieldInfo in fieldsList) {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.FieldDescriptor> GetFieldDescriptors() {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.FieldDescriptor> all = new System.Collections.Generic.List<Net.TheVpc.Upa.FieldDescriptor>();
+            foreach (Net.TheVpc.Upa.Impl.Config.Annotationparser.FieldInfo fieldInfo in fieldsList) {
                 all.Add(fieldInfo);
             }
             return all;
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.RelationshipDescriptor> GetRelationshipDescriptors() {
-            System.Collections.Generic.IList<Net.Vpc.Upa.RelationshipDescriptor> all = new System.Collections.Generic.List<Net.Vpc.Upa.RelationshipDescriptor>();
-            foreach (Net.Vpc.Upa.Impl.Config.Annotationparser.RelationshipInfo fieldInfo in relations) {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.RelationshipDescriptor> GetRelationshipDescriptors() {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.RelationshipDescriptor> all = new System.Collections.Generic.List<Net.TheVpc.Upa.RelationshipDescriptor>();
+            foreach (Net.TheVpc.Upa.Impl.Config.Annotationparser.RelationshipInfo fieldInfo in relations) {
                 all.Add(fieldInfo);
             }
             return all;
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.IndexDescriptor> GetIndexDescriptors() {
-            System.Collections.Generic.IList<Net.Vpc.Upa.IndexDescriptor> all = new System.Collections.Generic.List<Net.Vpc.Upa.IndexDescriptor>();
-            foreach (Net.Vpc.Upa.Impl.Config.Annotationparser.IndexInfo fieldInfo in indexes) {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.IndexDescriptor> GetIndexDescriptors() {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.IndexDescriptor> all = new System.Collections.Generic.List<Net.TheVpc.Upa.IndexDescriptor>();
+            foreach (Net.TheVpc.Upa.Impl.Config.Annotationparser.IndexInfo fieldInfo in indexes) {
                 all.Add(fieldInfo);
             }
             return all;
@@ -151,16 +151,16 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
         }
 
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Extensions.EntityExtensionDefinition> GetEntityExtensions() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Extensions.EntityExtensionDefinition> GetEntityExtensions() {
             return specs;
         }
 
 
-        public virtual Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.EntityModifier> GetModifiers() {
+        public virtual Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.EntityModifier> GetModifiers() {
             return modifiers;
         }
 
-        public virtual Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.EntityModifier> GetExcludeModifiers() {
+        public virtual Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.EntityModifier> GetExcludeModifiers() {
             return excludeModifiers;
         }
 
@@ -170,19 +170,19 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
         }
 
         public virtual void AddIndex(string name, System.Collections.Generic.IList<string> fields, bool unique, int configOrder) {
-            if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(name)) {
-                Net.Vpc.Upa.Impl.Config.Annotationparser.IndexInfo i = new Net.Vpc.Upa.Impl.Config.Annotationparser.IndexInfo();
+            if (Net.TheVpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(name)) {
+                Net.TheVpc.Upa.Impl.Config.Annotationparser.IndexInfo i = new Net.TheVpc.Upa.Impl.Config.Annotationparser.IndexInfo();
                 i.SetName(null);
                 i.GetUnique().SetBetterValue(unique, configOrder);
-                Net.Vpc.Upa.Impl.FwkConvertUtils.ListAddRange(i.GetFieldsNames(), fields);
+                Net.TheVpc.Upa.Impl.FwkConvertUtils.ListAddRange(i.GetFieldsNames(), fields);
             } else {
                 bool found = false;
-                foreach (Net.Vpc.Upa.Impl.Config.Annotationparser.IndexInfo indexInfo in indexes) {
+                foreach (Net.TheVpc.Upa.Impl.Config.Annotationparser.IndexInfo indexInfo in indexes) {
                     if (name.Equals(indexInfo.GetName())) {
                         found = true;
                         System.Collections.Generic.IList<string> t = new System.Collections.Generic.List<string>(indexInfo.GetFieldsNames());
-                        Net.Vpc.Upa.Impl.FwkConvertUtils.ListRemoveRange(t, fields);
-                        Net.Vpc.Upa.Impl.FwkConvertUtils.ListAddRange(indexInfo.GetFieldsNames(), fields);
+                        Net.TheVpc.Upa.Impl.FwkConvertUtils.ListRemoveRange(t, fields);
+                        Net.TheVpc.Upa.Impl.FwkConvertUtils.ListAddRange(indexInfo.GetFieldsNames(), fields);
                         //ignore configOrder
                         if ((t).Count > 0) {
                             indexInfo.GetUnique().SetBetterValue(unique, configOrder);
@@ -190,10 +190,10 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                     }
                 }
                 if (!found) {
-                    Net.Vpc.Upa.Impl.Config.Annotationparser.IndexInfo i = new Net.Vpc.Upa.Impl.Config.Annotationparser.IndexInfo();
+                    Net.TheVpc.Upa.Impl.Config.Annotationparser.IndexInfo i = new Net.TheVpc.Upa.Impl.Config.Annotationparser.IndexInfo();
                     i.SetName(null);
                     i.GetUnique().SetBetterValue(unique, configOrder);
-                    Net.Vpc.Upa.Impl.FwkConvertUtils.ListAddRange(i.GetFieldsNames(), fields);
+                    Net.TheVpc.Upa.Impl.FwkConvertUtils.ListAddRange(i.GetFieldsNames(), fields);
                 }
             }
         }

@@ -11,12 +11,12 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
 
 
-    public partial class EnumType : Net.Vpc.Upa.Types.SeriesType {
+    public partial class EnumType : Net.TheVpc.Upa.Types.SeriesType {
 
         public EnumType(System.Type enumClass, bool nullable)  : base((enumClass).FullName, enumClass, nullable){
 
@@ -31,10 +31,10 @@ namespace Net.Vpc.Upa.Types
         }
 
 
-        public override void Check(object @value, string name, string description) /* throws Net.Vpc.Upa.Types.ConstraintsException */  {
+        public override void Check(object @value, string name, string description) /* throws Net.TheVpc.Upa.Types.ConstraintsException */  {
             base.Check(@value, name, description);
             if (@value != null && !GetPlatformType().IsInstanceOfType(@value)) {
-                throw new Net.Vpc.Upa.Types.ConstraintsException("InvalidCast", name, description, @value);
+                throw new Net.TheVpc.Upa.Types.ConstraintsException("InvalidCast", name, description, @value);
             }
         }
 
@@ -67,8 +67,8 @@ namespace Net.Vpc.Upa.Types
         }
 
 
-        public override Net.Vpc.Upa.DataTypeInfo GetInfo() {
-            Net.Vpc.Upa.DataTypeInfo d = base.GetInfo();
+        public override Net.TheVpc.Upa.DataTypeInfo GetInfo() {
+            Net.TheVpc.Upa.DataTypeInfo d = base.GetInfo();
             System.Text.StringBuilder v = new System.Text.StringBuilder();
             foreach (object o in GetPlatformType().GetEnumConstants()) {
                 if ((v).Length > 0) {

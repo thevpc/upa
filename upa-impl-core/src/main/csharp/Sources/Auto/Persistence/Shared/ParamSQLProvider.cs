@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Shared
+namespace Net.TheVpc.Upa.Impl.Persistence.Shared
 {
 
 
@@ -22,14 +22,14 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
      * Time: 12:52 AM
      * To change this template use File | Settings | File Templates.
      */
-    public class ParamSQLProvider : Net.Vpc.Upa.Impl.Persistence.Shared.AbstractSQLProvider {
+    public class ParamSQLProvider : Net.TheVpc.Upa.Impl.Persistence.Shared.AbstractSQLProvider {
 
-        public ParamSQLProvider()  : base(typeof(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam)){
+        public ParamSQLProvider()  : base(typeof(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledParam)){
 
         }
 
 
-        public override string GetSQL(object o, Net.Vpc.Upa.Persistence.EntityExecutionContext qlContext, Net.Vpc.Upa.Impl.Persistence.SQLManager sqlManager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
+        public override string GetSQL(object o, Net.TheVpc.Upa.Persistence.EntityExecutionContext qlContext, Net.TheVpc.Upa.Impl.Persistence.SQLManager sqlManager, Net.TheVpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
             return "?";
         }
     }

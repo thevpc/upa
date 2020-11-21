@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 	public sealed partial class FlagSets
     {

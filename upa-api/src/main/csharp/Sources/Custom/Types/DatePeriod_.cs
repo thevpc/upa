@@ -2,7 +2,7 @@
 
 using System;
 
-namespace Net.Vpc.Upa.Types{
+namespace Net.TheVpc.Upa.Types{
     public partial class DatePeriod {
         public int Compare(DatePeriod other, Temporal startDate) {
             System.DateTime t = startDate.Value;

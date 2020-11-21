@@ -12,7 +12,7 @@
 
 
 using System.Linq;
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -20,15 +20,15 @@ namespace Net.Vpc.Upa.Impl.Util
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 8/27/12 12:16 AM
      */
-    public class DefaultBeanType : Net.Vpc.Upa.BeanType {
+    public class DefaultBeanType : Net.TheVpc.Upa.BeanType {
 
         private System.Type platformType;
 
-        private System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Impl.Util.BeanAdapterAttribute> properties = new System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Impl.Util.BeanAdapterAttribute>();
+        private System.Collections.Generic.IDictionary<string , Net.TheVpc.Upa.Impl.Util.BeanAdapterAttribute> properties = new System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Impl.Util.BeanAdapterAttribute>();
 
         private System.Collections.Generic.ISet<string> propertyNames;
 
-        private System.Collections.Generic.IDictionary<Net.Vpc.Upa.Impl.Util.MethodSignature , System.Reflection.MethodInfo> methods = new System.Collections.Generic.Dictionary<Net.Vpc.Upa.Impl.Util.MethodSignature , System.Reflection.MethodInfo>();
+        private System.Collections.Generic.IDictionary<Net.TheVpc.Upa.Impl.Util.MethodSignature , System.Reflection.MethodInfo> methods = new System.Collections.Generic.Dictionary<Net.TheVpc.Upa.Impl.Util.MethodSignature , System.Reflection.MethodInfo>();
 
         private System.Collections.Generic.IDictionary<string , System.Collections.Generic.IList<System.Reflection.FieldInfo>> fields = new System.Collections.Generic.Dictionary<string , System.Collections.Generic.IList<System.Reflection.FieldInfo>>();
 
@@ -63,7 +63,7 @@ namespace Net.Vpc.Upa.Impl.Util
             }
         }
 
-        private Net.Vpc.Upa.Impl.Util.BeanAdapterAttribute CreateAttrAdapter(string field) {
+        private Net.TheVpc.Upa.Impl.Util.BeanAdapterAttribute CreateAttrAdapter(string field) {
             string g1 = GetterName(field, typeof(object));
             string g2 = GetterName(field, typeof(bool));
             string s = SetterName(field);
@@ -74,11 +74,11 @@ namespace Net.Vpc.Upa.Impl.Util
             System.Collections.Generic.Dictionary<System.Type , System.Reflection.MethodInfo> setters = new System.Collections.Generic.Dictionary<System.Type , System.Reflection.MethodInfo>();
             while (x != null) {
                 foreach (System.Reflection.MethodInfo m in x.GetMethods(System.Reflection.BindingFlags.Default)) {
-                    if (!Net.Vpc.Upa.Impl.Util.PlatformUtils.IsStatic(m)) {
+                    if (!Net.TheVpc.Upa.Impl.Util.PlatformUtils.IsStatic(m)) {
                         string mn = (m).Name;
                         if (getter == null) {
                             if (g1.Equals(mn) || g2.Equals(mn)) {
-                                if (Net.Vpc.Upa.Impl.FwkConvertUtils.GetMethodParameterTypes(m).Length == 0 && !typeof(void).Equals((m).ReturnType)) {
+                                if (Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMethodParameterTypes(m).Length == 0 && !typeof(void).Equals((m).ReturnType)) {
                                     getter = m;
                                     System.Type ftype = (getter).ReturnType;
                                     foreach (System.Type key in new System.Collections.Generic.HashSet<System.Type>(new System.Collections.Generic.HashSet<System.Type>(setters.Keys))) {
@@ -87,15 +87,15 @@ namespace Net.Vpc.Upa.Impl.Util
                                         }
                                     }
                                     if (setter == null) {
-                                        setter = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,System.Reflection.MethodInfo>(setters,ftype);
+                                        setter = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,System.Reflection.MethodInfo>(setters,ftype);
                                     }
                                 }
                             }
                         }
                         if (setter == null) {
                             if (s.Equals(mn)) {
-                                if (Net.Vpc.Upa.Impl.FwkConvertUtils.GetMethodParameterTypes(m).Length == 1) {
-                                    System.Type stype = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMethodParameterTypes(m)[0];
+                                if (Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMethodParameterTypes(m).Length == 1) {
+                                    System.Type stype = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMethodParameterTypes(m)[0];
                                     if (getter != null) {
                                         System.Type gtype = (getter).ReturnType;
                                         if (gtype.Equals(stype)) {
@@ -135,10 +135,10 @@ namespace Net.Vpc.Upa.Impl.Util
             }
             //TODO log?
             if (getter == null && setter != null && propertyType == null) {
-                propertyType = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMethodParameterTypes(setter)[0];
+                propertyType = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMethodParameterTypes(setter)[0];
             }
             if (getter != null || setter != null) {
-                return new Net.Vpc.Upa.Impl.Util.BeanAdapterGetterSetterAttribute(field, propertyType, getter, setter);
+                return new Net.TheVpc.Upa.Impl.Util.BeanAdapterGetterSetterAttribute(field, propertyType, getter, setter);
             }
             return null;
         }
@@ -147,12 +147,12 @@ namespace Net.Vpc.Upa.Impl.Util
              * @param field
              * @return
              */
-        public virtual Net.Vpc.Upa.Impl.Util.BeanAdapterAttribute GetAttrAdapter(string field) {
-            Net.Vpc.Upa.Impl.Util.BeanAdapterAttribute f = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.Vpc.Upa.Impl.Util.BeanAdapterAttribute>(properties,field);
+        public virtual Net.TheVpc.Upa.Impl.Util.BeanAdapterAttribute GetAttrAdapter(string field) {
+            Net.TheVpc.Upa.Impl.Util.BeanAdapterAttribute f = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.TheVpc.Upa.Impl.Util.BeanAdapterAttribute>(properties,field);
             if (f == null) {
                 f = CreateAttrAdapter(field);
                 if (f != null) {
-                    if (((Net.Vpc.Upa.Impl.Util.BeanAdapterGetterSetterAttribute) f).GetSetter() == null) {
+                    if (((Net.TheVpc.Upa.Impl.Util.BeanAdapterGetterSetterAttribute) f).GetSetter() == null) {
                         f = CreateAttrAdapter(field);
                     }
                 }
@@ -164,8 +164,8 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public virtual System.Reflection.MethodInfo GetMethod(System.Type type, string name, System.Type ret, params System.Type [] args) {
-            Net.Vpc.Upa.Impl.Util.MethodSignature key = new Net.Vpc.Upa.Impl.Util.MethodSignature(name, args);
-            System.Reflection.MethodInfo method = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<Net.Vpc.Upa.Impl.Util.MethodSignature,System.Reflection.MethodInfo>(methods,key);
+            Net.TheVpc.Upa.Impl.Util.MethodSignature key = new Net.TheVpc.Upa.Impl.Util.MethodSignature(name, args);
+            System.Reflection.MethodInfo method = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<Net.TheVpc.Upa.Impl.Util.MethodSignature,System.Reflection.MethodInfo>(methods,key);
             if (method == null) {
                 if (!methods.ContainsKey(key)) {
                     method = GetMethod00(type, name, ret, args);
@@ -198,13 +198,13 @@ namespace Net.Vpc.Upa.Impl.Util
             return propertyNames;
         }
 
-        public virtual System.Collections.Generic.ISet<string> GetPropertyNames(object o, bool? includeDefaults) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual System.Collections.Generic.ISet<string> GetPropertyNames(object o, bool? includeDefaults) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             System.Collections.Generic.HashSet<string> set = new System.Collections.Generic.HashSet<string>();
             if (includeDefaults == null) {
-                Net.Vpc.Upa.Impl.FwkConvertUtils.CollectionAddRange(set, GetPropertyNames());
+                Net.TheVpc.Upa.Impl.FwkConvertUtils.CollectionAddRange(set, GetPropertyNames());
             } else {
                 foreach (string k in GetPropertyNames()) {
-                    Net.Vpc.Upa.Impl.Util.BeanAdapterAttribute e = GetAttrAdapter(k);
+                    Net.TheVpc.Upa.Impl.Util.BeanAdapterAttribute e = GetAttrAdapter(k);
                     if (includeDefaults == e.IsDefaultValue(o)) {
                         set.Add(k);
                     }
@@ -236,12 +236,12 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public virtual bool ContainsProperty(string property) {
-            Net.Vpc.Upa.Impl.Util.BeanAdapterAttribute attrAdapter = GetAttrAdapter(property);
+            Net.TheVpc.Upa.Impl.Util.BeanAdapterAttribute attrAdapter = GetAttrAdapter(property);
             return attrAdapter != null;
         }
 
         public virtual object GetProperty(object o, string field) {
-            Net.Vpc.Upa.Impl.Util.BeanAdapterAttribute attrAdapter = GetAttrAdapter(field);
+            Net.TheVpc.Upa.Impl.Util.BeanAdapterAttribute attrAdapter = GetAttrAdapter(field);
             if (attrAdapter != null) {
                 return attrAdapter.GetValue(o);
             }
@@ -253,7 +253,7 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public virtual void Inject(object instance, string property, object @value) {
-            Net.Vpc.Upa.Impl.Util.BeanAdapterAttribute attrAdapter = GetAttrAdapter(property);
+            Net.TheVpc.Upa.Impl.Util.BeanAdapterAttribute attrAdapter = GetAttrAdapter(property);
             if (attrAdapter != null) {
                 attrAdapter.SetValue(instance, @value);
             } else {
@@ -262,7 +262,7 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public virtual bool SetProperty(object instance, string property, object @value) {
-            Net.Vpc.Upa.Impl.Util.BeanAdapterAttribute attrAdapter = GetAttrAdapter(property);
+            Net.TheVpc.Upa.Impl.Util.BeanAdapterAttribute attrAdapter = GetAttrAdapter(property);
             if (attrAdapter != null) {
                 attrAdapter.SetValue(instance, @value);
                 return true;
@@ -272,7 +272,7 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public static bool IsTypeDefaultValue(System.Type c, object v) {
-            object t = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,object>(Net.Vpc.Upa.Impl.Util.PlatformUtils.DEFAULT_VALUES_BY_TYPE,c);
+            object t = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,object>(Net.TheVpc.Upa.Impl.Util.PlatformUtils.DEFAULT_VALUES_BY_TYPE,c);
             if (t == null) {
                 return v == null;
             }
@@ -296,11 +296,11 @@ namespace Net.Vpc.Upa.Impl.Util
             return new string(chars);
         }
 
-        public virtual System.Reflection.FieldInfo FindField(string name, Net.Vpc.Upa.Filters.ObjectFilter<System.Reflection.FieldInfo> filter) {
-            System.Collections.Generic.IList<System.Reflection.FieldInfo> fieldsList = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,System.Collections.Generic.IList<System.Reflection.FieldInfo>>(fields,name);
+        public virtual System.Reflection.FieldInfo FindField(string name, Net.TheVpc.Upa.Filters.ObjectFilter<System.Reflection.FieldInfo> filter) {
+            System.Collections.Generic.IList<System.Reflection.FieldInfo> fieldsList = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,System.Collections.Generic.IList<System.Reflection.FieldInfo>>(fields,name);
             if (fieldsList == null) {
                 if (!fields.ContainsKey(name)) {
-                    fieldsList = Net.Vpc.Upa.Impl.Util.PlatformUtils.FindFields(platformType, name);
+                    fieldsList = Net.TheVpc.Upa.Impl.Util.PlatformUtils.FindFields(platformType, name);
                     if ((fieldsList).Count > 0) {
                         fields[name]=fieldsList;
                     } else {
@@ -319,8 +319,8 @@ namespace Net.Vpc.Upa.Impl.Util
             return null;
         }
 
-        public virtual bool ResetToDefaultValue(object instance, string field) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Impl.Util.BeanAdapterAttribute attrAdapter = GetAttrAdapter(field);
+        public virtual bool ResetToDefaultValue(object instance, string field) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Impl.Util.BeanAdapterAttribute attrAdapter = GetAttrAdapter(field);
             if (attrAdapter != null) {
                 attrAdapter.SetValue(instance, attrAdapter.GetDefaultValue());
                 return true;
@@ -331,23 +331,23 @@ namespace Net.Vpc.Upa.Impl.Util
 
 
         public virtual bool IsDefaultValue(object instance, string field) {
-            Net.Vpc.Upa.Impl.Util.BeanAdapterAttribute attrAdapter = GetAttrAdapter(field);
+            Net.TheVpc.Upa.Impl.Util.BeanAdapterAttribute attrAdapter = GetAttrAdapter(field);
             if (attrAdapter != null) {
                 return attrAdapter.IsDefaultValue(instance);
             }
             return false;
         }
 
-        public virtual System.Collections.Generic.IDictionary<string , object> ToMap(object o, bool? includeDefaults) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual System.Collections.Generic.IDictionary<string , object> ToMap(object o, bool? includeDefaults) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             System.Collections.Generic.Dictionary<string , object> map = new System.Collections.Generic.Dictionary<string , object>();
             if (includeDefaults == null) {
                 foreach (string k in GetPropertyNames()) {
-                    Net.Vpc.Upa.Impl.Util.BeanAdapterAttribute e = GetAttrAdapter(k);
+                    Net.TheVpc.Upa.Impl.Util.BeanAdapterAttribute e = GetAttrAdapter(k);
                     map[k]=e.GetValue(o);
                 }
             } else {
                 foreach (string k in GetPropertyNames()) {
-                    Net.Vpc.Upa.Impl.Util.BeanAdapterAttribute e = GetAttrAdapter(k);
+                    Net.TheVpc.Upa.Impl.Util.BeanAdapterAttribute e = GetAttrAdapter(k);
                     if (includeDefaults == e.IsDefaultValue(o)) {
                         map[k]=e.GetValue(o);
                     }

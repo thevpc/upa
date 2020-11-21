@@ -11,25 +11,25 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
     /**
      * @author taha.bensalah@gmaol.com
      */
-    internal class ObjectFactoryComparator : System.Collections.Generic.IComparer<Net.Vpc.Upa.ObjectFactory> {
+    internal class ObjectFactoryComparator : System.Collections.Generic.IComparer<Net.TheVpc.Upa.ObjectFactory> {
 
-        private static readonly System.Collections.Generic.IComparer<Net.Vpc.Upa.ObjectFactory> instance = new Net.Vpc.Upa.ObjectFactoryComparator();
+        private static readonly System.Collections.Generic.IComparer<Net.TheVpc.Upa.ObjectFactory> instance = new Net.TheVpc.Upa.ObjectFactoryComparator();
 
-        public static System.Collections.Generic.IComparer<Net.Vpc.Upa.ObjectFactory> GetInstance() {
+        public static System.Collections.Generic.IComparer<Net.TheVpc.Upa.ObjectFactory> GetInstance() {
             return instance;
         }
 
         private ObjectFactoryComparator() {
         }
 
-        public virtual int Compare(Net.Vpc.Upa.ObjectFactory o1, Net.Vpc.Upa.ObjectFactory o2) {
+        public virtual int Compare(Net.TheVpc.Upa.ObjectFactory o1, Net.TheVpc.Upa.ObjectFactory o2) {
             if (o1 == o2) {
                 return 0;
             }

@@ -11,24 +11,24 @@
 
 
 
-namespace Net.Vpc.Upa.Filters
+namespace Net.TheVpc.Upa.Filters
 {
 
 
-    public class FieldModifierFilter : Net.Vpc.Upa.Filters.AbstractFieldFilter {
+    public class FieldModifierFilter : Net.TheVpc.Upa.Filters.AbstractFieldFilter {
 
-        private Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.FieldModifier>[] accepted;
+        private Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.FieldModifier>[] accepted;
 
-        private Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.FieldModifier>[] rejected;
+        private Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.FieldModifier>[] rejected;
 
         private bool acceptDynamic;
 
         public FieldModifierFilter() {
-            accepted = new Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.FieldModifier>[0];
-            rejected = new Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.FieldModifier>[0];
+            accepted = new Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.FieldModifier>[0];
+            rejected = new Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.FieldModifier>[0];
         }
 
-        private FieldModifierFilter(Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.FieldModifier>[] accepted, Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.FieldModifier>[] rejected, bool acceptDynamic) {
+        private FieldModifierFilter(Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.FieldModifier>[] accepted, Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.FieldModifier>[] rejected, bool acceptDynamic) {
             this.accepted = accepted;
             this.rejected = rejected;
             this.acceptDynamic = acceptDynamic;
@@ -43,14 +43,14 @@ namespace Net.Vpc.Upa.Filters
             return acceptDynamic;
         }
 
-        public virtual Net.Vpc.Upa.Filters.FieldModifierFilter SetAcceptDynamic(bool acceptDynamic) {
+        public virtual Net.TheVpc.Upa.Filters.FieldModifierFilter SetAcceptDynamic(bool acceptDynamic) {
             if (this.acceptDynamic == acceptDynamic) {
                 return this;
             }
-            return new Net.Vpc.Upa.Filters.FieldModifierFilter(accepted, rejected, acceptDynamic);
+            return new Net.TheVpc.Upa.Filters.FieldModifierFilter(accepted, rejected, acceptDynamic);
         }
 
-        public virtual bool Accept(Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.FieldModifier> modifiersValue) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual bool Accept(Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.FieldModifier> modifiersValue) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             for (int i = 0; i < accepted.Length; i++) {
                 if (Accept(modifiersValue, i)) {
                     return true;
@@ -59,15 +59,15 @@ namespace Net.Vpc.Upa.Filters
             return false;
         }
 
-        private bool Accept(Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.FieldModifier> modifiersValue, int i) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.FieldModifier> a = accepted[i];
-            Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.FieldModifier> r = rejected[i];
-            foreach (Net.Vpc.Upa.FieldModifier m in a) {
+        private bool Accept(Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.FieldModifier> modifiersValue, int i) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.FieldModifier> a = accepted[i];
+            Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.FieldModifier> r = rejected[i];
+            foreach (Net.TheVpc.Upa.FieldModifier m in a) {
                 if (!modifiersValue.Contains(m)) {
                     return false;
                 }
             }
-            foreach (Net.Vpc.Upa.FieldModifier m in r) {
+            foreach (Net.TheVpc.Upa.FieldModifier m in r) {
                 if (modifiersValue.Contains(m)) {
                     return false;
                 }
@@ -75,141 +75,141 @@ namespace Net.Vpc.Upa.Filters
             return true;
         }
 
-        public override bool Accept(Net.Vpc.Upa.Field f) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.FieldModifier> modifiersValue = f.GetModifiers();
+        public override bool Accept(Net.TheVpc.Upa.Field f) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.FieldModifier> modifiersValue = f.GetModifiers();
             return Accept(modifiersValue);
         }
 
-        private Net.Vpc.Upa.Filters.FieldModifierFilter Or(Net.Vpc.Upa.FieldModifier[] modifierYes, Net.Vpc.Upa.FieldModifier[] modifierNo) {
-            Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.FieldModifier> y = modifierYes == null ? Net.Vpc.Upa.FlagSets.NoneOf<>() : Net.Vpc.Upa.FlagSets.NoneOf<>().AddAll(modifierYes);
-            Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.FieldModifier> n = modifierNo == null ? Net.Vpc.Upa.FlagSets.NoneOf<>() : Net.Vpc.Upa.FlagSets.NoneOf<>().AddAll(modifierNo);
+        private Net.TheVpc.Upa.Filters.FieldModifierFilter Or(Net.TheVpc.Upa.FieldModifier[] modifierYes, Net.TheVpc.Upa.FieldModifier[] modifierNo) {
+            Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.FieldModifier> y = modifierYes == null ? Net.TheVpc.Upa.FlagSets.NoneOf<>() : Net.TheVpc.Upa.FlagSets.NoneOf<>().AddAll(modifierYes);
+            Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.FieldModifier> n = modifierNo == null ? Net.TheVpc.Upa.FlagSets.NoneOf<>() : Net.TheVpc.Upa.FlagSets.NoneOf<>().AddAll(modifierNo);
             for (int i = 0; i < accepted.Length; i++) {
                 if (accepted[i].Equals(y) && rejected[i].Equals(n)) {
                     return this;
                 }
             }
-            Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.FieldModifier>[] na = new Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.FieldModifier>[accepted.Length + 1];
-            Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.FieldModifier>[] nr = new Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.FieldModifier>[rejected.Length + 1];
+            Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.FieldModifier>[] na = new Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.FieldModifier>[accepted.Length + 1];
+            Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.FieldModifier>[] nr = new Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.FieldModifier>[rejected.Length + 1];
             System.Array.Copy(accepted, 0, na, 0, accepted.Length);
             System.Array.Copy(rejected, 0, nr, 0, rejected.Length);
             na[na.Length - 1] = y;
             nr[nr.Length - 1] = n;
-            return new Net.Vpc.Upa.Filters.FieldModifierFilter(na, nr, acceptDynamic);
+            return new Net.TheVpc.Upa.Filters.FieldModifierFilter(na, nr, acceptDynamic);
         }
 
-        public virtual Net.Vpc.Upa.Filters.FieldModifierFilter IsAllOfFirstsAndNoneOfSeconds(Net.Vpc.Upa.FieldModifier[] modifierYes, Net.Vpc.Upa.FieldModifier[] modifierNo) {
+        public virtual Net.TheVpc.Upa.Filters.FieldModifierFilter IsAllOfFirstsAndNoneOfSeconds(Net.TheVpc.Upa.FieldModifier[] modifierYes, Net.TheVpc.Upa.FieldModifier[] modifierNo) {
             if (accepted.Length != 0) {
-                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("use orIsAllOfFirstsAndNoneOfSeconds instead");
+                throw new Net.TheVpc.Upa.Exceptions.UPAIllegalArgumentException("use orIsAllOfFirstsAndNoneOfSeconds instead");
             }
             return Or(modifierYes, modifierNo);
         }
 
-        public virtual Net.Vpc.Upa.Filters.FieldModifierFilter OrIsAllOfFirstsAndNoneOfSeconds(Net.Vpc.Upa.FieldModifier[] modifierYes, Net.Vpc.Upa.FieldModifier[] modifierNo) {
+        public virtual Net.TheVpc.Upa.Filters.FieldModifierFilter OrIsAllOfFirstsAndNoneOfSeconds(Net.TheVpc.Upa.FieldModifier[] modifierYes, Net.TheVpc.Upa.FieldModifier[] modifierNo) {
             if (accepted.Length == 0) {
-                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("use isAllOfFirstsAndNoneOfSeconds instead");
+                throw new Net.TheVpc.Upa.Exceptions.UPAIllegalArgumentException("use isAllOfFirstsAndNoneOfSeconds instead");
             }
             return Or(modifierYes, modifierNo);
         }
 
-        public virtual Net.Vpc.Upa.Filters.FieldModifierFilter IsOneOfFirstsAndNoneOfSeconds(Net.Vpc.Upa.FieldModifier[] modifierYes, Net.Vpc.Upa.FieldModifier[] modifierNo) {
+        public virtual Net.TheVpc.Upa.Filters.FieldModifierFilter IsOneOfFirstsAndNoneOfSeconds(Net.TheVpc.Upa.FieldModifier[] modifierYes, Net.TheVpc.Upa.FieldModifier[] modifierNo) {
             if (accepted.Length != 0) {
-                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("use orIsAllOfFirstsAndNoneOfSeconds instead");
+                throw new Net.TheVpc.Upa.Exceptions.UPAIllegalArgumentException("use orIsAllOfFirstsAndNoneOfSeconds instead");
             }
-            Net.Vpc.Upa.Filters.FieldModifierFilter x = this;
+            Net.TheVpc.Upa.Filters.FieldModifierFilter x = this;
             for (int i = 0; i < modifierYes.Length; i++) {
-                x = Or(new Net.Vpc.Upa.FieldModifier[] { modifierYes[i] }, modifierNo);
+                x = Or(new Net.TheVpc.Upa.FieldModifier[] { modifierYes[i] }, modifierNo);
             }
             return x;
         }
 
-        public virtual Net.Vpc.Upa.Filters.FieldModifierFilter OrIsOneOfFirstsAndNoneOfSeconds(Net.Vpc.Upa.FieldModifier[] modifierYes, Net.Vpc.Upa.FieldModifier[] modifierNo) {
+        public virtual Net.TheVpc.Upa.Filters.FieldModifierFilter OrIsOneOfFirstsAndNoneOfSeconds(Net.TheVpc.Upa.FieldModifier[] modifierYes, Net.TheVpc.Upa.FieldModifier[] modifierNo) {
             if (accepted.Length == 0) {
-                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("use isAllOfFirstsAndNoneOfSeconds instead");
+                throw new Net.TheVpc.Upa.Exceptions.UPAIllegalArgumentException("use isAllOfFirstsAndNoneOfSeconds instead");
             }
-            Net.Vpc.Upa.Filters.FieldModifierFilter x = this;
+            Net.TheVpc.Upa.Filters.FieldModifierFilter x = this;
             for (int i = 0; i < modifierYes.Length; i++) {
-                x = Or(new Net.Vpc.Upa.FieldModifier[] { modifierYes[i] }, modifierNo);
+                x = Or(new Net.TheVpc.Upa.FieldModifier[] { modifierYes[i] }, modifierNo);
             }
             return x;
         }
 
-        public virtual Net.Vpc.Upa.Filters.FieldModifierFilter IsAllOf(params Net.Vpc.Upa.FieldModifier [] modifiers) {
+        public virtual Net.TheVpc.Upa.Filters.FieldModifierFilter IsAllOf(params Net.TheVpc.Upa.FieldModifier [] modifiers) {
             if (accepted.Length != 0) {
-                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("use orIsAllOf instead");
+                throw new Net.TheVpc.Upa.Exceptions.UPAIllegalArgumentException("use orIsAllOf instead");
             }
             return Or(modifiers);
         }
 
-        public virtual Net.Vpc.Upa.Filters.FieldModifierFilter IsAnyOf(params Net.Vpc.Upa.FieldModifier [] modifiers) {
+        public virtual Net.TheVpc.Upa.Filters.FieldModifierFilter IsAnyOf(params Net.TheVpc.Upa.FieldModifier [] modifiers) {
             if (accepted.Length != 0) {
-                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("use orIsOneOf instead");
+                throw new Net.TheVpc.Upa.Exceptions.UPAIllegalArgumentException("use orIsOneOf instead");
             }
-            Net.Vpc.Upa.Filters.FieldModifierFilter x = this;
-            foreach (Net.Vpc.Upa.FieldModifier m in modifiers) {
-                x = x.Or(new Net.Vpc.Upa.FieldModifier[] { m });
+            Net.TheVpc.Upa.Filters.FieldModifierFilter x = this;
+            foreach (Net.TheVpc.Upa.FieldModifier m in modifiers) {
+                x = x.Or(new Net.TheVpc.Upa.FieldModifier[] { m });
             }
             return x;
         }
 
-        public virtual Net.Vpc.Upa.Filters.FieldModifierFilter OrIsOneOf(params Net.Vpc.Upa.FieldModifier [] modifiers) {
+        public virtual Net.TheVpc.Upa.Filters.FieldModifierFilter OrIsOneOf(params Net.TheVpc.Upa.FieldModifier [] modifiers) {
             if (accepted.Length == 0) {
-                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("use isOneOf instead");
+                throw new Net.TheVpc.Upa.Exceptions.UPAIllegalArgumentException("use isOneOf instead");
             }
-            Net.Vpc.Upa.Filters.FieldModifierFilter x = this;
-            foreach (Net.Vpc.Upa.FieldModifier m in modifiers) {
-                x = Or(new Net.Vpc.Upa.FieldModifier[] { m });
+            Net.TheVpc.Upa.Filters.FieldModifierFilter x = this;
+            foreach (Net.TheVpc.Upa.FieldModifier m in modifiers) {
+                x = Or(new Net.TheVpc.Upa.FieldModifier[] { m });
             }
             return x;
         }
 
-        public virtual Net.Vpc.Upa.Filters.FieldModifierFilter IsNotAllOf(params Net.Vpc.Upa.FieldModifier [] modifiers) {
+        public virtual Net.TheVpc.Upa.Filters.FieldModifierFilter IsNotAllOf(params Net.TheVpc.Upa.FieldModifier [] modifiers) {
             if (accepted.Length != 0) {
-                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("use orIsNotOneOf instead");
+                throw new Net.TheVpc.Upa.Exceptions.UPAIllegalArgumentException("use orIsNotOneOf instead");
             }
-            Net.Vpc.Upa.Filters.FieldModifierFilter x = this;
-            foreach (Net.Vpc.Upa.FieldModifier m in modifiers) {
-                x = OrNot(new Net.Vpc.Upa.FieldModifier[] { m });
+            Net.TheVpc.Upa.Filters.FieldModifierFilter x = this;
+            foreach (Net.TheVpc.Upa.FieldModifier m in modifiers) {
+                x = OrNot(new Net.TheVpc.Upa.FieldModifier[] { m });
             }
             return x;
         }
 
-        public virtual Net.Vpc.Upa.Filters.FieldModifierFilter OrIsNotAllOf(params Net.Vpc.Upa.FieldModifier [] modifiers) {
+        public virtual Net.TheVpc.Upa.Filters.FieldModifierFilter OrIsNotAllOf(params Net.TheVpc.Upa.FieldModifier [] modifiers) {
             if (accepted.Length == 0) {
-                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("use isNotOneOf instead");
+                throw new Net.TheVpc.Upa.Exceptions.UPAIllegalArgumentException("use isNotOneOf instead");
             }
-            Net.Vpc.Upa.Filters.FieldModifierFilter x = this;
-            foreach (Net.Vpc.Upa.FieldModifier m in modifiers) {
-                x = OrNot(new Net.Vpc.Upa.FieldModifier[] { m });
+            Net.TheVpc.Upa.Filters.FieldModifierFilter x = this;
+            foreach (Net.TheVpc.Upa.FieldModifier m in modifiers) {
+                x = OrNot(new Net.TheVpc.Upa.FieldModifier[] { m });
             }
             return x;
         }
 
-        public virtual Net.Vpc.Upa.Filters.FieldModifierFilter IsNoneOf(params Net.Vpc.Upa.FieldModifier [] modifiers) {
+        public virtual Net.TheVpc.Upa.Filters.FieldModifierFilter IsNoneOf(params Net.TheVpc.Upa.FieldModifier [] modifiers) {
             if (accepted.Length != 0) {
-                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("use orIsNoneOf instead");
+                throw new Net.TheVpc.Upa.Exceptions.UPAIllegalArgumentException("use orIsNoneOf instead");
             }
             return OrNot(modifiers);
         }
 
-        public virtual Net.Vpc.Upa.Filters.FieldModifierFilter OrIsAllOf(params Net.Vpc.Upa.FieldModifier [] modifiers) {
+        public virtual Net.TheVpc.Upa.Filters.FieldModifierFilter OrIsAllOf(params Net.TheVpc.Upa.FieldModifier [] modifiers) {
             if (accepted.Length == 0) {
-                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("use isAllOf instead");
+                throw new Net.TheVpc.Upa.Exceptions.UPAIllegalArgumentException("use isAllOf instead");
             }
             return Or(modifiers);
         }
 
-        public virtual Net.Vpc.Upa.Filters.FieldModifierFilter OrIsNoneOf(params Net.Vpc.Upa.FieldModifier [] modifiers) {
+        public virtual Net.TheVpc.Upa.Filters.FieldModifierFilter OrIsNoneOf(params Net.TheVpc.Upa.FieldModifier [] modifiers) {
             if (accepted.Length == 0) {
-                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("use isNoneOf instead");
+                throw new Net.TheVpc.Upa.Exceptions.UPAIllegalArgumentException("use isNoneOf instead");
             }
             return OrNot(modifiers);
         }
 
-        private Net.Vpc.Upa.Filters.FieldModifierFilter Or(Net.Vpc.Upa.FieldModifier[] modifiers) {
+        private Net.TheVpc.Upa.Filters.FieldModifierFilter Or(Net.TheVpc.Upa.FieldModifier[] modifiers) {
             return Or(modifiers, null);
         }
 
-        private Net.Vpc.Upa.Filters.FieldModifierFilter OrNot(Net.Vpc.Upa.FieldModifier[] modifiers) {
+        private Net.TheVpc.Upa.Filters.FieldModifierFilter OrNot(Net.TheVpc.Upa.FieldModifier[] modifiers) {
             return Or(null, modifiers);
         }
 
@@ -221,7 +221,7 @@ namespace Net.Vpc.Upa.Filters
                     sb.Append(") or (");
                 }
                 bool first = true;
-                foreach (Net.Vpc.Upa.FieldModifier e in accepted[i]) {
+                foreach (Net.TheVpc.Upa.FieldModifier e in accepted[i]) {
                     if (first) {
                         first = false;
                     } else {
@@ -229,7 +229,7 @@ namespace Net.Vpc.Upa.Filters
                     }
                     sb.Append(e);
                 }
-                foreach (Net.Vpc.Upa.FieldModifier e in rejected[i]) {
+                foreach (Net.TheVpc.Upa.FieldModifier e in rejected[i]) {
                     if (first) {
                         sb.Append("not ");
                         first = false;
@@ -251,10 +251,10 @@ namespace Net.Vpc.Upa.Filters
             if (this == other) {
                 return true;
             }
-            if (other == null || !(other is Net.Vpc.Upa.Filters.FieldModifierFilter)) {
+            if (other == null || !(other is Net.TheVpc.Upa.Filters.FieldModifierFilter)) {
                 return false;
             }
-            Net.Vpc.Upa.Filters.FieldModifierFilter m = (Net.Vpc.Upa.Filters.FieldModifierFilter) other;
+            Net.TheVpc.Upa.Filters.FieldModifierFilter m = (Net.TheVpc.Upa.Filters.FieldModifierFilter) other;
             if (m.accepted.Length != accepted.Length) {
                 return false;
             }

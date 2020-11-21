@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     /**
@@ -22,7 +22,7 @@ namespace Net.Vpc.Upa
      */
     public interface SecretStrategy {
 
-         void Init(Net.Vpc.Upa.PersistenceUnit persistenceUnit, string encodingKey, string decodingKey);
+         void Init(Net.TheVpc.Upa.PersistenceUnit persistenceUnit, string encodingKey, string decodingKey);
 
          byte[] Encode(byte[] @value);
 

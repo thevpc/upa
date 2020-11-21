@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config
+namespace Net.TheVpc.Upa.Impl.Config
 {
 
 
@@ -19,11 +19,11 @@ namespace Net.Vpc.Upa.Impl.Config
      *
      * @author taha.bensalah@gmail.com
      */
-    public class VoidActionAdapter : Net.Vpc.Upa.Action<object> {
+    public class VoidActionAdapter : Net.TheVpc.Upa.Action<object> {
 
-        private Net.Vpc.Upa.VoidAction action;
+        private Net.TheVpc.Upa.VoidAction action;
 
-        public VoidActionAdapter(Net.Vpc.Upa.VoidAction action) {
+        public VoidActionAdapter(Net.TheVpc.Upa.VoidAction action) {
             this.action = action;
         }
 

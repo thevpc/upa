@@ -12,7 +12,7 @@
 
 
 using System.Linq;
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -41,16 +41,16 @@ namespace Net.Vpc.Upa.Impl.Util
                 return System.Convert.ToByte(s);
             }
             if (c.Equals(typeof(System.Numerics.BigInteger?))) {
-                return Net.Vpc.Upa.Impl.FwkConvertUtils.CreateBigInteger(s);
+                return Net.TheVpc.Upa.Impl.FwkConvertUtils.CreateBigInteger(s);
             }
-            if (c.Equals(typeof(Net.Vpc.Upa.Types.Time))) {
-                return Net.Vpc.Upa.Impl.Util.DateUtils.ParseUniversalTime(s);
+            if (c.Equals(typeof(Net.TheVpc.Upa.Types.Time))) {
+                return Net.TheVpc.Upa.Impl.Util.DateUtils.ParseUniversalTime(s);
             }
-            if (c.Equals(typeof(Net.Vpc.Upa.Types.Date))) {
-                return Net.Vpc.Upa.Impl.Util.DateUtils.ParseUniversalDate(s);
+            if (c.Equals(typeof(Net.TheVpc.Upa.Types.Date))) {
+                return Net.TheVpc.Upa.Impl.Util.DateUtils.ParseUniversalDate(s);
             }
-            if (c.Equals(typeof(Net.Vpc.Upa.Types.Temporal))) {
-                return Net.Vpc.Upa.Impl.Util.DateUtils.ParseUniversalDateTime(s);
+            if (c.Equals(typeof(Net.TheVpc.Upa.Types.Temporal))) {
+                return Net.TheVpc.Upa.Impl.Util.DateUtils.ParseUniversalDateTime(s);
             }
             return null;
         }
@@ -300,8 +300,8 @@ namespace Net.Vpc.Upa.Impl.Util
                     return System.Convert.ToString(@value);
                 }
             }
-            if (@value is Net.Vpc.Upa.Types.Temporal) {
-                return Format((Net.Vpc.Upa.Types.Temporal) @value);
+            if (@value is Net.TheVpc.Upa.Types.Temporal) {
+                return Format((Net.TheVpc.Upa.Types.Temporal) @value);
             }
             if ((@value is float?) || (@value is double?)) {
                 //            return UserFormats.getDecimalFormat().format(((Number) value).doubleValue());
@@ -311,7 +311,7 @@ namespace Net.Vpc.Upa.Impl.Util
             }
         }
 
-        public static string Format(Net.Vpc.Upa.Types.Temporal @value) {
+        public static string Format(Net.TheVpc.Upa.Types.Temporal @value) {
             //        return UserFormats.getShortDateTimeFormat().format(value);
             return System.Convert.ToString(@value);
         }
@@ -358,26 +358,26 @@ namespace Net.Vpc.Upa.Impl.Util
             if (width < 0) {
                 return @value;
             } else {
-                return new Net.Vpc.Upa.Impl.Util.StringFormatter(width, ' ', align).Format(@value);
+                return new Net.TheVpc.Upa.Impl.Util.StringFormatter(width, ' ', align).Format(@value);
             }
         }
 
         public static bool IsNullOrEmpty(string s) {
-            return s == null || (s.Trim()).Length == 0 || s.Equals(Net.Vpc.Upa.UPA.UNDEFINED_STRING);
+            return s == null || (s.Trim()).Length == 0 || s.Equals(Net.TheVpc.Upa.UPA.UNDEFINED_STRING);
         }
 
         public static string EscapeString(string s, bool escapeDoubleQuote, bool escapeSingleQuotes, bool escapeAntiQuote) {
-            return Net.Vpc.Upa.Expressions.ExpressionHelper.EscapeStringLiteral(s, escapeDoubleQuote, escapeSingleQuotes, escapeAntiQuote);
+            return Net.TheVpc.Upa.Expressions.ExpressionHelper.EscapeStringLiteral(s, escapeDoubleQuote, escapeSingleQuotes, escapeAntiQuote);
         }
 
         public static string UnescapeString(string s) {
-            return Net.Vpc.Upa.Expressions.ExpressionHelper.UnescapeString(s);
+            return Net.TheVpc.Upa.Expressions.ExpressionHelper.UnescapeString(s);
         }
 
         public static System.Collections.Generic.IList<string> ParseVarsList(string s) {
             System.Collections.Generic.IList<string> vars = new System.Collections.Generic.List<string>();
-            Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern p = new Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern("\\$\\{[a-zA-Z]+\\w*\\}");
-            Net.Vpc.Upa.Impl.Util.Regexp.PortablePatternMatcher m = p.Matcher(s);
+            Net.TheVpc.Upa.Impl.Util.Regexp.PortablePattern p = new Net.TheVpc.Upa.Impl.Util.Regexp.PortablePattern("\\$\\{[a-zA-Z]+\\w*\\}");
+            Net.TheVpc.Upa.Impl.Util.Regexp.PortablePatternMatcher m = p.Matcher(s);
             while (m.Find()) {
                 int n = 0;
                 for (int i = m.Start() - 1; i >= 0 && s[i] == '\\'; i--) {
@@ -466,7 +466,7 @@ namespace Net.Vpc.Upa.Impl.Util
              * @param pattern
              * @return
              */
-        public static string SimpexpToRegexp(string pattern, Net.Vpc.Upa.Impl.Util.PatternType type) {
+        public static string SimpexpToRegexp(string pattern, Net.TheVpc.Upa.Impl.Util.PatternType type) {
             if (pattern == null) {
                 pattern = "*";
             }
@@ -493,7 +493,7 @@ namespace Net.Vpc.Upa.Impl.Util
                     case '*':
                         {
                             switch(type) {
-                                case Net.Vpc.Upa.Impl.Util.PatternType.DOT_PATH:
+                                case Net.TheVpc.Upa.Impl.Util.PatternType.DOT_PATH:
                                     {
                                         if (i + 1 < cc.Length && cc[i + 1] == '*') {
                                             i++;
@@ -503,7 +503,7 @@ namespace Net.Vpc.Upa.Impl.Util
                                         }
                                         break;
                                     }
-                                case Net.Vpc.Upa.Impl.Util.PatternType.SLASH_PATH:
+                                case Net.TheVpc.Upa.Impl.Util.PatternType.SLASH_PATH:
                                     {
                                         if (i + 1 < cc.Length && cc[i + 1] == '*') {
                                             i++;
@@ -513,7 +513,7 @@ namespace Net.Vpc.Upa.Impl.Util
                                         }
                                         break;
                                     }
-                                case Net.Vpc.Upa.Impl.Util.PatternType.ANY:
+                                case Net.TheVpc.Upa.Impl.Util.PatternType.ANY:
                                     {
                                         sb.Append(".*");
                                         break;
@@ -537,16 +537,16 @@ namespace Net.Vpc.Upa.Impl.Util
             return sb.ToString();
         }
 
-        public static bool MatchesSimpleExpression(string str, string pattern, Net.Vpc.Upa.Impl.Util.PatternType type) {
-            return new Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern(SimpexpToRegexp(pattern, type)).Matcher(str == null ? "" : str).Matches();
+        public static bool MatchesSimpleExpression(string str, string pattern, Net.TheVpc.Upa.Impl.Util.PatternType type) {
+            return new Net.TheVpc.Upa.Impl.Util.Regexp.PortablePattern(SimpexpToRegexp(pattern, type)).Matcher(str == null ? "" : str).Matches();
         }
 
         public static bool IsUndefined(string @value) {
-            return Net.Vpc.Upa.UPA.UNDEFINED_STRING.Equals(@value);
+            return Net.TheVpc.Upa.UPA.UNDEFINED_STRING.Equals(@value);
         }
 
-        public static bool IsUndefined(Net.Vpc.Upa.Config.BoolEnum @value) {
-            return Net.Vpc.Upa.Config.BoolEnum.UNDEFINED.Equals(@value);
+        public static bool IsUndefined(Net.TheVpc.Upa.Config.BoolEnum @value) {
+            return Net.TheVpc.Upa.Config.BoolEnum.UNDEFINED.Equals(@value);
         }
 
         public static bool IsUndefined(System.Type @value) {
@@ -554,7 +554,7 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public static string Trim(string @value) {
-            return Net.Vpc.Upa.Impl.Util.StringHelper.EMPTY_STRING.Format(@value);
+            return Net.TheVpc.Upa.Impl.Util.StringHelper.EMPTY_STRING.Format(@value);
         }
     }
 }

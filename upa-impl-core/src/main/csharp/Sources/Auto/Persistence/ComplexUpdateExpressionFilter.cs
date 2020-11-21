@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
      *
      * @author taha.bensalah@gmail.com
      */
-    internal class ComplexUpdateExpressionFilter : Net.Vpc.Upa.Expressions.ExpressionFilter {
+    internal class ComplexUpdateExpressionFilter : Net.TheVpc.Upa.Expressions.ExpressionFilter {
 
         private readonly string entityName;
 
@@ -31,9 +31,9 @@ namespace Net.Vpc.Upa.Impl.Persistence
         }
 
 
-        public virtual bool Accept(Net.Vpc.Upa.Expressions.Expression expression) {
-            if (typeof(Net.Vpc.Upa.Expressions.Select).IsInstanceOfType(expression)) {
-                Net.Vpc.Upa.Expressions.Select ss = (Net.Vpc.Upa.Expressions.Select) expression;
+        public virtual bool Accept(Net.TheVpc.Upa.Expressions.Expression expression) {
+            if (typeof(Net.TheVpc.Upa.Expressions.Select).IsInstanceOfType(expression)) {
+                Net.TheVpc.Upa.Expressions.Select ss = (Net.TheVpc.Upa.Expressions.Select) expression;
                 if (isUpdateComplexValuesStatementSupported) {
                     if (ss.GetEntity() != null) {
                         bool meFound = false;
@@ -42,7 +42,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
                             meFound = true;
                         }
                         if (!meFound) {
-                            foreach (Net.Vpc.Upa.Expressions.JoinCriteria join in ss.GetJoins()) {
+                            foreach (Net.TheVpc.Upa.Expressions.JoinCriteria join in ss.GetJoins()) {
                                 string jentityName = join.GetEntityName();
                                 if (jentityName != null && jentityName.Equals(entityName)) {
                                     meFound = true;

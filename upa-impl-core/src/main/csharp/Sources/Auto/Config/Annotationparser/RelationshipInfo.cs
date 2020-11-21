@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config.Annotationparser
+namespace Net.TheVpc.Upa.Impl.Config.Annotationparser
 {
 
 
@@ -19,9 +19,9 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 11/15/12 11:46 AM
      */
-    internal class RelationshipInfo : Net.Vpc.Upa.RelationshipDescriptor {
+    internal class RelationshipInfo : Net.TheVpc.Upa.RelationshipDescriptor {
 
-        private Net.Vpc.Upa.Impl.Config.Annotationparser.FieldInfo baseFieldInfo;
+        private Net.TheVpc.Upa.Impl.Config.Annotationparser.FieldInfo baseFieldInfo;
 
         private string name;
 
@@ -29,7 +29,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
 
         private string[] mappedTo = new string[0];
 
-        private Net.Vpc.Upa.RelationshipType relationType;
+        private Net.TheVpc.Upa.RelationshipType relationType;
 
         private string targetEntity;
 
@@ -57,22 +57,22 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
 
         private System.Collections.Generic.IList<System.Reflection.FieldInfo> fieldsList;
 
-        private Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository repo;
+        private Net.TheVpc.Upa.Impl.Config.Decorations.DecorationRepository repo;
 
-        private Net.Vpc.Upa.Types.DataType preferredDataType;
+        private Net.TheVpc.Upa.Types.DataType preferredDataType;
 
-        public RelationshipInfo(Net.Vpc.Upa.Impl.Config.Annotationparser.FieldInfo baseFieldInfo, Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository repo) {
+        public RelationshipInfo(Net.TheVpc.Upa.Impl.Config.Annotationparser.FieldInfo baseFieldInfo, Net.TheVpc.Upa.Impl.Config.Decorations.DecorationRepository repo) {
             this.baseFieldInfo = baseFieldInfo;
             this.repo = repo;
         }
 
         public virtual void Parse(System.Collections.Generic.IList<System.Reflection.FieldInfo> fields, bool nullable) {
             fieldsList = fields;
-            System.Collections.Generic.IList<Net.Vpc.Upa.Config.Decoration> manyToOneDecorations = new System.Collections.Generic.List<Net.Vpc.Upa.Config.Decoration>();
-            System.Collections.Generic.IList<Net.Vpc.Upa.Config.Decoration> hierarchyDecorations = new System.Collections.Generic.List<Net.Vpc.Upa.Config.Decoration>();
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Config.Decoration> manyToOneDecorations = new System.Collections.Generic.List<Net.TheVpc.Upa.Config.Decoration>();
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Config.Decoration> hierarchyDecorations = new System.Collections.Generic.List<Net.TheVpc.Upa.Config.Decoration>();
             foreach (System.Reflection.FieldInfo javaField in fields) {
-                Net.Vpc.Upa.Config.Decoration gid = repo.GetFieldDecoration(javaField, typeof(Net.Vpc.Upa.Config.ManyToOne));
-                Net.Vpc.Upa.Config.Decoration gid2 = repo.GetFieldDecoration(javaField, typeof(Net.Vpc.Upa.Config.Hierarchy));
+                Net.TheVpc.Upa.Config.Decoration gid = repo.GetFieldDecoration(javaField, typeof(Net.TheVpc.Upa.Config.ManyToOne));
+                Net.TheVpc.Upa.Config.Decoration gid2 = repo.GetFieldDecoration(javaField, typeof(Net.TheVpc.Upa.Config.Hierarchy));
                 if (gid != null) {
                     //                ConfigInfo config = gid.getConfig();
                     manyToOneDecorations.Add(gid);
@@ -83,15 +83,15 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                 }
             }
             if ((manyToOneDecorations).Count > 1) {
-                Net.Vpc.Upa.Impl.FwkConvertUtils.ListSort(manyToOneDecorations, Net.Vpc.Upa.Impl.Config.Annotationparser.DecorationComparator.INSTANCE);
+                Net.TheVpc.Upa.Impl.FwkConvertUtils.ListSort(manyToOneDecorations, Net.TheVpc.Upa.Impl.Config.Annotationparser.DecorationComparator.INSTANCE);
             }
             if ((hierarchyDecorations).Count > 1) {
-                Net.Vpc.Upa.Impl.FwkConvertUtils.ListSort(hierarchyDecorations, Net.Vpc.Upa.Impl.Config.Annotationparser.DecorationComparator.INSTANCE);
+                Net.TheVpc.Upa.Impl.FwkConvertUtils.ListSort(hierarchyDecorations, Net.TheVpc.Upa.Impl.Config.Annotationparser.DecorationComparator.INSTANCE);
             }
-            foreach (Net.Vpc.Upa.Config.Decoration gid in manyToOneDecorations) {
+            foreach (Net.TheVpc.Upa.Config.Decoration gid in manyToOneDecorations) {
                 MergeManyToOne(gid);
             }
-            foreach (Net.Vpc.Upa.Config.Decoration gid in hierarchyDecorations) {
+            foreach (Net.TheVpc.Upa.Config.Decoration gid in hierarchyDecorations) {
                 MergeHierarchy(gid);
             }
             if (GetTargetEntityType() == null || GetTargetEntityType().Equals(typeof(void))) {
@@ -99,14 +99,14 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             }
             if (IsManyToOne()) {
                 System.Type nativeClass = GetFieldType();
-                if (!Net.Vpc.Upa.Impl.Util.UPAUtils.IsSimpleFieldType(nativeClass)) {
-                    Net.Vpc.Upa.Types.ManyToOneType manyToOneType = new Net.Vpc.Upa.Types.ManyToOneType(name, nativeClass, null, true, nullable);
+                if (!Net.TheVpc.Upa.Impl.Util.UPAUtils.IsSimpleFieldType(nativeClass)) {
+                    Net.TheVpc.Upa.Types.ManyToOneType manyToOneType = new Net.TheVpc.Upa.Types.ManyToOneType(name, nativeClass, null, true, nullable);
                     preferredDataType = (manyToOneType);
                 }
             }
         }
 
-        public virtual Net.Vpc.Upa.Types.DataType GetPreferredDataType() {
+        public virtual Net.TheVpc.Upa.Types.DataType GetPreferredDataType() {
             return preferredDataType;
         }
 
@@ -117,7 +117,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             return null;
         }
 
-        public virtual void MergeHierarchy(Net.Vpc.Upa.Config.Decoration gid) {
+        public virtual void MergeHierarchy(Net.TheVpc.Upa.Config.Decoration gid) {
             if (gid.GetConfig().GetOrder() >= hierarchyConfigOrder) {
                 specified = true;
                 hierarchy = true;
@@ -125,8 +125,8 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                 targetEntity = baseFieldInfo.GetEntityInfo().GetName();
                 System.Type entityType = baseFieldInfo.GetEntityInfo().GetEntityType();
                 targetEntityType = entityType;
-                if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsUndefinedValue<Net.Vpc.Upa.RelationshipType>(typeof(Net.Vpc.Upa.RelationshipType), relationType)) {
-                    relationType = Net.Vpc.Upa.RelationshipType.COMPOSITION;
+                if (Net.TheVpc.Upa.Impl.Util.PlatformUtils.IsUndefinedValue<Net.TheVpc.Upa.RelationshipType>(typeof(Net.TheVpc.Upa.RelationshipType), relationType)) {
+                    relationType = Net.TheVpc.Upa.RelationshipType.COMPOSITION;
                 }
                 System.Type nativeClass = GetFieldType();
                 if (!nativeClass.Equals(entityType)) {
@@ -144,7 +144,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             }
         }
 
-        public virtual void MergeManyToOne(Net.Vpc.Upa.Config.Decoration gid) {
+        public virtual void MergeManyToOne(Net.TheVpc.Upa.Config.Decoration gid) {
             if (gid.GetConfig().GetOrder() >= manyToOneConfigOrder) {
                 specified = true;
                 manyToOne = true;
@@ -165,8 +165,8 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                 if (_mappedTo.Length != 0) {
                     mappedTo = _mappedTo;
                 }
-                if (!System.Collections.Generic.EqualityComparer<Net.Vpc.Upa.RelationshipType>.Default.Equals(gid.GetEnum<Net.Vpc.Upa.RelationshipType>("type", typeof(Net.Vpc.Upa.RelationshipType)),Net.Vpc.Upa.RelationshipType.DEFAULT)) {
-                    relationType = gid.GetEnum<Net.Vpc.Upa.RelationshipType>("type", typeof(Net.Vpc.Upa.RelationshipType));
+                if (!System.Collections.Generic.EqualityComparer<Net.TheVpc.Upa.RelationshipType>.Default.Equals(gid.GetEnum<Net.TheVpc.Upa.RelationshipType>("type", typeof(Net.TheVpc.Upa.RelationshipType)),Net.TheVpc.Upa.RelationshipType.DEFAULT)) {
+                    relationType = gid.GetEnum<Net.TheVpc.Upa.RelationshipType>("type", typeof(Net.TheVpc.Upa.RelationshipType));
                 }
                 if ((gid.GetString("filter")).Length > 0) {
                     filter = gid.GetString("filter");
@@ -184,7 +184,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                     targetEntity = null;
                     targetEntityType = _targetEntityType;
                 }
-                if (Net.Vpc.Upa.Impl.Util.UPAUtils.IsSimpleFieldType(nativeClass)) {
+                if (Net.TheVpc.Upa.Impl.Util.UPAUtils.IsSimpleFieldType(nativeClass)) {
                     if ((targetEntityType == null || targetEntityType.Equals(typeof(void))) && targetEntity == null) {
                         throw new System.ArgumentException ("Missing targetEntityType in field " + baseFieldInfo.GetEntityInfo().GetName() + "." + name);
                     }
@@ -231,7 +231,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             return mappedTo;
         }
 
-        public virtual Net.Vpc.Upa.RelationshipType GetRelationshipType() {
+        public virtual Net.TheVpc.Upa.RelationshipType GetRelationshipType() {
             return relationType;
         }
 
@@ -239,8 +239,8 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             return targetEntity;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Expression GetFilter() {
-            return filter == null ? null : new Net.Vpc.Upa.Expressions.UserExpression(filter);
+        public virtual Net.TheVpc.Upa.Expressions.Expression GetFilter() {
+            return filter == null ? null : new Net.TheVpc.Upa.Expressions.UserExpression(filter);
         }
 
         public virtual System.Type GetTargetEntityType() {
@@ -263,7 +263,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             return baseFieldInfo.name;
         }
 
-        public virtual void SetBaseFieldInfo(Net.Vpc.Upa.Impl.Config.Annotationparser.FieldInfo baseFieldInfo) {
+        public virtual void SetBaseFieldInfo(Net.TheVpc.Upa.Impl.Config.Annotationparser.FieldInfo baseFieldInfo) {
             this.baseFieldInfo = baseFieldInfo;
         }
 
@@ -279,7 +279,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             this.mappedTo = mappedTo;
         }
 
-        public virtual void SetRelationshipType(Net.Vpc.Upa.RelationshipType relationType) {
+        public virtual void SetRelationshipType(Net.TheVpc.Upa.RelationshipType relationType) {
             this.relationType = relationType;
         }
 
@@ -320,7 +320,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             return nullable;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Config.Annotationparser.RelationshipInfo SetNullable(bool nullable) {
+        public virtual Net.TheVpc.Upa.Impl.Config.Annotationparser.RelationshipInfo SetNullable(bool nullable) {
             this.nullable = nullable;
             return this;
         }

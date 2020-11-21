@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
     /**
      * @author taha.bensalah@gmail.com
      */
-    public class DefaultFieldDescriptor : Net.Vpc.Upa.FieldDescriptor {
+    public class DefaultFieldDescriptor : Net.TheVpc.Upa.FieldDescriptor {
 
         private string name;
 
@@ -28,39 +28,39 @@ namespace Net.Vpc.Upa
 
         private object unspecifiedObject;
 
-        private Net.Vpc.Upa.Types.DataType dataType;
+        private Net.TheVpc.Upa.Types.DataType dataType;
 
-        private Net.Vpc.Upa.Types.DataTypeTransformConfig[] typeTransform;
+        private Net.TheVpc.Upa.Types.DataTypeTransformConfig[] typeTransform;
 
-        private Net.Vpc.Upa.Formula persistFormula;
+        private Net.TheVpc.Upa.Formula persistFormula;
 
-        private Net.Vpc.Upa.Formula updateFormula;
+        private Net.TheVpc.Upa.Formula updateFormula;
 
-        private Net.Vpc.Upa.Formula selectFormula;
+        private Net.TheVpc.Upa.Formula selectFormula;
 
         private int persistFormulaOrder;
 
         private int updateFormulaOrder;
 
-        private Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> userModifiers;
+        private Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> userModifiers;
 
-        private Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> userExcludeModifiers;
+        private Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> userExcludeModifiers;
 
-        private Net.Vpc.Upa.AccessLevel persistAccessLevel = Net.Vpc.Upa.AccessLevel.DEFAULT;
+        private Net.TheVpc.Upa.AccessLevel persistAccessLevel = Net.TheVpc.Upa.AccessLevel.DEFAULT;
 
-        private Net.Vpc.Upa.AccessLevel updateAccessLevel = Net.Vpc.Upa.AccessLevel.DEFAULT;
+        private Net.TheVpc.Upa.AccessLevel updateAccessLevel = Net.TheVpc.Upa.AccessLevel.DEFAULT;
 
-        private Net.Vpc.Upa.AccessLevel readAccessLevel = Net.Vpc.Upa.AccessLevel.DEFAULT;
+        private Net.TheVpc.Upa.AccessLevel readAccessLevel = Net.TheVpc.Upa.AccessLevel.DEFAULT;
 
-        private Net.Vpc.Upa.ProtectionLevel persistProtectionLevel = Net.Vpc.Upa.ProtectionLevel.DEFAULT;
+        private Net.TheVpc.Upa.ProtectionLevel persistProtectionLevel = Net.TheVpc.Upa.ProtectionLevel.DEFAULT;
 
-        private Net.Vpc.Upa.ProtectionLevel updateProtectionLevel = Net.Vpc.Upa.ProtectionLevel.DEFAULT;
+        private Net.TheVpc.Upa.ProtectionLevel updateProtectionLevel = Net.TheVpc.Upa.ProtectionLevel.DEFAULT;
 
-        private Net.Vpc.Upa.ProtectionLevel readProtectionLevel = Net.Vpc.Upa.ProtectionLevel.DEFAULT;
+        private Net.TheVpc.Upa.ProtectionLevel readProtectionLevel = Net.TheVpc.Upa.ProtectionLevel.DEFAULT;
 
         private System.Collections.Generic.IDictionary<string , object> fieldParams;
 
-        private Net.Vpc.Upa.PropertyAccessType propertyAccessType;
+        private Net.TheVpc.Upa.PropertyAccessType propertyAccessType;
 
         private int position = -1;
 
@@ -68,7 +68,7 @@ namespace Net.Vpc.Upa
             return name;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetName(string name) {
+        public virtual Net.TheVpc.Upa.DefaultFieldDescriptor SetName(string name) {
             this.name = name;
             return this;
         }
@@ -77,7 +77,7 @@ namespace Net.Vpc.Upa
             return fieldPath;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetPath(string fieldPath) {
+        public virtual Net.TheVpc.Upa.DefaultFieldDescriptor SetPath(string fieldPath) {
             this.fieldPath = fieldPath;
             return this;
         }
@@ -86,7 +86,7 @@ namespace Net.Vpc.Upa
             return defaultObject;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetDefaultObject(object defaultObject) {
+        public virtual Net.TheVpc.Upa.DefaultFieldDescriptor SetDefaultObject(object defaultObject) {
             this.defaultObject = defaultObject;
             return this;
         }
@@ -95,52 +95,52 @@ namespace Net.Vpc.Upa
             return unspecifiedObject;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetUnspecifiedObject(object unspecifiedObject) {
+        public virtual Net.TheVpc.Upa.DefaultFieldDescriptor SetUnspecifiedObject(object unspecifiedObject) {
             this.unspecifiedObject = unspecifiedObject;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Types.DataType GetDataType() {
+        public virtual Net.TheVpc.Upa.Types.DataType GetDataType() {
             return dataType;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetDataType(Net.Vpc.Upa.Types.DataType dataType) {
+        public virtual Net.TheVpc.Upa.DefaultFieldDescriptor SetDataType(Net.TheVpc.Upa.Types.DataType dataType) {
             this.dataType = dataType;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Types.DataTypeTransformConfig[] GetTypeTransform() {
+        public virtual Net.TheVpc.Upa.Types.DataTypeTransformConfig[] GetTypeTransform() {
             return typeTransform;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetTypeTransform(Net.Vpc.Upa.Types.DataTypeTransformConfig[] typeTransform) {
+        public virtual Net.TheVpc.Upa.DefaultFieldDescriptor SetTypeTransform(Net.TheVpc.Upa.Types.DataTypeTransformConfig[] typeTransform) {
             this.typeTransform = typeTransform;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Formula GetPersistFormula() {
+        public virtual Net.TheVpc.Upa.Formula GetPersistFormula() {
             return persistFormula;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetPersistFormula(Net.Vpc.Upa.Formula persistFormula) {
+        public virtual Net.TheVpc.Upa.DefaultFieldDescriptor SetPersistFormula(Net.TheVpc.Upa.Formula persistFormula) {
             this.persistFormula = persistFormula;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Formula GetUpdateFormula() {
+        public virtual Net.TheVpc.Upa.Formula GetUpdateFormula() {
             return updateFormula;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetUpdateFormula(Net.Vpc.Upa.Formula updateFormula) {
+        public virtual Net.TheVpc.Upa.DefaultFieldDescriptor SetUpdateFormula(Net.TheVpc.Upa.Formula updateFormula) {
             this.updateFormula = updateFormula;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Formula GetSelectFormula() {
+        public virtual Net.TheVpc.Upa.Formula GetSelectFormula() {
             return selectFormula;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetSelectFormula(Net.Vpc.Upa.Formula selectFormula) {
+        public virtual Net.TheVpc.Upa.DefaultFieldDescriptor SetSelectFormula(Net.TheVpc.Upa.Formula selectFormula) {
             this.selectFormula = selectFormula;
             return this;
         }
@@ -149,7 +149,7 @@ namespace Net.Vpc.Upa
             return persistFormulaOrder;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetPersistFormulaOrder(int persistFormulaOrder) {
+        public virtual Net.TheVpc.Upa.DefaultFieldDescriptor SetPersistFormulaOrder(int persistFormulaOrder) {
             this.persistFormulaOrder = persistFormulaOrder;
             return this;
         }
@@ -158,93 +158,93 @@ namespace Net.Vpc.Upa
             return updateFormulaOrder;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetUpdateFormulaOrder(int updateFormulaOrder) {
+        public virtual Net.TheVpc.Upa.DefaultFieldDescriptor SetUpdateFormulaOrder(int updateFormulaOrder) {
             this.updateFormulaOrder = updateFormulaOrder;
             return this;
         }
 
 
-        public virtual Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> GetModifiers() {
+        public virtual Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> GetModifiers() {
             return userModifiers;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetModifiers(Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> userModifiers) {
+        public virtual Net.TheVpc.Upa.DefaultFieldDescriptor SetModifiers(Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> userModifiers) {
             this.userModifiers = userModifiers;
             return this;
         }
 
 
-        public virtual Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> GetExcludeModifiers() {
+        public virtual Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> GetExcludeModifiers() {
             return userExcludeModifiers;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetExcludeModifiers(Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> userExcludeModifiers) {
+        public virtual Net.TheVpc.Upa.DefaultFieldDescriptor SetExcludeModifiers(Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> userExcludeModifiers) {
             this.userExcludeModifiers = userExcludeModifiers;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.AccessLevel GetPersistAccessLevel() {
+        public virtual Net.TheVpc.Upa.AccessLevel GetPersistAccessLevel() {
             return persistAccessLevel;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetPersistAccessLevel(Net.Vpc.Upa.AccessLevel persistAccessLevel) {
+        public virtual Net.TheVpc.Upa.DefaultFieldDescriptor SetPersistAccessLevel(Net.TheVpc.Upa.AccessLevel persistAccessLevel) {
             this.persistAccessLevel = persistAccessLevel;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.AccessLevel GetUpdateAccessLevel() {
+        public virtual Net.TheVpc.Upa.AccessLevel GetUpdateAccessLevel() {
             return updateAccessLevel;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetUpdateAccessLevel(Net.Vpc.Upa.AccessLevel updateAccessLevel) {
+        public virtual Net.TheVpc.Upa.DefaultFieldDescriptor SetUpdateAccessLevel(Net.TheVpc.Upa.AccessLevel updateAccessLevel) {
             this.updateAccessLevel = updateAccessLevel;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.AccessLevel GetReadAccessLevel() {
+        public virtual Net.TheVpc.Upa.AccessLevel GetReadAccessLevel() {
             return readAccessLevel;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetReadAccessLevel(Net.Vpc.Upa.AccessLevel readAccessLevel) {
+        public virtual Net.TheVpc.Upa.DefaultFieldDescriptor SetReadAccessLevel(Net.TheVpc.Upa.AccessLevel readAccessLevel) {
             this.readAccessLevel = readAccessLevel;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetAccessLevel(Net.Vpc.Upa.AccessLevel accessLevel) {
+        public virtual Net.TheVpc.Upa.DefaultFieldDescriptor SetAccessLevel(Net.TheVpc.Upa.AccessLevel accessLevel) {
             SetPersistAccessLevel(accessLevel);
             SetUpdateAccessLevel(accessLevel);
             SetReadAccessLevel(accessLevel);
             return this;
         }
 
-        public virtual Net.Vpc.Upa.ProtectionLevel GetPersistProtectionLevel() {
+        public virtual Net.TheVpc.Upa.ProtectionLevel GetPersistProtectionLevel() {
             return persistProtectionLevel;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetPersistProtectionLevel(Net.Vpc.Upa.ProtectionLevel persistProtectionLevel) {
+        public virtual Net.TheVpc.Upa.DefaultFieldDescriptor SetPersistProtectionLevel(Net.TheVpc.Upa.ProtectionLevel persistProtectionLevel) {
             this.persistProtectionLevel = persistProtectionLevel;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.ProtectionLevel GetUpdateProtectionLevel() {
+        public virtual Net.TheVpc.Upa.ProtectionLevel GetUpdateProtectionLevel() {
             return updateProtectionLevel;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetUpdateProtectionLevel(Net.Vpc.Upa.ProtectionLevel updateProtectionLevel) {
+        public virtual Net.TheVpc.Upa.DefaultFieldDescriptor SetUpdateProtectionLevel(Net.TheVpc.Upa.ProtectionLevel updateProtectionLevel) {
             this.updateProtectionLevel = updateProtectionLevel;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.ProtectionLevel GetReadProtectionLevel() {
+        public virtual Net.TheVpc.Upa.ProtectionLevel GetReadProtectionLevel() {
             return readProtectionLevel;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetReadProtectionLevel(Net.Vpc.Upa.ProtectionLevel readProtectionLevel) {
+        public virtual Net.TheVpc.Upa.DefaultFieldDescriptor SetReadProtectionLevel(Net.TheVpc.Upa.ProtectionLevel readProtectionLevel) {
             this.readProtectionLevel = readProtectionLevel;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetProtectionLevel(Net.Vpc.Upa.ProtectionLevel protectionLevel) {
+        public virtual Net.TheVpc.Upa.DefaultFieldDescriptor SetProtectionLevel(Net.TheVpc.Upa.ProtectionLevel protectionLevel) {
             SetPersistProtectionLevel(protectionLevel);
             SetUpdateProtectionLevel(protectionLevel);
             SetReadProtectionLevel(protectionLevel);
@@ -255,16 +255,16 @@ namespace Net.Vpc.Upa
             return fieldParams;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetFieldParams(System.Collections.Generic.IDictionary<string , object> fieldParams) {
+        public virtual Net.TheVpc.Upa.DefaultFieldDescriptor SetFieldParams(System.Collections.Generic.IDictionary<string , object> fieldParams) {
             this.fieldParams = fieldParams;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.PropertyAccessType GetPropertyAccessType() {
+        public virtual Net.TheVpc.Upa.PropertyAccessType GetPropertyAccessType() {
             return propertyAccessType;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetPropertyAccessType(Net.Vpc.Upa.PropertyAccessType propertyAccessType) {
+        public virtual Net.TheVpc.Upa.DefaultFieldDescriptor SetPropertyAccessType(Net.TheVpc.Upa.PropertyAccessType propertyAccessType) {
             this.propertyAccessType = propertyAccessType;
             return this;
         }
@@ -273,14 +273,14 @@ namespace Net.Vpc.Upa
             return position;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetPosition(int position) {
+        public virtual Net.TheVpc.Upa.DefaultFieldDescriptor SetPosition(int position) {
             this.position = position;
             return this;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetFieldDescriptor(Net.Vpc.Upa.FieldDescriptor other) {
+        public virtual Net.TheVpc.Upa.DefaultFieldDescriptor SetFieldDescriptor(Net.TheVpc.Upa.FieldDescriptor other) {
             if (other == null) {
-                other = new Net.Vpc.Upa.DefaultFieldDescriptor();
+                other = new Net.TheVpc.Upa.DefaultFieldDescriptor();
             }
             SetName(other.GetName());
             SetPath(other.GetPath());
@@ -307,9 +307,9 @@ namespace Net.Vpc.Upa
             return this;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor Merge(Net.Vpc.Upa.FieldDescriptor other) {
+        public virtual Net.TheVpc.Upa.DefaultFieldDescriptor Merge(Net.TheVpc.Upa.FieldDescriptor other) {
             if (other == null) {
-                other = new Net.Vpc.Upa.DefaultFieldDescriptor();
+                other = new Net.TheVpc.Upa.DefaultFieldDescriptor();
             }
             if (other.GetName() != null) {
                 SetName(other.GetName());
@@ -350,28 +350,28 @@ namespace Net.Vpc.Upa
             if (other.GetExcludeModifiers() != null) {
                 SetExcludeModifiers(other.GetExcludeModifiers());
             }
-            if (other.GetPersistAccessLevel() != default(Net.Vpc.Upa.AccessLevel)) {
+            if (other.GetPersistAccessLevel() != default(Net.TheVpc.Upa.AccessLevel)) {
                 SetPersistAccessLevel(other.GetPersistAccessLevel());
             }
-            if (other.GetUpdateAccessLevel() != default(Net.Vpc.Upa.AccessLevel)) {
+            if (other.GetUpdateAccessLevel() != default(Net.TheVpc.Upa.AccessLevel)) {
                 SetUpdateAccessLevel(other.GetUpdateAccessLevel());
             }
-            if (other.GetReadAccessLevel() != default(Net.Vpc.Upa.AccessLevel)) {
+            if (other.GetReadAccessLevel() != default(Net.TheVpc.Upa.AccessLevel)) {
                 SetReadAccessLevel(other.GetReadAccessLevel());
             }
-            if (other.GetPersistProtectionLevel() != default(Net.Vpc.Upa.ProtectionLevel)) {
+            if (other.GetPersistProtectionLevel() != default(Net.TheVpc.Upa.ProtectionLevel)) {
                 SetPersistProtectionLevel(other.GetPersistProtectionLevel());
             }
-            if (other.GetUpdateProtectionLevel() != default(Net.Vpc.Upa.ProtectionLevel)) {
+            if (other.GetUpdateProtectionLevel() != default(Net.TheVpc.Upa.ProtectionLevel)) {
                 SetUpdateProtectionLevel(other.GetUpdateProtectionLevel());
             }
-            if (other.GetReadProtectionLevel() != default(Net.Vpc.Upa.ProtectionLevel)) {
+            if (other.GetReadProtectionLevel() != default(Net.TheVpc.Upa.ProtectionLevel)) {
                 SetReadProtectionLevel(other.GetReadProtectionLevel());
             }
             if (other.GetFieldParams() != null) {
                 SetFieldParams(other.GetFieldParams());
             }
-            if (other.GetPropertyAccessType() != default(Net.Vpc.Upa.PropertyAccessType)) {
+            if (other.GetPropertyAccessType() != default(Net.TheVpc.Upa.PropertyAccessType)) {
                 SetPropertyAccessType(other.GetPropertyAccessType());
             }
             if (other.GetIndex() != 0) {

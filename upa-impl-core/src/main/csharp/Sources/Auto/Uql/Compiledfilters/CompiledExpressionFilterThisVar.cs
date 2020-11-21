@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiledfilters
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledfilters
 {
 
 
@@ -19,14 +19,14 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledfilters
      *
      * @author taha.bensalah@gmail.com
      */
-    public class CompiledExpressionFilterThisVar : Net.Vpc.Upa.Impl.Uql.CompiledExpressionFilter {
+    public class CompiledExpressionFilterThisVar : Net.TheVpc.Upa.Impl.Uql.CompiledExpressionFilter {
 
         public CompiledExpressionFilterThisVar() {
         }
 
-        public virtual bool Accept(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e) {
-            if (e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) {
-                Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar c = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) e;
+        public virtual bool Accept(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e) {
+            if (e is Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) {
+                Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar c = (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) e;
                 if (c.GetName().Equals("this")) {
                     return true;
                 }

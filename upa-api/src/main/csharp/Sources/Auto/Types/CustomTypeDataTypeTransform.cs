@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
     /**
      *
      * @author taha.bensalah@gmail.com
      */
-    public class CustomTypeDataTypeTransform : Net.Vpc.Upa.Types.DataTypeTransformConfig {
+    public class CustomTypeDataTypeTransform : Net.TheVpc.Upa.Types.DataTypeTransformConfig {
 
         private string customType;
 

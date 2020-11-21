@@ -12,7 +12,7 @@
 
 
 using System.Linq;
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
@@ -20,21 +20,21 @@ namespace Net.Vpc.Upa.Impl
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 9/11/12 9:47 PM
      */
-    public class DefaultPersistenceGroup : Net.Vpc.Upa.PersistenceGroup {
+    public class DefaultPersistenceGroup : Net.TheVpc.Upa.PersistenceGroup {
 
-        protected internal static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.Vpc.Upa.Impl.DefaultPersistenceGroup)).FullName);
+        protected internal static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.TheVpc.Upa.Impl.DefaultPersistenceGroup)).FullName);
 
-        private Net.Vpc.Upa.UPAContext context;
+        private Net.TheVpc.Upa.UPAContext context;
 
-        private Net.Vpc.Upa.ObjectFactory factory;
+        private Net.TheVpc.Upa.ObjectFactory factory;
 
-        private readonly System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.PersistenceUnit> persistenceUnits = new System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.PersistenceUnit>();
+        private readonly System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.PersistenceUnit> persistenceUnits = new System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.PersistenceUnit>();
 
-        private readonly System.Collections.Generic.IList<Net.Vpc.Upa.Session> sessions = new System.Collections.Generic.List<Net.Vpc.Upa.Session>();
+        private readonly System.Collections.Generic.IList<Net.TheVpc.Upa.Session> sessions = new System.Collections.Generic.List<Net.TheVpc.Upa.Session>();
 
-        private Net.Vpc.Upa.SessionContextProvider sessionContextProvider;
+        private Net.TheVpc.Upa.SessionContextProvider sessionContextProvider;
 
-        private Net.Vpc.Upa.PersistenceUnitProvider persistenceUnitProvider;
+        private Net.TheVpc.Upa.PersistenceUnitProvider persistenceUnitProvider;
 
         private string name;
 
@@ -42,28 +42,28 @@ namespace Net.Vpc.Upa.Impl
 
         private bool autoScan = true;
 
-        private readonly System.Collections.Generic.IList<Net.Vpc.Upa.Config.ScanFilter> filters = new System.Collections.Generic.List<Net.Vpc.Upa.Config.ScanFilter>();
+        private readonly System.Collections.Generic.IList<Net.TheVpc.Upa.Config.ScanFilter> filters = new System.Collections.Generic.List<Net.TheVpc.Upa.Config.ScanFilter>();
 
-        private Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository decorationRepository;
+        private Net.TheVpc.Upa.Impl.Config.Decorations.DecorationRepository decorationRepository;
 
-        private Net.Vpc.Upa.UPASecurityManager securityManager;
+        private Net.TheVpc.Upa.UPASecurityManager securityManager;
 
-        private Net.Vpc.Upa.PersistenceGroupSecurityManager persistenceGroupSecurityManager;
+        private Net.TheVpc.Upa.PersistenceGroupSecurityManager persistenceGroupSecurityManager;
 
-        private Net.Vpc.Upa.Impl.Event.PersistenceGroupListenerManager listeners;
+        private Net.TheVpc.Upa.Impl.Event.PersistenceGroupListenerManager listeners;
 
         public DefaultPersistenceGroup() {
-            listeners = new Net.Vpc.Upa.Impl.Event.PersistenceGroupListenerManager(this);
+            listeners = new Net.TheVpc.Upa.Impl.Event.PersistenceGroupListenerManager(this);
         }
 
 
-        public virtual void Scan(Net.Vpc.Upa.Config.ScanSource strategy, Net.Vpc.Upa.ScanListener listener, bool configure) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            decorationRepository = new Net.Vpc.Upa.Impl.Config.Decorations.DefaultDecorationRepository(GetName() + "-PGRepo", true);
-            log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("{0} : Configuring PersistenceGroup with strategy {1}",null,new object[] { GetName(), strategy }));
-            Net.Vpc.Upa.Impl.Config.URLAnnotationStrategySupport s = new Net.Vpc.Upa.Impl.Config.URLAnnotationStrategySupport();
-            s.Scan(this, strategy, decorationRepository, configure ? ((Net.Vpc.Upa.ScanListener)(new Net.Vpc.Upa.Impl.Config.ConfigureScanListener(listener))) : listener);
+        public virtual void Scan(Net.TheVpc.Upa.Config.ScanSource strategy, Net.TheVpc.Upa.ScanListener listener, bool configure) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            decorationRepository = new Net.TheVpc.Upa.Impl.Config.Decorations.DefaultDecorationRepository(GetName() + "-PGRepo", true);
+            log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("{0} : Configuring PersistenceGroup with strategy {1}",null,new object[] { GetName(), strategy }));
+            Net.TheVpc.Upa.Impl.Config.URLAnnotationStrategySupport s = new Net.TheVpc.Upa.Impl.Config.URLAnnotationStrategySupport();
+            s.Scan(this, strategy, decorationRepository, configure ? ((Net.TheVpc.Upa.ScanListener)(new Net.TheVpc.Upa.Impl.Config.ConfigureScanListener(listener))) : listener);
             if (securityManager == null) {
-                securityManager = GetFactory().CreateObject<Net.Vpc.Upa.UPASecurityManager>(typeof(Net.Vpc.Upa.UPASecurityManager));
+                securityManager = GetFactory().CreateObject<Net.TheVpc.Upa.UPASecurityManager>(typeof(Net.TheVpc.Upa.UPASecurityManager));
             }
         }
 
@@ -79,11 +79,11 @@ namespace Net.Vpc.Upa.Impl
             return name;
         }
 
-        public virtual void SetContext(Net.Vpc.Upa.UPAContext context) {
+        public virtual void SetContext(Net.TheVpc.Upa.UPAContext context) {
             this.context = context;
         }
 
-        public virtual void SetFactory(Net.Vpc.Upa.ObjectFactory factory) {
+        public virtual void SetFactory(Net.TheVpc.Upa.ObjectFactory factory) {
             this.factory = factory;
         }
 
@@ -91,76 +91,76 @@ namespace Net.Vpc.Upa.Impl
             this.name = name;
         }
 
-        public virtual Net.Vpc.Upa.UPAContext GetContext() {
+        public virtual Net.TheVpc.Upa.UPAContext GetContext() {
             return context;
         }
 
-        protected internal virtual Net.Vpc.Upa.SessionContextProvider GetSessionContextProvider() {
+        protected internal virtual Net.TheVpc.Upa.SessionContextProvider GetSessionContextProvider() {
             if (sessionContextProvider == null) {
-                sessionContextProvider = GetFactory().CreateObject<Net.Vpc.Upa.SessionContextProvider>(typeof(Net.Vpc.Upa.SessionContextProvider));
+                sessionContextProvider = GetFactory().CreateObject<Net.TheVpc.Upa.SessionContextProvider>(typeof(Net.TheVpc.Upa.SessionContextProvider));
             }
             return sessionContextProvider;
         }
 
-        protected internal virtual Net.Vpc.Upa.PersistenceUnitProvider GetPersistenceUnitProvider() {
+        protected internal virtual Net.TheVpc.Upa.PersistenceUnitProvider GetPersistenceUnitProvider() {
             if (persistenceUnitProvider == null) {
-                persistenceUnitProvider = GetFactory().CreateObject<Net.Vpc.Upa.PersistenceUnitProvider>(typeof(Net.Vpc.Upa.PersistenceUnitProvider));
+                persistenceUnitProvider = GetFactory().CreateObject<Net.TheVpc.Upa.PersistenceUnitProvider>(typeof(Net.TheVpc.Upa.PersistenceUnitProvider));
             }
             return persistenceUnitProvider;
         }
 
 
-        public virtual Net.Vpc.Upa.PersistenceUnit GetPersistenceUnit() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.PersistenceUnit persistenceUnit = GetPersistenceUnitProvider().GetPersistenceUnit(this);
+        public virtual Net.TheVpc.Upa.PersistenceUnit GetPersistenceUnit() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.PersistenceUnit persistenceUnit = GetPersistenceUnitProvider().GetPersistenceUnit(this);
             if (persistenceUnit == null) {
-                System.Collections.Generic.IList<Net.Vpc.Upa.PersistenceUnit> persistenceUnitsCurr = GetPersistenceUnits();
+                System.Collections.Generic.IList<Net.TheVpc.Upa.PersistenceUnit> persistenceUnitsCurr = GetPersistenceUnits();
                 if ((persistenceUnitsCurr).Count > 0) {
-                    foreach (Net.Vpc.Upa.PersistenceUnit s in persistenceUnitsCurr) {
+                    foreach (Net.TheVpc.Upa.PersistenceUnit s in persistenceUnitsCurr) {
                         persistenceUnit = s;
                         break;
                     }
                     GetPersistenceUnitProvider().SetPersistenceUnit(this, persistenceUnit);
                 } else {
-                    throw new Net.Vpc.Upa.Exceptions.MissingDefaultPersistenceUnitException();
+                    throw new Net.TheVpc.Upa.Exceptions.MissingDefaultPersistenceUnitException();
                 }
             }
             return persistenceUnit;
         }
 
 
-        public virtual void SetPersistenceUnit(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.PersistenceUnit newPU = GetPersistenceUnit(name);
-            Net.Vpc.Upa.PersistenceUnit oldPU = GetPersistenceUnitProvider().GetPersistenceUnit(this);
+        public virtual void SetPersistenceUnit(string name) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.PersistenceUnit newPU = GetPersistenceUnit(name);
+            Net.TheVpc.Upa.PersistenceUnit oldPU = GetPersistenceUnitProvider().GetPersistenceUnit(this);
             if (oldPU != newPU) {
                 GetPersistenceUnitProvider().SetPersistenceUnit(this, GetPersistenceUnit(name));
             }
         }
 
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.PersistenceUnit> GetPersistenceUnits() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.PersistenceUnit> GetPersistenceUnits() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             lock (persistenceUnits) {
-                return new System.Collections.Generic.List<Net.Vpc.Upa.PersistenceUnit>((persistenceUnits).Values);
+                return new System.Collections.Generic.List<Net.TheVpc.Upa.PersistenceUnit>((persistenceUnits).Values);
             }
         }
 
 
-        public virtual Net.Vpc.Upa.PersistenceUnit GetPersistenceUnit(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual Net.TheVpc.Upa.PersistenceUnit GetPersistenceUnit(string name) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             lock (persistenceUnits) {
-                Net.Vpc.Upa.PersistenceUnit persistenceUnit = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.Vpc.Upa.PersistenceUnit>(persistenceUnits,name);
+                Net.TheVpc.Upa.PersistenceUnit persistenceUnit = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.TheVpc.Upa.PersistenceUnit>(persistenceUnits,name);
                 if (persistenceUnit == null) {
-                    throw new Net.Vpc.Upa.Exceptions.NoSuchPersistenceUnitException(name);
+                    throw new Net.TheVpc.Upa.Exceptions.NoSuchPersistenceUnitException(name);
                 }
                 return persistenceUnit;
             }
         }
 
 
-        public virtual Net.Vpc.Upa.ObjectFactory GetFactory() {
+        public virtual Net.TheVpc.Upa.ObjectFactory GetFactory() {
             return factory;
         }
 
 
-        public virtual bool ContainsPersistenceUnit(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual bool ContainsPersistenceUnit(string name) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             if (name == null) {
                 name = "";
             }
@@ -170,50 +170,50 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
-        public virtual Net.Vpc.Upa.PersistenceUnit AddPersistenceUnit(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual Net.TheVpc.Upa.PersistenceUnit AddPersistenceUnit(string name) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             if (name == null) {
                 name = "";
             }
-            Net.Vpc.Upa.PersistenceUnit persistenceUnit = GetFactory().CreateObject<Net.Vpc.Upa.PersistenceUnit>(typeof(Net.Vpc.Upa.PersistenceUnit));
+            Net.TheVpc.Upa.PersistenceUnit persistenceUnit = GetFactory().CreateObject<Net.TheVpc.Upa.PersistenceUnit>(typeof(Net.TheVpc.Upa.PersistenceUnit));
             //        persistenceUnit.setName(name);
             //        persistenceUnit.setPersistenceGroup(this);
             persistenceUnit.Init(name, this);
             lock (persistenceUnits) {
                 if (persistenceUnits.ContainsKey(name)) {
-                    throw new Net.Vpc.Upa.Exceptions.PersistenceUnitAlreadyExistsException(name);
+                    throw new Net.TheVpc.Upa.Exceptions.PersistenceUnitAlreadyExistsException(name);
                 }
-                listeners.FireOnCreatePersistenceUnit(new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(persistenceUnit, this, Net.Vpc.Upa.EventPhase.BEFORE));
+                listeners.FireOnCreatePersistenceUnit(new Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent(persistenceUnit, this, Net.TheVpc.Upa.EventPhase.BEFORE));
                 persistenceUnits[name]=persistenceUnit;
-                Net.Vpc.Upa.PersistenceUnit oldPersistenceUnit = GetPersistenceUnitProvider().GetPersistenceUnit(this);
+                Net.TheVpc.Upa.PersistenceUnit oldPersistenceUnit = GetPersistenceUnitProvider().GetPersistenceUnit(this);
                 if (oldPersistenceUnit == null) {
                     SetPersistenceUnit(persistenceUnit.GetName());
                 }
-                listeners.FireOnCreatePersistenceUnit(new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(persistenceUnit, this, Net.Vpc.Upa.EventPhase.AFTER));
+                listeners.FireOnCreatePersistenceUnit(new Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent(persistenceUnit, this, Net.TheVpc.Upa.EventPhase.AFTER));
             }
-            log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Create PersistenceUnit {0}/{1}",null,new object[] { GetName(), persistenceUnit.GetName() }));
+            log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Create PersistenceUnit {0}/{1}",null,new object[] { GetName(), persistenceUnit.GetName() }));
             return persistenceUnit;
         }
 
 
-        public virtual void DropPersistenceUnit(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void DropPersistenceUnit(string name) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             if (name == null) {
                 name = "";
             }
             lock (persistenceUnits) {
                 if (!persistenceUnits.ContainsKey(name)) {
-                    throw new Net.Vpc.Upa.Exceptions.NoSuchPersistenceUnitException(name);
+                    throw new Net.TheVpc.Upa.Exceptions.NoSuchPersistenceUnitException(name);
                 }
-                Net.Vpc.Upa.PersistenceUnit persistenceUnit = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.Vpc.Upa.PersistenceUnit>(persistenceUnits,name);
+                Net.TheVpc.Upa.PersistenceUnit persistenceUnit = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.TheVpc.Upa.PersistenceUnit>(persistenceUnits,name);
                 if (!persistenceUnit.IsClosed()) {
                     persistenceUnit.Close();
                 }
-                listeners.FireOnDropPersistenceUnit(new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(persistenceUnit, this, Net.Vpc.Upa.EventPhase.BEFORE));
+                listeners.FireOnDropPersistenceUnit(new Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent(persistenceUnit, this, Net.TheVpc.Upa.EventPhase.BEFORE));
                 persistenceUnits.Remove(name);
-                listeners.FireOnDropPersistenceUnit(new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(persistenceUnit, this, Net.Vpc.Upa.EventPhase.AFTER));
+                listeners.FireOnDropPersistenceUnit(new Net.TheVpc.Upa.Callbacks.PersistenceUnitEvent(persistenceUnit, this, Net.TheVpc.Upa.EventPhase.AFTER));
             }
         }
 
-        private void CheckManagedSession(Net.Vpc.Upa.Session session) {
+        private void CheckManagedSession(Net.TheVpc.Upa.Session session) {
         }
 
 
@@ -222,43 +222,43 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
-        public virtual Net.Vpc.Upa.Session GetCurrentSession() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Session session = GetSessionContextProvider().GetSession(this);
+        public virtual Net.TheVpc.Upa.Session GetCurrentSession() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Session session = GetSessionContextProvider().GetSession(this);
             if (session == null) {
-                throw new Net.Vpc.Upa.Exceptions.CurrentSessionNotFoundException();
+                throw new Net.TheVpc.Upa.Exceptions.CurrentSessionNotFoundException();
             }
             return session;
         }
 
 
-        public virtual Net.Vpc.Upa.Session FindCurrentSession() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual Net.TheVpc.Upa.Session FindCurrentSession() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return GetSessionContextProvider().GetSession(this);
         }
 
-        public virtual void SetCurrentSession(Net.Vpc.Upa.Session session) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void SetCurrentSession(Net.TheVpc.Upa.Session session) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             lock (sessions) {
                 if (!sessions.Contains(session)) {
                     throw new System.Exception("Session not found");
                 }
             }
             CheckManagedSession(session);
-            log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Session Changed {0} for PersistenceGroup {1}",null,new object[] { session, GetName() }));
+            log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Session Changed {0} for PersistenceGroup {1}",null,new object[] { session, GetName() }));
             GetSessionContextProvider().SetSession(this, session);
         }
 
 
-        public virtual Net.Vpc.Upa.Session OpenSession() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Session session = GetFactory().CreateObject<Net.Vpc.Upa.Session>(typeof(Net.Vpc.Upa.Session), null);
+        public virtual Net.TheVpc.Upa.Session OpenSession() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Session session = GetFactory().CreateObject<Net.TheVpc.Upa.Session>(typeof(Net.TheVpc.Upa.Session), null);
             session.Init(this);
             lock (sessions) {
                 sessions.Add(session);
                 SetCurrentSession(session);
-                session.AddSessionListener(new Net.Vpc.Upa.Impl.CloseSessionListener(this));
+                session.AddSessionListener(new Net.TheVpc.Upa.Impl.CloseSessionListener(this));
             }
             return session;
         }
 
-        protected internal virtual void OnSessionClosed(Net.Vpc.Upa.Session session) {
+        protected internal virtual void OnSessionClosed(Net.TheVpc.Upa.Session session) {
             lock (sessions) {
                 sessions.Remove(session);
                 GetSessionContextProvider().SetSession(this, null);
@@ -271,86 +271,86 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
-        public virtual void Close() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("PersistenceGroup {0} Closing",null,GetName()));
+        public virtual void Close() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("PersistenceGroup {0} Closing",null,GetName()));
             lock (sessions) {
-                foreach (Net.Vpc.Upa.Session next in sessions) {
+                foreach (Net.TheVpc.Upa.Session next in sessions) {
                     next.Close();
                 }
                 sessions.Clear();
             }
             lock (persistenceUnits) {
-                foreach (Net.Vpc.Upa.PersistenceUnit persistenceUnit in (persistenceUnits).Values) {
+                foreach (Net.TheVpc.Upa.PersistenceUnit persistenceUnit in (persistenceUnits).Values) {
                     persistenceUnit.Close();
                 }
                 persistenceUnits.Clear();
             }
             closed = true;
-            log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("PersistenceGroup {0} Closed",null,GetName()));
+            log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.TheVpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("PersistenceGroup {0} Closed",null,GetName()));
         }
 
 
-        public virtual void AddPersistenceUnitDefinitionListener(Net.Vpc.Upa.Callbacks.PersistenceUnitDefinitionListener definitionListener) {
+        public virtual void AddPersistenceUnitDefinitionListener(Net.TheVpc.Upa.Callbacks.PersistenceUnitDefinitionListener definitionListener) {
             listeners.AddPersistenceUnitDefinitionListener(definitionListener);
         }
 
 
-        public virtual void RemovePersistenceUnitDefinitionListener(Net.Vpc.Upa.Callbacks.PersistenceUnitDefinitionListener definitionListener) {
+        public virtual void RemovePersistenceUnitDefinitionListener(Net.TheVpc.Upa.Callbacks.PersistenceUnitDefinitionListener definitionListener) {
             listeners.RemovePersistenceUnitDefinitionListener(definitionListener);
         }
 
-        public virtual void AddContextAnnotationStrategyFilter(Net.Vpc.Upa.Config.ScanFilter filter) {
+        public virtual void AddContextAnnotationStrategyFilter(Net.TheVpc.Upa.Config.ScanFilter filter) {
             filters.Add(filter);
         }
 
-        public virtual void RemoveContextAnnotationStrategyFilter(Net.Vpc.Upa.Config.ScanFilter filter) {
+        public virtual void RemoveContextAnnotationStrategyFilter(Net.TheVpc.Upa.Config.ScanFilter filter) {
             filters.Remove(filter);
         }
 
-        public virtual Net.Vpc.Upa.Config.ScanFilter[] GetContextAnnotationStrategyFilters() {
+        public virtual Net.TheVpc.Upa.Config.ScanFilter[] GetContextAnnotationStrategyFilters() {
             return filters.ToArray();
         }
 
 
-        public virtual bool IsClosed() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual bool IsClosed() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return closed;
         }
 
-        public virtual Net.Vpc.Upa.UPASecurityManager GetSecurityManager() {
+        public virtual Net.TheVpc.Upa.UPASecurityManager GetSecurityManager() {
             return securityManager;
         }
 
-        public virtual void SetSecurityManager(Net.Vpc.Upa.UPASecurityManager securityManager) {
+        public virtual void SetSecurityManager(Net.TheVpc.Upa.UPASecurityManager securityManager) {
             this.securityManager = securityManager;
         }
 
-        public virtual Net.Vpc.Upa.PersistenceGroupSecurityManager GetPersistenceGroupSecurityManager() {
+        public virtual Net.TheVpc.Upa.PersistenceGroupSecurityManager GetPersistenceGroupSecurityManager() {
             return persistenceGroupSecurityManager;
         }
 
-        public virtual void SetPersistenceGroupSecurityManager(Net.Vpc.Upa.PersistenceGroupSecurityManager persistenceGroupSecurityManager) {
+        public virtual void SetPersistenceGroupSecurityManager(Net.TheVpc.Upa.PersistenceGroupSecurityManager persistenceGroupSecurityManager) {
             this.persistenceGroupSecurityManager = persistenceGroupSecurityManager;
         }
 
-        public virtual void AddCallback(Net.Vpc.Upa.Callback callback) {
-            if (callback.GetCallbackType() == Net.Vpc.Upa.CallbackType.ON_EVAL) {
-                throw new Net.Vpc.Upa.Exceptions.UPAException("Unsupported", callback.GetCallbackType());
+        public virtual void AddCallback(Net.TheVpc.Upa.Callback callback) {
+            if (callback.GetCallbackType() == Net.TheVpc.Upa.CallbackType.ON_EVAL) {
+                throw new Net.TheVpc.Upa.Exceptions.UPAException("Unsupported", callback.GetCallbackType());
             }
             listeners.AddCallback(callback);
         }
 
-        public virtual void RemoveCallback(Net.Vpc.Upa.Callback callback) {
+        public virtual void RemoveCallback(Net.TheVpc.Upa.Callback callback) {
             listeners.RemoveCallback(callback);
         }
 
-        public virtual Net.Vpc.Upa.Callback[] GetCallbacks(Net.Vpc.Upa.CallbackType nameFilter, Net.Vpc.Upa.ObjectType objectType, string name, bool system, bool preparedOnly, Net.Vpc.Upa.EventPhase phase) {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Callback> callbackInvokers = listeners.GetCallbacks(nameFilter, objectType, name, system, preparedOnly, phase);
+        public virtual Net.TheVpc.Upa.Callback[] GetCallbacks(Net.TheVpc.Upa.CallbackType nameFilter, Net.TheVpc.Upa.ObjectType objectType, string name, bool system, bool preparedOnly, Net.TheVpc.Upa.EventPhase phase) {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Callback> callbackInvokers = listeners.GetCallbacks(nameFilter, objectType, name, system, preparedOnly, phase);
             return callbackInvokers.ToArray();
         }
 
-        protected internal virtual Net.Vpc.Upa.InvokeContext PrepareInvokeContext(Net.Vpc.Upa.InvokeContext c) {
+        protected internal virtual Net.TheVpc.Upa.InvokeContext PrepareInvokeContext(Net.TheVpc.Upa.InvokeContext c) {
             if (c == null) {
-                c = new Net.Vpc.Upa.InvokeContext();
+                c = new Net.TheVpc.Upa.InvokeContext();
             } else {
                 c = c.Copy();
             }
@@ -362,42 +362,42 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
-        public virtual  T Invoke<T>(Net.Vpc.Upa.Action<T> action, Net.Vpc.Upa.InvokeContext invokeContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual  T Invoke<T>(Net.TheVpc.Upa.Action<T> action, Net.TheVpc.Upa.InvokeContext invokeContext) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return GetContext().Invoke<T>(action, PrepareInvokeContext(invokeContext));
         }
 
 
-        public virtual  T InvokePrivileged<T>(Net.Vpc.Upa.Action<T> action, Net.Vpc.Upa.InvokeContext invokeContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual  T InvokePrivileged<T>(Net.TheVpc.Upa.Action<T> action, Net.TheVpc.Upa.InvokeContext invokeContext) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return GetContext().Invoke<T>(action, PrepareInvokeContext(invokeContext));
         }
 
 
-        public virtual void Invoke(Net.Vpc.Upa.VoidAction action, Net.Vpc.Upa.InvokeContext invokeContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void Invoke(Net.TheVpc.Upa.VoidAction action, Net.TheVpc.Upa.InvokeContext invokeContext) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             GetContext().Invoke(action, PrepareInvokeContext(invokeContext));
         }
 
 
-        public virtual void InvokePrivileged(Net.Vpc.Upa.VoidAction action, Net.Vpc.Upa.InvokeContext invokeContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void InvokePrivileged(Net.TheVpc.Upa.VoidAction action, Net.TheVpc.Upa.InvokeContext invokeContext) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             GetContext().InvokePrivileged(action, PrepareInvokeContext(invokeContext));
         }
 
 
-        public virtual  T Invoke<T>(Net.Vpc.Upa.Action<T> action) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual  T Invoke<T>(Net.TheVpc.Upa.Action<T> action) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return GetContext().Invoke<T>(action, PrepareInvokeContext(null));
         }
 
 
-        public virtual  T InvokePrivileged<T>(Net.Vpc.Upa.Action<T> action) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual  T InvokePrivileged<T>(Net.TheVpc.Upa.Action<T> action) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return GetContext().InvokePrivileged<T>(action, PrepareInvokeContext(null));
         }
 
 
-        public virtual void Invoke(Net.Vpc.Upa.VoidAction action) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void Invoke(Net.TheVpc.Upa.VoidAction action) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             GetContext().Invoke(action, PrepareInvokeContext(null));
         }
 
 
-        public virtual void InvokePrivileged(Net.Vpc.Upa.VoidAction action) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void InvokePrivileged(Net.TheVpc.Upa.VoidAction action) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             GetContext().InvokePrivileged(action, PrepareInvokeContext(null));
         }
     }

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     /**
@@ -19,10 +19,10 @@ namespace Net.Vpc.Upa
      */
     public interface SessionContext {
 
-         void SetParam(Net.Vpc.Upa.PersistenceUnit persistenceUnit, string name, object @value);
+         void SetParam(Net.TheVpc.Upa.PersistenceUnit persistenceUnit, string name, object @value);
 
-         bool ContainsParam(Net.Vpc.Upa.PersistenceUnit persistenceUnit, string name);
+         bool ContainsParam(Net.TheVpc.Upa.PersistenceUnit persistenceUnit, string name);
 
-          T GetParam<T>(Net.Vpc.Upa.PersistenceUnit persistenceUnit, System.Type type, string name, T defaultValue);
+          T GetParam<T>(Net.TheVpc.Upa.PersistenceUnit persistenceUnit, System.Type type, string name, T defaultValue);
     }
 }

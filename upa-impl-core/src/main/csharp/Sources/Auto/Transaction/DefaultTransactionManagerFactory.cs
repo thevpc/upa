@@ -11,22 +11,22 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Transaction
+namespace Net.TheVpc.Upa.Impl.Transaction
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class DefaultTransactionManagerFactory : Net.Vpc.Upa.Persistence.TransactionManagerFactory {
+    public class DefaultTransactionManagerFactory : Net.TheVpc.Upa.Persistence.TransactionManagerFactory {
 
 
-        public virtual Net.Vpc.Upa.TransactionManager CreateTransactionManager(Net.Vpc.Upa.Persistence.ConnectionProfile connectionProfile, Net.Vpc.Upa.ObjectFactory factory, Net.Vpc.Upa.Properties parameters) {
+        public virtual Net.TheVpc.Upa.TransactionManager CreateTransactionManager(Net.TheVpc.Upa.Persistence.ConnectionProfile connectionProfile, Net.TheVpc.Upa.ObjectFactory factory, Net.TheVpc.Upa.Properties parameters) {
             //        ConnectionDriver connectionDriver = connectionProfile.getConnectionDriver();
             //        if(connectionDriver==ConnectionDriver.datasource){
             //            throw new UPAException("Not yet supported");
             //        }
-            return new Net.Vpc.Upa.Impl.Transaction.DefaultTransactionManager();
+            return new Net.TheVpc.Upa.Impl.Transaction.DefaultTransactionManager();
         }
     }
 }

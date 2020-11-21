@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Callbacks
+namespace Net.TheVpc.Upa.Callbacks
 {
 
 
@@ -19,12 +19,12 @@ namespace Net.Vpc.Upa.Callbacks
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 9/9/12 4:09 PM
      */
-    public interface Trigger : Net.Vpc.Upa.UPAObject {
+    public interface Trigger : Net.TheVpc.Upa.UPAObject {
 
-         Net.Vpc.Upa.Entity GetEntity();
+         Net.TheVpc.Upa.Entity GetEntity();
 
-         Net.Vpc.Upa.Callbacks.EntityInterceptor GetInterceptor();
+         Net.TheVpc.Upa.Callbacks.EntityInterceptor GetInterceptor();
 
-         Net.Vpc.Upa.Callbacks.EntityListener GetListener();
+         Net.TheVpc.Upa.Callbacks.EntityListener GetListener();
     }
 }

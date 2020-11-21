@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledexpression
 {
 
 
@@ -22,12 +22,12 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
      * Time: 12:29 AM
      * To change this template use File | Settings | File Templates.
      */
-    public interface CompiledQueryStatement : Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityStatement {
+    public interface CompiledQueryStatement : Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityStatement {
 
          int CountFields();
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField> GetFields();
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField> GetFields();
 
-         Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField GetField(int i);
+         Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField GetField(int i);
     }
 }

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledexpression
 {
 
 
@@ -19,9 +19,9 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
      *
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public abstract class CompiledVarOrMethod : Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpressionImpl {
+    public abstract class CompiledVarOrMethod : Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpressionImpl {
 
-        private Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod child;
+        private Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod child;
 
         private object referrer;
 
@@ -32,11 +32,11 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         public CompiledVarOrMethod() {
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod GetChild() {
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod GetChild() {
             return child;
         }
 
-        public virtual void SetChild(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod child) {
+        public virtual void SetChild(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod child) {
             this.child = child;
             PrepareChildren(child);
         }
@@ -47,8 +47,8 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
 
         public virtual void SetReferrer(object referrer) {
             this.referrer = referrer;
-            if (this.referrer is Net.Vpc.Upa.Field) {
-                this.SetTypeTransform(Net.Vpc.Upa.Impl.Util.UPAUtils.GetTypeTransformOrIdentity((Net.Vpc.Upa.Field) referrer));
+            if (this.referrer is Net.TheVpc.Upa.Field) {
+                this.SetTypeTransform(Net.TheVpc.Upa.Impl.Util.UPAUtils.GetTypeTransformOrIdentity((Net.TheVpc.Upa.Field) referrer));
             }
         }
 
@@ -69,24 +69,24 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         }
 
 
-        public override Net.Vpc.Upa.Types.DataTypeTransform GetEffectiveDataType() {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod c = GetChild();
+        public override Net.TheVpc.Upa.Types.DataTypeTransform GetEffectiveDataType() {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod c = GetChild();
             if (c != null) {
                 return c.GetEffectiveDataType();
             }
             return GetTypeTransform();
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod GetFinest() {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod c = GetDeepChild();
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod GetFinest() {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod c = GetDeepChild();
             if (c == null) {
                 return this;
             }
             return c;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod GetDeepChild() {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod c = GetChild();
+        public virtual Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod GetDeepChild() {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod c = GetChild();
             if (c == null) {
                 return null;
             }
@@ -96,8 +96,8 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return c.GetDeepChild();
         }
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
-        public override abstract Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetSubExpressions();
+        public override abstract Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] GetSubExpressions();
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
-        public override abstract void SetSubExpression(int arg1, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression arg2);
+        public override abstract void SetSubExpression(int arg1, Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression arg2);
     }
 }

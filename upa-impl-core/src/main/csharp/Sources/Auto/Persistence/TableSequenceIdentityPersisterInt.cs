@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -19,20 +19,20 @@ namespace Net.Vpc.Upa.Impl.Persistence
      *
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class TableSequenceIdentityPersisterInt : Net.Vpc.Upa.Impl.Persistence.TableSequenceIdentityPersister {
+    public class TableSequenceIdentityPersisterInt : Net.TheVpc.Upa.Impl.Persistence.TableSequenceIdentityPersister {
 
-        public TableSequenceIdentityPersisterInt(Net.Vpc.Upa.Field field, Net.Vpc.Upa.Sequence generatedId)  : base(field, generatedId){
+        public TableSequenceIdentityPersisterInt(Net.TheVpc.Upa.Field field, Net.TheVpc.Upa.Sequence generatedId)  : base(field, generatedId){
 
         }
 
 
-        protected internal override object GetNewValue(Net.Vpc.Upa.Impl.SequenceManager sm, string group, Net.Vpc.Upa.Record record) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        protected internal override object GetNewValue(Net.TheVpc.Upa.Impl.SequenceManager sm, string group, Net.TheVpc.Upa.Record record) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return sm.NextValue(GetName(), group, GetInitialValue(), GetAllocationSize());
         }
 
 
         public override bool Equals(object o) {
-            return base.Equals(o) && o is Net.Vpc.Upa.Impl.Persistence.TableSequenceIdentityPersisterInt;
+            return base.Equals(o) && o is Net.TheVpc.Upa.Impl.Persistence.TableSequenceIdentityPersisterInt;
         }
 
 

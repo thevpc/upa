@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Bulk
+namespace Net.TheVpc.Upa.Bulk
 {
 
     /**
@@ -21,10 +21,10 @@ namespace Net.Vpc.Upa.Bulk
 
          bool HasNext();
 
-         Net.Vpc.Upa.Bulk.DataRow ReadRow();
+         Net.TheVpc.Upa.Bulk.DataRow ReadRow();
 
          object ReadObject();
 
-         Net.Vpc.Upa.Bulk.DataColumn[] GetColumns();
+         Net.TheVpc.Upa.Bulk.DataColumn[] GetColumns();
     }
 }

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
@@ -22,11 +22,11 @@ namespace Net.Vpc.Upa.Impl
 
         private System.Type entityExtensionDefinitionType;
 
-        private Net.Vpc.Upa.Extensions.EntityExtensionDefinition extension;
+        private Net.TheVpc.Upa.Extensions.EntityExtensionDefinition extension;
 
-        private Net.Vpc.Upa.Persistence.EntityExtension support;
+        private Net.TheVpc.Upa.Persistence.EntityExtension support;
 
-        internal ExtensionSupportInfo(System.Type entityExtensionDefinitionType, Net.Vpc.Upa.Extensions.EntityExtensionDefinition extension, Net.Vpc.Upa.Persistence.EntityExtension support) {
+        internal ExtensionSupportInfo(System.Type entityExtensionDefinitionType, Net.TheVpc.Upa.Extensions.EntityExtensionDefinition extension, Net.TheVpc.Upa.Persistence.EntityExtension support) {
             this.SetEntityExtensionDefinitionType(entityExtensionDefinitionType);
             this.SetExtension(extension);
             this.SetSupport(support);
@@ -40,19 +40,19 @@ namespace Net.Vpc.Upa.Impl
             this.entityExtensionDefinitionType = entityExtensionDefinitionType;
         }
 
-        public virtual Net.Vpc.Upa.Extensions.EntityExtensionDefinition GetExtension() {
+        public virtual Net.TheVpc.Upa.Extensions.EntityExtensionDefinition GetExtension() {
             return extension;
         }
 
-        public virtual void SetExtension(Net.Vpc.Upa.Extensions.EntityExtensionDefinition extension) {
+        public virtual void SetExtension(Net.TheVpc.Upa.Extensions.EntityExtensionDefinition extension) {
             this.extension = extension;
         }
 
-        public virtual Net.Vpc.Upa.Persistence.EntityExtension GetSupport() {
+        public virtual Net.TheVpc.Upa.Persistence.EntityExtension GetSupport() {
             return support;
         }
 
-        public virtual void SetSupport(Net.Vpc.Upa.Persistence.EntityExtension support) {
+        public virtual void SetSupport(Net.TheVpc.Upa.Persistence.EntityExtension support) {
             this.support = support;
         }
     }

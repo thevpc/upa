@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence
+namespace Net.TheVpc.Upa.Impl.Persistence
 {
 
 
@@ -19,85 +19,85 @@ namespace Net.Vpc.Upa.Impl.Persistence
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 9/29/12 2:28 AM
      */
-    public sealed class DefaultQueryBuilder : Net.Vpc.Upa.QueryBuilder {
+    public sealed class DefaultQueryBuilder : Net.TheVpc.Upa.QueryBuilder {
 
         private bool updatable;
 
         private bool lazyListLoadingEnabled = true;
 
-        private Net.Vpc.Upa.Entity entity;
+        private Net.TheVpc.Upa.Entity entity;
 
         private string entityAlias;
 
-        private Net.Vpc.Upa.Expressions.Expression expression;
+        private Net.TheVpc.Upa.Expressions.Expression expression;
 
-        private Net.Vpc.Upa.Expressions.Order order;
+        private Net.TheVpc.Upa.Expressions.Order order;
 
-        private Net.Vpc.Upa.Filters.FieldFilter fieldFilter;
+        private Net.TheVpc.Upa.Filters.FieldFilter fieldFilter;
 
         private object id;
 
-        private Net.Vpc.Upa.Key key;
+        private Net.TheVpc.Upa.Key key;
 
         private object prototype;
 
-        private Net.Vpc.Upa.Record recordPrototype;
+        private Net.TheVpc.Upa.Record recordPrototype;
 
         private System.Collections.Generic.IDictionary<string , object> hints = new System.Collections.Generic.Dictionary<string , object>();
 
-        private Net.Vpc.Upa.Query query;
+        private Net.TheVpc.Upa.Query query;
 
         private System.Collections.Generic.Dictionary<string , object> paramsByName = new System.Collections.Generic.Dictionary<string , object>();
 
         private System.Collections.Generic.Dictionary<int? , object> paramsByIndex = new System.Collections.Generic.Dictionary<int? , object>();
 
-        public DefaultQueryBuilder(Net.Vpc.Upa.Entity entity) {
+        public DefaultQueryBuilder(Net.TheVpc.Upa.Entity entity) {
             this.entity = entity;
         }
 
-        public Net.Vpc.Upa.Entity GetEntityType() {
+        public Net.TheVpc.Upa.Entity GetEntityType() {
             return entity;
         }
 
-        public Net.Vpc.Upa.QueryBuilder ByExpression(string expression) {
-            return ByExpression(expression == null ? null : new Net.Vpc.Upa.Expressions.UserExpression(expression));
+        public Net.TheVpc.Upa.QueryBuilder ByExpression(string expression) {
+            return ByExpression(expression == null ? null : new Net.TheVpc.Upa.Expressions.UserExpression(expression));
         }
 
-        public Net.Vpc.Upa.QueryBuilder ByExpression(Net.Vpc.Upa.Expressions.Expression expression) {
+        public Net.TheVpc.Upa.QueryBuilder ByExpression(Net.TheVpc.Upa.Expressions.Expression expression) {
             if (this.expression == null) {
                 this.expression = expression;
             } else if (expression != null) {
-                this.expression = new Net.Vpc.Upa.Expressions.And(this.expression, expression);
+                this.expression = new Net.TheVpc.Upa.Expressions.And(this.expression, expression);
             }
             return this;
         }
 
 
-        public Net.Vpc.Upa.QueryBuilder ByExpression(Net.Vpc.Upa.Expressions.Expression expression, bool applyAndOp) {
+        public Net.TheVpc.Upa.QueryBuilder ByExpression(Net.TheVpc.Upa.Expressions.Expression expression, bool applyAndOp) {
             if (applyAndOp || this.expression == null) {
                 this.expression = expression;
             } else {
-                this.expression = new Net.Vpc.Upa.Expressions.And(this.expression, expression);
+                this.expression = new Net.TheVpc.Upa.Expressions.And(this.expression, expression);
             }
             return this;
         }
 
 
-        public Net.Vpc.Upa.QueryBuilder OrderBy(Net.Vpc.Upa.Expressions.Order order) {
+        public Net.TheVpc.Upa.QueryBuilder OrderBy(Net.TheVpc.Upa.Expressions.Order order) {
             this.order = order;
             return this;
         }
 
 
-        public Net.Vpc.Upa.QueryBuilder SetFieldFilter(Net.Vpc.Upa.Filters.FieldFilter fieldFilter) {
+        public Net.TheVpc.Upa.QueryBuilder SetFieldFilter(Net.TheVpc.Upa.Filters.FieldFilter fieldFilter) {
             this.fieldFilter = fieldFilter;
             return this;
         }
 
 
-        public Net.Vpc.Upa.QueryBuilder ById(object id) {
-            if (id is Net.Vpc.Upa.Key) {
-                ByKey((Net.Vpc.Upa.Key) id);
+        public Net.TheVpc.Upa.QueryBuilder ById(object id) {
+            if (id is Net.TheVpc.Upa.Key) {
+                ByKey((Net.TheVpc.Upa.Key) id);
             } else {
                 this.id = id;
             }
@@ -105,35 +105,35 @@ namespace Net.Vpc.Upa.Impl.Persistence
         }
 
 
-        public Net.Vpc.Upa.QueryBuilder ByKey(Net.Vpc.Upa.Key key) {
+        public Net.TheVpc.Upa.QueryBuilder ByKey(Net.TheVpc.Upa.Key key) {
             this.key = key;
             return this;
         }
 
 
-        public Net.Vpc.Upa.QueryBuilder ByPrototype(object prototype) {
+        public Net.TheVpc.Upa.QueryBuilder ByPrototype(object prototype) {
             this.prototype = prototype;
             return this;
         }
 
 
-        public Net.Vpc.Upa.QueryBuilder ByRecordPrototype(Net.Vpc.Upa.Record prototype) {
+        public Net.TheVpc.Upa.QueryBuilder ByRecordPrototype(Net.TheVpc.Upa.Record prototype) {
             this.recordPrototype = prototype;
             return this;
         }
 
 
-        public Net.Vpc.Upa.Expressions.Expression GetExpression() {
+        public Net.TheVpc.Upa.Expressions.Expression GetExpression() {
             return expression;
         }
 
 
-        public Net.Vpc.Upa.Expressions.Order GetOrder() {
+        public Net.TheVpc.Upa.Expressions.Order GetOrder() {
             return order;
         }
 
 
-        public Net.Vpc.Upa.Filters.FieldFilter GetFieldFilter() {
+        public Net.TheVpc.Upa.Filters.FieldFilter GetFieldFilter() {
             return fieldFilter;
         }
 
@@ -143,7 +143,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
         }
 
 
-        public Net.Vpc.Upa.Key GetKey() {
+        public Net.TheVpc.Upa.Key GetKey() {
             return key;
         }
 
@@ -153,7 +153,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
         }
 
 
-        public Net.Vpc.Upa.Record GetRecordPrototype() {
+        public Net.TheVpc.Upa.Record GetRecordPrototype() {
             return recordPrototype;
         }
 
@@ -161,42 +161,42 @@ namespace Net.Vpc.Upa.Impl.Persistence
             return entityAlias;
         }
 
-        public Net.Vpc.Upa.QueryBuilder SetEntityAlias(string entityAlias) {
+        public Net.TheVpc.Upa.QueryBuilder SetEntityAlias(string entityAlias) {
             this.entityAlias = entityAlias;
             return this;
         }
 
-        private Net.Vpc.Upa.Query Build() {
+        private Net.TheVpc.Upa.Query Build() {
             //        if (query == null) {
             string entityName = entity.GetName();
-            Net.Vpc.Upa.Expressions.Select s = (new Net.Vpc.Upa.Expressions.Select()).From(entityName, entityAlias);
+            Net.TheVpc.Upa.Expressions.Select s = (new Net.TheVpc.Upa.Expressions.Select()).From(entityName, entityAlias);
             if (GetFieldFilter() != null) {
-                foreach (Net.Vpc.Upa.Field field in entity.GetFields(GetFieldFilter())) {
+                foreach (Net.TheVpc.Upa.Field field in entity.GetFields(GetFieldFilter())) {
                     if (field != null) {
-                        s.Field(new Net.Vpc.Upa.Expressions.Var(field.GetName()), field.GetName());
+                        s.Field(new Net.TheVpc.Upa.Expressions.Var(field.GetName()), field.GetName());
                     }
                 }
             }
-            Net.Vpc.Upa.Expressions.Expression criteria = null;
+            Net.TheVpc.Upa.Expressions.Expression criteria = null;
             if (GetId() != null) {
-                Net.Vpc.Upa.Expressions.Expression e = entity.GetBuilder().IdToExpression(GetId(), entityName);
-                criteria = criteria == null ? ((Net.Vpc.Upa.Expressions.Expression)(e)) : new Net.Vpc.Upa.Expressions.And(criteria, e);
+                Net.TheVpc.Upa.Expressions.Expression e = entity.GetBuilder().IdToExpression(GetId(), entityName);
+                criteria = criteria == null ? ((Net.TheVpc.Upa.Expressions.Expression)(e)) : new Net.TheVpc.Upa.Expressions.And(criteria, e);
             }
             if (GetKey() != null) {
-                Net.Vpc.Upa.Expressions.Expression e = (entity.GetBuilder().IdToExpression(entity.GetBuilder().KeyToId(GetKey()), entityName));
-                criteria = criteria == null ? ((Net.Vpc.Upa.Expressions.Expression)(e)) : new Net.Vpc.Upa.Expressions.And(criteria, e);
+                Net.TheVpc.Upa.Expressions.Expression e = (entity.GetBuilder().IdToExpression(entity.GetBuilder().KeyToId(GetKey()), entityName));
+                criteria = criteria == null ? ((Net.TheVpc.Upa.Expressions.Expression)(e)) : new Net.TheVpc.Upa.Expressions.And(criteria, e);
             }
             if (GetPrototype() != null) {
-                Net.Vpc.Upa.Expressions.Expression e = entity.GetBuilder().ObjectToExpression(GetPrototype(), true, entityName);
-                criteria = criteria == null ? ((Net.Vpc.Upa.Expressions.Expression)(e)) : new Net.Vpc.Upa.Expressions.And(criteria, e);
+                Net.TheVpc.Upa.Expressions.Expression e = entity.GetBuilder().ObjectToExpression(GetPrototype(), true, entityName);
+                criteria = criteria == null ? ((Net.TheVpc.Upa.Expressions.Expression)(e)) : new Net.TheVpc.Upa.Expressions.And(criteria, e);
             }
             if (GetRecordPrototype() != null) {
-                Net.Vpc.Upa.Expressions.Expression e = (entity.GetBuilder().RecordToExpression(GetRecordPrototype(), entityName));
-                criteria = criteria == null ? ((Net.Vpc.Upa.Expressions.Expression)(e)) : new Net.Vpc.Upa.Expressions.And(criteria, e);
+                Net.TheVpc.Upa.Expressions.Expression e = (entity.GetBuilder().RecordToExpression(GetRecordPrototype(), entityName));
+                criteria = criteria == null ? ((Net.TheVpc.Upa.Expressions.Expression)(e)) : new Net.TheVpc.Upa.Expressions.And(criteria, e);
             }
             if (GetExpression() != null) {
-                Net.Vpc.Upa.Expressions.Expression e = GetExpression();
-                criteria = criteria == null ? ((Net.Vpc.Upa.Expressions.Expression)(e)) : new Net.Vpc.Upa.Expressions.And(criteria, e);
+                Net.TheVpc.Upa.Expressions.Expression e = GetExpression();
+                criteria = criteria == null ? ((Net.TheVpc.Upa.Expressions.Expression)(e)) : new Net.TheVpc.Upa.Expressions.And(criteria, e);
             }
             s.SetWhere(criteria);
             s.OrderBy(GetOrder());
@@ -218,144 +218,144 @@ namespace Net.Vpc.Upa.Impl.Persistence
         }
 
 
-        public Net.Vpc.Upa.Types.Temporal GetDate() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public Net.TheVpc.Upa.Types.Temporal GetDate() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return Build().GetDate();
         }
 
 
-        public bool? GetBoolean() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public bool? GetBoolean() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return Build().GetBoolean();
         }
 
 
-        public int? GetInteger() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public int? GetInteger() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return Build().GetInteger();
         }
 
 
-        public long? GetLong() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public long? GetLong() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return Build().GetLong();
         }
 
 
-        public double? GetDouble() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public double? GetDouble() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return null;
         }
 
 
-        public string GetString() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public string GetString() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return Build().GetString();
         }
 
 
-        public object GetNumber() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public object GetNumber() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return Build().GetNumber();
         }
 
 
-        public object GetSingleValue() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public object GetSingleValue() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return Build().GetString();
         }
 
 
-        public object GetSingleValue(object defaultValue) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public object GetSingleValue(object defaultValue) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return Build().GetSingleValue(defaultValue);
         }
 
 
-        public Net.Vpc.Upa.MultiRecord GetMultiRecord() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public Net.TheVpc.Upa.MultiRecord GetMultiRecord() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return Build().GetMultiRecord();
         }
 
 
-        public Net.Vpc.Upa.Record GetRecord() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public Net.TheVpc.Upa.Record GetRecord() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return Build().GetRecord();
         }
 
 
-        public  System.Collections.Generic.IList<R2> GetEntityList<R2>() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Query q = Build();
+        public  System.Collections.Generic.IList<R2> GetEntityList<R2>() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Query q = Build();
             return q.GetEntityList<R>();
         }
 
 
-        public  System.Collections.Generic.IList<R2> GetResultList<R2>() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Query q = Build();
+        public  System.Collections.Generic.IList<R2> GetResultList<R2>() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Query q = Build();
             return q.GetResultList<T>();
         }
 
 
         public  System.Collections.Generic.ISet<T> GetResultSet<T>() {
-            Net.Vpc.Upa.Query q = Build();
+            Net.TheVpc.Upa.Query q = Build();
             return q.GetResultSet<T>();
         }
 
 
-        public  R GetEntity<R>() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public  R GetEntity<R>() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return Build().GetEntity<R>();
         }
 
 
-        public  System.Collections.Generic.IList<K> GetIdList<K>() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public  System.Collections.Generic.IList<K> GetIdList<K>() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return Build().GetIdList<K>();
         }
 
 
-        public System.Collections.Generic.IList<Net.Vpc.Upa.Key> GetKeyList() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public System.Collections.Generic.IList<Net.TheVpc.Upa.Key> GetKeyList() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return Build().GetKeyList();
         }
 
 
-        public System.Collections.Generic.IList<Net.Vpc.Upa.MultiRecord> GetMultiRecordList() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public System.Collections.Generic.IList<Net.TheVpc.Upa.MultiRecord> GetMultiRecordList() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return Build().GetMultiRecordList();
         }
 
 
-        public System.Collections.Generic.IList<Net.Vpc.Upa.Record> GetRecordList() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public System.Collections.Generic.IList<Net.TheVpc.Upa.Record> GetRecordList() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return Build().GetRecordList();
         }
 
 
-        public Net.Vpc.Upa.Persistence.ResultMetaData GetMetaData() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public Net.TheVpc.Upa.Persistence.ResultMetaData GetMetaData() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return Build().GetMetaData();
         }
 
-        public  System.Collections.Generic.IList<T> GetValueList<T>(int index) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public  System.Collections.Generic.IList<T> GetValueList<T>(int index) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return Build().GetValueList<T>(index);
         }
 
 
-        public  System.Collections.Generic.ISet<T> GetValueSet<T>(int index) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public  System.Collections.Generic.ISet<T> GetValueSet<T>(int index) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return Build().GetValueSet<T>(index);
         }
 
 
-        public  System.Collections.Generic.ISet<T> GetValueSet<T>(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public  System.Collections.Generic.ISet<T> GetValueSet<T>(string name) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return Build().GetValueSet<T>(name);
         }
 
-        public  System.Collections.Generic.IList<T> GetValueList<T>(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public  System.Collections.Generic.IList<T> GetValueList<T>(string name) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return Build().GetValueList<T>(name);
         }
 
-        public  System.Collections.Generic.IList<T> GetTypeList<T>(System.Type type, params string [] fields) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public  System.Collections.Generic.IList<T> GetTypeList<T>(System.Type type, params string [] fields) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return Build().GetTypeList<T>(type, fields);
         }
 
-        public  System.Collections.Generic.ISet<T> GetTypeSet<T>(System.Type type, params string [] fields) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public  System.Collections.Generic.ISet<T> GetTypeSet<T>(System.Type type, params string [] fields) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return Build().GetTypeSet<T>(type, fields);
         }
 
-        public  R GetSingleEntity<R>() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public  R GetSingleEntity<R>() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return Build().GetSingleEntity<R>();
         }
 
-        public  R GetSingleEntityOrNull<R>() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public  R GetSingleEntityOrNull<R>() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return Build().GetSingleEntityOrNull<R>();
         }
 
 
-        public Net.Vpc.Upa.Query SetParameter(string name, object @value) {
+        public Net.TheVpc.Upa.Query SetParameter(string name, object @value) {
             if (query != null) {
                 throw new System.ArgumentException ("Query is already executed");
             }
@@ -363,18 +363,18 @@ namespace Net.Vpc.Upa.Impl.Persistence
             return this;
         }
 
-        public Net.Vpc.Upa.Query SetParameters(System.Collections.Generic.IDictionary<string , object> parameters) {
+        public Net.TheVpc.Upa.Query SetParameters(System.Collections.Generic.IDictionary<string , object> parameters) {
             if (parameters != null) {
                 if (query != null) {
                     throw new System.ArgumentException ("Query is already executed");
                 }
-                Net.Vpc.Upa.Impl.FwkConvertUtils.PutAllMap<string,object>(paramsByName,parameters);
+                Net.TheVpc.Upa.Impl.FwkConvertUtils.PutAllMap<string,object>(paramsByName,parameters);
             }
             return this;
         }
 
 
-        public Net.Vpc.Upa.Query SetParameter(int index, object @value) {
+        public Net.TheVpc.Upa.Query SetParameter(int index, object @value) {
             if (query != null) {
                 throw new System.ArgumentException ("Query is already executed");
             }
@@ -383,7 +383,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
         }
 
 
-        public Net.Vpc.Upa.Query RemoveParameter(string name) {
+        public Net.TheVpc.Upa.Query RemoveParameter(string name) {
             if (paramsByName != null) {
                 paramsByName.Remove(name);
             }
@@ -391,7 +391,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
         }
 
 
-        public Net.Vpc.Upa.Query RemoveParameter(int index) {
+        public Net.TheVpc.Upa.Query RemoveParameter(int index) {
             if (paramsByIndex != null) {
                 paramsByIndex.Remove(index);
             }
@@ -402,7 +402,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
             return lazyListLoadingEnabled;
         }
 
-        public Net.Vpc.Upa.Query SetLazyListLoadingEnabled(bool lazyLoadingEnabled) {
+        public Net.TheVpc.Upa.Query SetLazyListLoadingEnabled(bool lazyLoadingEnabled) {
             this.lazyListLoadingEnabled = lazyLoadingEnabled;
             if (query != null) {
                 query.SetLazyListLoadingEnabled(lazyListLoadingEnabled);
@@ -438,11 +438,11 @@ namespace Net.Vpc.Upa.Impl.Persistence
             }
         }
 
-        public Net.Vpc.Upa.QueryBuilder ByField(string field, object @value) {
-            return ByExpression(new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var(new Net.Vpc.Upa.Expressions.Var(entity.GetName()), entity.GetField(field).GetName()), new Net.Vpc.Upa.Expressions.Param(entity.GetField(field).GetName(), @value)));
+        public Net.TheVpc.Upa.QueryBuilder ByField(string field, object @value) {
+            return ByExpression(new Net.TheVpc.Upa.Expressions.Equals(new Net.TheVpc.Upa.Expressions.Var(new Net.TheVpc.Upa.Expressions.Var(entity.GetName()), entity.GetField(field).GetName()), new Net.TheVpc.Upa.Expressions.Param(entity.GetField(field).GetName(), @value)));
         }
 
-        public bool IsEmpty() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public bool IsEmpty() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return Build().IsEmpty();
         }
 
@@ -457,19 +457,19 @@ namespace Net.Vpc.Upa.Impl.Persistence
             if (query != null) {
                 return query.GetHint(hintName);
             }
-            return hints == null ? null : Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(hints,hintName);
+            return hints == null ? null : Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(hints,hintName);
         }
 
         public object GetHint(string hintName, object defaultValue) {
             if (query != null) {
                 return query.GetHint(hintName, defaultValue);
             }
-            object c = hints == null ? null : Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(hints,hintName);
+            object c = hints == null ? null : Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(hints,hintName);
             return c == null ? defaultValue : c;
         }
 
 
-        public Net.Vpc.Upa.Query SetHint(string key, object @value) {
+        public Net.TheVpc.Upa.Query SetHint(string key, object @value) {
             if (query != null) {
                 throw new System.ArgumentException ("Query is already executed");
             }
@@ -482,7 +482,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
         }
 
 
-        public Net.Vpc.Upa.Query SetHints(System.Collections.Generic.IDictionary<string , object> hints) {
+        public Net.TheVpc.Upa.Query SetHints(System.Collections.Generic.IDictionary<string , object> hints) {
             if (hints != null) {
                 foreach (System.Collections.Generic.KeyValuePair<string , object> e in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,object>>(hints)) {
                     SetHint((e).Key, (e).Value);
@@ -492,12 +492,12 @@ namespace Net.Vpc.Upa.Impl.Persistence
         }
 
 
-        public  System.Collections.Generic.ISet<K> GetIdSet<K>() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public  System.Collections.Generic.ISet<K> GetIdSet<K>() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return Build().GetIdSet<K>();
         }
 
 
-        public System.Collections.Generic.ISet<Net.Vpc.Upa.Key> GetKeySet() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public System.Collections.Generic.ISet<Net.TheVpc.Upa.Key> GetKeySet() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return Build().GetKeySet();
         }
     }

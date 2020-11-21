@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public interface QueryResult : Net.Vpc.Upa.Closeable {
+    public interface QueryResult : Net.TheVpc.Upa.Closeable {
 
          string GetColumnName(int index);
 

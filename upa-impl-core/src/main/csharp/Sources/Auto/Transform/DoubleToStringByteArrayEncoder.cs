@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Transform
+namespace Net.TheVpc.Upa.Impl.Transform
 {
 
 
@@ -19,9 +19,9 @@ namespace Net.Vpc.Upa.Impl.Transform
      *
      * @author taha.bensalah@gmail.com
      */
-    public class DoubleToStringByteArrayEncoder : Net.Vpc.Upa.Types.ByteArrayEncoder {
+    public class DoubleToStringByteArrayEncoder : Net.TheVpc.Upa.Types.ByteArrayEncoder {
 
-        public static readonly Net.Vpc.Upa.Impl.Transform.DoubleToStringByteArrayEncoder INSTANCE = new Net.Vpc.Upa.Impl.Transform.DoubleToStringByteArrayEncoder();
+        public static readonly Net.TheVpc.Upa.Impl.Transform.DoubleToStringByteArrayEncoder INSTANCE = new Net.TheVpc.Upa.Impl.Transform.DoubleToStringByteArrayEncoder();
 
         public virtual byte[] Encode(object o) {
             if (o == null) {

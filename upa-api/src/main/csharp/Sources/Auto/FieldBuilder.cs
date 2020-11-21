@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
@@ -22,122 +22,122 @@ namespace Net.Vpc.Upa
 
          string GetName();
 
-         Net.Vpc.Upa.FieldBuilder SetName(string name);
+         Net.TheVpc.Upa.FieldBuilder SetName(string name);
 
          string GetPath();
 
-         Net.Vpc.Upa.FieldBuilder SetPath(string fieldPath);
+         Net.TheVpc.Upa.FieldBuilder SetPath(string fieldPath);
 
          object GetDefaultObject();
 
-         Net.Vpc.Upa.FieldBuilder SetDefaultObject(object defaultObject);
+         Net.TheVpc.Upa.FieldBuilder SetDefaultObject(object defaultObject);
 
          object GetUnspecifiedObject();
 
-         Net.Vpc.Upa.FieldBuilder SetUnspecifiedObject(object unspecifiedObject);
+         Net.TheVpc.Upa.FieldBuilder SetUnspecifiedObject(object unspecifiedObject);
 
-         Net.Vpc.Upa.Types.DataType GetDataType();
+         Net.TheVpc.Upa.Types.DataType GetDataType();
 
-         Net.Vpc.Upa.FieldBuilder SetDataType(Net.Vpc.Upa.Types.DataType dataType);
+         Net.TheVpc.Upa.FieldBuilder SetDataType(Net.TheVpc.Upa.Types.DataType dataType);
 
-         Net.Vpc.Upa.Types.DataTypeTransformConfig[] GetTypeTransform();
+         Net.TheVpc.Upa.Types.DataTypeTransformConfig[] GetTypeTransform();
 
-         Net.Vpc.Upa.FieldBuilder SetTypeTransform(Net.Vpc.Upa.Types.DataTypeTransformConfig[] typeTransform);
+         Net.TheVpc.Upa.FieldBuilder SetTypeTransform(Net.TheVpc.Upa.Types.DataTypeTransformConfig[] typeTransform);
 
-         Net.Vpc.Upa.Formula GetPersistFormula();
+         Net.TheVpc.Upa.Formula GetPersistFormula();
 
-         Net.Vpc.Upa.FieldBuilder SetPersistFormula(string persistFormula);
+         Net.TheVpc.Upa.FieldBuilder SetPersistFormula(string persistFormula);
 
-         Net.Vpc.Upa.FieldBuilder SetPersistFormula(Net.Vpc.Upa.Formula persistFormula);
+         Net.TheVpc.Upa.FieldBuilder SetPersistFormula(Net.TheVpc.Upa.Formula persistFormula);
 
-         Net.Vpc.Upa.Formula GetUpdateFormula();
+         Net.TheVpc.Upa.Formula GetUpdateFormula();
 
-         Net.Vpc.Upa.FieldBuilder SetUpdateFormula(string updateFormula);
+         Net.TheVpc.Upa.FieldBuilder SetUpdateFormula(string updateFormula);
 
-         Net.Vpc.Upa.FieldBuilder SetUpdateFormula(Net.Vpc.Upa.Formula updateFormula);
+         Net.TheVpc.Upa.FieldBuilder SetUpdateFormula(Net.TheVpc.Upa.Formula updateFormula);
 
-         Net.Vpc.Upa.Formula GetSelectFormula();
+         Net.TheVpc.Upa.Formula GetSelectFormula();
 
-         Net.Vpc.Upa.FieldBuilder SetSelectFormula(Net.Vpc.Upa.Formula selectFormula);
+         Net.TheVpc.Upa.FieldBuilder SetSelectFormula(Net.TheVpc.Upa.Formula selectFormula);
 
-         Net.Vpc.Upa.FieldBuilder SetSelectFormula(string selectFormula);
+         Net.TheVpc.Upa.FieldBuilder SetSelectFormula(string selectFormula);
 
-         Net.Vpc.Upa.FieldBuilder SetLiveSelectFormula(string selectFormula);
+         Net.TheVpc.Upa.FieldBuilder SetLiveSelectFormula(string selectFormula);
 
-         Net.Vpc.Upa.FieldBuilder SetCompiledSelectFormula(string selectFormula);
+         Net.TheVpc.Upa.FieldBuilder SetCompiledSelectFormula(string selectFormula);
 
-         Net.Vpc.Upa.FieldBuilder SetFormula(string formula);
+         Net.TheVpc.Upa.FieldBuilder SetFormula(string formula);
 
-         Net.Vpc.Upa.FieldBuilder SetFormula(Net.Vpc.Upa.Formula formula);
+         Net.TheVpc.Upa.FieldBuilder SetFormula(Net.TheVpc.Upa.Formula formula);
 
-         Net.Vpc.Upa.FieldBuilder SetLiveSelectFormula(Net.Vpc.Upa.Formula selectFormula);
+         Net.TheVpc.Upa.FieldBuilder SetLiveSelectFormula(Net.TheVpc.Upa.Formula selectFormula);
 
-         Net.Vpc.Upa.FieldBuilder SetCompiledSelectFormula(Net.Vpc.Upa.Formula selectFormula);
+         Net.TheVpc.Upa.FieldBuilder SetCompiledSelectFormula(Net.TheVpc.Upa.Formula selectFormula);
 
          int GetPersistFormulaOrder();
 
-         Net.Vpc.Upa.FieldBuilder SetPersistFormulaOrder(int persistFormulaOrder);
+         Net.TheVpc.Upa.FieldBuilder SetPersistFormulaOrder(int persistFormulaOrder);
 
          int GetUpdateFormulaOrder();
 
-         Net.Vpc.Upa.FieldBuilder SetUpdateFormulaOrder(int updateFormulaOrder);
+         Net.TheVpc.Upa.FieldBuilder SetUpdateFormulaOrder(int updateFormulaOrder);
 
-         Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> GetModifiers();
+         Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> GetModifiers();
 
-         Net.Vpc.Upa.FieldBuilder SetModifiers(Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> userModifiers);
+         Net.TheVpc.Upa.FieldBuilder SetModifiers(Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> userModifiers);
 
-         Net.Vpc.Upa.FieldBuilder AddModifier(Net.Vpc.Upa.UserFieldModifier userModifiers);
+         Net.TheVpc.Upa.FieldBuilder AddModifier(Net.TheVpc.Upa.UserFieldModifier userModifiers);
 
-         Net.Vpc.Upa.FieldBuilder RemoveModifier(Net.Vpc.Upa.UserFieldModifier userModifiers);
+         Net.TheVpc.Upa.FieldBuilder RemoveModifier(Net.TheVpc.Upa.UserFieldModifier userModifiers);
 
-         Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> GetExcludeModifiers();
+         Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> GetExcludeModifiers();
 
-         Net.Vpc.Upa.FieldBuilder SetExcludeModifiers(Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> userExcludeModifiers);
+         Net.TheVpc.Upa.FieldBuilder SetExcludeModifiers(Net.TheVpc.Upa.FlagSet<Net.TheVpc.Upa.UserFieldModifier> userExcludeModifiers);
 
-         Net.Vpc.Upa.FieldBuilder AddExcludeModifier(Net.Vpc.Upa.UserFieldModifier userModifiers);
+         Net.TheVpc.Upa.FieldBuilder AddExcludeModifier(Net.TheVpc.Upa.UserFieldModifier userModifiers);
 
-         Net.Vpc.Upa.FieldBuilder RemoveExcludeModifier(Net.Vpc.Upa.UserFieldModifier userModifiers);
+         Net.TheVpc.Upa.FieldBuilder RemoveExcludeModifier(Net.TheVpc.Upa.UserFieldModifier userModifiers);
 
-         Net.Vpc.Upa.FieldBuilder SetAccessLevel(Net.Vpc.Upa.AccessLevel accessLevel);
+         Net.TheVpc.Upa.FieldBuilder SetAccessLevel(Net.TheVpc.Upa.AccessLevel accessLevel);
 
-         Net.Vpc.Upa.AccessLevel GetPersistAccessLevel();
+         Net.TheVpc.Upa.AccessLevel GetPersistAccessLevel();
 
-         Net.Vpc.Upa.FieldBuilder SetPersistAccessLevel(Net.Vpc.Upa.AccessLevel persistAccessLevel);
+         Net.TheVpc.Upa.FieldBuilder SetPersistAccessLevel(Net.TheVpc.Upa.AccessLevel persistAccessLevel);
 
-         Net.Vpc.Upa.AccessLevel GetUpdateAccessLevel();
+         Net.TheVpc.Upa.AccessLevel GetUpdateAccessLevel();
 
-         Net.Vpc.Upa.FieldBuilder SetUpdateAccessLevel(Net.Vpc.Upa.AccessLevel updateAccessLevel);
+         Net.TheVpc.Upa.FieldBuilder SetUpdateAccessLevel(Net.TheVpc.Upa.AccessLevel updateAccessLevel);
 
-         Net.Vpc.Upa.AccessLevel GetReadAccessLevel();
+         Net.TheVpc.Upa.AccessLevel GetReadAccessLevel();
 
-         Net.Vpc.Upa.FieldBuilder SetReadAccessLevel(Net.Vpc.Upa.AccessLevel readAccessLevel);
+         Net.TheVpc.Upa.FieldBuilder SetReadAccessLevel(Net.TheVpc.Upa.AccessLevel readAccessLevel);
 
-         Net.Vpc.Upa.FieldBuilder SetProtectionLevel(Net.Vpc.Upa.ProtectionLevel protectionLevel);
+         Net.TheVpc.Upa.FieldBuilder SetProtectionLevel(Net.TheVpc.Upa.ProtectionLevel protectionLevel);
 
-         Net.Vpc.Upa.ProtectionLevel GetPersistProtectionLevel();
+         Net.TheVpc.Upa.ProtectionLevel GetPersistProtectionLevel();
 
-         Net.Vpc.Upa.FieldBuilder SetPersistProtectionLevel(Net.Vpc.Upa.ProtectionLevel persistProtectionLevel);
+         Net.TheVpc.Upa.FieldBuilder SetPersistProtectionLevel(Net.TheVpc.Upa.ProtectionLevel persistProtectionLevel);
 
-         Net.Vpc.Upa.ProtectionLevel GetUpdateProtectionLevel();
+         Net.TheVpc.Upa.ProtectionLevel GetUpdateProtectionLevel();
 
-         Net.Vpc.Upa.FieldBuilder SetUpdateProtectionLevel(Net.Vpc.Upa.ProtectionLevel updateProtectionLevel);
+         Net.TheVpc.Upa.FieldBuilder SetUpdateProtectionLevel(Net.TheVpc.Upa.ProtectionLevel updateProtectionLevel);
 
-         Net.Vpc.Upa.ProtectionLevel GetReadProtectionLevel();
+         Net.TheVpc.Upa.ProtectionLevel GetReadProtectionLevel();
 
-         Net.Vpc.Upa.FieldBuilder SetReadProtectionLevel(Net.Vpc.Upa.ProtectionLevel readProtectionLevel);
+         Net.TheVpc.Upa.FieldBuilder SetReadProtectionLevel(Net.TheVpc.Upa.ProtectionLevel readProtectionLevel);
 
          System.Collections.Generic.IDictionary<string , object> GetFieldParams();
 
-         Net.Vpc.Upa.FieldBuilder SetFieldParams(System.Collections.Generic.IDictionary<string , object> fieldParams);
+         Net.TheVpc.Upa.FieldBuilder SetFieldParams(System.Collections.Generic.IDictionary<string , object> fieldParams);
 
-         Net.Vpc.Upa.PropertyAccessType GetPropertyAccessType();
+         Net.TheVpc.Upa.PropertyAccessType GetPropertyAccessType();
 
-         Net.Vpc.Upa.FieldBuilder SetPropertyAccessType(Net.Vpc.Upa.PropertyAccessType propertyAccessType);
+         Net.TheVpc.Upa.FieldBuilder SetPropertyAccessType(Net.TheVpc.Upa.PropertyAccessType propertyAccessType);
 
          int GetIndex();
 
-         Net.Vpc.Upa.FieldBuilder SetIndex(int position);
+         Net.TheVpc.Upa.FieldBuilder SetIndex(int position);
 
-         Net.Vpc.Upa.FieldDescriptor Build();
+         Net.TheVpc.Upa.FieldDescriptor Build();
     }
 }

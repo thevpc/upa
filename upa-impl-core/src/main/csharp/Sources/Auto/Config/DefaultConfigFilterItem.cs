@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config
+namespace Net.TheVpc.Upa.Impl.Config
 {
 
 
@@ -21,20 +21,20 @@ namespace Net.Vpc.Upa.Impl.Config
      */
     public class DefaultConfigFilterItem {
 
-        private Net.Vpc.Upa.Impl.Util.Classpath.PatternListClassNameFilter typeFilter;
+        private Net.TheVpc.Upa.Impl.Util.Classpath.PatternListClassNameFilter typeFilter;
 
-        private Net.Vpc.Upa.Impl.Util.Classpath.PatternListLibNameFilter libFilter;
+        private Net.TheVpc.Upa.Impl.Util.Classpath.PatternListLibNameFilter libFilter;
 
-        public DefaultConfigFilterItem(Net.Vpc.Upa.Impl.Util.Classpath.PatternListLibNameFilter libFilter, Net.Vpc.Upa.Impl.Util.Classpath.PatternListClassNameFilter typeFilter) {
+        public DefaultConfigFilterItem(Net.TheVpc.Upa.Impl.Util.Classpath.PatternListLibNameFilter libFilter, Net.TheVpc.Upa.Impl.Util.Classpath.PatternListClassNameFilter typeFilter) {
             this.typeFilter = typeFilter;
             this.libFilter = libFilter;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Util.Classpath.PatternListClassNameFilter GetTypeFilter() {
+        public virtual Net.TheVpc.Upa.Impl.Util.Classpath.PatternListClassNameFilter GetTypeFilter() {
             return typeFilter;
         }
 
-        public virtual Net.Vpc.Upa.Impl.Util.Classpath.PatternListLibNameFilter GetLibFilter() {
+        public virtual Net.TheVpc.Upa.Impl.Util.Classpath.PatternListLibNameFilter GetLibFilter() {
             return libFilter;
         }
     }

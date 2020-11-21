@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Callbacks
+namespace Net.TheVpc.Upa.Callbacks
 {
 
 
@@ -21,10 +21,10 @@ namespace Net.Vpc.Upa.Callbacks
      */
     public interface SessionListener {
 
-         void CloseSession(Net.Vpc.Upa.Session session);
+         void CloseSession(Net.TheVpc.Upa.Session session);
 
-         void PushContext(Net.Vpc.Upa.Session session);
+         void PushContext(Net.TheVpc.Upa.Session session);
 
-         void PopContext(Net.Vpc.Upa.Session session);
+         void PopContext(Net.TheVpc.Upa.Session session);
     }
 }

@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Impl.Util
      *
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class DataTypeClassFieldFilter : Net.Vpc.Upa.Filters.AbstractFieldFilter {
+    public class DataTypeClassFieldFilter : Net.TheVpc.Upa.Filters.AbstractFieldFilter {
 
         private System.Type type;
 
@@ -28,12 +28,12 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
 
-        public override bool AcceptDynamic() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public override bool AcceptDynamic() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return true;
         }
 
 
-        public override bool Accept(Net.Vpc.Upa.Field f) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public override bool Accept(Net.TheVpc.Upa.Field f) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return type.IsAssignableFrom(f.GetDataType().GetType());
         }
 
@@ -52,7 +52,7 @@ namespace Net.Vpc.Upa.Impl.Util
             if (GetType() != obj.GetType()) {
                 return false;
             }
-            Net.Vpc.Upa.Impl.Util.DataTypeClassFieldFilter other = (Net.Vpc.Upa.Impl.Util.DataTypeClassFieldFilter) obj;
+            Net.TheVpc.Upa.Impl.Util.DataTypeClassFieldFilter other = (Net.TheVpc.Upa.Impl.Util.DataTypeClassFieldFilter) obj;
             if (this.type != other.type && (this.type == null || !this.type.Equals(other.type))) {
                 return false;
             }

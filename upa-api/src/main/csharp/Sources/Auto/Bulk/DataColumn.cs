@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Bulk
+namespace Net.TheVpc.Upa.Bulk
 {
 
 
@@ -28,13 +28,13 @@ namespace Net.Vpc.Upa.Bulk
 
         private string title;
 
-        private Net.Vpc.Upa.Types.DataType dataType;
+        private Net.TheVpc.Upa.Types.DataType dataType;
 
-        private Net.Vpc.Upa.Bulk.ValueConverter rawValueConverter;
+        private Net.TheVpc.Upa.Bulk.ValueConverter rawValueConverter;
 
-        private Net.Vpc.Upa.Bulk.ValueConverter valueConverter;
+        private Net.TheVpc.Upa.Bulk.ValueConverter valueConverter;
 
-        private Net.Vpc.Upa.Bulk.ValueValidator valueValidator;
+        private Net.TheVpc.Upa.Bulk.ValueValidator valueValidator;
 
         private bool trimValue;
 
@@ -54,7 +54,7 @@ namespace Net.Vpc.Upa.Bulk
             this.index = index;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.DataColumn UpdateIndex(int index) {
+        public virtual Net.TheVpc.Upa.Bulk.DataColumn UpdateIndex(int index) {
             SetIndex(index);
             return this;
         }
@@ -67,7 +67,7 @@ namespace Net.Vpc.Upa.Bulk
             this.name = name;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.DataColumn UpdateName(string name) {
+        public virtual Net.TheVpc.Upa.Bulk.DataColumn UpdateName(string name) {
             SetName(name);
             return this;
         }
@@ -80,59 +80,59 @@ namespace Net.Vpc.Upa.Bulk
             this.title = title;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.DataColumn UpdateTitle(string title) {
+        public virtual Net.TheVpc.Upa.Bulk.DataColumn UpdateTitle(string title) {
             SetTitle(title);
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Types.DataType GetDataType() {
+        public virtual Net.TheVpc.Upa.Types.DataType GetDataType() {
             return dataType;
         }
 
-        public virtual void SetDataType(Net.Vpc.Upa.Types.DataType dataType) {
+        public virtual void SetDataType(Net.TheVpc.Upa.Types.DataType dataType) {
             this.dataType = dataType;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.DataColumn UpdateDataType(Net.Vpc.Upa.Types.DataType dataType) {
+        public virtual Net.TheVpc.Upa.Bulk.DataColumn UpdateDataType(Net.TheVpc.Upa.Types.DataType dataType) {
             SetDataType(dataType);
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.ValueConverter GetValueConverter() {
+        public virtual Net.TheVpc.Upa.Bulk.ValueConverter GetValueConverter() {
             return valueConverter;
         }
 
-        public virtual void SetValueConverter(Net.Vpc.Upa.Bulk.ValueConverter valueConverter) {
+        public virtual void SetValueConverter(Net.TheVpc.Upa.Bulk.ValueConverter valueConverter) {
             this.valueConverter = valueConverter;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.DataColumn UpdateValueConverter(Net.Vpc.Upa.Bulk.ValueConverter valueConverter) {
+        public virtual Net.TheVpc.Upa.Bulk.DataColumn UpdateValueConverter(Net.TheVpc.Upa.Bulk.ValueConverter valueConverter) {
             SetValueConverter(valueConverter);
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.ValueValidator GetValueValidator() {
+        public virtual Net.TheVpc.Upa.Bulk.ValueValidator GetValueValidator() {
             return valueValidator;
         }
 
-        public virtual void SetValueValidator(Net.Vpc.Upa.Bulk.ValueValidator valueValidator) {
+        public virtual void SetValueValidator(Net.TheVpc.Upa.Bulk.ValueValidator valueValidator) {
             this.valueValidator = valueValidator;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.DataColumn UpdateValueValidator(Net.Vpc.Upa.Bulk.ValueValidator valueValidator) {
+        public virtual Net.TheVpc.Upa.Bulk.DataColumn UpdateValueValidator(Net.TheVpc.Upa.Bulk.ValueValidator valueValidator) {
             SetValueValidator(valueValidator);
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.ValueConverter GetRawValueConverter() {
+        public virtual Net.TheVpc.Upa.Bulk.ValueConverter GetRawValueConverter() {
             return rawValueConverter;
         }
 
-        public virtual void SetRawValueConverter(Net.Vpc.Upa.Bulk.ValueConverter rawValueConverter) {
+        public virtual void SetRawValueConverter(Net.TheVpc.Upa.Bulk.ValueConverter rawValueConverter) {
             this.rawValueConverter = rawValueConverter;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.DataColumn UpdateRawValueConverter(Net.Vpc.Upa.Bulk.ValueConverter rawValueConverter) {
+        public virtual Net.TheVpc.Upa.Bulk.DataColumn UpdateRawValueConverter(Net.TheVpc.Upa.Bulk.ValueConverter rawValueConverter) {
             SetRawValueConverter(rawValueConverter);
             return this;
         }
@@ -145,7 +145,7 @@ namespace Net.Vpc.Upa.Bulk
             this.trimValue = trimValue;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.DataColumn UpdateTrimValue(bool trimValue) {
+        public virtual Net.TheVpc.Upa.Bulk.DataColumn UpdateTrimValue(bool trimValue) {
             SetTrimValue(trimValue);
             return this;
         }
@@ -158,20 +158,20 @@ namespace Net.Vpc.Upa.Bulk
             this.extraNames = extraNames;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.DataColumn UpdateExtraNames(System.Collections.Generic.ISet<string> extraNames) {
+        public virtual Net.TheVpc.Upa.Bulk.DataColumn UpdateExtraNames(System.Collections.Generic.ISet<string> extraNames) {
             SetExtraNames(extraNames);
             return this;
         }
 
         public virtual object Copy() {
             try {
-                Net.Vpc.Upa.Bulk.DataColumn c = (Net.Vpc.Upa.Bulk.DataColumn) base.MemberwiseClone();
+                Net.TheVpc.Upa.Bulk.DataColumn c = (Net.TheVpc.Upa.Bulk.DataColumn) base.MemberwiseClone();
                 if (extraNames != null) {
                     c.extraNames = new System.Collections.Generic.HashSet<string>(extraNames);
                 }
                 return c;
             } catch (System.Exception ex) {
-                throw new Net.Vpc.Upa.Exceptions.UnexpectedException("Missing Cloneable Interface Anchor for " + (GetType()).FullName, ex);
+                throw new Net.TheVpc.Upa.Exceptions.UnexpectedException("Missing Cloneable Interface Anchor for " + (GetType()).FullName, ex);
             }
         }
 

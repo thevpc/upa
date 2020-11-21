@@ -11,30 +11,30 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config.Callback
+namespace Net.TheVpc.Upa.Impl.Config.Callback
 {
 
 
     /**
      * Created by vpc on 7/25/15.
      */
-    public class DefaultCallback : Net.Vpc.Upa.Callback {
+    public class DefaultCallback : Net.TheVpc.Upa.Callback {
 
-        protected internal Net.Vpc.Upa.Impl.Config.Callback.MethodArgumentsConverter converter;
+        protected internal Net.TheVpc.Upa.Impl.Config.Callback.MethodArgumentsConverter converter;
 
         protected internal object instance;
 
         protected internal System.Reflection.MethodInfo method;
 
-        private Net.Vpc.Upa.CallbackType callbackType;
+        private Net.TheVpc.Upa.CallbackType callbackType;
 
-        private Net.Vpc.Upa.ObjectType objectType;
+        private Net.TheVpc.Upa.ObjectType objectType;
 
         private System.Collections.Generic.IDictionary<string , object> configuration;
 
-        private Net.Vpc.Upa.EventPhase phase;
+        private Net.TheVpc.Upa.EventPhase phase;
 
-        public DefaultCallback(object o, System.Reflection.MethodInfo m, Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.EventPhase phase, Net.Vpc.Upa.ObjectType objectType, Net.Vpc.Upa.Impl.Config.Callback.MethodArgumentsConverter converter, System.Collections.Generic.IDictionary<string , object> configuration) {
+        public DefaultCallback(object o, System.Reflection.MethodInfo m, Net.TheVpc.Upa.CallbackType callbackType, Net.TheVpc.Upa.EventPhase phase, Net.TheVpc.Upa.ObjectType objectType, Net.TheVpc.Upa.Impl.Config.Callback.MethodArgumentsConverter converter, System.Collections.Generic.IDictionary<string , object> configuration) {
             this.converter = converter;
             this.instance = o;
             this.method = m;
@@ -44,7 +44,7 @@ namespace Net.Vpc.Upa.Impl.Config.Callback
             this.phase = phase;
         }
 
-        public virtual Net.Vpc.Upa.EventPhase GetPhase() {
+        public virtual Net.TheVpc.Upa.EventPhase GetPhase() {
             return phase;
         }
 
@@ -52,11 +52,11 @@ namespace Net.Vpc.Upa.Impl.Config.Callback
             return configuration;
         }
 
-        public virtual Net.Vpc.Upa.CallbackType GetCallbackType() {
+        public virtual Net.TheVpc.Upa.CallbackType GetCallbackType() {
             return callbackType;
         }
 
-        public virtual Net.Vpc.Upa.ObjectType GetObjectType() {
+        public virtual Net.TheVpc.Upa.ObjectType GetObjectType() {
             return objectType;
         }
 
@@ -65,7 +65,7 @@ namespace Net.Vpc.Upa.Impl.Config.Callback
             try {
                 return method.Invoke(instance, converter.Convert(arguments));
             } catch (System.Exception e) {
-                throw Net.Vpc.Upa.Impl.Util.PlatformUtils.CreateRuntimeException(e);
+                throw Net.TheVpc.Upa.Impl.Util.PlatformUtils.CreateRuntimeException(e);
             }
         }
 
@@ -77,7 +77,7 @@ namespace Net.Vpc.Upa.Impl.Config.Callback
             if (o1 == null || GetType() != o1.GetType()) {
                 return false;
             }
-            Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback that = (Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback) o1;
+            Net.TheVpc.Upa.Impl.Config.Callback.DefaultCallback that = (Net.TheVpc.Upa.Impl.Config.Callback.DefaultCallback) o1;
             if (converter != null ? !converter.Equals(that.converter) : that.converter != null) {
                 return false;
             }

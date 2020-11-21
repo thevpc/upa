@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Persistence
+namespace Net.TheVpc.Upa.Persistence
 {
 
 
@@ -19,18 +19,18 @@ namespace Net.Vpc.Upa.Persistence
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 8/29/12 12:27 AM
      */
-    public interface UnionEntityExtension : Net.Vpc.Upa.Persistence.EntityExtension {
+    public interface UnionEntityExtension : Net.TheVpc.Upa.Persistence.EntityExtension {
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Entity> GetEntities() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         System.Collections.Generic.IList<Net.TheVpc.Upa.Entity> GetEntities() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         string GetUpdatedField(string viewFieldName, Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         string GetUpdatedField(string viewFieldName, Net.TheVpc.Upa.Entity entity) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         string GetDiscriminator() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         string GetDiscriminator() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         int IndexOf(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         int IndexOf(Net.TheVpc.Upa.Entity entity) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.QualifiedIdentifier GetViewElementKey(Net.Vpc.Upa.QualifiedIdentifier viewKey) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.QualifiedIdentifier GetViewElementKey(Net.TheVpc.Upa.QualifiedIdentifier viewKey) /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Expressions.QueryStatement GetQuery() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.TheVpc.Upa.Expressions.QueryStatement GetQuery() /* throws Net.TheVpc.Upa.Exceptions.UPAException */ ;
     }
 }

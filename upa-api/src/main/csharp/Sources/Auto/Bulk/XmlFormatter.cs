@@ -11,22 +11,22 @@
 
 
 
-namespace Net.Vpc.Upa.Bulk
+namespace Net.TheVpc.Upa.Bulk
 {
 
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public abstract class XmlFormatter : Net.Vpc.Upa.Bulk.AbstractDataFormatter {
+    public abstract class XmlFormatter : Net.TheVpc.Upa.Bulk.AbstractDataFormatter {
 
         private bool containsHeader;
 
         private bool trimValues = true;
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Bulk.XmlColumn> columns = new System.Collections.Generic.List<Net.Vpc.Upa.Bulk.XmlColumn>();
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Bulk.XmlColumn> columns = new System.Collections.Generic.List<Net.TheVpc.Upa.Bulk.XmlColumn>();
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Bulk.XmlColumn> GetColumns() {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Bulk.XmlColumn> GetColumns() {
             return columns;
         }
 
@@ -34,7 +34,7 @@ namespace Net.Vpc.Upa.Bulk
             return containsHeader;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.XmlFormatter SetContainsHeader(bool containsHeader) {
+        public virtual Net.TheVpc.Upa.Bulk.XmlFormatter SetContainsHeader(bool containsHeader) {
             this.containsHeader = containsHeader;
             return this;
         }
@@ -43,7 +43,7 @@ namespace Net.Vpc.Upa.Bulk
             return trimValues;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.XmlFormatter SetTrimValues(bool trimValues) {
+        public virtual Net.TheVpc.Upa.Bulk.XmlFormatter SetTrimValues(bool trimValues) {
             this.trimValues = trimValues;
             return this;
         }

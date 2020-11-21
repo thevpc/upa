@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Bulk
+namespace Net.TheVpc.Upa.Bulk
 {
 
 
@@ -20,8 +20,8 @@ namespace Net.Vpc.Upa.Bulk
      */
     public interface ImportEntityFinder {
 
-         object FindEntity(Net.Vpc.Upa.Entity entity, System.Collections.Generic.IDictionary<string , object> values);
+         object FindEntity(Net.TheVpc.Upa.Entity entity, System.Collections.Generic.IDictionary<string , object> values);
 
-         bool Accept(Net.Vpc.Upa.Entity entity);
+         bool Accept(Net.TheVpc.Upa.Entity entity);
     }
 }

@@ -11,14 +11,14 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Shared
+namespace Net.TheVpc.Upa.Impl.Persistence.Shared
 {
 
 
     /**
     * @author Taha BEN SALAH <taha.bensalah@gmail.com>
     * @creationdate 12/20/12 2:49 AM*/
-    public class SerializablePlatformObjectMarshaller : Net.Vpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
+    public class SerializablePlatformObjectMarshaller : Net.TheVpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
 
         public SerializablePlatformObjectMarshaller() {
         }
@@ -32,7 +32,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
             if (@object == null) {
                 return base.ToSQLLiteral(@object);
             }
-            Net.Vpc.Upa.Impl.Persistence.TypeMarshaller wrapper = GetMarshallManager().GetTypeMarshaller(@object.GetType());
+            Net.TheVpc.Upa.Impl.Persistence.TypeMarshaller wrapper = GetMarshallManager().GetTypeMarshaller(@object.GetType());
             if (wrapper != null && wrapper.GetType() != GetType()) {
                 return wrapper.ToSQLLiteral(@object);
             }

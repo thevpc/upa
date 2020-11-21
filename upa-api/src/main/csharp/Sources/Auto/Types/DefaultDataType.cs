@@ -11,12 +11,12 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
 
 
-    public abstract partial class DefaultDataType : Net.Vpc.Upa.Types.DataType {
+    public abstract partial class DefaultDataType : Net.TheVpc.Upa.Types.DataType {
 
         private static readonly System.Collections.Generic.IDictionary<System.Type , object> NULLABLE_DEFAULT_VALUES = new System.Collections.Generic.Dictionary<System.Type , object>();
 
@@ -52,7 +52,7 @@ namespace Net.Vpc.Upa.Types
 
         protected internal bool nullable;
 
-        protected internal Net.Vpc.Upa.Properties properties;
+        protected internal Net.TheVpc.Upa.Properties properties;
 
         protected internal object defaultValue;
 
@@ -68,9 +68,9 @@ namespace Net.Vpc.Upa.Types
 
         protected internal int precision;
 
-        protected internal System.Collections.Generic.IList<Net.Vpc.Upa.Types.TypeValueValidator> valueValidators = new System.Collections.Generic.List<Net.Vpc.Upa.Types.TypeValueValidator>(1);
+        protected internal System.Collections.Generic.IList<Net.TheVpc.Upa.Types.TypeValueValidator> valueValidators = new System.Collections.Generic.List<Net.TheVpc.Upa.Types.TypeValueValidator>(1);
 
-        protected internal System.Collections.Generic.IList<Net.Vpc.Upa.Types.TypeValueRewriter> valueRewriters = new System.Collections.Generic.List<Net.Vpc.Upa.Types.TypeValueRewriter>(1);
+        protected internal System.Collections.Generic.IList<Net.TheVpc.Upa.Types.TypeValueRewriter> valueRewriters = new System.Collections.Generic.List<Net.TheVpc.Upa.Types.TypeValueRewriter>(1);
 
         public DefaultDataType(string name, System.Type platformType)  : this(name, platformType, 0, 0, false){
 
@@ -91,10 +91,10 @@ namespace Net.Vpc.Upa.Types
 
         protected internal virtual void ReevaluateCachedValues() {
             if (!this.defaultValueUserDefined) {
-                this.defaultValue = nullable ? Net.Vpc.Upa.FwkConvertUtils.GetMapValue<System.Type,object>(NULLABLE_DEFAULT_VALUES,platformType) : Net.Vpc.Upa.FwkConvertUtils.GetMapValue<System.Type,object>(NON_NULLABLE_DEFAULT_VALUES,platformType);
+                this.defaultValue = nullable ? Net.TheVpc.Upa.FwkConvertUtils.GetMapValue<System.Type,object>(NULLABLE_DEFAULT_VALUES,platformType) : Net.TheVpc.Upa.FwkConvertUtils.GetMapValue<System.Type,object>(NON_NULLABLE_DEFAULT_VALUES,platformType);
             }
             if (!this.defaultUnspecifiedValueUserDefined) {
-                this.defaultUnspecifiedValue = nullable ? null : Net.Vpc.Upa.FwkConvertUtils.GetMapValue<System.Type,object>(NULLABLE_DEFAULT_VALUES,platformType);
+                this.defaultUnspecifiedValue = nullable ? null : Net.TheVpc.Upa.FwkConvertUtils.GetMapValue<System.Type,object>(NULLABLE_DEFAULT_VALUES,platformType);
             }
         }
 
@@ -147,19 +147,19 @@ namespace Net.Vpc.Upa.Types
         }
 
 
-        public virtual object Rewrite(object @value, string name, string description) /* throws Net.Vpc.Upa.Types.ConstraintsException */  {
-            foreach (Net.Vpc.Upa.Types.TypeValueRewriter typeValidator in valueRewriters) {
+        public virtual object Rewrite(object @value, string name, string description) /* throws Net.TheVpc.Upa.Types.ConstraintsException */  {
+            foreach (Net.TheVpc.Upa.Types.TypeValueRewriter typeValidator in valueRewriters) {
                 @value = typeValidator.RewriteValue(@value, name, description, this);
             }
             return @value;
         }
 
 
-        public virtual void Check(object @value, string name, string description) /* throws Net.Vpc.Upa.Types.ConstraintsException */  {
+        public virtual void Check(object @value, string name, string description) /* throws Net.TheVpc.Upa.Types.ConstraintsException */  {
             if (@value == null && !IsNullable()) {
-                throw new Net.Vpc.Upa.Types.ConstraintsException("IllegalNull", name, description, null);
+                throw new Net.TheVpc.Upa.Types.ConstraintsException("IllegalNull", name, description, null);
             }
-            foreach (Net.Vpc.Upa.Types.TypeValueValidator typeValueValidator in valueValidators) {
+            foreach (Net.TheVpc.Upa.Types.TypeValueValidator typeValueValidator in valueValidators) {
                 typeValueValidator.ValidateValue(@value, name, description, this);
             }
         }
@@ -167,47 +167,47 @@ namespace Net.Vpc.Upa.Types
 
         public virtual object Copy() {
             try {
-                Net.Vpc.Upa.Types.DefaultDataType cloned = (Net.Vpc.Upa.Types.DefaultDataType) base.MemberwiseClone();
-                cloned.valueValidators = new System.Collections.Generic.List<Net.Vpc.Upa.Types.TypeValueValidator>(valueValidators);
-                cloned.valueRewriters = new System.Collections.Generic.List<Net.Vpc.Upa.Types.TypeValueRewriter>(valueRewriters);
+                Net.TheVpc.Upa.Types.DefaultDataType cloned = (Net.TheVpc.Upa.Types.DefaultDataType) base.MemberwiseClone();
+                cloned.valueValidators = new System.Collections.Generic.List<Net.TheVpc.Upa.Types.TypeValueValidator>(valueValidators);
+                cloned.valueRewriters = new System.Collections.Generic.List<Net.TheVpc.Upa.Types.TypeValueRewriter>(valueRewriters);
                 return cloned;
             } catch (System.Exception ex) {
-                throw new Net.Vpc.Upa.Exceptions.UnexpectedException("Clone Not Supported", ex);
+                throw new Net.TheVpc.Upa.Exceptions.UnexpectedException("Clone Not Supported", ex);
             }
         }
 
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Types.TypeValueValidator> GetValueValidators() {
-            return new System.Collections.Generic.List<Net.Vpc.Upa.Types.TypeValueValidator>(valueValidators);
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Types.TypeValueValidator> GetValueValidators() {
+            return new System.Collections.Generic.List<Net.TheVpc.Upa.Types.TypeValueValidator>(valueValidators);
         }
 
 
-        public virtual Net.Vpc.Upa.Types.DataType AddValueValidator(Net.Vpc.Upa.Types.TypeValueValidator validator) {
+        public virtual Net.TheVpc.Upa.Types.DataType AddValueValidator(Net.TheVpc.Upa.Types.TypeValueValidator validator) {
             valueValidators.Add(validator);
             return this;
         }
 
 
-        public virtual Net.Vpc.Upa.Types.DataType RemoveValueValidator(Net.Vpc.Upa.Types.TypeValueValidator validator) {
+        public virtual Net.TheVpc.Upa.Types.DataType RemoveValueValidator(Net.TheVpc.Upa.Types.TypeValueValidator validator) {
             valueValidators.Remove(validator);
             return this;
         }
 
 
-        public virtual Net.Vpc.Upa.Types.DataType AddValueRewriter(Net.Vpc.Upa.Types.TypeValueRewriter rewriter) {
+        public virtual Net.TheVpc.Upa.Types.DataType AddValueRewriter(Net.TheVpc.Upa.Types.TypeValueRewriter rewriter) {
             valueRewriters.Add(rewriter);
             return this;
         }
 
 
-        public virtual Net.Vpc.Upa.Types.DataType RemoveValueReWriter(Net.Vpc.Upa.Types.TypeValueRewriter rewriter) {
+        public virtual Net.TheVpc.Upa.Types.DataType RemoveValueReWriter(Net.TheVpc.Upa.Types.TypeValueRewriter rewriter) {
             valueRewriters.Remove(rewriter);
             return this;
         }
 
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Types.TypeValueRewriter> GetValueRewriters() {
-            return new System.Collections.Generic.List<Net.Vpc.Upa.Types.TypeValueRewriter>(valueRewriters);
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Types.TypeValueRewriter> GetValueRewriters() {
+            return new System.Collections.Generic.List<Net.TheVpc.Upa.Types.TypeValueRewriter>(valueRewriters);
         }
 
 
@@ -216,13 +216,13 @@ namespace Net.Vpc.Upa.Types
         }
 
 
-        public virtual Net.Vpc.Upa.Types.DataType SetUnitName(string unitName) {
+        public virtual Net.TheVpc.Upa.Types.DataType SetUnitName(string unitName) {
             this.unitName = unitName;
             return this;
         }
 
 
-        public virtual bool IsAssignableFrom(Net.Vpc.Upa.Types.DataType type) {
+        public virtual bool IsAssignableFrom(Net.TheVpc.Upa.Types.DataType type) {
             return this.GetType().IsAssignableFrom(type.GetType());
         }
 
@@ -231,11 +231,11 @@ namespace Net.Vpc.Upa.Types
             if (@object == null) {
                 return true;
             }
-            return IsAssignableFrom(Net.Vpc.Upa.Types.TypesFactory.ForPlatformType(@object.GetType()));
+            return IsAssignableFrom(Net.TheVpc.Upa.Types.TypesFactory.ForPlatformType(@object.GetType()));
         }
 
 
-        public virtual void Cast(Net.Vpc.Upa.Types.DataType type) {
+        public virtual void Cast(Net.TheVpc.Upa.Types.DataType type) {
             if (!IsAssignableFrom(type)) {
                 throw new System.InvalidCastException("Expected an expression of type " + this + " but got " + type);
             }
@@ -258,12 +258,12 @@ namespace Net.Vpc.Upa.Types
         }
 
 
-        public virtual Net.Vpc.Upa.Properties GetProperties() {
+        public virtual Net.TheVpc.Upa.Properties GetProperties() {
             return properties;
         }
 
 
-        public virtual void SetProperties(Net.Vpc.Upa.Properties properties) {
+        public virtual void SetProperties(Net.TheVpc.Upa.Properties properties) {
             this.properties = properties;
         }
 
@@ -271,7 +271,7 @@ namespace Net.Vpc.Upa.Types
         public override bool Equals(object o) {
             if (this == o) return true;
             if (o == null || GetType() != o.GetType()) return false;
-            Net.Vpc.Upa.Types.DefaultDataType that = (Net.Vpc.Upa.Types.DefaultDataType) o;
+            Net.TheVpc.Upa.Types.DefaultDataType that = (Net.TheVpc.Upa.Types.DefaultDataType) o;
             if (nullable != that.nullable) return false;
             if (defaultValueUserDefined != that.defaultValueUserDefined) return false;
             if (defaultUnspecifiedValueUserDefined != that.defaultUnspecifiedValueUserDefined) return false;
@@ -306,8 +306,8 @@ namespace Net.Vpc.Upa.Types
         }
 
 
-        public virtual Net.Vpc.Upa.DataTypeInfo GetInfo() {
-            Net.Vpc.Upa.DataTypeInfo d = new Net.Vpc.Upa.DataTypeInfo();
+        public virtual Net.TheVpc.Upa.DataTypeInfo GetInfo() {
+            Net.TheVpc.Upa.DataTypeInfo d = new Net.TheVpc.Upa.DataTypeInfo();
             d.SetName(GetName());
             d.SetType((GetType()).FullName);
             d.SetPlatformType((GetPlatformType()).FullName);

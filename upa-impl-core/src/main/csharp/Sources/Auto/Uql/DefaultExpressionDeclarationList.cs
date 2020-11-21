@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql
+namespace Net.TheVpc.Upa.Impl.Uql
 {
 
 
@@ -19,53 +19,53 @@ namespace Net.Vpc.Upa.Impl.Uql
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 11/19/12 7:22 PM
      */
-    public class DefaultExpressionDeclarationList : Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList {
+    public class DefaultExpressionDeclarationList : Net.TheVpc.Upa.Impl.Uql.ExpressionDeclarationList {
 
-        private Net.Vpc.Upa.Impl.Uql.DefaultExpressionDeclarationList parentDeclaration;
+        private Net.TheVpc.Upa.Impl.Uql.DefaultExpressionDeclarationList parentDeclaration;
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration> exportedDeclarations;
+        private System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Uql.ExpressionDeclaration> exportedDeclarations;
 
-        public DefaultExpressionDeclarationList(Net.Vpc.Upa.Impl.Uql.DefaultExpressionDeclarationList parentDeclaration) {
-            exportedDeclarations = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration>();
+        public DefaultExpressionDeclarationList(Net.TheVpc.Upa.Impl.Uql.DefaultExpressionDeclarationList parentDeclaration) {
+            exportedDeclarations = new System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Uql.ExpressionDeclaration>();
             this.parentDeclaration = parentDeclaration;
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration> GetExportedDeclarations() {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration> emptyList = Net.Vpc.Upa.Impl.Util.PlatformUtils.EmptyList<T>();
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Uql.ExpressionDeclaration> GetExportedDeclarations() {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Uql.ExpressionDeclaration> emptyList = Net.TheVpc.Upa.Impl.Util.PlatformUtils.EmptyList<T>();
             return exportedDeclarations == null ? emptyList : exportedDeclarations;
         }
 
-        public virtual void ExportDeclaration(string name, Net.Vpc.Upa.Impl.Uql.DecObjectType type, object referrerName, object referrerParentId) {
+        public virtual void ExportDeclaration(string name, Net.TheVpc.Upa.Impl.Uql.DecObjectType type, object referrerName, object referrerParentId) {
             if (exportedDeclarations == null) {
-                exportedDeclarations = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration>(3);
+                exportedDeclarations = new System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Uql.ExpressionDeclaration>(3);
             }
-            exportedDeclarations.Add(new Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration(name, type, referrerName, referrerParentId));
+            exportedDeclarations.Add(new Net.TheVpc.Upa.Impl.Uql.ExpressionDeclaration(name, type, referrerName, referrerParentId));
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration> GetDeclarations(string alias) {
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Uql.ExpressionDeclaration> GetDeclarations(string alias) {
             if (alias == null) {
                 //check all
-                System.Collections.Generic.List<Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration> objects = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration>();
+                System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Uql.ExpressionDeclaration> objects = new System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Uql.ExpressionDeclaration>();
                 if (exportedDeclarations != null) {
                     for (int i = (exportedDeclarations).Count - 1; i >= 0; i--) {
-                        Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration d = exportedDeclarations[i];
+                        Net.TheVpc.Upa.Impl.Uql.ExpressionDeclaration d = exportedDeclarations[i];
                         objects.Add(d);
                     }
                 }
                 if (parentDeclaration != null) {
-                    Net.Vpc.Upa.Impl.FwkConvertUtils.CollectionAddRange(objects, parentDeclaration.GetDeclarations(alias));
+                    Net.TheVpc.Upa.Impl.FwkConvertUtils.CollectionAddRange(objects, parentDeclaration.GetDeclarations(alias));
                 }
                 return objects;
             } else {
-                System.Collections.Generic.List<Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration> objects = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration>();
+                System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Uql.ExpressionDeclaration> objects = new System.Collections.Generic.List<Net.TheVpc.Upa.Impl.Uql.ExpressionDeclaration>();
                 for (int i = (exportedDeclarations).Count - 1; i >= 0; i--) {
-                    Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration d = exportedDeclarations[i];
+                    Net.TheVpc.Upa.Impl.Uql.ExpressionDeclaration d = exportedDeclarations[i];
                     if (alias.Equals(d.GetValidName())) {
                         objects.Add(d);
                     }
                 }
                 if (parentDeclaration != null) {
-                    Net.Vpc.Upa.Impl.FwkConvertUtils.CollectionAddRange(objects, parentDeclaration.GetDeclarations(alias));
+                    Net.TheVpc.Upa.Impl.FwkConvertUtils.CollectionAddRange(objects, parentDeclaration.GetDeclarations(alias));
                 }
                 return objects;
             }
@@ -76,19 +76,19 @@ namespace Net.Vpc.Upa.Impl.Uql
             return "{" + parentDeclaration + ", " + exportedDeclarations + '}';
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration GetDeclaration(string name) {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration> values = GetDeclarations(name);
+        public virtual Net.TheVpc.Upa.Impl.Uql.ExpressionDeclaration GetDeclaration(string name) {
+            System.Collections.Generic.IList<Net.TheVpc.Upa.Impl.Uql.ExpressionDeclaration> values = GetDeclarations(name);
             if ((values.Count==0)) {
                 return null;
             }
             return values[0];
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.DefaultExpressionDeclarationList GetParentDeclaration() {
+        public virtual Net.TheVpc.Upa.Impl.Uql.DefaultExpressionDeclarationList GetParentDeclaration() {
             return parentDeclaration;
         }
 
-        public virtual void SetParentDeclaration(Net.Vpc.Upa.Impl.Uql.DefaultExpressionDeclarationList parentDeclaration) {
+        public virtual void SetParentDeclaration(Net.TheVpc.Upa.Impl.Uql.DefaultExpressionDeclarationList parentDeclaration) {
             this.parentDeclaration = parentDeclaration;
         }
     }

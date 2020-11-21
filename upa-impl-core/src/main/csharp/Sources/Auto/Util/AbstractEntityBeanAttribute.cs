@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
 
@@ -19,15 +19,15 @@ namespace Net.Vpc.Upa.Impl.Util
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 1/5/13 11:24 PM
      */
-    internal abstract class AbstractEntityBeanAttribute : Net.Vpc.Upa.Impl.Util.EntityBeanAttribute {
+    internal abstract class AbstractEntityBeanAttribute : Net.TheVpc.Upa.Impl.Util.EntityBeanAttribute {
 
         private string name;
 
         private System.Type fieldType;
 
-        private Net.Vpc.Upa.Impl.Util.EntityBeanType entityBeanAdapter;
+        private Net.TheVpc.Upa.Impl.Util.EntityBeanType entityBeanAdapter;
 
-        internal AbstractEntityBeanAttribute(Net.Vpc.Upa.Impl.Util.EntityBeanType entityBeanAdapter, string name, System.Type fieldType) {
+        internal AbstractEntityBeanAttribute(Net.TheVpc.Upa.Impl.Util.EntityBeanType entityBeanAdapter, string name, System.Type fieldType) {
             this.entityBeanAdapter = entityBeanAdapter;
             this.name = name;
             this.fieldType = fieldType;
@@ -39,9 +39,9 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
 
-        public virtual object GetDefaultValue() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Entity entity = entityBeanAdapter.GetEntity();
-            Net.Vpc.Upa.Field field = null;
+        public virtual object GetDefaultValue() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Entity entity = entityBeanAdapter.GetEntity();
+            Net.TheVpc.Upa.Field field = null;
             if (entity != null) {
                 field = entity.FindField(GetName());
                 if (field == null) {
@@ -49,16 +49,16 @@ namespace Net.Vpc.Upa.Impl.Util
                 }
             }
             if (entity == null || field == null) {
-                return Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,object>(Net.Vpc.Upa.Impl.Util.PlatformUtils.DEFAULT_VALUES_BY_TYPE,GetFieldType());
+                return Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,object>(Net.TheVpc.Upa.Impl.Util.PlatformUtils.DEFAULT_VALUES_BY_TYPE,GetFieldType());
             } else {
                 return field.GetUnspecifiedValueDecoded();
             }
         }
 
-        public virtual bool IsDefaultValue(object o) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual bool IsDefaultValue(object o) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             object fieldValue = GetValue(o);
-            Net.Vpc.Upa.Entity entity = entityBeanAdapter.GetEntity();
-            Net.Vpc.Upa.Field field = null;
+            Net.TheVpc.Upa.Entity entity = entityBeanAdapter.GetEntity();
+            Net.TheVpc.Upa.Field field = null;
             if (entity != null) {
                 field = entity.FindField(GetName());
                 if (field == null) {
@@ -66,7 +66,7 @@ namespace Net.Vpc.Upa.Impl.Util
                 }
             }
             if (entity == null || field == null) {
-                object fieldDefaultValue = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,object>(Net.Vpc.Upa.Impl.Util.PlatformUtils.DEFAULT_VALUES_BY_TYPE,GetFieldType());
+                object fieldDefaultValue = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,object>(Net.TheVpc.Upa.Impl.Util.PlatformUtils.DEFAULT_VALUES_BY_TYPE,GetFieldType());
                 if (fieldDefaultValue == null) {
                     return fieldValue == null;
                 } else {

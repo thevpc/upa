@@ -11,9 +11,9 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledexpression
 {
 
-    public interface CompiledEntityStatement : Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression {
+    public interface CompiledEntityStatement : Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression {
     }
 }

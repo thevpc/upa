@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Filters
+namespace Net.TheVpc.Upa.Filters
 {
 
 
@@ -49,19 +49,19 @@ namespace Net.Vpc.Upa.Filters
      * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
      * ====================================================================
      */
-    internal class FieldRegularFilter : Net.Vpc.Upa.Filters.AbstractFieldFilter {
+    internal class FieldRegularFilter : Net.TheVpc.Upa.Filters.AbstractFieldFilter {
 
         public FieldRegularFilter() {
         }
 
 
-        public override bool AcceptDynamic() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public override bool AcceptDynamic() /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
             return false;
         }
 
 
-        public override bool Accept(Net.Vpc.Upa.Field f) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return !(f is Net.Vpc.Upa.DynamicField);
+        public override bool Accept(Net.TheVpc.Upa.Field f) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            return !(f is Net.TheVpc.Upa.DynamicField);
         }
 
 

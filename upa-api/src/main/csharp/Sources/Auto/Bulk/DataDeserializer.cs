@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Bulk
+namespace Net.TheVpc.Upa.Bulk
 {
 
     /**
@@ -20,6 +20,6 @@ namespace Net.Vpc.Upa.Bulk
      */
     public interface DataDeserializer {
 
-         object RowToObject(Net.Vpc.Upa.Bulk.DataRow o);
+         object RowToObject(Net.TheVpc.Upa.Bulk.DataRow o);
     }
 }

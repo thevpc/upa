@@ -11,35 +11,35 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
-    public sealed class Exists : Net.Vpc.Upa.Expressions.FunctionExpression {
+    public sealed class Exists : Net.TheVpc.Upa.Expressions.FunctionExpression {
 
 
 
-        private Net.Vpc.Upa.Expressions.QueryStatement query;
+        private Net.TheVpc.Upa.Expressions.QueryStatement query;
 
-        public Exists(Net.Vpc.Upa.Expressions.Expression expressions) {
-            SetQuery((Net.Vpc.Upa.Expressions.QueryStatement) expressions);
+        public Exists(Net.TheVpc.Upa.Expressions.Expression expressions) {
+            SetQuery((Net.TheVpc.Upa.Expressions.QueryStatement) expressions);
         }
 
-        public Exists(Net.Vpc.Upa.Expressions.Expression[] expressions) {
+        public Exists(Net.TheVpc.Upa.Expressions.Expression[] expressions) {
             CheckArgCount(GetName(), expressions, 1);
-            SetQuery((Net.Vpc.Upa.Expressions.QueryStatement) expressions[0]);
+            SetQuery((Net.TheVpc.Upa.Expressions.QueryStatement) expressions[0]);
         }
 
         public Exists() {
         }
 
-        public Exists(Net.Vpc.Upa.Expressions.QueryStatement query) {
+        public Exists(Net.TheVpc.Upa.Expressions.QueryStatement query) {
             SetQuery(query);
         }
 
 
-        public override void SetArgument(int index, Net.Vpc.Upa.Expressions.Expression e) {
+        public override void SetArgument(int index, Net.TheVpc.Upa.Expressions.Expression e) {
             if (index == 0) {
-                this.query = (Net.Vpc.Upa.Expressions.QueryStatement) e;
+                this.query = (Net.TheVpc.Upa.Expressions.QueryStatement) e;
             } else {
                 throw new System.IndexOutOfRangeException();
             }
@@ -49,11 +49,11 @@ namespace Net.Vpc.Upa.Expressions
             return 1;
         }
 
-        public void SetQuery(Net.Vpc.Upa.Expressions.QueryStatement query) {
+        public void SetQuery(Net.TheVpc.Upa.Expressions.QueryStatement query) {
             this.query = query;
         }
 
-        public Net.Vpc.Upa.Expressions.QueryStatement GetQuery() {
+        public Net.TheVpc.Upa.Expressions.QueryStatement GetQuery() {
             return query;
         }
 
@@ -72,7 +72,7 @@ namespace Net.Vpc.Upa.Expressions
         }
 
 
-        public override Net.Vpc.Upa.Expressions.Expression GetArgument(int index) {
+        public override Net.TheVpc.Upa.Expressions.Expression GetArgument(int index) {
             if (index != 0) {
                 throw new System.IndexOutOfRangeException();
             }
@@ -80,8 +80,8 @@ namespace Net.Vpc.Upa.Expressions
         }
 
 
-        public override Net.Vpc.Upa.Expressions.Expression Copy() {
-            Net.Vpc.Upa.Expressions.Exists o = new Net.Vpc.Upa.Expressions.Exists((Net.Vpc.Upa.Expressions.QueryStatement) query.Copy());
+        public override Net.TheVpc.Upa.Expressions.Expression Copy() {
+            Net.TheVpc.Upa.Expressions.Exists o = new Net.TheVpc.Upa.Expressions.Exists((Net.TheVpc.Upa.Expressions.QueryStatement) query.Copy());
             return o;
         }
     }

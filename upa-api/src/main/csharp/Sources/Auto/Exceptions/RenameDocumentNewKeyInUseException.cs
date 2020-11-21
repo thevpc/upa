@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Exceptions
+namespace Net.TheVpc.Upa.Exceptions
 {
 
 
-    public class RenameDocumentNewKeyInUseException : Net.Vpc.Upa.Exceptions.EntityException {
+    public class RenameDocumentNewKeyInUseException : Net.TheVpc.Upa.Exceptions.EntityException {
 
-        public RenameDocumentNewKeyInUseException(Net.Vpc.Upa.Entity entity)  : base(entity, "rename.NewKeyInUse"){
+        public RenameDocumentNewKeyInUseException(Net.TheVpc.Upa.Entity entity)  : base(entity, "rename.NewKeyInUse"){
 
         }
     }

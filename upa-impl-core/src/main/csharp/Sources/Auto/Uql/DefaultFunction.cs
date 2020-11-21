@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql
+namespace Net.TheVpc.Upa.Impl.Uql
 {
 
 
@@ -19,15 +19,15 @@ namespace Net.Vpc.Upa.Impl.Uql
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 12/14/12 12:19 AM
      */
-    public class DefaultFunction : Net.Vpc.Upa.FunctionDefinition {
+    public class DefaultFunction : Net.TheVpc.Upa.FunctionDefinition {
 
         private string name;
 
-        private Net.Vpc.Upa.Types.DataType type;
+        private Net.TheVpc.Upa.Types.DataType type;
 
-        private Net.Vpc.Upa.Function handler;
+        private Net.TheVpc.Upa.Function handler;
 
-        public DefaultFunction(string name, Net.Vpc.Upa.Types.DataType type, Net.Vpc.Upa.Function handler) {
+        public DefaultFunction(string name, Net.TheVpc.Upa.Types.DataType type, Net.TheVpc.Upa.Function handler) {
             this.name = name;
             this.type = type;
             this.handler = handler;
@@ -37,11 +37,11 @@ namespace Net.Vpc.Upa.Impl.Uql
             return name;
         }
 
-        public virtual Net.Vpc.Upa.Types.DataType GetDataType() {
+        public virtual Net.TheVpc.Upa.Types.DataType GetDataType() {
             return type;
         }
 
-        public virtual Net.Vpc.Upa.Function GetFunction() {
+        public virtual Net.TheVpc.Upa.Function GetFunction() {
             return handler;
         }
     }

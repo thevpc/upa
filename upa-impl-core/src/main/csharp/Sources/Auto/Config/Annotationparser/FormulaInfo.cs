@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Config.Annotationparser
+namespace Net.TheVpc.Upa.Impl.Config.Annotationparser
 {
 
 
@@ -27,13 +27,13 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
 
         public int? order;
 
-        public Net.Vpc.Upa.FormulaType formulaType;
+        public Net.TheVpc.Upa.FormulaType formulaType;
 
         public bool specified = false;
 
         public int configOrder = System.Int32.MinValue;
 
-        public virtual void MergeFormula(Net.Vpc.Upa.Config.Decoration gid) {
+        public virtual void MergeFormula(Net.TheVpc.Upa.Config.Decoration gid) {
             if (gid.GetConfig().GetOrder() >= configOrder) {
                 specified = true;
                 if (gid.GetInt("formulaOrder") != System.Int32.MinValue) {
@@ -43,7 +43,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                     expression = gid.GetString("value");
                     type = null;
                 }
-                if (!gid.GetType("custom").Equals(typeof(object)) && !gid.GetType("custom").Equals(typeof(Net.Vpc.Upa.Formula))) {
+                if (!gid.GetType("custom").Equals(typeof(object)) && !gid.GetType("custom").Equals(typeof(Net.TheVpc.Upa.Formula))) {
                     expression = null;
                     type = gid.GetType("custom");
                 }

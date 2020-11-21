@@ -11,26 +11,26 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
+namespace Net.TheVpc.Upa.Impl.Uql.Compiledexpression
 {
 
 
-    public sealed class CompiledNot : Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledUnaryOperator {
+    public sealed class CompiledNot : Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledUnaryOperator {
 
 
 
-        public CompiledNot(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression)  : base("not", expression){
+        public CompiledNot(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression)  : base("not", expression){
 
         }
 
 
-        public override Net.Vpc.Upa.Types.DataTypeTransform GetTypeTransform() {
-            return Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.BOOLEAN;
+        public override Net.TheVpc.Upa.Types.DataTypeTransform GetTypeTransform() {
+            return Net.TheVpc.Upa.Impl.Transform.IdentityDataTypeTransform.BOOLEAN;
         }
 
 
-        public override Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNot o = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNot(GetExpression().Copy());
+        public override Net.TheVpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNot o = new Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledNot(GetExpression().Copy());
             o.SetDescription(GetDescription());
             o.GetClientParameters().SetAll(GetClientParameters());
             return o;

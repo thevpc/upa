@@ -11,12 +11,12 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     /**
      * Custom Default Object defines a simple manner for introducing dynamic values of a field's default value.
-     * @see {@link net.vpc.upa.Field#setDefaultObject}
+     * @see {@link Net.TheVpc.Upa.Field#setDefaultObject}
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
     public interface CustomDefaultObject {

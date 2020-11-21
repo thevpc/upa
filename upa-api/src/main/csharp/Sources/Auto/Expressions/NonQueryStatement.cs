@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
     /**
@@ -21,6 +21,6 @@ namespace Net.Vpc.Upa.Expressions
      * Time: 12:30 AM
      * To change this template use File | Settings | File Templates.
      */
-    public interface NonQueryStatement : Net.Vpc.Upa.Expressions.EntityStatement {
+    public interface NonQueryStatement : Net.TheVpc.Upa.Expressions.EntityStatement {
     }
 }

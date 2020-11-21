@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
     /**
@@ -21,6 +21,6 @@ namespace Net.Vpc.Upa.Expressions
      * Time: 10:11 PM
      * To change this template use File | Settings | File Templates.
      */
-    public interface NameOrQuery : Net.Vpc.Upa.Expressions.Expression {
+    public interface NameOrQuery : Net.TheVpc.Upa.Expressions.Expression {
     }
 }

@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Expressions
+namespace Net.TheVpc.Upa.Expressions
 {
 
     /**
      * Created by vpc on 6/28/16.
      */
-    public abstract class OperatorExpression : Net.Vpc.Upa.Expressions.DefaultExpression {
+    public abstract class OperatorExpression : Net.TheVpc.Upa.Expressions.DefaultExpression {
 
         public OperatorExpression() {
         }

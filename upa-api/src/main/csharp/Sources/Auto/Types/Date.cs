@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Types
+namespace Net.TheVpc.Upa.Types
 {
 
 
@@ -21,7 +21,7 @@ namespace Net.Vpc.Upa.Types
      * Time: 13:02:55
      */
 
-    public partial class Date : Net.Vpc.Upa.Types.Temporal {
+    public partial class Date : Net.TheVpc.Upa.Types.Temporal {
 
 
 
@@ -33,11 +33,11 @@ namespace Net.Vpc.Upa.Types
 
         }
 
-        public virtual Net.Vpc.Upa.Types.Date NextDay() {
+        public virtual Net.TheVpc.Upa.Types.Date NextDay() {
             return GetRelativeDay(1);
         }
 
-        public virtual Net.Vpc.Upa.Types.Date PreviousDay() {
+        public virtual Net.TheVpc.Upa.Types.Date PreviousDay() {
             return GetRelativeDay(-1);
         }
 
@@ -47,11 +47,11 @@ namespace Net.Vpc.Upa.Types
 
 
         public override string ToString() {
-            Net.Vpc.Upa.Types.Calendar c = Net.Vpc.Upa.Types.Calendar.GetInstance();
+            Net.TheVpc.Upa.Types.Calendar c = Net.TheVpc.Upa.Types.Calendar.GetInstance();
             c.SetTime(this);
-            int year = c.Get(Net.Vpc.Upa.Types.Calendar.YEAR);
-            int month = c.Get(Net.Vpc.Upa.Types.Calendar.MONTH) + 1;
-            int day = c.Get(Net.Vpc.Upa.Types.Calendar.DAY_OF_MONTH);
+            int year = c.Get(Net.TheVpc.Upa.Types.Calendar.YEAR);
+            int month = c.Get(Net.TheVpc.Upa.Types.Calendar.MONTH) + 1;
+            int day = c.Get(Net.TheVpc.Upa.Types.Calendar.DAY_OF_MONTH);
             char[] buf = "2000-00-00".ToCharArray();
             buf[0] = (char) ('0' + (year / 1000));
             buf[1] = (char) ('0' + ((year / 100) % 10));

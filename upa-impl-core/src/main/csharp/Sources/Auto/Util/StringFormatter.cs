@@ -11,10 +11,10 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Util
+namespace Net.TheVpc.Upa.Impl.Util
 {
 
-    internal class StringFormatter : Net.Vpc.Upa.Impl.Util.Formatter {
+    internal class StringFormatter : Net.TheVpc.Upa.Impl.Util.Formatter {
 
         public const byte LEFT_ALIGN = ((byte)0);
 
@@ -56,12 +56,12 @@ namespace Net.Vpc.Upa.Impl.Util
             if (remaining == 0) return @string;
             if (remaining < 0) switch(position) {
                 case RIGTH_ALIGN:
-                    return Net.Vpc.Upa.Impl.Util.StringUtils.Substring(@string, remaining);
+                    return Net.TheVpc.Upa.Impl.Util.StringUtils.Substring(@string, remaining);
                 case CENTER_ALIGN:
-                    return @string = Net.Vpc.Upa.Impl.Util.StringUtils.Substring(@string, remaining / 2, width + remaining / 2);
+                    return @string = Net.TheVpc.Upa.Impl.Util.StringUtils.Substring(@string, remaining / 2, width + remaining / 2);
                 case LEFT_ALIGN:
                 default:
-                    return Net.Vpc.Upa.Impl.Util.StringUtils.Substring(@string, 0, remaining);
+                    return Net.TheVpc.Upa.Impl.Util.StringUtils.Substring(@string, 0, remaining);
             }
             char[] left;
             char[] rigth;

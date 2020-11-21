@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     /**
@@ -19,8 +19,8 @@ namespace Net.Vpc.Upa
      */
     public interface UPAContextProvider {
 
-         Net.Vpc.Upa.UPAContext GetContext();
+         Net.TheVpc.Upa.UPAContext GetContext();
 
-         void SetContext(Net.Vpc.Upa.UPAContext newInstance);
+         void SetContext(Net.TheVpc.Upa.UPAContext newInstance);
     }
 }

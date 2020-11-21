@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
@@ -23,12 +23,12 @@ namespace Net.Vpc.Upa.Impl
 
         public System.Collections.Generic.ISet<string> names = new System.Collections.Generic.HashSet<string>();
 
-        public System.Collections.Generic.IDictionary<string , System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Callbacks.EntityInterceptor>> triggers = new System.Collections.Generic.Dictionary<string , System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Callbacks.EntityInterceptor>>();
+        public System.Collections.Generic.IDictionary<string , System.Collections.Generic.IDictionary<string , Net.TheVpc.Upa.Callbacks.EntityInterceptor>> triggers = new System.Collections.Generic.Dictionary<string , System.Collections.Generic.IDictionary<string , Net.TheVpc.Upa.Callbacks.EntityInterceptor>>();
 
-        public virtual System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Callbacks.EntityInterceptor> GetTriggersMap(string entityName) {
-            System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Callbacks.EntityInterceptor> tt = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Callbacks.EntityInterceptor>>(triggers,entityName);
+        public virtual System.Collections.Generic.IDictionary<string , Net.TheVpc.Upa.Callbacks.EntityInterceptor> GetTriggersMap(string entityName) {
+            System.Collections.Generic.IDictionary<string , Net.TheVpc.Upa.Callbacks.EntityInterceptor> tt = Net.TheVpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,System.Collections.Generic.IDictionary<string , Net.TheVpc.Upa.Callbacks.EntityInterceptor>>(triggers,entityName);
             if (tt == null) {
-                tt = new System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Callbacks.EntityInterceptor>();
+                tt = new System.Collections.Generic.Dictionary<string , Net.TheVpc.Upa.Callbacks.EntityInterceptor>();
                 triggers[entityName]=tt;
             }
             return tt;

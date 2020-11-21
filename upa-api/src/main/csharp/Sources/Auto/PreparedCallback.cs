@@ -11,15 +11,15 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
 
     /**
      * Created by vpc on 7/25/15.
      */
-    public interface PreparedCallback : Net.Vpc.Upa.Callback {
+    public interface PreparedCallback : Net.TheVpc.Upa.Callback {
 
-         void Prepare(Net.Vpc.Upa.Callbacks.UPAEvent @event);
+         void Prepare(Net.TheVpc.Upa.Callbacks.UPAEvent @event);
     }
 }

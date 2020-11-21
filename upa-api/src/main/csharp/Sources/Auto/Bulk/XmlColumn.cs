@@ -11,13 +11,13 @@
 
 
 
-namespace Net.Vpc.Upa.Bulk
+namespace Net.TheVpc.Upa.Bulk
 {
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class XmlColumn : Net.Vpc.Upa.Bulk.DataColumn {
+    public class XmlColumn : Net.TheVpc.Upa.Bulk.DataColumn {
 
         public XmlColumn() {
         }

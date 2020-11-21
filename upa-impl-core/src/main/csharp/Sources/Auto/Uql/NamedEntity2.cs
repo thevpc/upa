@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Uql
+namespace Net.TheVpc.Upa.Impl.Uql
 {
 
 
@@ -21,9 +21,9 @@ namespace Net.Vpc.Upa.Impl.Uql
 
         internal string alias;
 
-        internal Net.Vpc.Upa.Entity entity;
+        internal Net.TheVpc.Upa.Entity entity;
 
-        public NamedEntity2(string alias, Net.Vpc.Upa.Entity entity) {
+        public NamedEntity2(string alias, Net.TheVpc.Upa.Entity entity) {
             this.alias = alias;
             this.entity = entity;
         }

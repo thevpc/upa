@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Impl.Persistence.Shared
+namespace Net.TheVpc.Upa.Impl.Persistence.Shared
 {
 
 
@@ -19,15 +19,15 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
      * Created with IntelliJ IDEA. User: vpc Date: 8/15/12 Time: 11:46 PM To change
      * this template use File | Settings | File Templates.
      */
-    public class BinaryOperatorExpressionSQLProvider : Net.Vpc.Upa.Impl.Persistence.Shared.AbstractSQLProvider {
+    public class BinaryOperatorExpressionSQLProvider : Net.TheVpc.Upa.Impl.Persistence.Shared.AbstractSQLProvider {
 
-        public BinaryOperatorExpressionSQLProvider()  : base(typeof(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledBinaryOperatorExpression)){
+        public BinaryOperatorExpressionSQLProvider()  : base(typeof(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledBinaryOperatorExpression)){
 
         }
 
 
-        public override string GetSQL(object oo, Net.Vpc.Upa.Persistence.EntityExecutionContext qlContext, Net.Vpc.Upa.Impl.Persistence.SQLManager sqlManager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledBinaryOperatorExpression o = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledBinaryOperatorExpression) oo;
+        public override string GetSQL(object oo, Net.TheVpc.Upa.Persistence.EntityExecutionContext qlContext, Net.TheVpc.Upa.Impl.Persistence.SQLManager sqlManager, Net.TheVpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) /* throws Net.TheVpc.Upa.Exceptions.UPAException */  {
+            Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledBinaryOperatorExpression o = (Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledBinaryOperatorExpression) oo;
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             sb.Append('(');
             sb.Append(sqlManager.GetSQL(o.GetLeft(), qlContext, declarations));
@@ -37,77 +37,77 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
             return sb.ToString();
         }
 
-        private string GetOperatorString(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledBinaryOperatorExpression expression) {
+        private string GetOperatorString(Net.TheVpc.Upa.Impl.Uql.Compiledexpression.CompiledBinaryOperatorExpression expression) {
             switch(expression.GetOperator()) {
-                case Net.Vpc.Upa.Expressions.BinaryOperator.AND:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.AND:
                     {
                         return "And";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.OR:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.OR:
                     {
                         return "Or";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.BIT_AND:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.BIT_AND:
                     {
                         return "&";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.LSHIFT:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.LSHIFT:
                     {
                         return "<<";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.BIT_OR:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.BIT_OR:
                     {
                         return "|";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.RSHIFT:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.RSHIFT:
                     {
                         return ">>";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.URSHIFT:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.URSHIFT:
                     {
                         return ">>>";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.XOR:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.XOR:
                     {
                         return "^";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.DIFF:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.DIFF:
                     {
                         return "!=";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.EQ:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.EQ:
                     {
                         return "=";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.GT:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.GT:
                     {
                         return ">";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.GE:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.GE:
                     {
                         return ">=";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.LT:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.LT:
                     {
                         return "<";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.LE:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.LE:
                     {
                         return "<=";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.PLUS:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.PLUS:
                     {
                         return "+";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.MINUS:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.MINUS:
                     {
                         return "-";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.MUL:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.MUL:
                     {
                         return "*";
                     }
-                case Net.Vpc.Upa.Expressions.BinaryOperator.DIV:
+                case Net.TheVpc.Upa.Expressions.BinaryOperator.DIV:
                     {
                         return "/";
                     }

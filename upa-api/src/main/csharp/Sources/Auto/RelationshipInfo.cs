@@ -11,10 +11,10 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
-    public class RelationshipInfo : Net.Vpc.Upa.UPAObjectInfo {
+    public class RelationshipInfo : Net.TheVpc.Upa.UPAObjectInfo {
 
         private bool nullable;
 
@@ -26,7 +26,7 @@ namespace Net.Vpc.Upa
 
         private string source;
 
-        private Net.Vpc.Upa.RelationshipType relationshipType;
+        private Net.TheVpc.Upa.RelationshipType relationshipType;
 
         private bool followLinks;
 
@@ -86,11 +86,11 @@ namespace Net.Vpc.Upa
             this.source = source;
         }
 
-        public virtual Net.Vpc.Upa.RelationshipType GetRelationshipType() {
+        public virtual Net.TheVpc.Upa.RelationshipType GetRelationshipType() {
             return relationshipType;
         }
 
-        public virtual void SetRelationshipType(Net.Vpc.Upa.RelationshipType relationshipType) {
+        public virtual void SetRelationshipType(Net.TheVpc.Upa.RelationshipType relationshipType) {
             this.relationshipType = relationshipType;
         }
 

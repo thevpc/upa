@@ -11,26 +11,26 @@
 
 
 
-namespace Net.Vpc.Upa.Impl
+namespace Net.TheVpc.Upa.Impl
 {
 
 
     /**
      * User: taha Date: 28 aout 2003 Time: 20:28:38
      */
-    public class DefaultRelationshipRole : Net.Vpc.Upa.Impl.AbstractUPAObject, Net.Vpc.Upa.RelationshipRole {
+    public class DefaultRelationshipRole : Net.TheVpc.Upa.Impl.AbstractUPAObject, Net.TheVpc.Upa.RelationshipRole {
 
-        private Net.Vpc.Upa.Field entityField;
+        private Net.TheVpc.Upa.Field entityField;
 
-        private Net.Vpc.Upa.Field[] fields;
+        private Net.TheVpc.Upa.Field[] fields;
 
-        private Net.Vpc.Upa.Entity entity;
+        private Net.TheVpc.Upa.Entity entity;
 
-        private Net.Vpc.Upa.Relationship relation;
+        private Net.TheVpc.Upa.Relationship relation;
 
-        private Net.Vpc.Upa.RelationshipRoleType relationRoleType;
+        private Net.TheVpc.Upa.RelationshipRoleType relationRoleType;
 
-        private Net.Vpc.Upa.RelationshipUpdateType relationUpdateType;
+        private Net.TheVpc.Upa.RelationshipUpdateType relationUpdateType;
 
         public DefaultRelationshipRole() {
         }
@@ -40,27 +40,27 @@ namespace Net.Vpc.Upa.Impl
             return GetName();
         }
 
-        public virtual Net.Vpc.Upa.Relationship GetRelationship() {
+        public virtual Net.TheVpc.Upa.Relationship GetRelationship() {
             return relation;
         }
 
-        public virtual void SetRelationship(Net.Vpc.Upa.Relationship relation) {
+        public virtual void SetRelationship(Net.TheVpc.Upa.Relationship relation) {
             this.relation = relation;
         }
 
-        public virtual Net.Vpc.Upa.RelationshipRoleType GetRelationshipRoleType() {
+        public virtual Net.TheVpc.Upa.RelationshipRoleType GetRelationshipRoleType() {
             return relationRoleType;
         }
 
-        public virtual void SetRelationshipRoleType(Net.Vpc.Upa.RelationshipRoleType relationRoteType) {
+        public virtual void SetRelationshipRoleType(Net.TheVpc.Upa.RelationshipRoleType relationRoteType) {
             this.relationRoleType = relationRoteType;
         }
 
-        public virtual Net.Vpc.Upa.Entity GetEntity() {
+        public virtual Net.TheVpc.Upa.Entity GetEntity() {
             return entity;
         }
 
-        public virtual void SetEntity(Net.Vpc.Upa.Entity entity) {
+        public virtual void SetEntity(Net.TheVpc.Upa.Entity entity) {
             this.entity = entity;
         }
 
@@ -73,32 +73,32 @@ namespace Net.Vpc.Upa.Impl
             return -1;
         }
 
-        public virtual Net.Vpc.Upa.Field GetEntityField() {
+        public virtual Net.TheVpc.Upa.Field GetEntityField() {
             return entityField;
         }
 
-        public virtual void SetEntityField(Net.Vpc.Upa.Field entityField) {
+        public virtual void SetEntityField(Net.TheVpc.Upa.Field entityField) {
             this.entityField = entityField;
         }
 
-        public virtual Net.Vpc.Upa.Field GetField(int i) {
+        public virtual Net.TheVpc.Upa.Field GetField(int i) {
             return fields[i];
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Field> GetFields() {
-            return new System.Collections.Generic.List<Net.Vpc.Upa.Field>(new System.Collections.Generic.List<Net.Vpc.Upa.Field>(fields));
+        public virtual System.Collections.Generic.IList<Net.TheVpc.Upa.Field> GetFields() {
+            return new System.Collections.Generic.List<Net.TheVpc.Upa.Field>(new System.Collections.Generic.List<Net.TheVpc.Upa.Field>(fields));
         }
 
-        public virtual void SetFields(Net.Vpc.Upa.Field[] fields) {
+        public virtual void SetFields(Net.TheVpc.Upa.Field[] fields) {
             this.fields = fields;
             entity = fields[0].GetEntity();
         }
 
-        public virtual Net.Vpc.Upa.RelationshipUpdateType GetRelationshipUpdateType() {
+        public virtual Net.TheVpc.Upa.RelationshipUpdateType GetRelationshipUpdateType() {
             return relationUpdateType;
         }
 
-        public virtual void SetRelationshipUpdateType(Net.Vpc.Upa.RelationshipUpdateType relationUpdateType) {
+        public virtual void SetRelationshipUpdateType(Net.TheVpc.Upa.RelationshipUpdateType relationUpdateType) {
             this.relationUpdateType = relationUpdateType;
         }
     }

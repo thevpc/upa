@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa
+namespace Net.TheVpc.Upa
 {
 
     /**
@@ -22,7 +22,7 @@ namespace Net.Vpc.Upa
 
          int GetContextSupportLevel();
 
-         void SetParentFactory(Net.Vpc.Upa.ObjectFactory factory);
+         void SetParentFactory(Net.TheVpc.Upa.ObjectFactory factory);
 
           T CreateObject<T>(System.Type type, string name);
 

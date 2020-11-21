@@ -11,7 +11,7 @@
 
 
 
-namespace Net.Vpc.Upa.Callbacks
+namespace Net.TheVpc.Upa.Callbacks
 {
 
 
@@ -19,15 +19,15 @@ namespace Net.Vpc.Upa.Callbacks
      *
      * @author taha.bensalah@gmail.com
      */
-    public class PersistObjectEvent : Net.Vpc.Upa.Callbacks.EntityEvent {
+    public class PersistObjectEvent : Net.TheVpc.Upa.Callbacks.EntityEvent {
 
         private object objectId;
 
-        private Net.Vpc.Upa.Document objectDocument;
+        private Net.TheVpc.Upa.Document objectDocument;
 
         private object objectValue;
 
-        public PersistObjectEvent(object objectId, Net.Vpc.Upa.Document objectDocument, Net.Vpc.Upa.Persistence.EntityExecutionContext entityExecutionContext, Net.Vpc.Upa.EventPhase phase)  : base(entityExecutionContext, phase){
+        public PersistObjectEvent(object objectId, Net.TheVpc.Upa.Document objectDocument, Net.TheVpc.Upa.Persistence.EntityExecutionContext entityExecutionContext, Net.TheVpc.Upa.EventPhase phase)  : base(entityExecutionContext, phase){
 
             this.objectId = objectId;
             this.objectDocument = objectDocument;
@@ -37,7 +37,7 @@ namespace Net.Vpc.Upa.Callbacks
             return objectId;
         }
 
-        public virtual Net.Vpc.Upa.Document GetObjectDocument() {
+        public virtual Net.TheVpc.Upa.Document GetObjectDocument() {
             return objectDocument;
         }
 
