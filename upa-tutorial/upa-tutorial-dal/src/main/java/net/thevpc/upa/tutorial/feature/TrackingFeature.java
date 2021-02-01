@@ -29,12 +29,17 @@ public class TrackingFeature {
         Entity entity = event.getEntity();
         Section tracking = entity.addSection("Tracking");
 
-        tracking.addField(new DefaultFieldBuilder().setName("creationDate").setDataType(TimestampType.DEFAULT).setPersistFormula("currentTimestamp()"));
-        tracking.addField(new DefaultFieldBuilder().setName("creationUser").setDataType(StringType.DEFAULT).setPersistFormula("currentUser()"));
+        tracking.addField(new DefaultFieldBuilder().setName("creationDate").setDataType(TimestampType.DEFAULT)
+                .setPersistFormula("currentTimestamp()"));
+        tracking.addField(new DefaultFieldBuilder()
+                .setName("creationUser").setDataType(StringType.DEFAULT)
+                .setPersistFormula("currentUser()"));
 
         tracking.addField(new DefaultFieldBuilder().setName("modificationDate").setDataType(TimestampType.DEFAULT).setFormula("currentTimestamp()"));
         tracking.addField(new DefaultFieldBuilder().setName("modificationUser").setDataType(StringType.DEFAULT).setFormula("currentUser()"));
 
-        tracking.addField(new DefaultFieldBuilder().setName("revision").setDefaultObject(0L).setDataType(LongType.DEFAULT).setUpdateFormula("revision+1"));
+        tracking.addField(new DefaultFieldBuilder()
+                .setName("revision").setDefaultObject(0L)
+                .setDataType(LongType.DEFAULT).setUpdateFormula("revision+1"));
     }
 }

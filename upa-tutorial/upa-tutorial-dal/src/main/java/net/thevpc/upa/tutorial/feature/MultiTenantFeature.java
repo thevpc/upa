@@ -33,7 +33,9 @@ public class MultiTenantFeature {
     public void entityAdded(EntityEvent event) {
         Entity entity = event.getEntity();
 
-        entity.addField(new DefaultFieldBuilder().setName("tenantId").setPath("MultiTenant").setDataType(DataTypeFactory.INT)
+        entity.addField(new DefaultFieldBuilder()
+                .setName("tenantId")
+                .setPath("MultiTenant").setDataType(DataTypeFactory.INT)
         .setPersistFormula("CurrentTenant()"));
 
         // filter entities by tenantId
