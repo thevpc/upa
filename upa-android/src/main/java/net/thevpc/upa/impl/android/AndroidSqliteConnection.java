@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.thevpc.upa.PersistenceUnit;
 
 import net.thevpc.upa.Properties;
 import net.thevpc.upa.exceptions.UPAException;
@@ -36,8 +37,8 @@ public class AndroidSqliteConnection extends AbstractUConnection {
     private final SQLiteOpenHelper h;
     private final SQLiteDatabase db;
 
-    public AndroidSqliteConnection(String dbname, int dbversion, MarshallManager marshallManager, Properties perfProperties) {
-        super(dbname + "-" + dbversion, marshallManager, perfProperties);
+    public AndroidSqliteConnection(String dbname, int dbversion, MarshallManager marshallManager, Properties perfProperties,PersistenceUnit pu) {
+        super(dbname + "-" + dbversion, marshallManager, perfProperties,pu);
         this.dbname = dbname;
         this.dbversion = dbversion;
         h = new SQLiteOpenHelper(AndroidContext.getApplication(), dbname, null, dbversion) {

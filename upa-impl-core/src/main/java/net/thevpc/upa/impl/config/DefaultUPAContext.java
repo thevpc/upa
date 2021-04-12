@@ -352,12 +352,17 @@ public class DefaultUPAContext implements UPAContext {
         }
         PersistenceGroup persistenceGroup = null;
         T ret = null;
+        
+        boolean sessionCreated = false;
+        boolean loginCreated = false;
         boolean customPersistenceGroup = false;
         boolean customPersistenceUnit = false;
+
         UPAContext context = UPA.getContext();
         PersistenceGroup initialPersistenceGroup = context.getPersistenceGroup();
         PersistenceUnit initialPersistenceUnit = initialPersistenceGroup.getPersistenceUnit();
         PersistenceGroup _persistenceGroup = invokeContext.getPersistenceGroup();
+        int sessinDepthBefore = 0;
         try {
             if (_persistenceGroup != null) {
                 persistenceGroup = _persistenceGroup;
@@ -368,12 +373,11 @@ public class DefaultUPAContext implements UPAContext {
                 persistenceGroup = initialPersistenceGroup;
             }
             Session s = persistenceGroup.findCurrentSession();
-            boolean sessionCreated = false;
-            boolean loginCreated = false;
             if (s == null) {
                 s = persistenceGroup.openSession();
                 sessionCreated = true;
             }
+            String before = s.dump();
             PersistenceUnit pu = null;
             if (invokeContext.getPersistenceUnit() != null) {
                 pu = invokeContext.getPersistenceUnit();
@@ -381,14 +385,15 @@ public class DefaultUPAContext implements UPAContext {
             if (pu == null) {
                 pu = persistenceGroup.getPersistenceUnit();
             }
-
             if (privileged) {
-                pu.loginPrivileged(invokeContext.getLogin());
-                loginCreated = true;
+                if (pu.loginPrivileged(invokeContext.getLogin(), invokeContext.isForceLogin())) {
+                    loginCreated = true;
+                }
             } else {
                 if (invokeContext.getLogin() != null) {
-                    pu.login(invokeContext.getLogin(), invokeContext.getCredentials());
-                    loginCreated = true;
+                    if (pu.login(invokeContext.getLogin(), invokeContext.getCredentials(), invokeContext.isForceLogin())) {
+                        loginCreated = true;
+                    }
                 }
             }
             boolean transactionCreated = false;
@@ -405,13 +410,20 @@ public class DefaultUPAContext implements UPAContext {
             if (customPersistenceUnit) {
                 pu.getPersistenceGroup().setPersistenceUnit(pu.getName());
             }
+            sessinDepthBefore = s.getDepth();
             try {
                 ret = action.run();
+                int sessinDepthAfter = s.getDepth();
+                if (sessinDepthAfter != sessinDepthBefore) {
+                    log.log(Level.SEVERE, "invalid session depth {0}!=+{1}", new Object[]{sessinDepthAfter, sessinDepthBefore});
+                    log.log(Level.SEVERE, "session before={0}", before);
+                    log.log(Level.SEVERE, "session  after={0}", s.toString());
+                }
                 if (transactionCreated) {
                     pu.commitTransaction();
                 }
             } catch (Throwable e) {
-                log.log(Level.SEVERE,"InvokeFailed",e);
+                log.log(Level.SEVERE, "InvokeFailed", e);
                 if (transactionCreated) {
                     pu.rollbackTransaction();
                 }
@@ -421,6 +433,7 @@ public class DefaultUPAContext implements UPAContext {
                 throw new InvocationException(e);
             } finally {
                 if (loginCreated) {
+                    String after = s.dump();
                     pu.logout();
                 }
                 if (sessionCreated) {

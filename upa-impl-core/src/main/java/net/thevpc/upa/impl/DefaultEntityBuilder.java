@@ -120,10 +120,16 @@ public class DefaultEntityBuilder implements EntityBuilder {
     }
 
     @Override
+    public Document primitiveIdToDocument(Object id) {
+        return idToDocument(primitiveIdToId(id));
+    }
+    
+    @Override
     public Object primitiveIdToId(Object id) {
         if (id == null) {
             return null;
-        }
+        } 
+        if(id instanceof PrimitiveId){id= ((PrimitiveId)id).getValues();}
         List<Field> idFields = entity.getIdFields();
         List<PrimitiveField> idPrimitiveFields = entity.getIdPrimitiveFields();
         if (idPrimitiveFields.size() == 1 && !(id instanceof Object[])) {
@@ -256,7 +262,7 @@ public class DefaultEntityBuilder implements EntityBuilder {
 
     @Override
     public Document idToDocument(Object objectId) throws UPAException {
-        return entityFactory.idToObject(objectId);
+        return entityFactory.idToDocument(objectId);
     }
 
     @Override

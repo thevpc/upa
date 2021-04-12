@@ -467,7 +467,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
                 overriddenTemporal.setBetterValue(temporalAnn.getEnum("value", TemporalOption.class), temporalAnn.getConfig().getOrder());
             }
 
-            for (Decoration decoration : repo.getFieldRepeatableDecorations(someField, Property.class, Properties.class)) {
+            for (Decoration decoration : repo.getFieldRepeatableDecorations(someField, net.thevpc.upa.config.Property.class, net.thevpc.upa.config.Properties.class)) {
                 parameterInfos.add(UPAUtils.createProperty(decoration));
             }
 

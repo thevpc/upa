@@ -8,11 +8,6 @@
     <artifactId>upa-test</artifactId>
     <name>net.thevpc.upa.upa-test</name>
     <version>1.2.0</version>
-    <parent>
-        <groupId>net.thevpc.upa</groupId>
-        <artifactId>upa</artifactId>
-        <version>1.2.0</version>
-    </parent>
     <url>https://github.com/thevpc/upa/wiki</url>
 
     <organization>

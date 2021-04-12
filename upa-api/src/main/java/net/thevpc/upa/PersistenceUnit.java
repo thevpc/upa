@@ -539,16 +539,26 @@ public interface PersistenceUnit extends Closeable {
     ScanFilter[] getScanFilters();
 
     UserPrincipal getUserPrincipal();
+    
+    UserPrincipal getUserPrincipal(Session session);
 
     /**
      * push new user context if login and credentials are valid
      *
      * @param login login
      * @param credentials credentials
+     * @param force force when false and the login is the same, no login
+     * @return true if a new login context is created
      */
-    void login(String login, String credentials);
+    boolean login(String login, String credentials,boolean force);
 
-    void loginPrivileged(String login);
+    /**
+     * 
+     * @param login login
+     * @param force force when false and the login is the same, no login
+     * @return true if a new login context is created
+     */
+    boolean loginPrivileged(String login,boolean force);
 
     /**
      * logout from previous login. should be valid only if login succeeded

@@ -253,7 +253,7 @@ public class AndroidSqlitePersistenceStore extends AbstractPersistenceStore {
 
     @Override
     public String getCreateViewStatement(Entity entity, EntityExecutionContext executionContext) throws UPAException {
-        QueryStatement statement=getViewQueryStatement(entity);
+        QueryStatement statement = getViewQueryStatement(entity);
         StringBuilder sb = new StringBuilder();
         sb.append("Create View ").append(getValidIdentifier(getTableName(entity)));
         sb.append("(");
@@ -326,13 +326,14 @@ public class AndroidSqlitePersistenceStore extends AbstractPersistenceStore {
         return createConnection(getConnectionProfile());
     }
 
+    @Override
     public UConnection createConnection(ConnectionProfile cnxProfile) throws UPAException {
         if (DatabaseProduct.SQLITE == cnxProfile.getDatabaseProduct()) {
             return new AndroidSqliteConnection(
                     cnxProfile.getProperty(ConnectionOption.DATABASE_NAME),
                     1,
                     getMarshallManager(),
-                    persistenceUnit.getProperties()
+                    persistenceUnit.getProperties(), persistenceUnit
             );
         }
         throw new UPAException("NotSupported");

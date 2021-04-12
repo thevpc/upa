@@ -47,14 +47,23 @@ public class InvokeContext implements Serializable, Cloneable {
     private String login;
     private String credentials;
     private boolean privileged;
+    private boolean forceLogin;
     private TransactionType transactionType = TransactionType.REQUIRED;
     private PersistenceGroup persistenceGroup;
     private PersistenceUnit persistenceUnit;
 
+    public boolean isForceLogin() {
+        return forceLogin;
+    }
+
+    public void setForceLogin(boolean forceLogin) {
+        this.forceLogin = forceLogin;
+    }
+
     public String getLogin() {
         return login;
     }
-
+    
     public void setLogin(String login) {
         this.login = login;
     }

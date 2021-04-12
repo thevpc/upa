@@ -65,4 +65,25 @@ class StackedSession implements Session {
     public void close() {
         session.popContext();
     }
+
+    @Override
+    public int getDepth() {
+        return session.getDepth();
+    }
+
+    @Override
+    public String dump() {
+        return session.dump();
+    }
+
+    @Override
+    public void setParamAt(PersistenceUnit persistenceUnit, String name, Object value, int depth) {
+        session.setParamAt(persistenceUnit, name, value, depth);
+    }
+
+    @Override
+    public <T> T getParamAt(PersistenceUnit persistenceUnit, Class<T> type, String name, T defaultValue, int depth) {
+        return session.getParamAt(persistenceUnit, type, name, defaultValue, depth);
+    }
+
 }

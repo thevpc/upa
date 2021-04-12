@@ -14,6 +14,7 @@ import java.sql.*;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.thevpc.upa.PersistenceUnit;
 import net.thevpc.upa.impl.UPAImplDefaults;
 import net.thevpc.upa.persistence.NativeResult;
 
@@ -35,8 +36,8 @@ public class DefaultUConnection extends AbstractUConnection {
     private Connection connection;
     private Connection metadataAccessibleConnection;
 
-    public DefaultUConnection(String name, Connection connection, MarshallManager marshallManager, Properties perfProperties) {
-        super(name, marshallManager, perfProperties);
+    public DefaultUConnection(String name, Connection connection, MarshallManager marshallManager, Properties perfProperties,PersistenceUnit pu) {
+        super(name, marshallManager, perfProperties,pu);
         this.connection = connection;
     }
 

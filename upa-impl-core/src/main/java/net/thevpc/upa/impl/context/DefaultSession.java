@@ -57,8 +57,24 @@ public class DefaultSession implements Session {
         getCurrentContext().setParam(persistenceUnit, name, value);
     }
 
+    @Override
+    public void setParamAt(PersistenceUnit pu, String name, Object value, int depth) {
+        SessionContext m = stack.get(stack.size() - 1 - depth);
+        m.setParam(pu, name, value);
+    }
+
+    @Override
     public <T> T getImmediateParam(PersistenceUnit persistenceUnit, Class<T> type, String name, T defaultValue) {
         SessionContext m = stack.peek();
+        if (m.containsParam(persistenceUnit, name)) {
+            return m.getParam(persistenceUnit, type, name, defaultValue);
+        }
+        return defaultValue;
+    }
+
+    @Override
+    public <T> T getParamAt(PersistenceUnit persistenceUnit, Class<T> type, String name, T defaultValue, int depth) {
+        SessionContext m = stack.get(stack.size() - 1 - depth);
         if (m.containsParam(persistenceUnit, name)) {
             return m.getParam(persistenceUnit, type, name, defaultValue);
         }
@@ -102,6 +118,22 @@ public class DefaultSession implements Session {
     @Override
     public void removeSessionListener(SessionListener sessionListener) {
         sessionListeners.remove(sessionListener);
+    }
+
+    @Override
+    public int getDepth() {
+        return stack.size();
+    }
+
+    //@Override
+    public String dump() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        for (SessionContext sessionContext : stack) {
+            sb.append("  \n" + sessionContext.toString());
+        }
+        sb.append("\n}");
+        return sb.toString();
     }
 
     @Override

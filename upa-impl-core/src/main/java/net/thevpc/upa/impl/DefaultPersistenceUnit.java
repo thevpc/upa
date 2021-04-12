@@ -60,6 +60,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.thevpc.upa.impl.cache.EntityCollectionCacheDisabled;
+import net.thevpc.upa.impl.persistence.UTransactionHelper;
 
 //import net.thevpc.upa.impl.util.ListUtils;
 public class DefaultPersistenceUnit implements PersistenceUnitExt {
@@ -1155,12 +1156,20 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         } else {
             currentSession = getPersistenceGroup().openSession();
         }
-        currentSession.setParam(this, SessionParams.SYSTEM, privateUUID.toString());
+        //getPersistenceGroup().getSecurityManager().
+        currentSession.setParam(this, SessionParams.USER_PRINCIPAL, new SystemUserPrincipal("<internal>", null));
         return currentSession;
     }
 
     public boolean isSystemSession(Session s) {
-        return privateUUID.toString().equals(s.getParam(this, String.class, SessionParams.SYSTEM, null));
+        UserPrincipal p = getUserPrincipal(s);
+        if (p instanceof SystemUserPrincipal) {
+            return true;
+        }
+        if (p != null && getPersistenceGroup().getPersistenceGroupSecurityManager().isPrivilegedLogin(p.getName())) {
+            return true;
+        }
+        return false;//privateUUID.toString().equals(s.getParam(this, String.class, SessionParams.SYSTEM, null));
     }
 
     @Override
@@ -2245,7 +2254,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         if (transactionType == null) {
             transactionType = TransactionType.SUPPORTS;
         }
-        Transaction currentTransaction = currentSession.getParam(this, Transaction.class, SessionParams.TRANSACTION, null);
+        UTransactionHelper currentTransaction = UTransactionHelper.get(currentSession, this);
         switch (transactionType) {
             case MANDATORY: {
                 if (currentTransaction == null) {
@@ -2272,11 +2281,8 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             }
             case REQUIRED: {
                 if (currentTransaction == null) {
-                    Transaction transaction = transactionManager.createTransaction(getConnection(), this, persistenceStore);
-                    transaction.begin();
                     currentSession.pushContext();
-                    currentSession.setParam(this, SessionParams.TRANSACTION_TYPE, transactionType);
-                    currentSession.setParam(this, SessionParams.TRANSACTION, transaction);
+                    UTransactionHelper.set(currentSession, this, transactionType);
                     return true;
                 }
                 return false;
@@ -2293,10 +2299,11 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     @Override
     public void commitTransaction() {
         Session currentSession = getCurrentSession();
-        Transaction it = currentSession.getImmediateParam(this, Transaction.class, SessionParams.TRANSACTION, null);
+        UTransactionHelper it = UTransactionHelper.getImmediate(currentSession, this);
         if (it != null) {
             it.commit();
             currentSession.popContext();
+
         } else {
             throw new UPAException(new I18NString("TransactionContextMissing"));
         }
@@ -2337,7 +2344,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     @Override
     public void rollbackTransaction() {
         Session currentSession = getCurrentSession();
-        Transaction it = currentSession.getImmediateParam(this, Transaction.class, SessionParams.TRANSACTION, null);
+        UTransactionHelper it = UTransactionHelper.getImmediate(currentSession, this);
         if (it != null) {
             it.rollback();
             currentSession.popContext();
@@ -2620,22 +2627,39 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     }
 
     @Override
-    public void login(String login, String credentials) {
+    public boolean login(String login, String credentials, boolean force) {
         Session currentSession = getCurrentSession();
+        if (force) {
+            UserPrincipal p = getUserPrincipal(currentSession);
+            if (p != null) {
+                String oldLogin = p.getName();
+                if (Objects.equals(login, oldLogin)) {
+                    return false;
+                }
+            }
+        }
         UserPrincipal p = getSecurityManager().login(login, credentials);
         currentSession.pushContext();
         currentSession.setParam(this, SessionParams.USER_PRINCIPAL, p);
+        return true;
     }
 
     @Override
-    public void loginPrivileged(String login) {
+    public boolean loginPrivileged(String login, boolean force) {
         Session currentSession = getCurrentSession();
+        if (force) {
+            UserPrincipal p = getUserPrincipal(currentSession);
+            if (p != null) {
+                String oldLogin = p.getName();
+                if (Objects.equals(login, oldLogin)) {
+                    return false;
+                }
+            }
+        }
         UserPrincipal p = getSecurityManager().loginPrivileged(login);
         currentSession.pushContext();
         currentSession.setParam(this, SessionParams.USER_PRINCIPAL, p);
-        if (login == null || login.equals("")) {
-            currentSession.setParam(this, SessionParams.SYSTEM, privateUUID.toString());
-        }
+        return true;
     }
 
     @Override
@@ -2750,8 +2774,24 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         UConnection connection = session.getParam(this, UConnection.class, SessionParams.CONNECTION, null);
         if (connection == null && create) {
             connection = getPersistenceStore().createConnection();
-            session.setParam(this, SessionParams.CONNECTION, connection);
-            session.addSessionListener(new CloseOnContextPopSessionListener(this, connection));
+            // if there is an eclosing transaction we need 
+            // to bind the connection to the same session context
+            int s = session.getDepth();
+            boolean addedToTransaction = false;
+            for (int depth = 0; depth < s; depth++) {
+                UTransactionHelper th = UTransactionHelper.getAt(session, this, depth);
+                if (th != null) {
+                    addedToTransaction = true;
+                    session.setParamAt(this, SessionParams.CONNECTION, connection, depth);
+                    break;
+                }
+            }
+            if (addedToTransaction) {
+                session.addSessionListener(new CloseOnContextPopSessionListener(this, connection));
+            } else {
+                session.setParam(this, SessionParams.CONNECTION, connection);
+                session.addSessionListener(new CloseOnContextPopSessionListener(this, connection));
+            }
         }
         return connection;
     }

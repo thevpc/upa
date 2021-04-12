@@ -52,13 +52,21 @@ public interface Session extends Closeable {
 
     void setParam(PersistenceUnit persistenceUnit, String name, Object value);
 
+    void setParamAt(PersistenceUnit persistenceUnit, String name, Object value, int depth);
+
     <T> T getParam(PersistenceUnit persistenceUnit, Class<T> type, String name, T defaultValue);
 
     <T> T getImmediateParam(PersistenceUnit persistenceUnit, Class<T> type, String name, T defaultValue);
+
+    <T> T getParamAt(PersistenceUnit persistenceUnit, Class<T> type, String name, T defaultValue, int depth);
 
     //    <T> T getParamImmediate(PersistenceUnit persistenceUnit, Class<T> type, String name, T defaultValue);
     void addSessionListener(SessionListener sessionListener);
 
     void removeSessionListener(SessionListener sessionListener);
+
+    public int getDepth();
+
+    public String dump();
 
 }

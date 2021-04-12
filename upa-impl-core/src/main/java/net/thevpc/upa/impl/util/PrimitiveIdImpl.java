@@ -58,6 +58,15 @@ public class PrimitiveIdImpl implements PrimitiveId{
     }
 
     @Override
+    public Object[] getValues() {
+        if(value instanceof Object[]){
+            return (Object[])value;
+        }
+        return new Object[]{value};
+    }
+    
+
+    @Override
     public Object getValue() {
         return value;
     }

@@ -74,7 +74,7 @@ public class DecorationEntityDescriptorResolver {
                     parseEntityType(entityInfo, descriptorType, true, true, true, factory);
                 }
 
-                for (Decoration decoration : repo.getTypeRepeatableDecorations(descriptorType, Property.class, Properties.class)) {
+                for (Decoration decoration : repo.getTypeRepeatableDecorations(descriptorType, net.thevpc.upa.config.Property.class, net.thevpc.upa.config.Properties.class)) {
                     parameterInfos.add(UPAUtils.createProperty(decoration));
                 }
                 Decoration pathDeco = repo.getTypeDecoration(descriptorType, Path.class);

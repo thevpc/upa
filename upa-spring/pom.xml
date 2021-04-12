@@ -2,15 +2,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>upa</artifactId>
-        <groupId>net.thevpc.upa</groupId>
-        <version>1.2.0</version>
-    </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>net.thevpc.upa</groupId>
     <artifactId>upa-spring</artifactId>
+    <version>1.2.0</version>
     <name>net.thevpc.upa.upa-spring</name>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <github.global.server>github</github.global.server>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework</groupId>

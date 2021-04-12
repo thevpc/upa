@@ -32,63 +32,59 @@
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  * ====================================================================
  */
-package net.thevpc.upa.expressions;
+package net.thevpc.upa;
 
 /**
- * Created with IntelliJ IDEA. User: vpc Date: 8/16/12 Time: 10:54 PM To change
- * this template use File | Settings | File Templates.
+ *
+ * @author taha.bensalah@gmail.com
  */
-public class IndexedVar extends Var {
-    private Expression[] arguments;
+public class SystemUserPrincipal implements UserPrincipal {
 
-    public IndexedVar(String field, Expression... arguments) {
-        this(null, field, arguments);
+    private String name;
+    private Object object;
+
+    public SystemUserPrincipal(String name, Object object) {
+        this.name = name;
+        this.object = object;
     }
 
-    public IndexedVar(Expression parent, String name, Expression... arguments) {
-        super(parent, name);
-        this.arguments = arguments;
+    public String getName() {
+        return name;
     }
 
+    public Object getObject() {
+        return object;
+    }
 
     @Override
-    public Expression copy() {
-        IndexedVar o = new IndexedVar(getApplier(), getName(), getArguments());
-        return o;
+    public int hashCode() {
+        int hash = 3;
+        hash = 97 * hash + (this.name != null ? this.name.hashCode() : 0);
+        hash = 97 * hash + (this.object != null ? this.object.hashCode() : 0);
+        return hash;
     }
 
-
-    public int getArgumentsCount() {
-        return arguments.length;
-    }
-
-    public Expression getArgument(int index) {
-        return arguments[index];
-    }
-
-    public Expression[] getArguments() {
-        int max = getArgumentsCount();
-        Expression[] p = new Expression[max];
-        for (int i = 0; i < max; i++) {
-            p[i] = getArgument(i);
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
         }
-        return p;
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final SystemUserPrincipal other = (SystemUserPrincipal) obj;
+        if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
+            return false;
+        }
+        if (this.object != other.object && (this.object == null || !this.object.equals(other.object))) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public String toString() {
-        StringBuilder s = new StringBuilder();
-        if (getApplier() != null) {
-            s.append(getApplier().toString()).append(".");
-        }
-        s.append(getName()).append("(");
-        for (int i = 0; i < getArgumentsCount(); i++) {
-            if (i > 0) {
-                s.append(",");
-            }
-            s.append(getArgument(i));
-        }
-        s.append(")");
-        return s.toString();
+        return String.valueOf(name);
     }
+
 }

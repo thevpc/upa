@@ -37,6 +37,7 @@ package net.thevpc.upa;
 public interface PrimitiveId {
     Object getValue(int index);
     Object getValue();
+    Object[] getValues();
     int size() ;
     Field getField(int index);
 }

@@ -47,4 +47,6 @@ public interface PersistenceGroupSecurityManager {
     UserPrincipal login(String login, String credentials) ;
 
     UserPrincipal loginPrivileged(String login) ;
+
+    public boolean isPrivilegedLogin(String name);
 }

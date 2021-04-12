@@ -21,6 +21,9 @@ import java.sql.*;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.thevpc.upa.PersistenceUnit;
+import net.thevpc.upa.Session;
+import org.omg.CosNaming.NamingContextExtPackage.URLStringHelper;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -39,8 +42,10 @@ public abstract class AbstractUConnection implements UConnection {
     private static final Logger log = Logger.getLogger(AbstractUConnection.class.getName());
     protected static final List<UConnection> activeConnections = new ArrayList<UConnection>();
     protected static int activeConnectionsMaxCount = 0;
+    protected PersistenceUnit pu;
 
-    public AbstractUConnection(String name, MarshallManager marshallManager, Properties perfProperties) {
+    public AbstractUConnection(String name, MarshallManager marshallManager, Properties perfProperties, PersistenceUnit pu) {
+        this.pu = pu;
         this.name = name;
         this.perfProperties = perfProperties;
         this.marshallManager = marshallManager;
@@ -94,6 +99,7 @@ public abstract class AbstractUConnection implements UConnection {
 
     public abstract QueryResult executeQueryImpl(String query, String tableDebugString, DataTypeTransform[] types, List<Parameter> queryParameters, boolean updatable) throws Exception;
 
+    @Override
     public int executeNonQuery(String query, List<Parameter> queryParameters, List<Parameter> generatedKeys) throws UPAException {
         if (closed) {
             throw new IllegalUPAArgumentException("Connection closed");
@@ -101,6 +107,16 @@ public abstract class AbstractUConnection implements UConnection {
         if (UPAImplDefaults.DEBUG_MODE) {
             perfProperties.setLong(UPAImplKeys.System_Perf_Connection_NonQuery, perfProperties.getLong(UPAImplKeys.System_Perf_Connection_NonQuery, 0) + 1);
             perfProperties.setLong(UPAImplKeys.System_Perf_Connection_Statement, perfProperties.getLong(UPAImplKeys.System_Perf_Connection_Statement, 0) + 1);
+        }
+        if (pu != null) {
+            Session cs = pu.getCurrentSession();
+            if (cs != null) {
+                UTransactionHelper tt = UTransactionHelper.get(cs, pu);
+                if (tt != null) {
+                    //ensure that the transaction is created!!
+                    tt.getTransactionOrCreate();
+                }
+            }
         }
         Exception error = null;
         int count = -1;
@@ -119,7 +135,7 @@ public abstract class AbstractUConnection implements UConnection {
                     log.log(Level.SEVERE, nameDebugString + " [Error] executeNonQuery " + query + ((queryParameters != null && !queryParameters.isEmpty()) ? (" ;; parameters=" + queryParameters) : ""), error);
                 } else {
                     log.log(Level.FINE, "{0} executeNonQuery {1}" + ((queryParameters != null && !queryParameters.isEmpty())
-                            ? " ;; parameters = {2}" : "") + " ;; time = {3}", new Object[]{nameDebugString +tableDebugString, query, queryParameters, (System.currentTimeMillis() - startTime)});
+                            ? " ;; parameters = {2}" : "") + " ;; time = {3}", new Object[]{nameDebugString + tableDebugString, query, queryParameters, (System.currentTimeMillis() - startTime)});
                 }
             }
 //            Log.log(PersistenceUnitManager.DB_NATIVE_UPDATE_LOG,"[TIME="+Log.DELTA_FORMAT.format(endTime-startTime)+" ; COUNT="+count+"] "+debug+" :=" + currentQuery);
@@ -237,7 +253,7 @@ public abstract class AbstractUConnection implements UConnection {
         try {
             closePlatformConnection();
         } catch (Exception ex) {
-            throw new IllegalUPAArgumentException("Connection could not be closed",ex);
+            throw new IllegalUPAArgumentException("Connection could not be closed", ex);
         }
         closed = true;
         support.afterClose(this);

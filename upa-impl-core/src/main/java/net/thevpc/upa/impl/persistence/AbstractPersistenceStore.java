@@ -425,9 +425,9 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
     public UConnection wrapConnection(Connection connection) throws UPAException {
         if (persistenceUnit == null) {
             //this most likely in PU.start() -> checkAccessible, when PU is not yer initialized!
-            return new DefaultUConnection("<undefined>", connection, getMarshallManager(), new DefaultProperties());
+            return new DefaultUConnection("<undefined>", connection, getMarshallManager(), new DefaultProperties(), persistenceUnit);
         }
-        return new DefaultUConnection(persistenceUnit.toString(), connection, getMarshallManager(), persistenceUnit.getProperties());
+        return new DefaultUConnection(persistenceUnit.toString(), connection, getMarshallManager(), persistenceUnit.getProperties(), persistenceUnit);
     }
 
     protected void prepareNativeConnection(UConnection connection, Map<String, Object> customAttributes, ConnectionProfile connectionProfile) throws UPAException {
@@ -652,7 +652,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
                 DataTypeTransform baseTransform = c;
                 c = fieldNoTypeTransform ? IdentityDataTypeTransform.ofType(baseTransform.getSourceType()) : baseTransform;
 //                String gn=StringUtils.isNullOrEmpty(validName)?validName:(binding+"."+validName);
-                nativeFields[i] = new NativeField(validName, binding, field.getIndex(), field.isExpanded(), field.getParentBindingEntity(), referrerField, c, preferLoadLater,partialObject);
+                nativeFields[i] = new NativeField(validName, binding, field.getIndex(), field.isExpanded(), field.getParentBindingEntity(), referrerField, c, preferLoadLater, partialObject);
             }
         } else {
             nativeFields = new NativeField[0];
@@ -1248,8 +1248,8 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
     protected void requireTransaction(EntityExecutionContext executionContext) throws UPAException {
         Session currentSession = executionContext.getPersistenceUnit().getCurrentSession();
         if (currentSession != null) {
-            Transaction transaction = currentSession.getParam(executionContext.getPersistenceUnit(), Transaction.class, SessionParams.TRANSACTION, null);
-            if (transaction != null) {
+            UTransactionHelper th = UTransactionHelper.get(currentSession, executionContext.getPersistenceUnit());
+            if (th != null) {
                 return;
             }
         }
